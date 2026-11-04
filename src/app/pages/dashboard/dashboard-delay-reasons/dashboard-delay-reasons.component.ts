@@ -54,19 +54,20 @@ export class DashboardDelayReasonsComponent implements OnInit, AfterViewInit, On
 
   readonly divisionsList: string[] = [
     'All',
-    'Oral Solids - OS',
-    'Injectables - IJ',
-    'Complex Injectables - CI',
-    'Biotech - BT',
+    'Specialty Chemicals - SC',
+    'Polymers & Resins - PR',
+    'Agrochemicals - AC',
+    'Industrial & Fine Chemicals - IF',
   ];
 
   readonly locationsList: string[] = [
     'All',
+    'Ahmedabad',
     'Hyderabad',
     'Mumbai',
-    'Bengaluru',
-    'Ahmedabad',
     'Pune',
+    'Vadodara',
+    'Bengaluru',
     'Chennai',
     'Delhi',
     'Baddi',
@@ -80,69 +81,69 @@ export class DashboardDelayReasonsComponent implements OnInit, AfterViewInit, On
 
   private charts: Highcharts.Chart[] = [];
 
-  // Top Delay Reason for each of the 12 Stages (2,3)
+  // Top Delay Reason for each of the 12 Stages
   readonly topDelayReasonsByStage: StageDelayReason[] = [
-    { stageNumber: 1, stageCode: 'S1', stageName: 'Business Case', topReason: 'Market Feasibility Analysis Delay' },
-    { stageNumber: 2, stageCode: 'S2', stageName: 'Initiation', topReason: 'Charter Finalization Delay' },
-    { stageNumber: 3, stageCode: 'S3', stageName: 'Development Procurement', topReason: 'API & Raw Material Shortage' },
-    { stageNumber: 4, stageCode: 'S4', stageName: 'POC Formulation', topReason: 'Excipient Compatibility Anomaly' },
-    { stageNumber: 5, stageCode: 'S5', stageName: 'EB Procurement', topReason: 'Packaging Material Rejection' },
-    { stageNumber: 6, stageCode: 'S6', stageName: 'Pilot Bio Formulation', topReason: 'Pilot Batch Dissolution Variation' },
-    { stageNumber: 7, stageCode: 'S7', stageName: 'API Validation', topReason: 'Analytical Method Validation Pending' },
-    { stageNumber: 8, stageCode: 'S8', stageName: 'FP Validation', topReason: 'Finished Product Assay Failure' },
-    { stageNumber: 9, stageCode: 'S9', stageName: 'TTD Submission', topReason: 'Tech Transfer Dossier Review Pending' },
-    { stageNumber: 10, stageCode: 'S10', stageName: 'Exhibit Batches', topReason: 'Equipment Breakdown & Maintenance' },
-    { stageNumber: 11, stageCode: 'S11', stageName: 'Pivotal BE', topReason: 'CRO Patient Recruitment Delay' },
-    { stageNumber: 12, stageCode: 'S12', stageName: 'Dossier Filing', topReason: 'Regulatory Response Clearance Delay' },
+    { stageNumber: 1, stageCode: 'S1', stageName: 'Opportunity Identification', topReason: 'Market & Application Feasibility Analysis Delay' },
+    { stageNumber: 2, stageCode: 'S2', stageName: 'Concept Screening & Feasibility', topReason: 'Charter Finalization Delay' },
+    { stageNumber: 3, stageCode: 'S3', stageName: 'Route Scouting & Lab Synthesis', topReason: 'Raw Material, Catalyst & Solvent Shortage' },
+    { stageNumber: 4, stageCode: 'S4', stageName: 'Process Optimization (Lab Scale)', topReason: 'Low Yield / Side-Reaction Anomaly' },
+    { stageNumber: 5, stageCode: 'S5', stageName: 'Process Route Selection', topReason: 'Raw Material Lot Rejection' },
+    { stageNumber: 6, stageCode: 'S6', stageName: 'Bench-to-Pilot Process Development', topReason: 'Pilot Batch Yield & Purity Variation' },
+    { stageNumber: 7, stageCode: 'S7', stageName: 'Process Safety & Regulatory Studies', topReason: 'Hazard Study / Method Validation Pending' },
+    { stageNumber: 8, stageCode: 'S8', stageName: 'Regulatory Registration Filing (REACH / TSCA)', topReason: 'Finished Product Specification Failure' },
+    { stageNumber: 9, stageCode: 'S9', stageName: 'Pilot Plant Campaign', topReason: 'Tech Transfer Dossier Review Pending' },
+    { stageNumber: 10, stageCode: 'S10', stageName: 'Demonstration-Scale Campaign', topReason: 'Reactor / Distillation Equipment Downtime' },
+    { stageNumber: 11, stageCode: 'S11', stageName: 'Commercial Plant Build & Commissioning', topReason: 'Contractor / Equipment Delivery Delay' },
+    { stageNumber: 12, stageCode: 'S12', stageName: 'Commercial Launch & Ramp-Up', topReason: 'Regulatory Query Response Delay (REACH / EPA)' },
   ];
 
   // 1,1: Activities Delay Distribution Data (5 Stages + Others)
   readonly activitiesData = [
-    { name: 'S1: Business Case', y: 20, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 16, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 28, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 22, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 18, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 20, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 16, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 28, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 22, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 18, color: '#f59e0b' },
     { name: 'Others', y: 54, color: '#94a3b8' },
   ];
 
   // 1,2: Tasks Delay Distribution Data (5 Stages + Others)
   readonly tasksData = [
-    { name: 'S1: Business Case', y: 18, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 15, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 25, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 20, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 22, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 18, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 15, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 25, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 20, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 22, color: '#f59e0b' },
     { name: 'Others', y: 48, color: '#94a3b8' },
   ];
 
   // 1,3: Issues Delay Distribution Data (5 Stages + Others)
   readonly issuesData = [
-    { name: 'S1: Business Case', y: 12, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 14, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 22, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 30, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 24, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 12, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 14, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 22, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 30, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 24, color: '#f59e0b' },
     { name: 'Others', y: 56, color: '#94a3b8' },
   ];
 
   // 2,1: To-Do Delay Distribution Data (5 Stages + Others)
   readonly todoData = [
-    { name: 'S1: Business Case', y: 22, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 26, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 20, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 16, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 24, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 22, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 26, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 20, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 16, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 24, color: '#f59e0b' },
     { name: 'Others', y: 50, color: '#94a3b8' },
   ];
 
   // 2,2: Requirements Delay Distribution Data (5 Stages + Others)
   readonly requirementsData = [
-    { name: 'S1: Business Case', y: 24, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 28, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 18, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 19, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 15, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 24, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 28, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 18, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 19, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 15, color: '#f59e0b' },
     { name: 'Others', y: 62, color: '#94a3b8' },
   ];
 
@@ -256,4 +257,3 @@ export class DashboardDelayReasonsComponent implements OnInit, AfterViewInit, On
     this.charts.push(chart);
   }
 }
-

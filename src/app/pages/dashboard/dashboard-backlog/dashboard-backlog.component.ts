@@ -66,19 +66,20 @@ export class DashboardBacklogComponent implements OnInit, AfterViewInit, OnDestr
 
   public readonly divisionsList: string[] = [
     'All',
-    'Oral Solids - OS',
-    'Injectables - IJ',
-    'Complex Injectables - CI',
-    'Biotech - BT',
+    'Specialty Chemicals - SC',
+    'Polymers & Resins - PR',
+    'Agrochemicals - AC',
+    'Industrial & Fine Chemicals - IF',
   ];
 
   public readonly locationsList: string[] = [
     'All',
+    'Ahmedabad',
     'Hyderabad',
     'Mumbai',
-    'Bengaluru',
-    'Ahmedabad',
     'Pune',
+    'Vadodara',
+    'Bengaluru',
     'Chennai',
     'Delhi',
     'Baddi',
@@ -144,68 +145,68 @@ export class DashboardBacklogComponent implements OnInit, AfterViewInit, OnDestr
 
   // Pie 1: Backlog Distribution by Activities (5 Stages + Others)
   readonly activitiesBacklogData = [
-    { name: 'S1: Business Case', y: 21, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 17, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 30, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 24, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 20, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 21, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 17, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 30, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 24, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 20, color: '#f59e0b' },
     { name: 'Others', y: 55, color: '#94a3b8' },
   ];
 
   // Pie 2: Backlog Distribution by Tasks (5 Stages + Others)
   readonly tasksBacklogData = [
-    { name: 'S1: Business Case', y: 19, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 16, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 26, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 21, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 23, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 19, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 16, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 26, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 21, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 23, color: '#f59e0b' },
     { name: 'Others', y: 52, color: '#94a3b8' },
   ];
 
   // Pie 3: Backlog Distribution by Issues (5 Stages + Others)
   readonly issuesBacklogData = [
-    { name: 'S1: Business Case', y: 14, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 15, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 23, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 31, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 25, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 14, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 15, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 23, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 31, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 25, color: '#f59e0b' },
     { name: 'Others', y: 58, color: '#94a3b8' },
   ];
 
   // Pie 4: Backlog Distribution by To-Do (5 Stages + Others)
   readonly todoBacklogData = [
-    { name: 'S1: Business Case', y: 23, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 27, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 21, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 17, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 25, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 23, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 27, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 21, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 17, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 25, color: '#f59e0b' },
     { name: 'Others', y: 51, color: '#94a3b8' },
   ];
 
   // Pie 5: Backlog Distribution by Requirements (5 Stages + Others)
   readonly requirementsBacklogData = [
-    { name: 'S1: Business Case', y: 25, color: '#3b82f6' },
-    { name: 'S2: Initiation', y: 29, color: '#06b6d4' },
-    { name: 'S3: Development Procurement', y: 19, color: '#10b981' },
-    { name: 'S4: POC Formulation', y: 20, color: '#84cc16' },
-    { name: 'S5: EB Procurement', y: 16, color: '#f59e0b' },
+    { name: 'S1: Opportunity Identification', y: 25, color: '#3b82f6' },
+    { name: 'S2: Concept Screening', y: 29, color: '#06b6d4' },
+    { name: 'S3: Route Scouting', y: 19, color: '#10b981' },
+    { name: 'S4: Process Optimization', y: 20, color: '#84cc16' },
+    { name: 'S5: Route Selection', y: 16, color: '#f59e0b' },
     { name: 'Others', y: 64, color: '#94a3b8' },
   ];
 
   // Table Card: Stage-wise Backlog Summary for S1 to S12
   readonly stageBacklogList: StageBacklogSummary[] = [
-    { stage: 'S1 - Business Case', stageCode: 'S1', stageName: 'Business Case', act: 21, task: 19, iss: 14, todo: 23, req: 25 },
-    { stage: 'S2 - Initiation', stageCode: 'S2', stageName: 'Initiation', act: 17, task: 16, iss: 15, todo: 27, req: 29 },
-    { stage: 'S3 - Development Procurement', stageCode: 'S3', stageName: 'Development Procurement', act: 30, task: 26, iss: 23, todo: 21, req: 19 },
-    { stage: 'S4 - POC Formulation', stageCode: 'S4', stageName: 'POC Formulation', act: 24, task: 21, iss: 31, todo: 17, req: 20 },
-    { stage: 'S5 - EB Procurement', stageCode: 'S5', stageName: 'EB Procurement', act: 20, task: 23, iss: 25, todo: 25, req: 16 },
-    { stage: 'S6 - Pilot Bio Formulation', stageCode: 'S6', stageName: 'Pilot Bio Formulation', act: 18, task: 22, iss: 19, todo: 20, req: 15 },
-    { stage: 'S7 - API Validation', stageCode: 'S7', stageName: 'API Validation', act: 25, task: 24, iss: 28, todo: 18, req: 22 },
-    { stage: 'S8 - FP Validation', stageCode: 'S8', stageName: 'FP Validation', act: 16, task: 18, iss: 20, todo: 15, req: 14 },
-    { stage: 'S9 - TTD Submission', stageCode: 'S9', stageName: 'TTD Submission', act: 22, task: 20, iss: 17, todo: 19, req: 18 },
-    { stage: 'S10 - Exhibit Batches', stageCode: 'S10', stageName: 'Exhibit Batches', act: 28, task: 25, iss: 22, todo: 24, req: 21 },
-    { stage: 'S11 - Pivotal BE', stageCode: 'S11', stageName: 'Pivotal BE', act: 19, task: 17, iss: 18, todo: 16, req: 17 },
-    { stage: 'S12 - Dossier Filing', stageCode: 'S12', stageName: 'Dossier Filing', act: 15, task: 14, iss: 12, todo: 13, req: 11 },
+    { stage: 'S1 - Opportunity Identification', stageCode: 'S1', stageName: 'Opportunity Identification', act: 21, task: 19, iss: 14, todo: 23, req: 25 },
+    { stage: 'S2 - Concept Screening & Feasibility', stageCode: 'S2', stageName: 'Concept Screening & Feasibility', act: 17, task: 16, iss: 15, todo: 27, req: 29 },
+    { stage: 'S3 - Route Scouting & Lab Synthesis', stageCode: 'S3', stageName: 'Route Scouting & Lab Synthesis', act: 30, task: 26, iss: 23, todo: 21, req: 19 },
+    { stage: 'S4 - Process Optimization (Lab Scale)', stageCode: 'S4', stageName: 'Process Optimization (Lab Scale)', act: 24, task: 21, iss: 31, todo: 17, req: 20 },
+    { stage: 'S5 - Process Route Selection', stageCode: 'S5', stageName: 'Process Route Selection', act: 20, task: 23, iss: 25, todo: 25, req: 16 },
+    { stage: 'S6 - Bench-to-Pilot Process Development', stageCode: 'S6', stageName: 'Bench-to-Pilot Process Development', act: 18, task: 22, iss: 19, todo: 20, req: 15 },
+    { stage: 'S7 - Process Safety & Regulatory Studies', stageCode: 'S7', stageName: 'Process Safety & Regulatory Studies', act: 25, task: 24, iss: 28, todo: 18, req: 22 },
+    { stage: 'S8 - Regulatory Registration Filing (REACH / TSCA)', stageCode: 'S8', stageName: 'Regulatory Registration Filing (REACH / TSCA)', act: 16, task: 18, iss: 20, todo: 15, req: 14 },
+    { stage: 'S9 - Pilot Plant Campaign', stageCode: 'S9', stageName: 'Pilot Plant Campaign', act: 22, task: 20, iss: 17, todo: 19, req: 18 },
+    { stage: 'S10 - Demonstration-Scale Campaign', stageCode: 'S10', stageName: 'Demonstration-Scale Campaign', act: 28, task: 25, iss: 22, todo: 24, req: 21 },
+    { stage: 'S11 - Commercial Plant Build & Commissioning', stageCode: 'S11', stageName: 'Commercial Plant Build & Commissioning', act: 19, task: 17, iss: 18, todo: 16, req: 17 },
+    { stage: 'S12 - Commercial Launch & Ramp-Up', stageCode: 'S12', stageName: 'Commercial Launch & Ramp-Up', act: 15, task: 14, iss: 12, todo: 13, req: 11 },
   ];
 
   public getStageTotal(item: StageBacklogSummary): number {
@@ -218,18 +219,14 @@ export class DashboardBacklogComponent implements OnInit, AfterViewInit, OnDestr
 
   // Table Card 6: Activities which have maximum backlog
   readonly topActivitiesWithMaxBacklog: ActivityBacklog[] = [
-    { activityName: 'Analytical Method Validation (API)', backlogCount: 48 },
-    { activityName: 'Finished Product Stability Testing', backlogCount: 42 },
-    { activityName: 'Exhibit Batch Manufacturing', backlogCount: 38 },
-    { activityName: 'Bioequivalence Patient Recruitment', backlogCount: 35 },
-    { activityName: 'Raw Material Release & Quarantine', backlogCount: 31 },
-    { activityName: 'Packaging Material Integrity Test', backlogCount: 28 },
+    { activityName: 'Assay & Purity Method Validation (Technical Grade)', backlogCount: 48 },
+    { activityName: 'Finished Product Shelf-Life & Storage Stability Testing', backlogCount: 42 },
+    { activityName: 'Demo-Scale Batch Manufacturing', backlogCount: 38 },
+    { activityName: 'Customer Application Trial Coordination', backlogCount: 35 },
+    { activityName: 'Raw Material Quarantine & Release Testing', backlogCount: 31 },
+    { activityName: 'Drum / IBC Packaging Integrity Testing', backlogCount: 28 },
     { activityName: 'Tech Transfer Dossier Compilation', backlogCount: 25 },
-    { activityName: 'Equipment Qualification & Re-validation', backlogCount: 22 },
-    { activityName: 'Micro-biological Assay Clearance', backlogCount: 19 },
-    // { activityName: 'Impurity Profiling & Characterization', backlogCount: 17 },
-    // { activityName: 'Container Closure Integrity (CCI)', backlogCount: 15 },
-    // { activityName: 'Regulatory Query Response Drafting', backlogCount: 13 },
+    { activityName: 'Reactor & Distillation Equipment Qualification', backlogCount: 22 },
   ];
 
   private charts: Highcharts.Chart[] = [];

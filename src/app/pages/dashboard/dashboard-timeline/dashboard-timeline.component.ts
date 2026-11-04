@@ -19,20 +19,28 @@ export class DashboardTimelineComponent implements OnInit, AfterViewInit {
   canScrollLeft = false;
   canScrollRight = true;
 
-  projects = ['Generic Tablet Development', 'Generic API Process Development'];
-
-  mainStages = [
-    { key: 'g0', label: 'Idea Screening (Gate 0)' },
-    { key: 'g1', label: 'Molecule Selection (Gate 1)' },
-    { key: 'g2', label: 'Feasibility & FTO (Gate 2)' },
-    { key: 'g3', label: 'Formulation Dev (Gate 3)' },
-    { key: 'g4', label: 'Exhibit & BE (Gate 4)' },
-    { key: 'g5', label: 'Dossier Filing (Gate 5)' },
-    { key: 'g6', label: 'Query & Approval (Gate 6)' },
-    { key: 'g7', label: 'Launch & Review (Gate 7)' }
+  projects = [
+    'Waterborne Polyurethane Dispersion (PUD) Discovery Project',
+    'Hydrogenation Catalyst Development (Pd/C)',
+    'Agrochemical Active Ingredient Multi-Step Synthesis Development',
+    'Solvent Recovery & Fractional Distillation Process Development',
+    'Water-Dispersible Granule (WDG) Formulation Development',
+    'Acrylic Emulsion Binder 50% Solids',
+    'Liquid Epoxy Resin (Bisphenol-A, EEW 185-192)',
+    'Sodium Lauryl Ether Sulfate (SLES) 70% Paste',
+    'Fumed Silica (Hydrophilic, 200 m2/g)',
+    'Hydrogen Peroxide 50% w/w (Anthraquinone Process)'
   ];
 
-  selectedProject = 'Generic Tablet Development';
+  mainStages = [
+    { key: 'g1', label: 'Concept Approval (Gate 1)' },
+    { key: 'g2', label: 'Process Route Selection (Gate 2)' },
+    { key: 'g3', label: 'Registration & Pilot Readiness (Gate 3)' },
+    { key: 'g4', label: 'Demo-Scale Proof (Gate 4)' },
+    { key: 'g5', label: 'Commercial Production Readiness (Gate 5)' }
+  ];
+
+  selectedProject = 'Waterborne Polyurethane Dispersion (PUD) Discovery Project';
   selectedStageFilter = 'g1';
 
   selectedDivision: string = 'All';
@@ -40,19 +48,20 @@ export class DashboardTimelineComponent implements OnInit, AfterViewInit {
 
   readonly divisionsList: string[] = [
     'All',
-    'Oral Solids - OS',
-    'Injectables - IJ',
-    'Complex Injectables - CI',
-    'Biotech - BT',
+    'Specialty Chemicals - SC',
+    'Polymers & Resins - PR',
+    'Agrochemicals - AC',
+    'Industrial & Fine Chemicals - IF',
   ];
 
   readonly locationsList: string[] = [
     'All',
+    'Ahmedabad',
     'Hyderabad',
     'Mumbai',
-    'Bengaluru',
-    'Ahmedabad',
     'Pune',
+    'Vadodara',
+    'Bengaluru',
     'Chennai',
     'Delhi',
     'Baddi',
@@ -60,57 +69,7 @@ export class DashboardTimelineComponent implements OnInit, AfterViewInit {
 
   calendarDays: number[] = Array.from({ length: 30 }, (_, i) => i + 1);
 
-  ganttData = [
-    // Gate 0: Idea Screening
-    { task: '1. Literature & Patent Landscape Assessment', start: Date.UTC(2026, 4, 1), end: Date.UTC(2026, 4, 6), completion: 100, gate: 'g0', project: 'Generic Tablet Development' },
-    { task: '2. Market Demand & Target Product Profile (TPP)', start: Date.UTC(2026, 4, 4), end: Date.UTC(2026, 4, 10), completion: 100, gate: 'g0', project: 'Generic Tablet Development' },
-    { task: '3. Preliminary Regulatory Pathway Clearance', start: Date.UTC(2026, 4, 8), end: Date.UTC(2026, 4, 15), completion: 100, gate: 'g0', project: 'Generic Tablet Development' },
-    { task: '4. Commercial Opportunity & NPV Modeling', start: Date.UTC(2026, 4, 12), end: Date.UTC(2026, 4, 19), completion: 100, gate: 'g0', project: 'Generic Tablet Development' },
-    { task: '5. Gate 0 Screening Sign-off & Charter Lock', start: Date.UTC(2026, 4, 16), end: Date.UTC(2026, 4, 22), completion: 100, gate: 'g0', project: 'Generic Tablet Development' },
-
-    // Gate 1: Molecule Selection
-    { task: '1. Reference Listed Drug (RLD) Sourcing & Characterization', start: Date.UTC(2026, 4, 1), end: Date.UTC(2026, 4, 8), completion: 100, gate: 'g1', project: 'Generic Tablet Development' },
-    { task: '2. API Source Evaluation & DMF Verification', start: Date.UTC(2026, 4, 5), end: Date.UTC(2026, 4, 14), completion: 100, gate: 'g1', project: 'Generic Tablet Development' },
-    { task: '3. Polymorphic Form Screening & Solubility Studies', start: Date.UTC(2026, 4, 9), end: Date.UTC(2026, 4, 18), completion: 100, gate: 'g1', project: 'Generic Tablet Development' },
-    { task: '4. Drug-Excipient Compatibility & Pre-formulation', start: Date.UTC(2026, 4, 12), end: Date.UTC(2026, 4, 22), completion: 100, gate: 'g1', project: 'Generic Tablet Development' },
-    { task: '5. Preliminary Cost of Goods (COGs) Modeling', start: Date.UTC(2026, 4, 16), end: Date.UTC(2026, 4, 25), completion: 100, gate: 'g1', project: 'Generic Tablet Development' },
-    { task: '6. Feasibility Go/No-Go Gate 1 Approval', start: Date.UTC(2026, 4, 20), end: Date.UTC(2026, 4, 28), completion: 100, gate: 'g1', project: 'Generic Tablet Development' },
-
-    // Gate 2: Feasibility & FTO
-    { task: '1. Granulation & Wet Milling Process Optimization', start: Date.UTC(2026, 4, 2), end: Date.UTC(2026, 4, 11), completion: 90, gate: 'g2', project: 'Generic Tablet Development' },
-    { task: '2. Tableting Compression Hardness & Friability Profiling', start: Date.UTC(2026, 4, 8), end: Date.UTC(2026, 4, 18), completion: 80, gate: 'g2', project: 'Generic Tablet Development' },
-    { task: '3. Film Coating Parameter Lock & DoE Formulation Trials', start: Date.UTC(2026, 4, 13), end: Date.UTC(2026, 4, 23), completion: 65, gate: 'g2', project: 'Generic Tablet Development' },
-    { task: '4. In-Vitro Dissolution Comparability vs Innovator RLD', start: Date.UTC(2026, 4, 17), end: Date.UTC(2026, 4, 27), completion: 50, gate: 'g2', project: 'Generic Tablet Development' },
-    { task: '5. Formulation Robustness Lock & Gate 2 Documentation', start: Date.UTC(2026, 4, 22), end: Date.UTC(2026, 4, 30), completion: 30, gate: 'g2', project: 'Generic Tablet Development' },
-
-    // Gate 3: Formulation Dev
-    { task: '1. Analytical Method Validation (Assay & RS)', start: Date.UTC(2026, 4, 3), end: Date.UTC(2026, 4, 14), completion: 75, gate: 'g3', project: 'Generic Tablet Development' },
-    { task: '2. Discriminatory Dissolution Method Development', start: Date.UTC(2026, 4, 9), end: Date.UTC(2026, 4, 20), completion: 60, gate: 'g3', project: 'Generic Tablet Development' },
-    { task: '3. Forced Degradation & Stress Testing Studies', start: Date.UTC(2026, 4, 14), end: Date.UTC(2026, 4, 25), completion: 45, gate: 'g3', project: 'Generic Tablet Development' },
-    { task: '4. Accelerated Stability Setup (40°C / 75% RH)', start: Date.UTC(2026, 4, 19), end: Date.UTC(2026, 4, 29), completion: 30, gate: 'g3', project: 'Generic Tablet Development' },
-    { task: '5. Intermediate Stability Pull & Gate 3 Review', start: Date.UTC(2026, 4, 24), end: Date.UTC(2026, 4, 30), completion: 15, gate: 'g3', project: 'Generic Tablet Development' },
-
-    // Gate 4: Exhibit & BE
-    { task: '1. Pilot Plant Technology Transfer & Line Clearance', start: Date.UTC(2026, 4, 4), end: Date.UTC(2026, 4, 14), completion: 40, gate: 'g4', project: 'Generic Tablet Development' },
-    { task: '2. Exhibit Batch 1 Execution (100,000 Units)', start: Date.UTC(2026, 4, 11), end: Date.UTC(2026, 4, 21), completion: 25, gate: 'g4', project: 'Generic Tablet Development' },
-    { task: '3. Exhibit Batch 2 & 3 Manufacturing & In-Process QC', start: Date.UTC(2026, 4, 16), end: Date.UTC(2026, 4, 27), completion: 15, gate: 'g4', project: 'Generic Tablet Development' },
-    { task: '4. Bioequivalence Clinical Study Protocol & IRB Approval', start: Date.UTC(2026, 4, 20), end: Date.UTC(2026, 4, 30), completion: 10, gate: 'g4', project: 'Generic Tablet Development' },
-
-    // Gate 5: Dossier Filing
-    { task: '1. eCTD Module 2 Quality Overall Summary (QOS) Compilation', start: Date.UTC(2026, 4, 2), end: Date.UTC(2026, 4, 15), completion: 35, gate: 'g5', project: 'Generic Tablet Development' },
-    { task: '2. Module 3 Drug Substance & Product CMC Data Collation', start: Date.UTC(2026, 4, 10), end: Date.UTC(2026, 4, 23), completion: 20, gate: 'g5', project: 'Generic Tablet Development' },
-    { task: '3. Pre-Submission Regulatory Quality & Compliance Audit', start: Date.UTC(2026, 4, 18), end: Date.UTC(2026, 4, 29), completion: 10, gate: 'g5', project: 'Generic Tablet Development' },
-
-    // Gate 6: Query & Approval
-    { task: '1. Commercial Facility Scale-Up Validation Protocol', start: Date.UTC(2026, 4, 5), end: Date.UTC(2026, 4, 18), completion: 20, gate: 'g6', project: 'Generic Tablet Development' },
-    { task: '2. Process Performance Qualification (PPQ) Readiness', start: Date.UTC(2026, 4, 14), end: Date.UTC(2026, 4, 26), completion: 10, gate: 'g6', project: 'Generic Tablet Development' },
-    { task: '3. Cleaning Validation & Environmental Monitoring', start: Date.UTC(2026, 4, 21), end: Date.UTC(2026, 4, 30), completion: 0, gate: 'g6', project: 'Generic Tablet Development' },
-
-    // Gate 7: Launch & Review
-    { task: '1. Packaging Artwork, Serialisation & GS1 Compliance', start: Date.UTC(2026, 4, 6), end: Date.UTC(2026, 4, 19), completion: 10, gate: 'g7', project: 'Generic Tablet Development' },
-    { task: '2. Commercial Launch Inventory Build & 3PL Logistics', start: Date.UTC(2026, 4, 16), end: Date.UTC(2026, 4, 28), completion: 0, gate: 'g7', project: 'Generic Tablet Development' },
-    { task: '3. Post-Launch Pharmacovigilance & Commercial Review', start: Date.UTC(2026, 4, 22), end: Date.UTC(2026, 4, 30), completion: 0, gate: 'g7', project: 'Generic Tablet Development' }
-  ];
+  ganttData: any[] = [];
 
   filteredGanttData: any[] = [];
 
@@ -120,7 +79,69 @@ export class DashboardTimelineComponent implements OnInit, AfterViewInit {
   tooltipData: any = null;
 
   ngOnInit() {
+    this.initGanttData();
     this.applyGanttFilter();
+  }
+
+  initGanttData() {
+    this.ganttData = [];
+    this.projects.forEach(p => {
+      const isBenchmark = p.includes('Acrylic Emulsion Binder') || p.includes('Liquid Epoxy') || p.includes('Sodium Lauryl') || p.includes('Fumed Silica');
+
+      // Gate 1: Concept Approval
+      if (isBenchmark) {
+        this.ganttData.push(
+          { task: '1. Benchmark Grade Sourcing & Analytical Characterization', start: Date.UTC(2026, 4, 1), end: Date.UTC(2026, 4, 8), completion: 100, gate: 'g1', project: p },
+          { task: '2. Raw Material & Process Route Evaluation', start: Date.UTC(2026, 4, 5), end: Date.UTC(2026, 4, 14), completion: 100, gate: 'g1', project: p },
+          { task: '3. Critical Quality Attribute (CQA) and Performance Specification Profiling', start: Date.UTC(2026, 4, 9), end: Date.UTC(2026, 4, 18), completion: 100, gate: 'g1', project: p },
+          { task: '4. Analytical Method Feasibility & Equivalence Testing Plan', start: Date.UTC(2026, 4, 12), end: Date.UTC(2026, 4, 22), completion: 100, gate: 'g1', project: p },
+          { task: '5. Preliminary Cost of Manufacturing & Plant Feasibility', start: Date.UTC(2026, 4, 16), end: Date.UTC(2026, 4, 25), completion: 100, gate: 'g1', project: p },
+          { task: '6. Concept Approval Go/No-Go Gate 1 Approval', start: Date.UTC(2026, 4, 20), end: Date.UTC(2026, 4, 28), completion: 100, gate: 'g1', project: p }
+        );
+      } else {
+        this.ganttData.push(
+          { task: '1. Market, Application & Competitor Grade Review', start: Date.UTC(2026, 4, 1), end: Date.UTC(2026, 4, 8), completion: 100, gate: 'g1', project: p },
+          { task: '2. Raw Material Source & Supplier Evaluation', start: Date.UTC(2026, 4, 5), end: Date.UTC(2026, 4, 14), completion: 100, gate: 'g1', project: p },
+          { task: '3. Reaction Pathway & Chemistry Feasibility Screening', start: Date.UTC(2026, 4, 9), end: Date.UTC(2026, 4, 18), completion: 100, gate: 'g1', project: p },
+          { task: '4. Catalyst, Solvent & Material Compatibility Screening', start: Date.UTC(2026, 4, 12), end: Date.UTC(2026, 4, 22), completion: 100, gate: 'g1', project: p },
+          { task: '5. Preliminary Cost of Manufacturing & Capex Estimate', start: Date.UTC(2026, 4, 16), end: Date.UTC(2026, 4, 25), completion: 100, gate: 'g1', project: p },
+          { task: '6. Concept Approval Go/No-Go Gate 1 Approval', start: Date.UTC(2026, 4, 20), end: Date.UTC(2026, 4, 28), completion: 100, gate: 'g1', project: p }
+        );
+      }
+
+      // Gate 2: Process Route Selection
+      this.ganttData.push(
+        { task: '1. Lab Scale Reaction Parameter Optimization (DoE)', start: Date.UTC(2026, 4, 2), end: Date.UTC(2026, 4, 11), completion: 90, gate: 'g2', project: p },
+        { task: '2. Solvent Recovery & By-product Profiling', start: Date.UTC(2026, 4, 8), end: Date.UTC(2026, 4, 18), completion: 80, gate: 'g2', project: p },
+        { task: '3. Preliminary Process Hazard Analysis (PHA)', start: Date.UTC(2026, 4, 13), end: Date.UTC(2026, 4, 23), completion: 65, gate: 'g2', project: p },
+        { task: '4. Preliminary Mass & Energy Balance Flowsheet', start: Date.UTC(2026, 4, 17), end: Date.UTC(2026, 4, 27), completion: 50, gate: 'g2', project: p },
+        { task: '5. Process Route Selection & Basis of Design Gate 2 Sign-off', start: Date.UTC(2026, 4, 22), end: Date.UTC(2026, 4, 30), completion: 30, gate: 'g2', project: p }
+      );
+
+      // Gate 3: Registration & Pilot Readiness
+      this.ganttData.push(
+        { task: '1. REACH / TSCA Regulatory Dossier Strategy', start: Date.UTC(2026, 4, 3), end: Date.UTC(2026, 4, 14), completion: 75, gate: 'g3', project: p },
+        { task: '2. Analytical & Quality Method Validation Protocol', start: Date.UTC(2026, 4, 9), end: Date.UTC(2026, 4, 20), completion: 60, gate: 'g3', project: p },
+        { task: '3. Pilot Plant Equipment Train Clearance & Safety Review', start: Date.UTC(2026, 4, 14), end: Date.UTC(2026, 4, 25), completion: 45, gate: 'g3', project: p },
+        { task: '4. Pilot Campaign Raw Material & Catalyst Procurement', start: Date.UTC(2026, 4, 19), end: Date.UTC(2026, 4, 29), completion: 30, gate: 'g3', project: p },
+        { task: '5. Pilot Campaign Readiness Gate 3 Authorization', start: Date.UTC(2026, 4, 24), end: Date.UTC(2026, 4, 30), completion: 15, gate: 'g3', project: p }
+      );
+
+      // Gate 4: Demo-Scale Proof
+      this.ganttData.push(
+        { task: '1. Pilot Scale Multi-Batch Campaign Execution', start: Date.UTC(2026, 4, 4), end: Date.UTC(2026, 4, 14), completion: 40, gate: 'g4', project: p },
+        { task: '2. Customer Application Sample Testing & Feedback', start: Date.UTC(2026, 4, 11), end: Date.UTC(2026, 4, 21), completion: 25, gate: 'g4', project: p },
+        { task: '3. Demonstration-Scale Reactor Detailed Engineering', start: Date.UTC(2026, 4, 16), end: Date.UTC(2026, 4, 27), completion: 15, gate: 'g4', project: p },
+        { task: '4. Demonstration Run & Process Performance Qualification (PPQ)', start: Date.UTC(2026, 4, 20), end: Date.UTC(2026, 4, 30), completion: 10, gate: 'g4', project: p }
+      );
+
+      // Gate 5: Commercial Production Readiness
+      this.ganttData.push(
+        { task: '1. Commercial Facility Commissioning & Cold Run', start: Date.UTC(2026, 4, 2), end: Date.UTC(2026, 4, 15), completion: 35, gate: 'g5', project: p },
+        { task: '2. Commercial Plant Environmental Clearance & HAZOP Action Closeout', start: Date.UTC(2026, 4, 10), end: Date.UTC(2026, 4, 23), completion: 20, gate: 'g5', project: p },
+        { task: '3. Commercial Master Production Record & QC Release Protocols', start: Date.UTC(2026, 4, 18), end: Date.UTC(2026, 4, 29), completion: 10, gate: 'g5', project: p }
+      );
+    });
   }
 
   ngAfterViewInit() {

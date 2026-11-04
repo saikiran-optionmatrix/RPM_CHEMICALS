@@ -15,11 +15,16 @@ import * as Highcharts from 'highcharts';
 })
 export class DashboardBufferComponent implements AfterViewInit {
   projects = [
-    'Generic Tablet Development',
-    'Generic API Process Development',
-    'Complex Injectable Development',
-    'Generic API Development',
-    'Generic Injectable Formulation'
+    'Waterborne Polyurethane Dispersion (PUD) Discovery Project',
+    'Hydrogenation Catalyst Development (Pd/C)',
+    'Agrochemical Active Ingredient Multi-Step Synthesis Development',
+    'Solvent Recovery & Fractional Distillation Process Development',
+    'Water-Dispersible Granule (WDG) Formulation Development',
+    'Acrylic Emulsion Binder 50% Solids',
+    'Liquid Epoxy Resin (Bisphenol-A, EEW 185-192)',
+    'Sodium Lauryl Ether Sulfate (SLES) 70% Paste',
+    'Fumed Silica (Hydrophilic, 200 m2/g)',
+    'Hydrogen Peroxide 50% w/w (Anthraquinone Process)'
   ];
   selectedBufferProject = 'All Projects';
 
@@ -28,19 +33,20 @@ export class DashboardBufferComponent implements AfterViewInit {
 
   readonly divisionsList: string[] = [
     'All',
-    'Oral Solids - OS',
-    'Injectables - IJ',
-    'Complex Injectables - CI',
-    'Biotech - BT',
+    'Specialty Chemicals - SC',
+    'Polymers & Resins - PR',
+    'Agrochemicals - AC',
+    'Industrial & Fine Chemicals - IF',
   ];
 
   readonly locationsList: string[] = [
     'All',
+    'Ahmedabad',
     'Hyderabad',
     'Mumbai',
-    'Bengaluru',
-    'Ahmedabad',
     'Pune',
+    'Vadodara',
+    'Bengaluru',
     'Chennai',
     'Delhi',
     'Baddi',
@@ -53,76 +59,84 @@ export class DashboardBufferComponent implements AfterViewInit {
   bufferBarChart: Highcharts.Chart | null = null;
   bufferStageChart: Highcharts.Chart | null = null;
 
-  bufferProjectData: { [project: string]: { [stage: string]: { bufferUsed: number; bufferTime: number } } } = {
-    'Generic Tablet Development': {
-      'S1': { bufferUsed: 0.8, bufferTime: -0.2 },
-      'S2': { bufferUsed: 1.5, bufferTime: -0.3 },
-      'S3': { bufferUsed: 2.1, bufferTime: -0.4 },
-      'S4': { bufferUsed: 3.4, bufferTime: 0.2 },
-      'S5': { bufferUsed: 4.8, bufferTime: 0.8 },
-      'S6': { bufferUsed: 5.5, bufferTime: 0.4 },
-      'S7': { bufferUsed: 6.2, bufferTime: 0.7 },
-      'S8': { bufferUsed: 7.1, bufferTime: 0.5 },
-      'S9': { bufferUsed: 7.8, bufferTime: -0.1 },
-      'S10': { bufferUsed: 8.5, bufferTime: 1.5 },
-      'S11': { bufferUsed: 9.3, bufferTime: 0.8 },
-      'S12': { bufferUsed: 10.1, bufferTime: 0.6 },
+  readonly phaseDefinitions = [
+    { key: 'Phase 1 - Concept', fullName: 'Concept & Feasibility (S1-S2)', threshold: 2.0 },
+    { key: 'Phase 2 - Route', fullName: 'Route Development & Selection (S3-S5)', threshold: 4.5 },
+    { key: 'Phase 3 - Pilot', fullName: 'Pilot Development & Safety (S6-S7)', threshold: 6.5 },
+    { key: 'Phase 4 - Scale-Up', fullName: 'Registration & Scale-Up (S8-S10)', threshold: 8.5 },
+    { key: 'Phase 5 - Commercial', fullName: 'Commercial Plant & Launch (S11-S12)', threshold: 10.5 }
+  ];
+
+  bufferProjectData: { [project: string]: { [phase: string]: { bufferUsed: number; bufferTime: number } } } = {
+    'Waterborne Polyurethane Dispersion (PUD) Discovery Project': {
+      'Phase 1 - Concept': { bufferUsed: 0.8, bufferTime: -0.3 },
+      'Phase 2 - Route': { bufferUsed: 2.3, bufferTime: -0.2 },
+      'Phase 3 - Pilot': { bufferUsed: 4.4, bufferTime: 0.4 },
+      'Phase 4 - Scale-Up': { bufferUsed: 6.1, bufferTime: 0.8 },
+      'Phase 5 - Commercial': { bufferUsed: 8.0, bufferTime: 1.2 }
     },
-    'Generic API Process Development': {
-      'S1': { bufferUsed: 0.5, bufferTime: -0.5 },
-      'S2': { bufferUsed: 1.2, bufferTime: -0.6 },
-      'S3': { bufferUsed: 1.8, bufferTime: -0.7 },
-      'S4': { bufferUsed: 2.9, bufferTime: -0.3 },
-      'S5': { bufferUsed: 3.6, bufferTime: -0.4 },
-      'S6': { bufferUsed: 4.8, bufferTime: 0.2 },
-      'S7': { bufferUsed: 6.0, bufferTime: 0.5 },
-      'S8': { bufferUsed: 6.7, bufferTime: 0.3 },
-      'S9': { bufferUsed: 7.2, bufferTime: -0.2 },
-      'S10': { bufferUsed: 7.8, bufferTime: 0.8 },
-      'S11': { bufferUsed: 8.6, bufferTime: 0.4 },
-      'S12': { bufferUsed: 9.4, bufferTime: 0.7 },
+    'Hydrogenation Catalyst Development (Pd/C)': {
+      'Phase 1 - Concept': { bufferUsed: 0.7, bufferTime: -0.4 },
+      'Phase 2 - Route': { bufferUsed: 2.1, bufferTime: -0.3 },
+      'Phase 3 - Pilot': { bufferUsed: 4.2, bufferTime: 0.2 },
+      'Phase 4 - Scale-Up': { bufferUsed: 5.9, bufferTime: 0.6 },
+      'Phase 5 - Commercial': { bufferUsed: 7.8, bufferTime: 0.9 }
     },
-    'Complex Injectable Development': {
-      'S1': { bufferUsed: 1.3, bufferTime: 0.3 },
-      'S2': { bufferUsed: 2.2, bufferTime: 0.5 },
-      'S3': { bufferUsed: 3.2, bufferTime: 0.7 },
-      'S4': { bufferUsed: 4.1, bufferTime: 0.9 },
-      'S5': { bufferUsed: 5.2, bufferTime: 1.2 },
-      'S6': { bufferUsed: 6.3, bufferTime: 1.4 },
-      'S7': { bufferUsed: 7.1, bufferTime: 1.6 },
-      'S8': { bufferUsed: 8.0, bufferTime: 1.8 },
-      'S9': { bufferUsed: 8.7, bufferTime: 1.5 },
-      'S10': { bufferUsed: 9.2, bufferTime: 2.2 },
-      'S11': { bufferUsed: 10.0, bufferTime: 1.9 },
-      'S12': { bufferUsed: 11.2, bufferTime: 2.4 },
+    'Agrochemical Active Ingredient Multi-Step Synthesis Development': {
+      'Phase 1 - Concept': { bufferUsed: 0.9, bufferTime: 0.2 },
+      'Phase 2 - Route': { bufferUsed: 2.5, bufferTime: 0.5 },
+      'Phase 3 - Pilot': { bufferUsed: 4.8, bufferTime: 0.7 },
+      'Phase 4 - Scale-Up': { bufferUsed: 6.8, bufferTime: 1.1 },
+      'Phase 5 - Commercial': { bufferUsed: 8.9, bufferTime: 1.5 }
     },
-    'Generic API Development': {
-      'S1': { bufferUsed: 0.7, bufferTime: -0.3 },
-      'S2': { bufferUsed: 1.4, bufferTime: -0.4 },
-      'S3': { bufferUsed: 2.2, bufferTime: -0.3 },
-      'S4': { bufferUsed: 3.1, bufferTime: -0.2 },
-      'S5': { bufferUsed: 3.8, bufferTime: -0.2 },
-      'S6': { bufferUsed: 4.6, bufferTime: -0.4 },
-      'S7': { bufferUsed: 5.2, bufferTime: -0.3 },
-      'S8': { bufferUsed: 6.4, bufferTime: 0.6 },
-      'S9': { bufferUsed: 7.3, bufferTime: 0.8 },
-      'S10': { bufferUsed: 8.1, bufferTime: 1.1 },
-      'S11': { bufferUsed: 8.9, bufferTime: 0.9 },
-      'S12': { bufferUsed: 9.8, bufferTime: 1.2 },
+    'Solvent Recovery & Fractional Distillation Process Development': {
+      'Phase 1 - Concept': { bufferUsed: 0.6, bufferTime: -0.5 },
+      'Phase 2 - Route': { bufferUsed: 1.9, bufferTime: -0.4 },
+      'Phase 3 - Pilot': { bufferUsed: 3.8, bufferTime: -0.1 },
+      'Phase 4 - Scale-Up': { bufferUsed: 5.5, bufferTime: 0.3 },
+      'Phase 5 - Commercial': { bufferUsed: 7.2, bufferTime: 0.6 }
     },
-    'Generic Injectable Formulation': {
-      'S1': { bufferUsed: 0.9, bufferTime: -0.1 },
-      'S2': { bufferUsed: 1.6, bufferTime: -0.3 },
-      'S3': { bufferUsed: 2.0, bufferTime: -0.5 },
-      'S4': { bufferUsed: 3.3, bufferTime: 0.2 },
-      'S5': { bufferUsed: 4.6, bufferTime: 0.6 },
-      'S6': { bufferUsed: 5.1, bufferTime: 0.1 },
-      'S7': { bufferUsed: 5.8, bufferTime: 0.3 },
-      'S8': { bufferUsed: 6.2, bufferTime: -0.2 },
-      'S9': { bufferUsed: 6.5, bufferTime: -0.5 },
-      'S10': { bufferUsed: 7.4, bufferTime: 0.4 },
-      'S11': { bufferUsed: 8.3, bufferTime: 0.2 },
-      'S12': { bufferUsed: 9.1, bufferTime: -0.3 },
+    'Water-Dispersible Granule (WDG) Formulation Development': {
+      'Phase 1 - Concept': { bufferUsed: 0.8, bufferTime: -0.1 },
+      'Phase 2 - Route': { bufferUsed: 2.4, bufferTime: 0.3 },
+      'Phase 3 - Pilot': { bufferUsed: 4.6, bufferTime: 0.5 },
+      'Phase 4 - Scale-Up': { bufferUsed: 6.3, bufferTime: 0.9 },
+      'Phase 5 - Commercial': { bufferUsed: 8.2, bufferTime: 1.3 }
+    },
+    'Acrylic Emulsion Binder 50% Solids': {
+      'Phase 1 - Concept': { bufferUsed: 0.8, bufferTime: -0.2 },
+      'Phase 2 - Route': { bufferUsed: 2.3, bufferTime: -0.1 },
+      'Phase 3 - Pilot': { bufferUsed: 4.4, bufferTime: 0.3 },
+      'Phase 4 - Scale-Up': { bufferUsed: 6.1, bufferTime: 0.7 },
+      'Phase 5 - Commercial': { bufferUsed: 8.0, bufferTime: 1.0 }
+    },
+    'Liquid Epoxy Resin (Bisphenol-A, EEW 185-192)': {
+      'Phase 1 - Concept': { bufferUsed: 0.7, bufferTime: -0.3 },
+      'Phase 2 - Route': { bufferUsed: 2.2, bufferTime: -0.1 },
+      'Phase 3 - Pilot': { bufferUsed: 4.3, bufferTime: 0.3 },
+      'Phase 4 - Scale-Up': { bufferUsed: 6.0, bufferTime: 0.6 },
+      'Phase 5 - Commercial': { bufferUsed: 7.9, bufferTime: 1.1 }
+    },
+    'Sodium Lauryl Ether Sulfate (SLES) 70% Paste': {
+      'Phase 1 - Concept': { bufferUsed: 0.6, bufferTime: -0.4 },
+      'Phase 2 - Route': { bufferUsed: 2.0, bufferTime: -0.2 },
+      'Phase 3 - Pilot': { bufferUsed: 4.1, bufferTime: 0.1 },
+      'Phase 4 - Scale-Up': { bufferUsed: 5.8, bufferTime: 0.5 },
+      'Phase 5 - Commercial': { bufferUsed: 7.6, bufferTime: 0.8 }
+    },
+    'Fumed Silica (Hydrophilic, 200 m2/g)': {
+      'Phase 1 - Concept': { bufferUsed: 0.9, bufferTime: 0.1 },
+      'Phase 2 - Route': { bufferUsed: 2.6, bufferTime: 0.4 },
+      'Phase 3 - Pilot': { bufferUsed: 4.7, bufferTime: 0.6 },
+      'Phase 4 - Scale-Up': { bufferUsed: 6.5, bufferTime: 1.0 },
+      'Phase 5 - Commercial': { bufferUsed: 8.5, bufferTime: 1.4 }
+    },
+    'Hydrogen Peroxide 50% w/w (Anthraquinone Process)': {
+      'Phase 1 - Concept': { bufferUsed: 0.8, bufferTime: -0.2 },
+      'Phase 2 - Route': { bufferUsed: 2.3, bufferTime: 0.1 },
+      'Phase 3 - Pilot': { bufferUsed: 4.5, bufferTime: 0.4 },
+      'Phase 4 - Scale-Up': { bufferUsed: 6.2, bufferTime: 0.8 },
+      'Phase 5 - Commercial': { bufferUsed: 8.1, bufferTime: 1.2 }
     }
   };
 
@@ -138,22 +152,22 @@ export class DashboardBufferComponent implements AfterViewInit {
     this.renderBufferPieChart();
   }
 
-  getBufferDataForProject(project: string): { [stage: string]: { bufferUsed: number; bufferTime: number } } {
+  getBufferDataForProject(project: string): { [phase: string]: { bufferUsed: number; bufferTime: number } } {
     if (project !== 'All Projects' && this.bufferProjectData[project]) {
       return this.bufferProjectData[project];
     }
-    const stages = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12'];
+    const phases = this.phaseDefinitions.map(p => p.key);
     const projectKeys = Object.keys(this.bufferProjectData);
-    const result: { [stage: string]: { bufferUsed: number; bufferTime: number } } = {};
+    const result: { [phase: string]: { bufferUsed: number; bufferTime: number } } = {};
 
-    stages.forEach(stage => {
+    phases.forEach(phase => {
       let totalUsed = 0;
       let totalTime = 0;
       projectKeys.forEach(p => {
-        totalUsed += this.bufferProjectData[p][stage]?.bufferUsed || 0;
-        totalTime += this.bufferProjectData[p][stage]?.bufferTime || 0;
+        totalUsed += this.bufferProjectData[p][phase]?.bufferUsed || 0;
+        totalTime += this.bufferProjectData[p][phase]?.bufferTime || 0;
       });
-      result[stage] = {
+      result[phase] = {
         bufferUsed: +(totalUsed / projectKeys.length).toFixed(1),
         bufferTime: +(totalTime / projectKeys.length).toFixed(1)
       };
@@ -165,32 +179,31 @@ export class DashboardBufferComponent implements AfterViewInit {
     const containerId = 'bufferBarChartContainer';
     if (!document.getElementById(containerId)) return;
 
-    const stages = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12'];
-    const thresholdData = [1.0, 1.8, 2.6, 3.5, 4.3, 5.1, 6.0, 6.8, 7.6, 8.5, 9.3, 10.2];
+    const categories = this.phaseDefinitions.map(p => p.key);
+    const thresholdData = this.phaseDefinitions.map(p => p.threshold);
     const projectData = this.getBufferDataForProject(this.selectedBufferProject);
 
     const self = this;
-    const columnData = stages.map((stage, idx) => {
-      const used = projectData[stage]?.bufferUsed ?? 0;
-      const threshold = thresholdData[idx];
+    const columnData = this.phaseDefinitions.map(pDef => {
+      const used = projectData[pDef.key]?.bufferUsed ?? 0;
       return {
         y: used,
-        color: used > threshold ? '#dc3545' : '#28a745',
-        status: used > threshold ? 'Over Threshold' : 'On Track',
-        stage: stage
+        color: used > pDef.threshold ? '#dc3545' : '#28a745',
+        status: used > pDef.threshold ? 'Over Threshold' : 'On Track',
+        fullName: pDef.fullName
       };
     });
 
     this.bufferBarChart = Highcharts.chart(containerId, {
       chart: { type: 'column', backgroundColor: '#ffffff' },
-     title: { text: null },
+      title: { text: null },
       credits: { enabled: false },
       legend: {
         itemStyle: { color: '#000000' }
       },
       xAxis: {
-        title: { text: 'Stages', style: { color: '#000000' } },
-        categories: stages,
+        title: { text: 'Phases', style: { color: '#000000' } },
+        categories: categories,
         lineWidth: 1,
         lineColor: '#1b2e5e',
         labels: {
@@ -199,7 +212,7 @@ export class DashboardBufferComponent implements AfterViewInit {
         }
       },
       yAxis: {
-        title: { text: 'Buffer Time Used', style: { color: '#000000' } },
+        title: { text: 'Buffer Time Used (days)', style: { color: '#000000' } },
         min: 0,
         lineWidth: 1,
         lineColor: '#1b2e5e',
@@ -212,11 +225,13 @@ export class DashboardBufferComponent implements AfterViewInit {
           if (this.series.name.includes('Average Threshold')) {
             return `<div style="color: white;"><b>Average Threshold</b><br/>${this.x}<br/>Expected Buffer: <b>${this.y}</b></div>`;
           }
+          const fullName = (this.point as any).options?.fullName || this.x;
           return `
             <div style="font-size: 13px; color:white;">
               <b>${this.x}</b><br/>
-              <span style="color: ${this.point.color}">\u25CF</span> Buffer Time Used: <b>${this.y}</b><br/>
-              Status: <i>${(this.point as any).options.status}</i>
+              <span style="font-size: 11px; opacity: 0.85;">${fullName}</span><br/>
+              <span style="color: ${this.point.color}">\u25CF</span> Buffer Time Used: <b>${this.y} days</b><br/>
+              Status: <i>${(this.point as any).options?.status}</i>
             </div>
           `;
         }
@@ -271,15 +286,16 @@ export class DashboardBufferComponent implements AfterViewInit {
     const containerId = 'bufferPieChartContainer';
     if (!document.getElementById(containerId)) return;
 
-    const stages = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12'];
+    const categories = this.phaseDefinitions.map(p => p.key);
     const projectData = this.getBufferDataForProject(this.selectedBufferProject);
 
-    const stageData = stages.map(stage => {
-      const timeVal = projectData[stage]?.bufferTime ?? 0;
+    const stageData = this.phaseDefinitions.map(pDef => {
+      const timeVal = projectData[pDef.key]?.bufferTime ?? 0;
       return {
-        name: stage,
+        name: pDef.key,
         y: timeVal,
-        color: timeVal > 0 ? '#dc3545' : '#00a859'
+        color: timeVal > 0 ? '#dc3545' : '#00a859',
+        fullName: pDef.fullName
       };
     });
 
@@ -287,14 +303,14 @@ export class DashboardBufferComponent implements AfterViewInit {
 
     this.bufferStageChart = Highcharts.chart(containerId, {
       chart: { type: 'column', backgroundColor: '#ffffff' },
-     title: { text: null },
+      title: { text: null },
       credits: { enabled: false },
       legend: {
         itemStyle: { color: '#000000' }
       },
       xAxis: {
-        title: { text: 'Stages', style: { color: '#000000' } },
-        categories: stages,
+        title: { text: 'Phases', style: { color: '#000000' } },
+        categories: categories,
         lineWidth: 1,
         lineColor: '#1b2e5e',
         gridLineWidth: 0,
@@ -304,7 +320,7 @@ export class DashboardBufferComponent implements AfterViewInit {
         }
       },
       yAxis: {
-        title: { text: 'Buffer Time', style: { color: '#000000' } },
+        title: { text: 'Buffer Time (days)', style: { color: '#000000' } },
         gridLineWidth: 0,
         lineWidth: 1,
         lineColor: '#1b2e5e',
@@ -315,11 +331,13 @@ export class DashboardBufferComponent implements AfterViewInit {
         useHTML: true,
         formatter: function (this: any): string {
           const p = this.point as any;
+          const fullName = p.options?.fullName || this.key;
           const status = p.y > 0 ? 'Over Buffer (Delay)' : (p.y < 0 ? 'Under Buffer (Saved)' : 'On Track');
           return `
             <div style="font-size: 13px; color:white;">
               <b>${this.key}</b><br/>
-              Buffer Time: <b>${p.y > 0 ? '+' : ''}${p.y}</b><br/>
+              <span style="font-size: 11px; opacity: 0.85;">${fullName}</span><br/>
+              Buffer Time: <b>${p.y > 0 ? '+' : ''}${p.y} days</b><br/>
               Status: <i>${status}</i>
             </div>
           `;

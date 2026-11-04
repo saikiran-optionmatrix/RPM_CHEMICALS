@@ -9,7 +9,7 @@
         <label class="filter-label">Division:</label>
         <mat-select [(ngModel)]="selectedDivision" class="app-custom-select">
           @for (div of divisionsList; track div) {
-            <mat-option [value]="div">{{ div }}</mat-option>
+          <mat-option [value]="div">{{ div }}</mat-option>
           }
         </mat-select>
       </div>
@@ -18,7 +18,7 @@
         <label class="filter-label">Location:</label>
         <mat-select [(ngModel)]="selectedLocation" class="app-custom-select">
           @for (loc of locationsList; track loc) {
-            <mat-option [value]="loc">{{ loc }}</mat-option>
+          <mat-option [value]="loc">{{ loc }}</mat-option>
           }
         </mat-select>
       </div>
@@ -40,7 +40,7 @@
         style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; height: 100%; display: flex; flex-direction: column;">
         <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 16px;">
           <button type="button" class="app-btn app-btn-primary" (click)="navigateToStages()"
-                  style="cursor: pointer; height: 32px; min-height: 32px; padding: 0 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+            style="cursor: pointer; height: 32px; min-height: 32px; padding: 0 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
             <mat-icon style="font-size: 18px; width: 18px; height: 18px;">table_chart</mat-icon>
             <span>Data table</span>
           </button>
@@ -56,15 +56,16 @@
       <mat-card class="p-3"
         style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; height: 100%; display: flex; flex-direction: column;">
 
-        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px; width: 100%; margin-bottom: 16px;">
+        <div
+          style="display: flex; justify-content: flex-end; align-items: center; gap: 12px; width: 100%; margin-bottom: 16px;">
           <div class="pills">
             <ul class="nav nav-pills"
               style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: row; justify-content: flex-end; gap: 8px; flex-wrap: nowrap;">
-              @for (gate of portfolioGates; track gate) {
-              <li [class.active]="selectedGate === gate">
-                <a mat-raised-button (click)="setGateCategory(gate)"
+              @for (gate of portfolioGates; track gate.code) {
+              <li [class.active]="selectedGate === gate.code">
+                <a mat-raised-button (click)="setGateCategory(gate.code)"
                   style="cursor: pointer; padding: 0 16px; line-height: 32px; font-size: 12px; min-width: auto; height: 32px;">
-                  {{ gate }}
+                  {{ gate.label }}
                 </a>
               </li>
               }
@@ -72,14 +73,13 @@
           </div>
 
           <button type="button" class="app-btn app-btn-primary" (click)="navigateToGates()"
-                  style="cursor: pointer; height: 32px; min-height: 32px; padding: 0 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+            style="cursor: pointer; height: 32px; min-height: 32px; padding: 0 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
             <mat-icon style="font-size: 18px; width: 18px; height: 18px;">table_chart</mat-icon>
             <span>Data table</span>
           </button>
         </div>
 
-        <h3 class="m-0 font-weight-bold text-center mb-2" style="font-size: 16px; color: #333;">{{ selectedGate }} -
-          Portfolio Summary</h3>
+        <h3 class="m-0 font-weight-bold text-center mb-2" style="font-size: 16px; color: #333;">{{ getGateTitle(selectedGate) }}</h3>
         <div id="portfolioSummaryPieChartContainer" style="width: 100%; height: 360px;"></div>
 
       </mat-card>
@@ -138,33 +138,37 @@
       <div #tableContainer class="table-responsive"
         style="flex: 1 1 auto; width: 100%; overflow: auto; box-sizing: border-box;">
 
-        <table class="app-table" style="min-width: 1500px; width: 100%; margin: 0;">
+        <table class="app-table" style="min-width: 1700px; width: 100%; margin: 0;">
           <thead style="position: sticky; top: 0; z-index: 2;">
             <tr style="background: #333; color: white;">
               <th class="text-left" style="width: 250px;">Project Name</th>
-              <th class="text-center" style="width: 120px;">Project Code</th>
-              <th class="text-center">S1</th>
-              <th class="text-center">S2</th>
-              <th class="text-center">S3</th>
-              <th class="text-center">S4</th>
-              <th class="text-center">S5</th>
-              <th class="text-center">S6</th>
-              <th class="text-center">S7</th>
-              <th class="text-center">S8</th>
-              <th class="text-center">S9</th>
-              <th class="text-center">S10</th>
-              <th class="text-center">S11</th>
-              <th class="text-center">S12</th>
-              <th class="text-center" style="width: 120px;">Date of completion</th>
+              <th class="text-center" style="width: 130px;">Project Code</th>
+              <th class="text-left" style="width: 160px;">Product Family</th>
+              <th class="text-left" style="width: 170px;">End-Use Industry</th>
+              <th class="text-center" title="S1 - Opportunity Identification">S1</th>
+              <th class="text-center" title="S2 - Concept Screening & Feasibility">S2</th>
+              <th class="text-center" title="S3 - Route Scouting & Lab Synthesis">S3</th>
+              <th class="text-center" title="S4 - Process Optimization (Lab Scale)">S4</th>
+              <th class="text-center" title="S5 - Process Route Selection & Basis of Design">S5</th>
+              <th class="text-center" title="S6 - Bench-to-Pilot Process Development">S6</th>
+              <th class="text-center" title="S7 - Process Safety & Regulatory Studies">S7</th>
+              <th class="text-center" title="S8 - Regulatory Registration Filing (REACH / TSCA)">S8</th>
+              <th class="text-center" title="S9 - Pilot Plant Campaign">S9</th>
+              <th class="text-center" title="S10 - Demonstration-Scale Campaign">S10</th>
+              <th class="text-center" title="S11 - Commercial Plant Build & Commissioning">S11</th>
+              <th class="text-center" title="S12 - Commercial Launch & Ramp-Up">S12</th>
+              <th class="text-center" style="width: 170px;">Projected Completion Date</th>
             </tr>
           </thead>
           <tbody>
             @for (proj of paginatedProjects; track proj.projectCode) {
-            <tr [style.background-color]="proj.scheduleStatus === 'due' ? '#fff5f5' : 'transparent'">
+            <tr [style.background-color]="proj.scheduleStatus === 'delayed' ? '#fff5f5' : 'transparent'">
               <td class="text-left font-weight-bold" style="color: #333;">
                 <a style="color: #0d6efd; text-decoration: none; cursor: pointer;">{{ proj.projectName }}</a>
               </td>
               <td class="text-center font-weight-bold" style="color: #0d6efd;">{{ proj.projectCode }}</td>
+              <td class="text-left" style="color: #475569; font-size: 13px;">{{ proj.productFamily }}</td>
+              <td class="text-left" style="color: #475569; font-size: 13px;">{{ proj.endUseIndustry }}</td>
               <td class="text-center" style="color: #666;">{{ proj.s1 }}</td>
               <td class="text-center" style="color: #666;">{{ proj.s2 }}</td>
               <td class="text-center" style="color: #666;">{{ proj.s3 }}</td>
@@ -183,7 +187,7 @@
             </tr>
             } @empty {
             <tr>
-              <td colspan="15" class="empty-table">No records found</td>
+              <td colspan="17" class="empty-table">No records found</td>
             </tr>
             }
           </tbody>

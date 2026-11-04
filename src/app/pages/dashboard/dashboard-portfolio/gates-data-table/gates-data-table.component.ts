@@ -34,78 +34,78 @@ export class GatesDataTableComponent {
     gatesSearchTerm: string = '';
   
     readonly gateHeaders: GateColumnHeader[] = [
-      { key: 'g1', label: 'Gate 1', subtitle: 'Idea Screening' },
-      { key: 'g2', label: 'Gate 2', subtitle: 'Molecule Selection' },
-      { key: 'g3', label: 'Gate 3', subtitle: 'Feasibility & FTO' },
-      { key: 'g4', label: 'Gate 4', subtitle: 'Formulation Dev' },
-      { key: 'g5', label: 'Gate 5', subtitle: 'Exhibit & BE' }
+      { key: 'g1', label: 'Gate 1', subtitle: 'Concept Approval' },
+      { key: 'g2', label: 'Gate 2', subtitle: 'Route Selection' },
+      { key: 'g3', label: 'Gate 3', subtitle: 'Registration & Pilot Readiness' },
+      { key: 'g4', label: 'Gate 4', subtitle: 'Demo-Scale Proof' },
+      { key: 'g5', label: 'Gate 5', subtitle: 'Commercial Readiness' }
     ];
   
     readonly g1List: string[] = [
-      "Dapagliflozin/Metformin Tablets 5/1000mg",
-      "Sitagliptin/Metformin Tablets 50/500mg",
-      "Liraglutide Injection 6mg/ml",
-      "Semaglutide Injection 1.34mg/ml",
-      "Dulaglutide Injection 1.5mg/0.5ml",
-      "Empagliflozin/Linagliptin Tablets 10/5mg",
-      "Sacubitril/Valsartan Tablets 97/103mg",
-      "Spironolactone/Hydrochlorothiazide Tablets 25/25mg",
-      "Montelukast/Levocetirizine Tablets 10/5mg",
-      "Fluticasone Propionate Nasal Spray 50mcg",
-      "Budesonide Inhalation Suspension 0.5mg/2ml",
-      "Brimonidine Tartrate Ophthalmic Solution 0.15%",
-      "Dorzolamide/Timolol Ophthalmic Solution 22.3/6.8mg/ml",
-      "Bimatoprost Ophthalmic Solution 0.03%",
-      "Travoprost Ophthalmic Solution 0.004%",
-      "Pregabalin ER Tablets 82.5mg",
-      "Gabapentin ER Tablets 600mg",
-      "Mirogabalin Tablets 5mg",
-      "Gliclazide MR Tablets 60mg",
-      "Sitagliptin/Simvastatin Tablets 100/20mg"
+      "Waterborne Polyurethane Dispersion (PUD) Discovery Project",
+      "Hydrogenation Catalyst Development (Pd/C)",
+      "Agrochemical Active Ingredient Multi-Step Synthesis Development",
+      "Solvent Recovery & Fractional Distillation Process Development",
+      "Water-Dispersible Granule (WDG) Formulation Development",
+      "Acrylic Emulsion Binder 50% Solids",
+      "Liquid Epoxy Resin (Bisphenol-A, EEW 185-192)",
+      "Sodium Lauryl Ether Sulfate (SLES) 70% Paste",
+      "Fumed Silica (Hydrophilic, 200 m2/g)",
+      "Hydrogen Peroxide 50% w/w (Anthraquinone Process)",
+      "Bio-based Polyamide 6,10 Resin",
+      "Polyether Ether Ketone (PEEK) High Flow Grade",
+      "Thermoplastic Polyurethane (TPU) Ester Grade",
+      "UV-Curable Oligomer for Optical Coatings",
+      "Functionalized Graphene Oxide Dispersion",
+      "High-Performance Intumescent Coating Additive",
+      "Fluorosurfactant Wetting Agent 50%",
+      "Silane Coupling Agent (GLYMO)",
+      "Alkyl Polyglucoside Surfactant C8-C10",
+      "Bio-Succinic Acid Platform Chemical"
     ];
   
     readonly g2List: string[] = [
-      "Empagliflozin Tablets 10mg",
-      "Apixaban Tablets 5mg",
-      "Dapagliflozin Tablets 10mg",
-      "Sitagliptin Tablets 100mg",
-      "Rivaroxaban Tablets 20mg",
-      "Linagliptin Tablets 5mg",
-      "Ticagrelor Tablets 90mg",
-      "Vildagliptin Tablets 50mg",
-      "Febuxostat Tablets 40mg",
-      "Teneligliptin Tablets 20mg",
-      "Canagliflozin Tablets 100mg",
-      "Edoxaban Tablets 60mg",
+      "Acrylic Emulsion Binder 50% Solids",
+      "Liquid Epoxy Resin (Bisphenol-A, EEW 185-192)",
+      "Sodium Lauryl Ether Sulfate (SLES) 70% Paste",
+      "Fumed Silica (Hydrophilic, 200 m2/g)",
+      "Hydrogen Peroxide 50% w/w (Anthraquinone Process)",
+      "Bio-based Polyamide 6,10 Resin",
+      "Polyether Ether Ketone (PEEK) High Flow Grade",
+      "Thermoplastic Polyurethane (TPU) Ester Grade",
+      "UV-Curable Oligomer for Optical Coatings",
+      "Functionalized Graphene Oxide Dispersion",
+      "High-Performance Intumescent Coating Additive",
+      "Fluorosurfactant Wetting Agent 50%"
     ];
   
     readonly g3List: string[] = [
-      "Atorvastatin Tablets 20mg",
-      "Rosuvastatin Calcium Tablets 10mg",
-      "Metformin ER Tablets 500mg",
-      "Losartan Potassium Tablets 50mg",
-      "Amlodipine Besylate Tablets 5mg",
-      "Telmisartan Tablets 40mg",
-      "Clopidogrel Tablets 75mg",
-      "Pantoprazole Tablets 40mg",
-      "Escitalopram Tablets 10mg",
+      "Waterborne Polyurethane Dispersion (PUD) Discovery Project",
+      "Hydrogenation Catalyst Development (Pd/C)",
+      "Agrochemical Active Ingredient Multi-Step Synthesis Development",
+      "Solvent Recovery & Fractional Distillation Process Development",
+      "Water-Dispersible Granule (WDG) Formulation Development",
+      "Silane Coupling Agent (GLYMO)",
+      "Alkyl Polyglucoside Surfactant C8-C10",
+      "Bio-Succinic Acid Platform Chemical",
+      "High-Performance Intumescent Coating Additive"
     ];
   
     readonly g4List: string[] = [
-      "Metoprolol Succinate ER Tablets 50mg",
-      "Venlafaxine ER Capsules 75mg",
-      "Tamsulosin ER Capsules 0.4mg",
-      "Nifedipine ER Tablets 30mg",
+      "Acrylic Emulsion Binder 50% Solids",
+      "Liquid Epoxy Resin (Bisphenol-A, EEW 185-192)",
+      "Sodium Lauryl Ether Sulfate (SLES) 70% Paste",
+      "Fumed Silica (Hydrophilic, 200 m2/g)",
     ];
   
     readonly g5List: string[] = [
-      "Gabapentin Capsules 300mg",
-      "Sertraline Tablets 50mg",
-      "Amoxicillin Capsules 500mg",
-      "Azithromycin Tablets 250mg",
-      "Cefixime Tablets 200mg",
-      "Ciprofloxacin Tablets 500mg",
-      "Levofloxacin Tablets 500mg",
+      "Hydrogen Peroxide 50% w/w (Anthraquinone Process)",
+      "Bio-based Polyamide 6,10 Resin",
+      "Polyether Ether Ketone (PEEK) High Flow Grade",
+      "Thermoplastic Polyurethane (TPU) Ester Grade",
+      "UV-Curable Oligomer for Optical Coatings",
+      "Functionalized Graphene Oxide Dispersion",
+      "High-Performance Intumescent Coating Additive"
     ];
   
     gateRows: GateRow[] = [];

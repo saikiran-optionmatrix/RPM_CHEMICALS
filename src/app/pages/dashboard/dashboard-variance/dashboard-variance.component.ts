@@ -36,35 +36,48 @@ if (typeof ExportDataModule === 'function') {
 })
 export class DashboardVarianceComponent implements OnInit, AfterViewInit {
   projects = [
-    'Generic Tablet Development',
-    'Generic API Process Development',
-    'Complex Injectable Development',
-    'Generic API Development',
-    'Generic Injectable Formulation'
+    'Waterborne Polyurethane Dispersion (PUD) Discovery Project',
+    'Hydrogenation Catalyst Development (Pd/C)',
+    'Agrochemical Active Ingredient Multi-Step Synthesis Development',
+    'Solvent Recovery & Fractional Distillation Process Development',
+    'Water-Dispersible Granule (WDG) Formulation Development',
+    'Acrylic Emulsion Binder 50% Solids',
+    'Liquid Epoxy Resin (Bisphenol-A, EEW 185-192)',
+    'Sodium Lauryl Ether Sulfate (SLES) 70% Paste',
+    'Fumed Silica (Hydrophilic, 200 m2/g)',
+    'Hydrogen Peroxide 50% w/w (Anthraquinone Process)'
   ];
-  varianceStages = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12'];
+
+  varianceStages = [
+    { key: 'Phase 1', label: 'Phase 1 - Concept & Feasibility (S1-S2)', shortLabel: 'Phase 1' },
+    { key: 'Phase 2', label: 'Phase 2 - Route Development & Selection (S3-S5)', shortLabel: 'Phase 2' },
+    { key: 'Phase 3', label: 'Phase 3 - Pilot Development & Safety (S6-S7)', shortLabel: 'Phase 3' },
+    { key: 'Phase 4', label: 'Phase 4 - Registration & Scale-Up (S8-S10)', shortLabel: 'Phase 4' },
+    { key: 'Phase 5', label: 'Phase 5 - Commercial Plant & Launch (S11-S12)', shortLabel: 'Phase 5' }
+  ];
 
   selectedBudgetProject = 'All Projects';
-  selectedVarianceStage = 'S1';
+  selectedVarianceStage = 'Phase 1';
 
   selectedDivision: string = 'All';
   selectedLocation: string = 'All';
 
   readonly divisionsList: string[] = [
     'All',
-    'Oral Solids - OS',
-    'Injectables - IJ',
-    'Complex Injectables - CI',
-    'Biotech - BT',
+    'Specialty Chemicals - SC',
+    'Polymers & Resins - PR',
+    'Agrochemicals - AC',
+    'Industrial & Fine Chemicals - IF',
   ];
 
   readonly locationsList: string[] = [
     'All',
+    'Ahmedabad',
     'Hyderabad',
     'Mumbai',
-    'Bengaluru',
-    'Ahmedabad',
     'Pune',
+    'Vadodara',
+    'Bengaluru',
     'Chennai',
     'Delhi',
     'Baddi',
@@ -74,77 +87,57 @@ export class DashboardVarianceComponent implements OnInit, AfterViewInit {
     this.onBudgetProjectChange();
   }
 
+  readonly moduleShortForms: Record<string, string> = {
+    'Raw Material & Route Assessment': 'Raw Material & Route',
+    'Reaction Screening & Compatibility': 'Reaction Screening',
+    'Feasibility & Business Case': 'Feasibility & Business Case',
+    'Route Scouting & Catalyst Selection': 'Route Scouting',
+    'Reaction Condition & Yield Optimization': 'Condition & Yield',
+    'Route Lock & Basis of Design': 'Route Lock',
+    'Pilot Process Development & Optimization': 'Pilot Dev & Optimization',
+    'Analytical & Performance Method Development': 'Analytical Method Dev',
+    'Process Hazard Analysis & Tech Transfer': 'PHA & Tech Transfer',
+    'REACH / TSCA Dossier Preparation & Filing': 'REACH / TSCA Dossier',
+    'Pilot Plant Campaign Execution': 'Pilot Campaign',
+    'Demonstration-Scale Campaign & PPQ': 'Demo Campaign & PPQ',
+    'Commercial Plant Commissioning & Qualification': 'Plant Commissioning',
+    'Commercial Launch Inventory & Supply Chain Setup': 'Commercial Launch'
+  };
+
   budgetGanttData: any[] = [
-    // S1 - Business Case
-    { stage: 'S1 - Business Case', stageCode: 'S1', module: 'API & Raw Material Assessment', allocated: 45000, spent: 42000, completion: 93, project: 'Generic Tablet Development' },
-    { stage: 'S1 - Business Case', stageCode: 'S1', module: 'Preformulation & Compatibility', allocated: 55000, spent: 51000, completion: 93, project: 'Generic Tablet Development' },
-    { stage: 'S1 - Business Case', stageCode: 'S1', module: 'Feasibility & Business Case', allocated: 40000, spent: 38000, completion: 95, project: 'Generic Tablet Development' },
+    // Phase 1 - Concept & Feasibility
+    { stage: 'Phase 1 - Concept & Feasibility', stageCode: 'Phase 1', module: 'Raw Material & Route Assessment', allocated: 45000, spent: 42000, completion: 93, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
+    { stage: 'Phase 1 - Concept & Feasibility', stageCode: 'Phase 1', module: 'Reaction Screening & Compatibility', allocated: 55000, spent: 51000, completion: 93, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
+    { stage: 'Phase 1 - Concept & Feasibility', stageCode: 'Phase 1', module: 'Feasibility & Business Case', allocated: 40000, spent: 38000, completion: 95, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
 
-    // S2 - Product Initiation
-    { stage: 'S2 - Product Initiation', stageCode: 'S2', module: 'Project Kick-off & Charter', allocated: 35000, spent: 32000, completion: 91, project: 'Generic Tablet Development' },
-    { stage: 'S2 - Product Initiation', stageCode: 'S2', module: 'Stakeholder Alignment', allocated: 25000, spent: 23000, completion: 92, project: 'Generic Tablet Development' },
-    { stage: 'S2 - Product Initiation', stageCode: 'S2', module: 'Resource Allocation & Budgeting', allocated: 30000, spent: 28000, completion: 93, project: 'Generic Tablet Development' },
+    // Phase 2 - Route Development & Selection
+    { stage: 'Phase 2 - Route Development & Selection', stageCode: 'Phase 2', module: 'Route Scouting & Catalyst Selection', allocated: 75000, spent: 71000, completion: 95, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
+    { stage: 'Phase 2 - Route Development & Selection', stageCode: 'Phase 2', module: 'Reaction Condition & Yield Optimization', allocated: 60000, spent: 58000, completion: 97, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
+    { stage: 'Phase 2 - Route Development & Selection', stageCode: 'Phase 2', module: 'Route Lock & Basis of Design', allocated: 65000, spent: 62000, completion: 95, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
 
-    // S3 - Development Procurement
-    { stage: 'S3 - Development Procurement', stageCode: 'S3', module: 'API Sourcing & Vendor Audit', allocated: 65000, spent: 61000, completion: 94, project: 'Generic Tablet Development' },
-    { stage: 'S3 - Development Procurement', stageCode: 'S3', module: 'Excipient & Packaging PO', allocated: 45000, spent: 41000, completion: 91, project: 'Generic Tablet Development' },
-    { stage: 'S3 - Development Procurement', stageCode: 'S3', module: 'Reference Standard Receipt', allocated: 20000, spent: 18500, completion: 93, project: 'Generic Tablet Development' },
+    // Phase 3 - Pilot Development & Safety
+    { stage: 'Phase 3 - Pilot Development & Safety', stageCode: 'Phase 3', module: 'Pilot Process Development & Optimization', allocated: 95000, spent: 88000, completion: 93, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
+    { stage: 'Phase 3 - Pilot Development & Safety', stageCode: 'Phase 3', module: 'Analytical & Performance Method Development', allocated: 70000, spent: 65000, completion: 93, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
+    { stage: 'Phase 3 - Pilot Development & Safety', stageCode: 'Phase 3', module: 'Process Hazard Analysis & Tech Transfer', allocated: 45000, spent: 41000, completion: 91, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
 
-    // S4 - POC Formulation
-    { stage: 'S4 - POC Formulation', stageCode: 'S4', module: 'Formula Design & Excipient Selection', allocated: 75000, spent: 71000, completion: 95, project: 'Generic Tablet Development' },
-    { stage: 'S4 - POC Formulation', stageCode: 'S4', module: 'Prototype Trial Batches', allocated: 60000, spent: 58000, completion: 97, project: 'Generic Tablet Development' },
-    { stage: 'S4 - POC Formulation', stageCode: 'S4', module: 'Formula Lock & Dissolution Studies', allocated: 65000, spent: 62000, completion: 95, project: 'Generic Tablet Development' },
+    // Phase 4 - Registration & Scale-Up
+    { stage: 'Phase 4 - Registration & Scale-Up', stageCode: 'Phase 4', module: 'REACH / TSCA Dossier Preparation & Filing', allocated: 80000, spent: 74000, completion: 93, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
+    { stage: 'Phase 4 - Registration & Scale-Up', stageCode: 'Phase 4', module: 'Pilot Plant Campaign Execution', allocated: 110000, spent: 102000, completion: 93, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
+    { stage: 'Phase 4 - Registration & Scale-Up', stageCode: 'Phase 4', module: 'Demonstration-Scale Campaign & PPQ', allocated: 95000, spent: 89000, completion: 94, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
 
-    // S5 - EB Procurement
-    { stage: 'S5 - EB Procurement', stageCode: 'S5', module: 'Exhibit Batch API Procurement', allocated: 85000, spent: 79000, completion: 93, project: 'Generic Tablet Development' },
-    { stage: 'S5 - EB Procurement', stageCode: 'S5', module: 'Commercial Packaging Components', allocated: 40000, spent: 36000, completion: 90, project: 'Generic Tablet Development' },
+    // Phase 5 - Commercial Plant & Launch
+    { stage: 'Phase 5 - Commercial Plant & Launch', stageCode: 'Phase 5', module: 'Commercial Plant Commissioning & Qualification', allocated: 150000, spent: 142000, completion: 95, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
+    { stage: 'Phase 5 - Commercial Plant & Launch', stageCode: 'Phase 5', module: 'Commercial Launch Inventory & Supply Chain Setup', allocated: 90000, spent: 84000, completion: 93, project: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project' },
 
-    // S6 - Pilot Bio Formulation
-    { stage: 'S6 - Pilot Bio Formulation', stageCode: 'S6', module: 'Pilot Bio Batch Execution', allocated: 95000, spent: 88000, completion: 93, project: 'Generic Tablet Development' },
-    { stage: 'S6 - Pilot Bio Formulation', stageCode: 'S6', module: 'In-vitro Permeability Study', allocated: 50000, spent: 46000, completion: 92, project: 'Generic Tablet Development' },
-
-    // S7 - API Validation
-    { stage: 'S7 - API Validation', stageCode: 'S7', module: 'API Analytical Method Validation', allocated: 70000, spent: 65000, completion: 93, project: 'Generic Tablet Development' },
-    { stage: 'S7 - API Validation', stageCode: 'S7', module: 'Forced Degradation Studies', allocated: 45000, spent: 41000, completion: 91, project: 'Generic Tablet Development' },
-
-    // S8 - FP Validation
-    { stage: 'S8 - FP Validation', stageCode: 'S8', module: 'FP Method Validation & STP', allocated: 80000, spent: 74000, completion: 93, project: 'Generic Tablet Development' },
-    { stage: 'S8 - FP Validation', stageCode: 'S8', module: 'Dissolution Discriminatory Method', allocated: 55000, spent: 50000, completion: 91, project: 'Generic Tablet Development' },
-
-    // S9 - TTD Submission
-    { stage: 'S9 - TTD Submission', stageCode: 'S9', module: 'Technical Transfer Dossier', allocated: 60000, spent: 55000, completion: 92, project: 'Generic Tablet Development' },
-    { stage: 'S9 - TTD Submission', stageCode: 'S9', module: 'Manufacturing Plant Review', allocated: 35000, spent: 32000, completion: 91, project: 'Generic Tablet Development' },
-
-    // S10 - Exhibit Batches
-    { stage: 'S10 - Exhibit Batches', stageCode: 'S10', module: 'Exhibit Batch 1 Execution', allocated: 110000, spent: 102000, completion: 93, project: 'Generic Tablet Development' },
-    { stage: 'S10 - Exhibit Batches', stageCode: 'S10', module: 'Exhibit Batch 2 Execution', allocated: 105000, spent: 98000, completion: 93, project: 'Generic Tablet Development' },
-    { stage: 'S10 - Exhibit Batches', stageCode: 'S10', module: '3-Month Accelerated Stability', allocated: 75000, spent: 69000, completion: 92, project: 'Generic Tablet Development' },
-
-    // S11 - Pivotal BE
-    { stage: 'S11 - Pivotal BE', stageCode: 'S11', module: 'Clinical Protocol & Bioanalytical Run', allocated: 150000, spent: 142000, completion: 95, project: 'Generic Tablet Development' },
-    { stage: 'S11 - Pivotal BE', stageCode: 'S11', module: 'Pharmacokinetic Data Analysis', allocated: 65000, spent: 60000, completion: 92, project: 'Generic Tablet Development' },
-
-    // S12 - Dossier Filing
-    { stage: 'S12 - Dossier Filing', stageCode: 'S12', module: 'Module 3 Quality Dossier', allocated: 90000, spent: 84000, completion: 93, project: 'Generic Tablet Development' },
-    { stage: 'S12 - Dossier Filing', stageCode: 'S12', module: 'Regulatory Authority Submission', allocated: 55000, spent: 50000, completion: 91, project: 'Generic Tablet Development' },
-
-    // Generic API Process Development data
-    { stage: 'S1 - Business Case', stageCode: 'S1', module: 'API & Raw Material Assessment', allocated: 42000, spent: 39000, completion: 93, project: 'Generic API Process Development' },
-    { stage: 'S1 - Business Case', stageCode: 'S1', module: 'Preformulation & Compatibility', allocated: 50000, spent: 46000, completion: 92, project: 'Generic API Process Development' },
-    { stage: 'S1 - Business Case', stageCode: 'S1', module: 'Feasibility & Business Case', allocated: 38000, spent: 34000, completion: 89, project: 'Generic API Process Development' },
-    { stage: 'S2 - Product Initiation', stageCode: 'S2', module: 'Project Kick-off & Charter', allocated: 32000, spent: 29000, completion: 91, project: 'Generic API Process Development' },
-    { stage: 'S2 - Product Initiation', stageCode: 'S2', module: 'Resource Allocation & Budgeting', allocated: 28000, spent: 26000, completion: 93, project: 'Generic API Process Development' },
-    { stage: 'S3 - Development Procurement', stageCode: 'S3', module: 'API Sourcing & Vendor Audit', allocated: 58000, spent: 53000, completion: 91, project: 'Generic API Process Development' },
-    { stage: 'S4 - POC Formulation', stageCode: 'S4', module: 'Formula Design & Excipient Selection', allocated: 68000, spent: 63000, completion: 93, project: 'Generic API Process Development' },
-    { stage: 'S4 - POC Formulation', stageCode: 'S4', module: 'Prototype Trial Batches', allocated: 55000, spent: 50000, completion: 91, project: 'Generic API Process Development' },
-    { stage: 'S5 - EB Procurement', stageCode: 'S5', module: 'Exhibit Batch API Procurement', allocated: 75000, spent: 70000, completion: 93, project: 'Generic API Process Development' },
-    { stage: 'S6 - Pilot Bio Formulation', stageCode: 'S6', module: 'Pilot Bio Batch Execution', allocated: 88000, spent: 81000, completion: 92, project: 'Generic API Process Development' },
-    { stage: 'S7 - API Validation', stageCode: 'S7', module: 'API Analytical Method Validation', allocated: 65000, spent: 60000, completion: 92, project: 'Generic API Process Development' },
-    { stage: 'S8 - FP Validation', stageCode: 'S8', module: 'FP Method Validation & STP', allocated: 72000, spent: 66000, completion: 92, project: 'Generic API Process Development' },
-    { stage: 'S9 - TTD Submission', stageCode: 'S9', module: 'Technical Transfer Dossier', allocated: 55000, spent: 50000, completion: 91, project: 'Generic API Process Development' },
-    { stage: 'S10 - Exhibit Batches', stageCode: 'S10', module: 'Exhibit Batch 1 Execution', allocated: 98000, spent: 89000, completion: 91, project: 'Generic API Process Development' },
-    { stage: 'S11 - Pivotal BE', stageCode: 'S11', module: 'Clinical Protocol & Bioanalytical Run', allocated: 135000, spent: 125000, completion: 93, project: 'Generic API Process Development' },
-    { stage: 'S12 - Dossier Filing', stageCode: 'S12', module: 'Module 3 Quality Dossier', allocated: 82000, spent: 75000, completion: 91, project: 'Generic API Process Development' }
+    // Acrylic Emulsion Binder Project data
+    { stage: 'Phase 1 - Concept & Feasibility', stageCode: 'Phase 1', module: 'Raw Material & Route Assessment', allocated: 42000, spent: 39000, completion: 93, project: 'Acrylic Emulsion Binder 50% Solids' },
+    { stage: 'Phase 1 - Concept & Feasibility', stageCode: 'Phase 1', module: 'Reaction Screening & Compatibility', allocated: 50000, spent: 46000, completion: 92, project: 'Acrylic Emulsion Binder 50% Solids' },
+    { stage: 'Phase 1 - Concept & Feasibility', stageCode: 'Phase 1', module: 'Feasibility & Business Case', allocated: 38000, spent: 34000, completion: 89, project: 'Acrylic Emulsion Binder 50% Solids' },
+    { stage: 'Phase 2 - Route Development & Selection', stageCode: 'Phase 2', module: 'Route Scouting & Catalyst Selection', allocated: 68000, spent: 63000, completion: 93, project: 'Acrylic Emulsion Binder 50% Solids' },
+    { stage: 'Phase 2 - Route Development & Selection', stageCode: 'Phase 2', module: 'Reaction Condition & Yield Optimization', allocated: 55000, spent: 50000, completion: 91, project: 'Acrylic Emulsion Binder 50% Solids' },
+    { stage: 'Phase 3 - Pilot Development & Safety', stageCode: 'Phase 3', module: 'Pilot Process Development & Optimization', allocated: 88000, spent: 81000, completion: 92, project: 'Acrylic Emulsion Binder 50% Solids' },
+    { stage: 'Phase 4 - Registration & Scale-Up', stageCode: 'Phase 4', module: 'Pilot Plant Campaign Execution', allocated: 98000, spent: 89000, completion: 91, project: 'Acrylic Emulsion Binder 50% Solids' },
+    { stage: 'Phase 5 - Commercial Plant & Launch', stageCode: 'Phase 5', module: 'Commercial Plant Commissioning & Qualification', allocated: 135000, spent: 125000, completion: 93, project: 'Acrylic Emulsion Binder 50% Solids' }
   ];
 
   filteredBudgetGanttData: any[] = [];
@@ -239,7 +232,8 @@ export class DashboardVarianceComponent implements OnInit, AfterViewInit {
     const colors = ['#2b6cb0', '#2ecc71', '#f39c12', '#9b59b6', '#e74c3c'];
 
     const pieData = stageItems.map((item, idx) => ({
-      name: item.module,
+      name: this.moduleShortForms[item.module] || item.module,
+      fullName: item.module,
       y: item.allocated,
       spent: item.spent,
       variance: item.allocated - item.spent,
@@ -288,7 +282,7 @@ export class DashboardVarianceComponent implements OnInit, AfterViewInit {
         useHTML: true,
         formatter: function (this: any) {
           const p = this.point as any;
-          return `<b>${this.key}</b><br/>
+          return `<b>${p.fullName || this.key}</b><br/>
                   Allocated: <b>$${Highcharts.numberFormat(this.y, 0)}</b> (${this.percentage.toFixed(1)}%)<br/>
                   Actual Spent: <b>$${Highcharts.numberFormat(p.spent, 0)}</b> (${p.completion}% used)<br/>
                   Variance: <b>$${Highcharts.numberFormat(p.variance, 0)}</b>`;
