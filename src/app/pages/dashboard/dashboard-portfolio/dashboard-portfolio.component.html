@@ -64,7 +64,8 @@
               @for (gate of portfolioGates; track gate.code) {
               <li [class.active]="selectedGate === gate.code">
                 <a mat-raised-button (click)="setGateCategory(gate.code)"
-                  style="cursor: pointer; padding: 0 16px; line-height: 32px; font-size: 12px; min-width: auto; height: 32px;">
+                  [matTooltip]="gate.code + ': ' + gate.name"
+                  style="cursor: pointer; padding: 0 16px; line-height: 32px; font-size: 13px; font-weight: 600; min-width: auto; height: 32px; white-space: nowrap;">
                   {{ gate.label }}
                 </a>
               </li>
@@ -79,7 +80,7 @@
           </button>
         </div>
 
-        <h3 class="m-0 font-weight-bold text-center mb-2" style="font-size: 16px; color: #333;">{{ getGateTitle(selectedGate) }}</h3>
+        <h3 class="font-weight-bold text-center" style="font-size: 16px; color: #333; margin: 16px 0 !important;">{{ getGateTitle(selectedGate) }}</h3>
         <div id="portfolioSummaryPieChartContainer" style="width: 100%; height: 360px;"></div>
 
       </mat-card>

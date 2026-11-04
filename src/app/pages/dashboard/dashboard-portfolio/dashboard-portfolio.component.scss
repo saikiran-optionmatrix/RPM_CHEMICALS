@@ -70,3 +70,48 @@
   }
 }
 
+/* Gate Pills (Matching Image 2 Reference) */
+.pills {
+  .nav.nav-pills {
+    li {
+      margin: 0;
+      padding: 0;
+
+      > a {
+        background: #ffffff !important;
+        border: 1px solid #d1d5db !important;
+        color: #212121 !important;
+        border-radius: 4px !important;
+        font-weight: 600 !important;
+        font-size: 13px !important;
+        height: 32px !important;
+        line-height: 32px !important;
+        padding: 0 16px !important;
+        box-shadow: none !important;
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+          background: #f1f5f9 !important;
+          border-color: #94a3b8 !important;
+        }
+      }
+
+      &.active > a {
+        background: #212121 !important;
+        color: #ffffff !important;
+        border: 1px solid #212121 !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+
+        &:hover {
+          background: #212121 !important;
+          color: #ffffff !important;
+        }
+      }
+    }
+  }
+}
+

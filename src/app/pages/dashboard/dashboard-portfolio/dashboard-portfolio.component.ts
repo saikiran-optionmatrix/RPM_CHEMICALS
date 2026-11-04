@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Router } from '@angular/router';
 
 import * as Highcharts from 'highcharts';
@@ -35,7 +36,7 @@ if (typeof ExportDataModule === 'function') {
   standalone: true,
   imports: [
     CommonModule, FormsModule, MatCardModule, MatIconModule, MatButtonModule,
-    MatSelectModule, MatInputModule, MatPaginatorModule, RouterModule
+    MatSelectModule, MatInputModule, MatPaginatorModule, MatTooltipModule, RouterModule
   ],
   templateUrl: './dashboard-portfolio.component.html',
   styleUrls: ['./dashboard-portfolio.component.scss']
@@ -48,16 +49,15 @@ export class DashboardPortfolioComponent implements OnInit, AfterViewInit {
   pageSize = 10;
   selectedGate = 'Gate 1';
   portfolioGates = [
-    { code: 'Gate 1', name: 'Concept Approval', label: 'Gate 1: Concept Approval' },
-    { code: 'Gate 2', name: 'Route Selection', label: 'Gate 2: Route Selection' },
-    { code: 'Gate 3', name: 'Registration & Pilot Readiness', label: 'Gate 3: Registration & Pilot Readiness' },
-    { code: 'Gate 4', name: 'Demo-Scale Proof', label: 'Gate 4: Demo-Scale Proof' },
-    { code: 'Gate 5', name: 'Commercial Readiness', label: 'Gate 5: Commercial Readiness' }
+    { code: 'Gate 1', name: 'Concept Approval', label: 'Gate 1' },
+    { code: 'Gate 2', name: 'Route Selection', label: 'Gate 2' },
+    { code: 'Gate 3', name: 'Registration & Pilot Readiness', label: 'Gate 3' },
+    { code: 'Gate 4', name: 'Demo-Scale Proof', label: 'Gate 4' },
+    { code: 'Gate 5', name: 'Commercial Readiness', label: 'Gate 5' }
   ];
 
   getGateTitle(gateCode: string): string {
-    const gate = this.portfolioGates.find(g => g.code === gateCode);
-    return `${gateCode} - ${gate ? gate.name : 'Summary'} Summary`;
+    return `${gateCode} - Portfolio Summary`;
   }
 
   readonly stageNamesMap: Record<string, string> = {
@@ -116,38 +116,38 @@ export class DashboardPortfolioComponent implements OnInit, AfterViewInit {
   gatePieDataMap: any = {
     'Gate 1': [
       { name: 'Go', y: 11, color: '#2ecc71' },
-      { name: 'Hold', y: 6, color: '#f39c12' },
-      { name: 'Rework', y: 2, color: '#3366cc' },
-      { name: 'Kill', y: 1, color: '#ed1c24' },
+      { name: 'Evaluation', y: 6, color: '#3366cc' },
+      { name: 'Rework', y: 2, color: '#f39c12' },
+      { name: 'Pending', y: 1, color: '#7f8c8d' },
       { name: 'Redirect', y: 1, color: '#9b59b6' }
     ],
     'Gate 2': [
       { name: 'Go', y: 9, color: '#2ecc71' },
-      { name: 'Hold', y: 5, color: '#f39c12' },
-      { name: 'Rework', y: 2, color: '#3366cc' },
+      { name: 'Evaluation', y: 5, color: '#3366cc' },
+      { name: 'Rework', y: 2, color: '#f39c12' },
       { name: 'Redirect', y: 2, color: '#9b59b6' },
-      { name: 'Kill', y: 1, color: '#ed1c24' }
+      { name: 'Pending', y: 1, color: '#7f8c8d' }
     ],
     'Gate 3': [
       { name: 'Go', y: 8, color: '#2ecc71' },
-      { name: 'Hold', y: 3, color: '#f39c12' },
+      { name: 'Evaluation', y: 3, color: '#3366cc' },
       { name: 'Redirect', y: 3, color: '#9b59b6' },
-      { name: 'Rework', y: 2, color: '#3366cc' },
-      { name: 'Kill', y: 2, color: '#ed1c24' }
+      { name: 'Rework', y: 2, color: '#f39c12' },
+      { name: 'Pending', y: 2, color: '#7f8c8d' }
     ],
     'Gate 4': [
       { name: 'Go', y: 6, color: '#2ecc71' },
-      { name: 'Hold', y: 4, color: '#f39c12' },
-      { name: 'Rework', y: 3, color: '#3366cc' },
-      { name: 'Kill', y: 3, color: '#ed1c24' },
+      { name: 'Evaluation', y: 4, color: '#3366cc' },
+      { name: 'Rework', y: 3, color: '#f39c12' },
+      { name: 'Pending', y: 3, color: '#7f8c8d' },
       { name: 'Redirect', y: 1, color: '#9b59b6' }
     ],
     'Gate 5': [
       { name: 'Go', y: 10, color: '#2ecc71' },
-      { name: 'Hold', y: 2, color: '#f39c12' },
+      { name: 'Evaluation', y: 2, color: '#3366cc' },
       { name: 'Redirect', y: 2, color: '#9b59b6' },
-      { name: 'Rework', y: 1, color: '#3366cc' },
-      { name: 'Kill', y: 1, color: '#ed1c24' }
+      { name: 'Rework', y: 1, color: '#f39c12' },
+      { name: 'Pending', y: 1, color: '#7f8c8d' }
     ]
   };
 
