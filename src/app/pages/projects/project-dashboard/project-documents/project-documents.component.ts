@@ -94,8 +94,8 @@ export type TreeNode = StageNode | GateNode;
 export class ProjectDocumentsComponent implements OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
-  projectName: string = 'Generic Tablet Development';
-  projectCode: string = '2026/GEN/001';
+  projectName: string = 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = '2026/CHM/006';
 
   // Filter dropdown: All, Stages, Gates
   selectedFilter: 'All' | 'Stages' | 'Gates' = 'All';
@@ -163,8 +163,7 @@ export class ProjectDocumentsComponent implements OnInit {
     const stage1: StageNode = {
       id: 'S1',
       type: 'stage',
-      stageCode: 'S1',
-      stageName: 'Business Case',
+      stageCode: 'S1', stageName: 'Opportunity Identification',
       gateCode: 'Gate 1',
       expanded: true,
       deliverables: [
@@ -183,7 +182,7 @@ export class ProjectDocumentsComponent implements OnInit {
                   stageName: 'Business Case',
                   deliverableName: 'Business Case Preparation & Commercial Feasibility',
                   activityName: 'Market Sizing & Commercial Modeling',
-                  taskName: 'Market opportunity assessment & epidemiological review',
+                  taskName: 'Market opportunity assessment & end-use demand review',
                   documentsCount: 4,
                   documents: [
                     { id: 1, title: 'Epidemiology_Report_2026.pdf', uploadedDate: '2026-01-08' },
@@ -197,7 +196,7 @@ export class ProjectDocumentsComponent implements OnInit {
                   stageName: 'Business Case',
                   deliverableName: 'Business Case Preparation & Commercial Feasibility',
                   activityName: 'Market Sizing & Commercial Modeling',
-                  taskName: 'Competitive landscape and patent exclusivity mapping',
+                  taskName: 'Competitive landscape and patent mapping',
                   documentsCount: 3,
                   documents: [
                     { id: 1, title: 'Competitor_Pipeline_Analysis.pdf', uploadedDate: '2026-01-12' },
@@ -210,7 +209,7 @@ export class ProjectDocumentsComponent implements OnInit {
                   stageName: 'Business Case',
                   deliverableName: 'Business Case Preparation & Commercial Feasibility',
                   activityName: 'Market Sizing & Commercial Modeling',
-                  taskName: 'Pricing strategy and gross-to-net projection',
+                  taskName: 'Pricing strategy and contract price projection',
                   documentsCount: 2,
                   documents: [
                     { id: 1, title: 'Pricing_Strategy_Draft.pdf', uploadedDate: '2026-01-14' },
@@ -242,7 +241,7 @@ export class ProjectDocumentsComponent implements OnInit {
                   stageName: 'Business Case',
                   deliverableName: 'Business Case Preparation & Commercial Feasibility',
                   activityName: 'Financial Evaluation & NPV Calculation',
-                  taskName: 'Capex, Opex and tooling budget validation',
+                  taskName: 'Capex, Opex and plant modification budget validation',
                   documentsCount: 2,
                   documents: [
                     { id: 1, title: 'Capex_Requisition_Approval.pdf', uploadedDate: '2026-01-14' },
@@ -289,15 +288,14 @@ export class ProjectDocumentsComponent implements OnInit {
     const gate1: GateNode = {
       id: 'G1',
       type: 'gate',
-      gateCode: 'Gate 1',
-      gateName: 'Business Case',
+      gateCode: 'Gate 1', gateName: 'Concept Approval',
       documents: [
-        { id: 'GD1-1', gateCode: 'Gate 1', gateName: 'Business Case', documentTitle: 'Formal Freedom-to-Operate (FTO) Legal Opinion', uploadedDate: '2026-01-15', uploadedBy: 'Legal Counsel' },
-        { id: 'GD1-2', gateCode: 'Gate 1', gateName: 'Business Case', documentTitle: 'API Source & Primary Vendor Qualification Report', uploadedDate: '2026-01-15', uploadedBy: 'Procurement PMO' },
-        { id: 'GD1-3', gateCode: 'Gate 1', gateName: 'Business Case', documentTitle: 'Reference Listed Drug (RLD) Characterization Protocol', uploadedDate: '2026-01-14', uploadedBy: 'Formulation Lead' },
-        { id: 'GD1-4', gateCode: 'Gate 1', gateName: 'Business Case', documentTitle: 'Target Product Profile (TPP) Baseline Document', uploadedDate: '2026-01-13', uploadedBy: 'Medical Affairs' },
-        { id: 'GD1-5', gateCode: 'Gate 1', gateName: 'Business Case', documentTitle: 'Cost of Goods Sold (COGS) Feasibility Summary', uploadedDate: '2026-01-12', uploadedBy: 'Finance Controller' },
-        { id: 'GD1-6', gateCode: 'Gate 1', gateName: 'Business Case', documentTitle: 'Gate 1 Steering Committee Approval Resolution', uploadedDate: '2026-01-15', uploadedBy: 'Steering Committee' }
+        { id: 'GD1-1', gateCode: 'Gate 1', gateName: 'Concept Approval', documentTitle: 'Formal Freedom-to-Operate (FTO) Legal Opinion', uploadedDate: '2026-01-15', uploadedBy: 'Legal Counsel' },
+        { id: 'GD1-2', gateCode: 'Gate 1', gateName: 'Concept Approval', documentTitle: 'Raw Material Source & Primary Vendor Qualification Report', uploadedDate: '2026-01-15', uploadedBy: 'Procurement PMO' },
+        { id: 'GD1-3', gateCode: 'Gate 1', gateName: 'Concept Approval', documentTitle: 'Benchmark Grade Characterization Protocol', uploadedDate: '2026-01-14', uploadedBy: 'Formulation Lead' },
+        { id: 'GD1-4', gateCode: 'Gate 1', gateName: 'Concept Approval', documentTitle: 'Target Product Profile and Specification Baseline Document', uploadedDate: '2026-01-13', uploadedBy: 'Medical Affairs' },
+        { id: 'GD1-5', gateCode: 'Gate 1', gateName: 'Concept Approval', documentTitle: 'Cost of Manufacturing Feasibility Summary', uploadedDate: '2026-01-12', uploadedBy: 'Finance Controller' },
+        { id: 'GD1-6', gateCode: 'Gate 1', gateName: 'Concept Approval', documentTitle: 'Gate 1 Steering Committee Approval Resolution', uploadedDate: '2026-01-15', uploadedBy: 'Steering Committee' }
       ]
     };
 
@@ -312,20 +310,20 @@ export class ProjectDocumentsComponent implements OnInit {
       deliverables: [
         {
           id: 'D2-1',
-          name: 'Project Costing Sheet Preparation & Selection',
+          name: 'Project Costing Sheet Preparation & Toll Manufacturer Selection',
           expanded: false,
           activities: [
             {
               id: 'A2-1',
-              name: 'Analytical Costing & External CRO Costing',
+              name: 'Analytical Costing & Contract Lab Costing',
               jobCode: 'ACT4',
               tasks: [
                 {
                   id: 'T2-1',
                   stageName: 'Product / Project In Initiation',
                   deliverableName: 'Project Costing Sheet Preparation & Selection',
-                  activityName: 'Analytical Costing & External CRO Costing',
-                  taskName: 'Analytical testing & chromatographic CRO proposal evaluation',
+                  activityName: 'Analytical Costing & Contract Lab Costing',
+                  taskName: 'Analytical testing & contract lab proposal evaluation',
                   documentsCount: 4,
                   documents: [
                     { id: 1, title: 'CRO_Proposal_Eurofins.pdf', uploadedDate: '2026-01-18' },
@@ -338,7 +336,7 @@ export class ProjectDocumentsComponent implements OnInit {
                   id: 'T2-2',
                   stageName: 'Product / Project In Initiation',
                   deliverableName: 'Project Costing Sheet Preparation & Selection',
-                  activityName: 'Analytical Costing & External CRO Costing',
+                  activityName: 'Analytical Costing & Contract Lab Costing',
                   taskName: 'Method transfer and verification quote review',
                   documentsCount: 2,
                   documents: [
@@ -350,15 +348,15 @@ export class ProjectDocumentsComponent implements OnInit {
             },
             {
               id: 'A2-2',
-              name: 'RM, PM, API & RLD Costing Breakdown',
+              name: 'Raw Material, Packaging & Benchmark Grade Costing Breakdown',
               jobCode: 'ACT5',
               tasks: [
                 {
                   id: 'T2-3',
                   stageName: 'Product / Project In Initiation',
                   deliverableName: 'Project Costing Sheet Preparation & Selection',
-                  activityName: 'RM, PM, API & RLD Costing Breakdown',
-                  taskName: 'RLD sample batch receipt & customs clearance documentation',
+                  activityName: 'Raw Material, Packaging & Benchmark Grade Costing Breakdown',
+                  taskName: 'Benchmark grade sample receipt, hazmat transport & customs clearance documentation',
                   documentsCount: 3,
                   documents: [
                     { id: 1, title: 'RLD_Customs_Declaration.pdf', uploadedDate: '2026-01-21' },
@@ -370,8 +368,8 @@ export class ProjectDocumentsComponent implements OnInit {
                   id: 'T2-4',
                   stageName: 'Product / Project In Initiation',
                   deliverableName: 'Project Costing Sheet Preparation & Selection',
-                  activityName: 'RM, PM, API & RLD Costing Breakdown',
-                  taskName: 'Bill of Materials (BOM) excipient quote consolidation',
+                  activityName: 'Raw Material, Packaging & Benchmark Grade Costing Breakdown',
+                  taskName: 'Bill of Materials (BOM) monomer, solvent & packaging quote consolidation',
                   documentsCount: 2,
                   documents: [
                     { id: 1, title: 'Consolidated_Excipient_Quotes.xlsx', uploadedDate: '2026-01-23' },
@@ -384,7 +382,7 @@ export class ProjectDocumentsComponent implements OnInit {
         },
         {
           id: 'D2-2',
-          name: 'Provincial Product Initiation Form (PPIF)',
+          name: 'Project Initiation Form (PIF)',
           expanded: false,
           activities: [
             {
@@ -522,8 +520,7 @@ export class ProjectDocumentsComponent implements OnInit {
     const gate2: GateNode = {
       id: 'G2',
       type: 'gate',
-      gateCode: 'Gate 2',
-      gateName: 'Feasibility',
+      gateCode: 'Gate 2', gateName: 'Process Route Selection',
       documents: [
         { id: 'GD2-1', gateCode: 'Gate 2', gateName: 'Feasibility', documentTitle: 'Prototype Batches Manufacturing Protocol & Data', uploadedDate: '2026-05-10', uploadedBy: 'Formulation Scientist' },
         { id: 'GD2-2', gateCode: 'Gate 2', gateName: 'Feasibility', documentTitle: 'Comparative Dissolution Profile Report (f2 ≥ 50)', uploadedDate: '2026-05-12', uploadedBy: 'Analytical Lead' },

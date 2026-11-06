@@ -82,9 +82,9 @@ export class ProjectHoursComponent implements OnInit {
   currentDate: Date = new Date(2026, 5, 1); // June 2026
   selectedDate: Date | null = null;
 
-  projectName: string = 'Generic Tablet Development';
-  projectCode: string = '2026/GEN/001';
-  dynamicBreadcrumb: string = 'Hours';
+  projectName: string = 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = '2026/CHM/006';
+  dynamicBreadcrumb: string = 'Acrylic Emulsion Binder 50% Solids - 2026/CHM/006';
 
   filteredEntries: HourEntry[] = [];
   paginatedEntries: HourEntry[] = [];
@@ -99,45 +99,154 @@ export class ProjectHoursComponent implements OnInit {
       dateObj: new Date(2026, 5, 2),
       jobCode: 'JB-301',
       name: 'Rajesh Kumar',
-      project: '2026/RD/001 - Abiraterone Acetate Film Coated',
+      project: '2026/CHM/006 - Acrylic Emulsion Binder 50% Solids',
+      projectsCount: 3,
       tasksList: [
-        { project: '2026/RD/001 - Abiraterone Acetate Film Coated', module: 'Product Selection', task: 'Reference Product Characterization', hours: 4.0, description: 'Physicochemical characterization and comparative profiling of reference product' },
-        { project: '2026/RD/001 - Abiraterone Acetate Film Coated', module: 'Pre-Formulation', task: 'API Characterization', hours: 3.5, description: 'Evaluation of solid-state properties, particle size, and polymorphic form' }
-      ],
-      totalHours: 7.5,
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Process Development",
+                "task": "Monomer Feed Profile Optimization",
+                "hours": 4.5,
+                "description": "Semi-continuous monomer feed rate and reactor temperature control"
+        },
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Lab Trials",
+                "task": "Lab Reactor Batch Run (2 L)",
+                "hours": 3.4,
+                "description": "2 L reactor trial batch synthesis and exotherm monitoring"
+        }
+],
+      totalHours: 7.9,
       approved: true,
       declined: false,
       pending: false,
       messages: [
-        { sender: 'Rajesh Kumar', date: '2026-06-02', text: 'Submitted timesheet for API and reference product assessment.' },
-        { sender: 'QA Manager', date: '2026-06-03', text: 'Approved.' }
-      ]
+        {
+                "sender": "Rajesh Kumar",
+                "date": "2026-06-02",
+                "text": "Submitted timesheet for monomer feed optimization."
+        },
+        {
+                "sender": "Process Lead",
+                "date": "2026-06-03",
+                "text": "Approved."
+        }
+]
     },
     {
       dateObj: new Date(2026, 5, 2),
       jobCode: 'JB-302',
       name: 'Anita Desai',
-      project: '2026/RD/002 - Apremilast Tablets',
+      project: '2026/CHM/006 - Acrylic Emulsion Binder 50% Solids',
+      projectsCount: 3,
       tasksList: [
-        { project: '2026/RD/002 - Apremilast Tablets', module: 'Pre-Formulation', task: 'API–Excipient Compatibility', hours: 4.5, description: 'Isothermal stress testing and binary blend compatibility studies' },
-        { project: '2026/RD/002 - Apremilast Tablets', module: 'Pre-Formulation', task: 'Excipient Screening', hours: 3.0, description: 'Functional screening of binders, disintegrants, and lubricants' }
-      ],
-      totalHours: 7.5,
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Raw Material Sourcing",
+                "task": "Surfactant Screening & Qualification",
+                "hours": 4.5,
+                "description": "Anionic/non-ionic surfactant package screening for emulsion stability"
+        },
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Raw Material Sourcing",
+                "task": "Monomer Inhibitor Removal Trials",
+                "hours": 3.4,
+                "description": "Evaluation of MEHQ inhibitor removal resins"
+        }
+],
+      totalHours: 7.9,
       approved: true,
       declined: false,
       pending: false,
-      messages: [{ sender: 'Anita Desai', date: '2026-06-02', text: 'Compatibility screening trial completed.' }]
+      messages: []
     },
     {
       dateObj: new Date(2026, 5, 2),
       jobCode: 'JB-303',
       name: 'Priya Reddy',
-      project: '2026/RD/003 - Brivaracetam Film Coated Tablets',
+      project: '2026/CHM/006 - Acrylic Emulsion Binder 50% Solids',
+      projectsCount: 3,
       tasksList: [
-        { project: '2026/RD/003 - Brivaracetam Film Coated Tablets', module: 'Formulation Development', task: 'Prototype Formulation Design', hours: 4.5, description: 'Designing target product profile (QTPP) and prototype trial compositions' },
-        { project: '2026/RD/003 - Brivaracetam Film Coated Tablets', module: 'Formulation Development', task: 'Laboratory Prototype Batch', hours: 3.5, description: 'Compounding and wet granulation processing for lab prototype batch' }
-      ],
-      totalHours: 8.0,
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Regulatory Affairs",
+                "task": "REACH / TSCA Dossier Compilation",
+                "hours": 4.5,
+                "description": "Compilation of polymer characterization and monomer registration data"
+        },
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Regulatory Affairs",
+                "task": "Safety Data Sheet Authoring",
+                "hours": 3.4,
+                "description": "16-section multilingual GHS Safety Data Sheet authoring"
+        }
+],
+      totalHours: 7.9,
+      approved: true,
+      declined: false,
+      pending: false,
+      messages: []
+    },
+    {
+      dateObj: new Date(2026, 5, 2),
+      jobCode: 'JB-304',
+      name: 'Amit Patel (Overtime)',
+      project: '2026/CHM/006 - Acrylic Emulsion Binder 50% Solids',
+      projectsCount: 3,
+      tasksList: [
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Analytical & QC",
+                "task": "Particle Size & Viscosity Profiling",
+                "hours": 5.5,
+                "description": "DLS particle size distribution and Brookfield viscosity measurements"
+        },
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Analytical & QC",
+                "task": "Residual Monomer GC-FID Analysis",
+                "hours": 5.2,
+                "description": "Gas chromatography testing for residual butyl acrylate below 100 ppm"
+        }
+],
+      totalHours: 10.7,
+      approved: true,
+      declined: false,
+      pending: false,
+      messages: [
+        {
+                "sender": "Amit Patel",
+                "date": "2026-06-02",
+                "text": "Overtime authorized for urgent residual monomer GC run."
+        }
+]
+    },
+    {
+      dateObj: new Date(2026, 5, 2),
+      jobCode: 'JB-305',
+      name: 'Suresh Naidu',
+      project: '2026/CHM/006 - Acrylic Emulsion Binder 50% Solids',
+      projectsCount: 3,
+      tasksList: [
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Plant Operations",
+                "task": "Reactor Maintenance & Cleaning",
+                "hours": 4.5,
+                "description": "Jacketed reactor caustic boil-out and seal inspection"
+        },
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Plant Operations",
+                "task": "Monomer Feed Pump Calibration",
+                "hours": 3.4,
+                "description": "Peristaltic pump metering accuracy and stroke calibration"
+        }
+],
+      totalHours: 7.9,
       approved: false,
       declined: false,
       pending: true,
@@ -145,152 +254,92 @@ export class ProjectHoursComponent implements OnInit {
     },
     {
       dateObj: new Date(2026, 5, 2),
-      jobCode: 'JB-304',
-      name: 'Amit Patel',
-      project: '2026/RD/004 - Cabozantinib Tablets',
-      tasksList: [
-        { project: '2026/RD/004 - Cabozantinib Tablets', module: 'Prototype & Optimization', task: 'Dissolution Testing', hours: 4.0, description: 'In-vitro multi-media comparative dissolution rate evaluation' },
-        { project: '2026/RD/004 - Cabozantinib Tablets', module: 'Analytical Development', task: 'Analytical Method Development', hours: 4.0, description: 'RP-HPLC chromatographic method development and assay validation' }
-      ],
-      totalHours: 8.0,
-      approved: true,
-      declined: false,
-      pending: false,
-      messages: [{ sender: 'Amit Patel', date: '2026-06-02', text: 'Dissolution method development parameters recorded.' }]
-    },
-    {
-      dateObj: new Date(2026, 5, 2),
-      jobCode: 'JB-305',
-      name: 'Suresh Naidu',
-      project: '2026/RD/005 - Dapagliflozin Propanediol Tablets',
-      tasksList: [
-        { project: '2026/RD/005 - Dapagliflozin Propanediol Tablets', module: 'Prototype & Optimization', task: 'Formulation Optimization', hours: 4.5, description: 'Optimizing tablet compression parameters, hardness, and friability' },
-        { project: '2026/RD/005 - Dapagliflozin Propanediol Tablets', module: 'Scale-Up', task: 'Scale-Up & Pilot Batch', hours: 3.5, description: 'Pilot scale high shear granulator and compression trial setup' }
-      ],
-      totalHours: 8.0,
-      approved: true,
-      declined: false,
-      pending: false,
-      messages: [{ sender: 'Suresh Naidu', date: '2026-06-02', text: 'Trial batch parameters optimized.' }]
-    },
-    {
-      dateObj: new Date(2026, 5, 2),
       jobCode: 'JB-306',
       name: 'Arun Joseph',
-      project: '2026/RD/006 - Empagliflozin Tablets',
+      project: '2026/CHM/006 - Acrylic Emulsion Binder 50% Solids',
+      projectsCount: 3,
       tasksList: [
-        { project: '2026/RD/006 - Empagliflozin Tablets', module: 'Testing & Validation', task: 'Stability Study', hours: 4.5, description: 'Stability protocol execution and sample loading in ICH climate chambers' },
-        { project: '2026/RD/006 - Empagliflozin Tablets', module: 'BA/BE & Stability', task: 'Bioequivalence Readiness', hours: 3.0, description: 'Evaluating bioequivalence study readiness and comparator profile similarity' }
-      ],
-      totalHours: 7.5,
-      approved: false,
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Process Safety",
+                "task": "Calorimetry & Exotherm Assessment",
+                "hours": 4.5,
+                "description": "RC1 reaction calorimetry heat output and cooling rate calculations"
+        },
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Process Safety",
+                "task": "HAZOP Study Node Preparation",
+                "hours": 3.4,
+                "description": "Preparation of deviation nodes for runaway polymerization scenarios"
+        }
+],
+      totalHours: 7.9,
+      approved: true,
       declined: false,
-      pending: true,
+      pending: false,
       messages: []
     },
     {
       dateObj: new Date(2026, 5, 2),
       jobCode: 'JB-307',
       name: 'Lakshmi Devi',
-      project: '2026/RD/007 - Fimasartan Potassium Tablets',
+      project: '2026/CHM/006 - Acrylic Emulsion Binder 50% Solids',
+      projectsCount: 3,
       tasksList: [
-        { project: '2026/RD/007 - Fimasartan Potassium Tablets', module: 'Regulatory Submission', task: 'Regulatory Dossier Preparation', hours: 4.5, description: 'Compiling Module 3 Quality CMC documentation for regulatory filing' },
-        { project: '2026/RD/007 - Fimasartan Potassium Tablets', module: 'Regulatory Approval', task: 'Regulatory Review', hours: 3.0, description: 'Internal regulatory gap assessment and compliance review' }
-      ],
-      totalHours: 7.5,
-      approved: true,
-      declined: false,
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Quality Assurance",
+                "task": "Batch Record Audit",
+                "hours": 4.5,
+                "description": "Review of in-process critical parameters for trial batches"
+        },
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Quality Assurance",
+                "task": "COA Verification",
+                "hours": 3.4,
+                "description": "Verification of certificate of analysis against customer specification"
+        }
+],
+      totalHours: 7.9,
+      approved: false,
+      declined: true,
       pending: false,
-      messages: [{ sender: 'Lakshmi Devi', date: '2026-06-02', text: 'Regulatory documentation checklist completed.' }]
+      messages: [
+        {
+                "sender": "QA Lead",
+                "date": "2026-06-02",
+                "text": "Resubmit with equipment log attachment."
+        }
+]
     },
     {
       dateObj: new Date(2026, 5, 2),
       jobCode: 'JB-308',
-      name: 'Deepa Nair',
-      project: '2026/RD/008 - Macitentan Film Coated Tablets',
+      name: 'Deepa Nair (Overtime)',
+      project: '2026/CHM/006 - Acrylic Emulsion Binder 50% Solids',
+      projectsCount: 3,
       tasksList: [
-        { project: '2026/RD/008 - Macitentan Film Coated Tablets', module: 'Manufacturing Readiness', task: 'Commercial Manufacturing Readiness', hours: 4.5, description: 'Manufacturing transfer protocols and batch manufacturing record (BMR) drafts' },
-        { project: '2026/RD/008 - Macitentan Film Coated Tablets', module: 'Commercialization', task: 'Launch Readiness', hours: 3.5, description: 'Commercial supply chain alignment and packaging artwork verification' }
-      ],
-      totalHours: 8.0,
-      approved: false,
-      declined: true,
-      pending: false,
-      messages: [{ sender: 'Production Head', date: '2026-06-02', text: 'Awaiting updated equipment qualification signoff before approval.' }]
-    },
-    {
-      dateObj: new Date(2026, 5, 5),
-      jobCode: 'JB-309',
-      name: 'Rajesh Kumar',
-      project: '2026/RD/009 - Niraparib Tosylate Capsules',
-      tasksList: [
-        { project: '2026/RD/009 - Niraparib Tosylate Capsules', module: 'Product Selection', task: 'Reference Product Characterization', hours: 4.0, description: 'Final characterization report of RLD batch' },
-        { project: '2026/RD/009 - Niraparib Tosylate Capsules', module: 'Pre-Formulation', task: 'API Characterization', hours: 4.0, description: 'Solubility profile determination across physiological pH range' }
-      ],
-      totalHours: 8.0,
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Polymer Synthesis",
+                "task": "Emulsion Polymerization Synthesis",
+                "hours": 6,
+                "description": "Extended polymerization run tracking monomer conversion kinetics"
+        },
+        {
+                "project": "2026/CHM/006 - Acrylic Emulsion Binder 50% Solids",
+                "module": "Polymer Synthesis",
+                "task": "Coagulum Determination & Filtration",
+                "hours": 4.5,
+                "description": "Post-batch 100 mesh filter residue gravimetric analysis"
+        }
+],
+      totalHours: 10.5,
       approved: true,
       declined: false,
       pending: false,
-      messages: []
-    },
-    {
-      dateObj: new Date(2026, 5, 8),
-      jobCode: 'JB-310',
-      name: 'Anita Desai',
-      project: '2026/RD/010 - Olaparib Film Coated Tablets',
-      tasksList: [
-        { project: '2026/RD/010 - Olaparib Film Coated Tablets', module: 'Pre-Formulation', task: 'API–Excipient Compatibility', hours: 4.5, description: 'HPLC testing of 4-week binary excipient blend samples' },
-        { project: '2026/RD/010 - Olaparib Film Coated Tablets', module: 'Pre-Formulation', task: 'Excipient Screening', hours: 3.5, description: 'Binder selection matrix and disintegration rate study' }
-      ],
-      totalHours: 8.0,
-      approved: true,
-      declined: false,
-      pending: false,
-      messages: []
-    },
-    {
-      dateObj: new Date(2026, 5, 18),
-      jobCode: 'JB-311',
-      name: 'Priya Reddy',
-      project: '2026/RD/001 - Abiraterone Acetate Film Coated',
-      tasksList: [
-        { project: '2026/RD/001 - Abiraterone Acetate Film Coated', module: 'Formulation Development', task: 'Prototype Formulation Design', hours: 5.0, description: 'Formulation matrix design of experiments (DoE)' },
-        { project: '2026/RD/001 - Abiraterone Acetate Film Coated', module: 'Prototype & Optimization', task: 'Formulation Optimization', hours: 3.0, description: 'Lubrication sensitivity analysis' }
-      ],
-      totalHours: 8.0,
-      approved: true,
-      declined: false,
-      pending: false,
-      messages: []
-    },
-    {
-      dateObj: new Date(2026, 5, 22),
-      jobCode: 'JB-312',
-      name: 'Suresh Naidu',
-      project: '2026/RD/002 - Apremilast Tablets',
-      tasksList: [
-        { project: '2026/RD/002 - Apremilast Tablets', module: 'Formulation Development', task: 'Laboratory Prototype Batch', hours: 5.0, description: 'Prototype batch granulating, drying, and blending operations' },
-        { project: '2026/RD/002 - Apremilast Tablets', module: 'Scale-Up', task: 'Scale-Up & Pilot Batch', hours: 2.5, description: 'Scale-up parameter calculation for fluid bed processor' }
-      ],
-      totalHours: 7.5,
-      approved: true,
-      declined: false,
-      pending: false,
-      messages: []
-    },
-    {
-      dateObj: new Date(2026, 5, 30),
-      jobCode: 'JB-313',
-      name: 'Amit Patel',
-      project: '2026/RD/003 - Brivaracetam Film Coated Tablets',
-      tasksList: [
-        { project: '2026/RD/003 - Brivaracetam Film Coated Tablets', module: 'Prototype & Optimization', task: 'Dissolution Testing', hours: 4.5, description: 'Comparative dissolution testing across pH 1.2, 4.5, and 6.8' },
-        { project: '2026/RD/003 - Brivaracetam Film Coated Tablets', module: 'Analytical Development', task: 'Analytical Method Development', hours: 3.5, description: 'Assay method robustness testing' }
-      ],
-      totalHours: 8.0,
-      approved: false,
-      declined: false,
-      pending: true,
       messages: []
     }
   ];

@@ -22,10 +22,10 @@ export class StageDivisionsComponent implements OnInit {
   stageName: string = '';
 
   divisionsList: DivisionOption[] = [
-    { name: 'Oral Solids - OS', code: 'OS', selected: false },
-    { name: 'Injectables - IJ', code: 'IJ', selected: false },
-    { name: 'Complex Injectables - CI', code: 'CI', selected: false },
-    { name: 'Biotech - BT', code: 'BT', selected: false },
+    { name: 'Polymers & Resins - PR', code: 'PR', selected: false },
+    { name: 'Specialty Chemicals - SC', code: 'SC', selected: false },
+    { name: 'Agrochemicals - AG', code: 'AG', selected: false },
+    { name: 'Petrochemicals - PC', code: 'PC', selected: false },
   ];
 
   constructor(

@@ -74,9 +74,9 @@ export class ProjectResourcesComponent implements OnInit {
   currentPage: number = 1;
   pageSize: number = 10;
   isTemplate: boolean = false;
-  projectName: string = 'Generic Tablet Development';
-  projectCode: string = '2026/GEN/001';
-  dynamicBreadcrumb: string = 'Generic Tablet Development - 2026/GEN/001';
+  projectName: string = 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = '2026/CHM/006';
+  dynamicBreadcrumb: string = 'Acrylic Emulsion Binder 50% Solids - 2026/CHM/006';
 
   constructor(
     public dialog: MatDialog,
@@ -114,72 +114,71 @@ export class ProjectResourcesComponent implements OnInit {
 
   initializeData(): void {
     this.availableResources = [
-      { code: 'RES001', name: 'Lyophilizer A', selected: false },
+      { code: 'RES001', name: 'GC-MS System A', selected: false },
       { code: 'RES002', name: 'Anita Desai', selected: false },
-      { code: 'RES003', name: 'Lyophilizer B', selected: false },
+      { code: 'RES003', name: 'Jacketed Glass Reactor B (5 L)', selected: false },
       { code: 'RES004', name: 'Amit Patel', selected: false },
-      { code: 'RES005', name: 'Lyophilizer C', selected: false },
-      { code: 'RES006', name: 'Deepa Nair', selected: false },
-      { code: 'RES007', name: 'Arun Joseph', selected: false },
-      { code: 'RES008', name: 'Lakshmi Devi', selected: false }
+      { code: 'RES005', name: 'Particle Size Analyzer C', selected: false },
+      { code: 'RES006', name: 'Fume Hood Suite 3', selected: false },
+      { code: 'RES007', name: 'Rotary Evaporator and Vacuum Oven', selected: false },
+      { code: 'RES008', name: 'Rajesh Kumar', selected: false }
     ];
 
     this.allocatedResources = [
-      { code: 'RES009', name: 'Vikram Singh', selected: false },
-      { code: 'RES010', name: 'Neha Sharma', selected: false },
-      { code: 'RES011', name: 'Rohit Mehta', selected: false },
-      { code: 'RES012', name: 'Kiran Rao', selected: false },
-      { code: 'RES013', name: 'Harish Babu', selected: false }
+      { code: 'RES009', name: 'Priya Reddy', selected: false },
+      { code: 'RES010', name: 'Suresh Naidu', selected: false },
+      { code: 'RES011', name: 'Dr. Priya Raman', selected: false },
+      { code: 'RES012', name: 'Vikram Singh', selected: false }
     ];
 
     this.schedules = [
       {
-        resource: 'Lyophilizer A', initials: 'LA', stage: 'Feasibility', module: 'API Assessment',
-        task: 'API Evaluation', fromDate: '2026-06-01', fromTime: '09:00 AM', toDate: '2026-06-05',
-        toTime: '05:00 PM', planDuration: '5 days', actualDuration: '5 days',
-        status: 'Completed', dayPlacement: 'Monday', color: '#dcfce7'
+        resource: 'GC-MS System A', initials: 'GC', stage: 'S1 - Opportunity Identification', module: 'Competitor Grade & Market Analysis',
+        task: 'Benchmark Grade Characterization', fromDate: '2026-06-01', fromTime: '09:00 AM', toDate: '2026-06-10',
+        toTime: '05:00 PM', planDuration: '10 days', actualDuration: '10 days',
+        status: 'Completed', dayPlacement: 'Monday', color: '#dcfce7', updatedBy: 'Dr. Priya Raman'
       },
       {
-        resource: 'Anita Desai', initials: 'AD', stage: 'Formulation', module: 'Formulation Development',
-        task: 'Excipient Selection & Trial Batches', fromDate: '2026-06-08', fromTime: '09:00 AM', toDate: '2026-06-21',
+        resource: 'Anita Desai', initials: 'AD', stage: 'S3 - Route Scouting & Lab Synthesis', module: 'Surfactant & Monomer Sourcing',
+        task: 'Surfactant Screening & Trial Batches', fromDate: '2026-06-08', fromTime: '09:00 AM', toDate: '2026-06-21',
         toTime: '05:00 PM', planDuration: '14 days', actualDuration: '12 days',
-        status: 'Completed', dayPlacement: 'Tuesday', color: '#dcfce7'
+        status: 'Completed', dayPlacement: 'Tuesday', color: '#dcfce7', updatedBy: 'Anita Desai'
       },
       {
-        resource: 'Lyophilizer B', initials: 'LB', stage: 'Development', module: 'Process Development',
-        task: 'Granulation & Process Optimization', fromDate: '2026-06-22', fromTime: '09:00 AM', toDate: '2026-07-02',
+        resource: 'Jacketed Glass Reactor B (5 L)', initials: 'JR', stage: 'S4 - Process Optimization (Lab Scale)', module: 'Process Development',
+        task: 'Monomer Feed Profile Optimization', fromDate: '2026-06-22', fromTime: '09:00 AM', toDate: '2026-07-02',
         toTime: '05:00 PM', planDuration: '10 days', actualDuration: '8 days',
-        status: 'Active', dayPlacement: 'Wednesday', color: '#e0f2fe'
+        status: 'Active', dayPlacement: 'Wednesday', color: '#e0f2fe', updatedBy: 'Rajesh Kumar'
       },
       {
-        resource: 'Amit Patel', initials: 'AP', stage: 'Testing', module: 'Analytical Development',
-        task: 'Assay & Dissolution Testing', fromDate: '2026-07-03', fromTime: '09:00 AM', toDate: '2026-07-13',
+        resource: 'Amit Patel', initials: 'AP', stage: 'S4 - Process Optimization (Lab Scale)', module: 'Analytical Development',
+        task: 'Film Property & Viscosity Testing', fromDate: '2026-07-03', fromTime: '09:00 AM', toDate: '2026-07-13',
         toTime: '05:00 PM', planDuration: '10 days', actualDuration: 'N/A',
-        status: 'Pending', dayPlacement: 'Thursday', color: '#ffedd5'
+        status: 'Pending', dayPlacement: 'Thursday', color: '#ffedd5', updatedBy: 'Amit Patel'
       },
       {
-        resource: 'Lyophilizer C', initials: 'LC', stage: 'Manufacturing', module: 'Compression & Coating',
-        task: 'Tablet Manufacturing Trial', fromDate: '2026-07-14', fromTime: '09:00 AM', toDate: '2026-07-25',
+        resource: 'Particle Size Analyzer C', initials: 'PS', stage: 'S4 - Process Optimization (Lab Scale)', module: 'Analytical Development',
+        task: 'Particle Size Distribution Runs', fromDate: '2026-07-14', fromTime: '09:00 AM', toDate: '2026-07-25',
         toTime: '05:00 PM', planDuration: '12 days', actualDuration: 'N/A',
-        status: 'Pending', dayPlacement: 'Friday', color: '#ffedd5'
+        status: 'Pending', dayPlacement: 'Friday', color: '#ffedd5', updatedBy: 'Priya Reddy'
       },
       {
-        resource: 'Deepa Nair', initials: 'DN', stage: 'Validation', module: 'Process Validation',
-        task: 'Validation Batch', fromDate: '2026-07-27', fromTime: '09:00 AM', toDate: '2026-08-10',
+        resource: 'Fume Hood Suite 3', initials: 'FH', stage: 'S3 - Route Scouting & Lab Synthesis', module: 'Raw Material Sourcing',
+        task: 'Monomer Inhibitor Removal Trials', fromDate: '2026-07-27', fromTime: '09:00 AM', toDate: '2026-08-10',
         toTime: '05:00 PM', planDuration: '15 days', actualDuration: 'N/A',
-        status: 'Pending', dayPlacement: 'Monday', color: '#ffedd5'
+        status: 'Completed', dayPlacement: 'Monday', color: '#dcfce7', updatedBy: 'Anita Desai'
       },
       {
-        resource: 'Arun Joseph', initials: 'AJ', stage: 'Stability', module: 'Stability Study',
-        task: 'Stability Testing', fromDate: '2026-08-11', fromTime: '09:00 AM', toDate: '2026-09-10',
+        resource: 'Rotary Evaporator and Vacuum Oven', initials: 'RE', stage: 'S4 - Process Optimization (Lab Scale)', module: 'Process Development',
+        task: 'Residual Monomer Reduction', fromDate: '2026-08-11', fromTime: '09:00 AM', toDate: '2026-09-10',
         toTime: '05:00 PM', planDuration: '30 days', actualDuration: 'N/A',
-        status: 'Active', dayPlacement: 'Tuesday', color: '#e0f2fe'
+        status: 'Active', dayPlacement: 'Tuesday', color: '#e0f2fe', updatedBy: 'Rajesh Kumar'
       },
       {
-        resource: 'Lakshmi Devi', initials: 'LD', stage: 'Regulatory', module: 'Regulatory Submission',
-        task: 'Dossier Compilation', fromDate: '2026-09-11', fromTime: '09:00 AM', toDate: '2026-09-25',
+        resource: 'Priya Reddy', initials: 'PR', stage: 'S7 - Process Safety & Regulatory Studies', module: 'Process Safety & EHS',
+        task: 'HAZOP Study Review & Registration Dossier', fromDate: '2026-09-11', fromTime: '09:00 AM', toDate: '2026-09-25',
         toTime: '05:00 PM', planDuration: '15 days', actualDuration: 'N/A',
-        status: 'Pending', dayPlacement: 'Wednesday', color: '#ffedd5'
+        status: 'Pending', dayPlacement: 'Wednesday', color: '#ffedd5', updatedBy: 'Priya Reddy'
       }
     ];
 

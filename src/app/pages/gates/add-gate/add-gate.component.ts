@@ -26,24 +26,25 @@ export class AddGateComponent implements OnInit {
   isSubmitting = false;
 
   divisionOptions: string[] = [
-    'Oral Solids - OS',
-    'Injectables - IJ',
-    'Complex Injectables - CI',
-    'Biotech - BT'
+    'Polymers & Resins - PR',
+    'Specialty Chemicals - SC',
+    'Agrochemicals - AG',
+    'Petrochemicals - PC'
   ];
 
   stageOptions: { code: string; name: string }[] = [
-    { code: 'S1', name: 'Opportunity and Portfolio Assessment (S1)' },
-    { code: 'S2', name: 'Product Definition and Project Charter (S2)' },
-    { code: 'S3', name: 'Formulation and Product Concept Development (S3)' },
-    { code: 'S4', name: 'API, Excipient and Supplier Sourcing (S4)' },
-    { code: 'S5', name: 'Formulation and Process Development (S5)' },
-    { code: 'S6', name: 'Development Batches and Verification (S6)' },
-    { code: 'S7', name: 'Facility, Equipment and Process Readiness (S7)' },
-    { code: 'S8', name: 'Analytical Validation and Technology Transfer (S8)' },
-    { code: 'S9', name: 'Registration and Process Validation Batches (S9)' },
-    { code: 'S10', name: 'Regulatory Submission and Approval (S10)' },
-    { code: 'S11', name: 'Commercial Launch and Lifecycle Management (S11)' }
+    { code: 'S1', name: 'Opportunity Identification (S1)' },
+    { code: 'S2', name: 'Concept Screening & Feasibility (S2)' },
+    { code: 'S3', name: 'Route Scouting & Lab Synthesis (S3)' },
+    { code: 'S4', name: 'Process Optimization (Lab Scale) (S4)' },
+    { code: 'S5', name: 'Process Route Selection & Basis of Design (S5)' },
+    { code: 'S6', name: 'Bench-to-Pilot Process Development (S6)' },
+    { code: 'S7', name: 'Process Safety & Regulatory Studies (S7)' },
+    { code: 'S8', name: 'Regulatory Registration Filing (REACH / TSCA) (S8)' },
+    { code: 'S9', name: 'Pilot Plant Campaign (S9)' },
+    { code: 'S10', name: 'Demonstration-Scale Campaign (S10)' },
+    { code: 'S11', name: 'Commercial Plant Build & Commissioning (S11)' },
+    { code: 'S12', name: 'Commercial Launch & Ramp-Up (S12)' }
   ];
 
   constructor(
@@ -53,7 +54,7 @@ export class AddGateComponent implements OnInit {
   ) {
     this.gateForm = this.fb.group({
       gateName: ['', [Validators.required]],
-      division: [['Oral Solids - OS'], [Validators.required]],
+      division: [['Polymers & Resins - PR'], [Validators.required]],
       gateCode: [''],
       stageCode: [''],
       description: ['']
@@ -72,7 +73,7 @@ export class AddGateComponent implements OnInit {
       } else if (typeof this.data.division === 'string' && this.data.division.trim()) {
         divisionVal = this.data.division.split(',').map((d: string) => d.trim()).filter(Boolean);
       } else {
-        divisionVal = ['Oral Solids - OS'];
+        divisionVal = ['Polymers & Resins - PR'];
       }
 
       this.gateForm.patchValue({

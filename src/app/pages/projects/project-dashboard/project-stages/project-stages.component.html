@@ -2,7 +2,10 @@
 
   <!-- Header Section with Title & Back Button -->
   <header class="analytics-header">
-    <h1>{{ projectName }}</h1>
+    <div>
+      <h1>{{ projectName }}</h1>
+      <p style="margin: 2px 0 0 0; font-size: 13px; color: #64748b;">Stages: manage the project lifecycle stages (Chemical manufacturing stage-gate)</p>
+    </div>
 
     <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
       <button type="button" class="back-btn" (click)="goBack()">

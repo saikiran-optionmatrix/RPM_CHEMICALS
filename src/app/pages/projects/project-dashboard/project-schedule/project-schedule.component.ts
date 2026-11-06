@@ -102,9 +102,9 @@ export class ProjectScheduleComponent implements OnInit {
   @ViewChild('allocationTasksDialog') allocationTasksDialog!: TemplateRef<any>;
   @ViewChild('allocationProjectsDialog') allocationProjectsDialog!: TemplateRef<any>;
 
-  projectName: string = 'Generic Tablet Development';
-  projectCode: string = '2026/GEN/001';
-  dynamicBreadcrumb: string = 'Generic Tablet Development - 2026/GEN/001';
+  projectName: string = 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = '2026/CHM/006';
+  dynamicBreadcrumb: string = 'Acrylic Emulsion Binder 50% Solids - 2026/CHM/006';
 
   viewMode: 'grid' | 'gantt' | 'allocation' = 'gantt';
   isMaskingPending: boolean = false;
@@ -112,14 +112,20 @@ export class ProjectScheduleComponent implements OnInit {
 
   filterToggle: boolean = false;
   stages: string[] = [
-    'Feasibility',
-    'Formulation',
-    'Development',
-    'Testing',
-    'Validation',
-    'Regulatory'
-  ];
-  stageFilter: string = 'Feasibility';
+  "S1 - Opportunity Identification",
+  "S2 - Concept Screening & Feasibility",
+  "S3 - Route Scouting & Lab Synthesis",
+  "S4 - Process Optimization (Lab Scale)",
+  "S5 - Process Route Selection & Basis of Design",
+  "S6 - Bench-to-Pilot Process Development",
+  "S7 - Process Safety & Regulatory Studies",
+  "S8 - Regulatory Registration Filing (REACH / TSCA)",
+  "S9 - Pilot Plant Campaign",
+  "S10 - Demonstration-Scale Campaign",
+  "S11 - Commercial Plant Build & Commissioning",
+  "S12 - Commercial Launch & Ramp-Up"
+];
+  stageFilter: string = 'S1 - Opportunity Identification';
   sprints: string[] = ['Sprint 1', 'Sprint 2', 'Sprint 3', 'Sprint 4', 'Sprint 5'];
   sprintFilter: string = 'all';
   modules: string[] = [
@@ -568,305 +574,103 @@ export class ProjectScheduleComponent implements OnInit {
   ];
 
   allTasks: ScheduleTask[] = [
-    // Feasibility Stage
     {
       id: 'T1',
-      name: 'Reference Product Characterization',
-      module: 'Feasibility',
-      assignee: 'Ana Vega',
+      name: 'Benchmark Grade Characterization',
+      module: 'Competitor Grade & Market Analysis',
+      assignee: 'Dr. Priya Raman',
       planStart: new Date(2026, 5, 1),
       planEnd: new Date(2026, 5, 10),
       actualStartObj: new Date(2026, 5, 1),
       actualEndObj: new Date(2026, 5, 10),
       status: 'Completed',
       completion: 100,
-      stage: 'Feasibility',
+      stage: 'S1 - Opportunity Identification',
       sprint: 'Sprint 1'
     },
     {
       id: 'T2',
-      name: 'Target Product Profile (TPP) Definition',
-      module: 'Feasibility',
-      assignee: 'Ravi Shah',
+      name: 'Target Product Profile and Specification Definition',
+      module: 'Target Product Profile',
+      assignee: 'Rajesh Kumar',
       planStart: new Date(2026, 5, 5),
       planEnd: new Date(2026, 5, 18),
       actualStartObj: new Date(2026, 5, 5),
       actualEndObj: new Date(2026, 5, 18),
       status: 'Completed',
       completion: 100,
-      stage: 'Feasibility',
+      stage: 'S1 - Opportunity Identification',
       sprint: 'Sprint 1'
     },
     {
       id: 'T3',
-      name: 'API Source & Vendor Qualification',
-      module: 'Feasibility',
-      assignee: 'Mia Chen',
+      name: 'Raw Material Source & Vendor Qualification',
+      module: 'Sourcing & Vendor Assessment',
+      assignee: 'Anita Desai',
       planStart: new Date(2026, 5, 10),
       planEnd: new Date(2026, 5, 25),
       actualStartObj: new Date(2026, 5, 10),
       actualEndObj: new Date(2026, 5, 25),
       status: 'Completed',
       completion: 100,
-      stage: 'Feasibility',
+      stage: 'S1 - Opportunity Identification',
       sprint: 'Sprint 1'
     },
     {
       id: 'T4',
-      name: 'Preformulation & Physicochemical Testing',
-      module: 'Feasibility',
-      assignee: 'Sara Iqbal',
+      name: 'Reaction Chemistry & Physicochemical Screening',
+      module: 'Feasibility Assessment',
+      assignee: 'Amit Patel',
       planStart: new Date(2026, 5, 15),
       planEnd: new Date(2026, 6, 5),
       actualStartObj: new Date(2026, 5, 15),
-      actualEndObj: null,
-      status: 'In Process',
-      completion: 80,
-      stage: 'Feasibility',
-      sprint: 'Sprint 2'
+      actualEndObj: new Date(2026, 6, 5),
+      status: 'Completed',
+      completion: 100,
+      stage: 'S1 - Opportunity Identification',
+      sprint: 'Sprint 1'
     },
     {
       id: 'T5',
-      name: 'Freedom-to-Operate (FTO) Patent Assessment',
-      module: 'Feasibility',
-      assignee: 'Diego Ruiz',
+      name: 'Freedom-to-Operate (FTO) and Patent Landscape',
+      module: 'IP & FTO Assessment',
+      assignee: 'Dr. Priya Raman',
       planStart: new Date(2026, 5, 20),
       planEnd: new Date(2026, 6, 10),
       actualStartObj: new Date(2026, 5, 20),
-      actualEndObj: null,
-      status: 'In Process',
-      completion: 60,
-      stage: 'Feasibility',
+      actualEndObj: new Date(2026, 6, 10),
+      status: 'Completed',
+      completion: 100,
+      stage: 'S1 - Opportunity Identification',
       sprint: 'Sprint 2'
     },
     {
       id: 'T6',
-      name: 'Cost of Goods Sold (COGS) Feasibility Model',
-      module: 'Feasibility',
-      assignee: 'Olivia Brown',
+      name: 'Cost of Manufacturing Modeling (Reaction & Separation)',
+      module: 'Cost & Economics',
+      assignee: 'Rajesh Kumar',
       planStart: new Date(2026, 5, 25),
       planEnd: new Date(2026, 6, 15),
       actualStartObj: new Date(2026, 5, 25),
-      actualEndObj: null,
-      status: 'Overdue',
-      completion: 40,
-      stage: 'Feasibility',
+      actualEndObj: new Date(2026, 6, 15),
+      status: 'Completed',
+      completion: 100,
+      stage: 'S1 - Opportunity Identification',
       sprint: 'Sprint 2'
     },
     {
       id: 'T7',
-      name: 'Regulatory Pathway & Risk Evaluation',
-      module: 'Feasibility',
-      assignee: 'Priya Nair',
+      name: 'Regulatory Pathway & Risk Assessment (REACH / TSCA)',
+      module: 'Regulatory Strategy',
+      assignee: 'Priya Reddy',
       planStart: new Date(2026, 6, 1),
       planEnd: new Date(2026, 6, 20),
-      actualStartObj: null,
-      actualEndObj: null,
-      status: 'Pending',
-      completion: 0,
-      stage: 'Feasibility',
-      sprint: 'Sprint 2'
-    },
-    // Formulation Stage
-    {
-      id: 'T8',
-      name: 'API Characterization',
-      module: 'Formulation',
-      assignee: 'Mia Chen',
-      planStart: new Date(2026, 5, 10),
-      planEnd: new Date(2026, 5, 24),
-      actualStartObj: new Date(2026, 5, 10),
-      actualEndObj: new Date(2026, 5, 23),
-      status: 'Completed',
-      completion: 100,
-      stage: 'Formulation',
-      sprint: 'Sprint 1'
-    },
-    {
-      id: 'T9',
-      name: 'API–Excipient Compatibility Study',
-      module: 'Formulation',
-      assignee: 'Mia Chen',
-      planStart: new Date(2026, 5, 18),
-      planEnd: new Date(2026, 6, 2),
-      actualStartObj: new Date(2026, 5, 18),
-      actualEndObj: new Date(2026, 6, 2),
-      status: 'Completed',
-      completion: 100,
-      stage: 'Formulation',
-      sprint: 'Sprint 2'
-    },
-    {
-      id: 'T10',
-      name: 'Excipient Screening',
-      module: 'Formulation',
-      assignee: 'Ana Vega',
-      planStart: new Date(2026, 5, 25),
-      planEnd: new Date(2026, 6, 10),
-      actualStartObj: new Date(2026, 5, 25),
-      actualEndObj: new Date(2026, 6, 10),
-      status: 'Completed',
-      completion: 100,
-      stage: 'Formulation',
-      sprint: 'Sprint 2'
-    },
-    {
-      id: 'T11',
-      name: 'Prototype Formulation Design',
-      module: 'Formulation',
-      assignee: 'Ravi Shah',
-      planStart: new Date(2026, 6, 1),
-      planEnd: new Date(2026, 6, 18),
       actualStartObj: new Date(2026, 6, 1),
-      actualEndObj: null,
-      status: 'In Process',
-      completion: 75,
-      stage: 'Formulation',
+      actualEndObj: new Date(2026, 6, 20),
+      status: 'Completed',
+      completion: 100,
+      stage: 'S1 - Opportunity Identification',
       sprint: 'Sprint 2'
-    },
-    {
-      id: 'T12',
-      name: 'Laboratory Prototype Batch',
-      module: 'Formulation',
-      assignee: 'Sara Iqbal',
-      planStart: new Date(2026, 6, 10),
-      planEnd: new Date(2026, 6, 28),
-      actualStartObj: new Date(2026, 6, 10),
-      actualEndObj: null,
-      status: 'In Process',
-      completion: 50,
-      stage: 'Formulation',
-      sprint: 'Sprint 3'
-    },
-    {
-      id: 'T13',
-      name: 'Dissolution Testing',
-      module: 'Formulation',
-      assignee: 'Ana Vega',
-      planStart: new Date(2026, 6, 18),
-      planEnd: new Date(2026, 7, 5),
-      actualStartObj: new Date(2026, 6, 18),
-      actualEndObj: null,
-      status: 'Overdue',
-      completion: 30,
-      stage: 'Formulation',
-      sprint: 'Sprint 3'
-    },
-    {
-      id: 'T14',
-      name: 'Formulation Optimization',
-      module: 'Formulation',
-      assignee: 'Mei Tanaka',
-      planStart: new Date(2026, 6, 25),
-      planEnd: new Date(2026, 7, 12),
-      actualStartObj: null,
-      actualEndObj: null,
-      status: 'Pending',
-      completion: 0,
-      stage: 'Formulation',
-      sprint: 'Sprint 3'
-    },
-    // Development Stage
-    {
-      id: 'T15',
-      name: 'Analytical Method Development',
-      module: 'Development',
-      assignee: 'Sara Iqbal',
-      planStart: new Date(2026, 7, 1),
-      planEnd: new Date(2026, 7, 20),
-      actualStartObj: null,
-      actualEndObj: null,
-      status: 'Pending',
-      completion: 0,
-      stage: 'Development',
-      sprint: 'Sprint 4'
-    },
-    {
-      id: 'T16',
-      name: 'Stability Studies Initiation',
-      module: 'Development',
-      assignee: 'Diego Ruiz',
-      planStart: new Date(2026, 7, 12),
-      planEnd: new Date(2026, 7, 30),
-      actualStartObj: null,
-      actualEndObj: null,
-      status: 'Pending',
-      completion: 0,
-      stage: 'Development',
-      sprint: 'Sprint 4'
-    },
-    // Testing Stage
-    {
-      id: 'T17',
-      name: 'Pilot Batch Scale-Up',
-      module: 'Testing',
-      assignee: 'Priya Nair',
-      planStart: new Date(2026, 7, 22),
-      planEnd: new Date(2026, 8, 12),
-      actualStartObj: null,
-      actualEndObj: null,
-      status: 'Pending',
-      completion: 0,
-      stage: 'Testing',
-      sprint: 'Sprint 4'
-    },
-    {
-      id: 'T18',
-      name: 'Bioequivalence (BE) Study Readiness',
-      module: 'Testing',
-      assignee: 'Olivia Brown',
-      planStart: new Date(2026, 8, 1),
-      planEnd: new Date(2026, 8, 22),
-      actualStartObj: null,
-      actualEndObj: null,
-      status: 'Pending',
-      completion: 0,
-      stage: 'Testing',
-      sprint: 'Sprint 5'
-    },
-    // Validation Stage
-    {
-      id: 'T19',
-      name: 'Process Validation Batches',
-      module: 'Validation',
-      assignee: 'Olivia Brown',
-      planStart: new Date(2026, 8, 15),
-      planEnd: new Date(2026, 9, 2),
-      actualStartObj: null,
-      actualEndObj: null,
-      status: 'Pending',
-      completion: 0,
-      stage: 'Validation',
-      sprint: 'Sprint 5'
-    },
-    {
-      id: 'T20',
-      name: 'Commercial Site Tech Transfer',
-      module: 'Validation',
-      assignee: 'Diego Ruiz',
-      planStart: new Date(2026, 8, 25),
-      planEnd: new Date(2026, 9, 15),
-      actualStartObj: null,
-      actualEndObj: null,
-      status: 'Pending',
-      completion: 0,
-      stage: 'Validation',
-      sprint: 'Sprint 5'
-    },
-    // Regulatory Stage
-    {
-      id: 'T21',
-      name: 'Regulatory Dossier Preparation & Filing',
-      module: 'Regulatory',
-      assignee: 'Olivia Brown',
-      planStart: new Date(2026, 9, 5),
-      planEnd: new Date(2026, 9, 28),
-      actualStartObj: null,
-      actualEndObj: null,
-      status: 'Pending',
-      completion: 0,
-      stage: 'Regulatory',
-      sprint: 'Sprint 5'
     }
   ];
 

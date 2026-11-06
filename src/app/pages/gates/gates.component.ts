@@ -72,112 +72,95 @@ export class GatesComponent implements OnInit {
   // Master Data Array
   masterData: Gate[] = [
     {
-        "name": "Opportunity and portfolio approval",
-        "count": 7,
-        "route": "feasibility",
-        "status": true,
-        "description": "Formal governance checkpoint to assess evidence, quality and regulatory risks, budget, schedule, resource readiness and unresolved actions for opportunity and portfolio approval. The accountable cross-functional stakeholders approve progression, request corrective actions, or place the program on hold. Decisions and actions must be documented.",
-        "stageCode": "S1",
-        "gateCode": "Gate 1",
-        "division": "Oral Solids - OS",
-        "divisions": [
-            "Oral Solids - OS"
-        ],
-        "workflow": "3/5"
+      name: 'Concept Approval',
+      count: 7,
+      route: 'feasibility',
+      status: true,
+      description: 'Formal governance checkpoint to assess technical, economic, and regulatory feasibility of candidate chemistries, market demand, and business case before funding route scouting.',
+      stageCode: 'S2',
+      gateCode: 'Gate 1',
+      division: 'Polymers & Resins - PR',
+      divisions: [
+        'Polymers & Resins - PR'
+      ],
+      workflow: '3/5',
+      updatedDate: '2026-02-15',
+      updatedBy: 'Dr. Priya Raman',
+      historyCount: 5
     },
     {
-        "name": "Product definition and project charter approval",
-        "count": 6,
-        "route": "formulation",
-        "status": true,
-        "description": "Formal governance checkpoint to assess evidence, quality and regulatory risks, budget, schedule, resource readiness and unresolved actions for product definition and project charter approval. The accountable cross-functional stakeholders approve progression, request corrective actions, or place the program on hold. Decisions and actions must be documented.",
-        "stageCode": "S2",
-        "gateCode": "Gate 2",
-        "division": "Oral Solids - OS, Injectables - IJ",
-        "divisions": [
-            "Oral Solids - OS",
-            "Injectables - IJ"
-        ],
-        "workflow": "2/5"
+      name: 'Process Route Selection',
+      count: 6,
+      route: 'route-selection',
+      status: true,
+      description: 'Select the commercial route based on bench-scale yield, selectivity, robustness, impurity profile, preliminary safety screening, and basis of design.',
+      stageCode: 'S5',
+      gateCode: 'Gate 2',
+      division: 'Polymers & Resins - PR, Specialty Chemicals - SC',
+      divisions: [
+        'Polymers & Resins - PR',
+        'Specialty Chemicals - SC'
+      ],
+      workflow: '2/5',
+      updatedDate: '2026-02-12',
+      updatedBy: 'Rajesh Kumar',
+      historyCount: 2
     },
     {
-        "name": "Formulation concept and sourcing strategy approval",
-        "count": 6,
-        "route": "development",
-        "status": false,
-        "description": "Formal governance checkpoint to assess evidence, quality and regulatory risks, budget, schedule, resource readiness and unresolved actions for formulation concept and sourcing strategy approval. The accountable cross-functional stakeholders approve progression, request corrective actions, or place the program on hold. Decisions and actions must be documented.",
-        "stageCode": "S3, S4",
-        "gateCode": "Gate 3",
-        "division": "Oral Solids - OS, Biotech - BT",
-        "divisions": [
-            "Oral Solids - OS",
-            "Biotech - BT"
-        ],
-        "workflow": "4/5"
+      name: 'Registration & Pilot Readiness',
+      count: 6,
+      route: 'pilot-readiness',
+      status: false,
+      description: 'Assess process hazard analysis (HAZOP/LOPA), pilot plant readiness, analytical method validation, and REACH/TSCA environmental and toxicology data package before pilot campaign.',
+      stageCode: 'S7',
+      gateCode: 'Gate 3',
+      division: 'Polymers & Resins - PR, Petrochemicals - PC',
+      divisions: [
+        'Polymers & Resins - PR',
+        'Petrochemicals - PC'
+      ],
+      workflow: '4/5',
+      updatedDate: '2026-02-10',
+      updatedBy: 'Anita Desai',
+      historyCount: 3
     },
     {
-        "name": "Formulation and process development approval",
-        "count": 6,
-        "route": "testing",
-        "status": false,
-        "description": "Formal governance checkpoint to assess evidence, quality and regulatory risks, budget, schedule, resource readiness and unresolved actions for formulation and process development approval. The accountable cross-functional stakeholders approve progression, request corrective actions, or place the program on hold. Decisions and actions must be documented.",
-        "stageCode": "S4",
-        "gateCode": "Gate 4",
-        "division": "Oral Solids - OS",
-        "divisions": [
-            "Oral Solids - OS"
-        ],
-        "workflow": "3/5"
+      name: 'Demo-Scale Proof',
+      count: 6,
+      route: 'demo-scale',
+      status: false,
+      description: 'Review pilot and demo-scale batch results, customer qualification evidence, process safety review, and capex package for commercial plant build.',
+      stageCode: 'S10',
+      gateCode: 'Gate 4',
+      division: 'Polymers & Resins - PR',
+      divisions: [
+        'Polymers & Resins - PR'
+      ],
+      workflow: '3/5',
+      updatedDate: '2026-02-05',
+      updatedBy: 'Suresh Naidu',
+      historyCount: 4
     },
     {
-        "name": "Facility and manufacturing readiness approval",
-        "count": 5,
-        "route": "validation",
-        "status": false,
-        "description": "Formal governance checkpoint to assess evidence, quality and regulatory risks, budget, schedule, resource readiness and unresolved actions for facility and manufacturing readiness approval. The accountable cross-functional stakeholders approve progression, request corrective actions, or place the program on hold. Decisions and actions must be documented.",
-        "stageCode": "S5, S7",
-        "gateCode": "Gate 5",
-        "division": "Oral Solids - OS, Injectables - IJ, Biotech - BT",
-        "divisions": [
-            "Oral Solids - OS",
-            "Injectables - IJ",
-            "Biotech - BT"
-        ],
-        "workflow": "5/5"
-    },
-    {
-        "name": "Validation and regulatory submission readiness",
-        "count": 5,
-        "route": "validation",
-        "status": false,
-        "description": "Formal governance checkpoint to assess evidence, quality and regulatory risks, budget, schedule, resource readiness and unresolved actions for validation and regulatory submission readiness. The accountable cross-functional stakeholders approve progression, request corrective actions, or place the program on hold. Decisions and actions must be documented.",
-        "stageCode": "S6, S9",
-        "gateCode": "Gate 6",
-        "division": "Oral Solids - OS, Injectables - IJ, Biotech - BT",
-        "divisions": [
-            "Oral Solids - OS",
-            "Injectables - IJ",
-            "Biotech - BT"
-        ],
-        "workflow": "5/5"
-    },
-    {
-        "name": "Commercial launch authorization",
-        "count": 5,
-        "route": "validation",
-        "status": false,
-        "description": "Formal governance checkpoint to assess evidence, quality and regulatory risks, budget, schedule, resource readiness and unresolved actions for commercial launch authorization. The accountable cross-functional stakeholders approve progression, request corrective actions, or place the program on hold. Decisions and actions must be documented.",
-        "stageCode": "S7, S11",
-        "gateCode": "Gate 7",
-        "division": "Oral Solids - OS, Injectables - IJ, Biotech - BT",
-        "divisions": [
-            "Oral Solids - OS",
-            "Injectables - IJ",
-            "Biotech - BT"
-        ],
-        "workflow": "5/5"
+      name: 'Commercial Production Readiness',
+      count: 5,
+      route: 'commercial-readiness',
+      status: false,
+      description: 'Verify plant commissioning and performance test results, operating procedures and training, pre-startup safety review, operating permits, and GHS/CLP labeling before commercial launch.',
+      stageCode: 'S11',
+      gateCode: 'Gate 5',
+      division: 'Polymers & Resins - PR, Specialty Chemicals - SC, Petrochemicals - PC',
+      divisions: [
+        'Polymers & Resins - PR',
+        'Specialty Chemicals - SC',
+        'Petrochemicals - PC'
+      ],
+      workflow: '5/5',
+      updatedDate: '2026-01-30',
+      updatedBy: 'Amit Patel',
+      historyCount: 5
     }
-];
+  ];
 
   pagedData: Gate[] = [];
 
@@ -201,7 +184,7 @@ export class GatesComponent implements OnInit {
 
   ngOnInit(): void {
     const sampleDates = ['2026-02-15', '2026-02-12', '2026-02-10', '2026-02-05', '2026-01-30'];
-    const sampleUsers = ['Dr. Sarah Jenkins', 'Rajesh Kumar', 'Anita Desai', 'Priya Reddy', 'Suresh Naidu'];
+    const sampleUsers = ['Dr. Priya Raman', 'Rajesh Kumar', 'Anita Desai', 'Priya Reddy', 'Suresh Naidu'];
     this.masterData.forEach((g, idx) => {
       if (!g.historyCount) {
         g.historyCount = this.getHistoryCount(idx);
@@ -323,8 +306,8 @@ export class GatesComponent implements OnInit {
           status: true,
           stageCode: result.stageCode || '',
           gateCode: `Gate ${nextId}`,
-          division: result.division || 'Oral Solids - OS',
-          divisions: result.divisions || (result.division ? [result.division] : ['Oral Solids - OS']),
+          division: result.division || 'Polymers & Resins - PR',
+          divisions: result.divisions || (result.division ? [result.division] : ['Polymers & Resins - PR']),
           route: `gate-${nextId}`,
           historyCount: 1
         };

@@ -34,9 +34,9 @@ export class ProjectOverviewComponent implements OnInit, AfterViewInit, OnDestro
 
   private chart: any;
 
-  projectName: string = 'Generic Tablet Development';
-  projectCode: string = '2026/GEN/001';
-  dynamicBreadcrumb: string = 'Generic Tablet Development - 2026/GEN/001';
+  projectName: string = 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = '2026/CHM/006';
+  dynamicBreadcrumb: string = 'Acrylic Emulsion Binder 50% Solids - 2026/CHM/006';
 
   // Gate Badges
   gates = [
@@ -127,7 +127,13 @@ export class ProjectOverviewComponent implements OnInit, AfterViewInit, OnDestro
           letterSpacing: '0.5px'
         }
       },
-      categories: ['STAGE 1', 'STAGE 2', 'STAGE 3', 'STAGE 4', 'STAGE 5']
+      categories: [
+        'PHASE 1 - Concept & Feasibility',
+        'PHASE 2 - Route Development & Selection',
+        'PHASE 3 - Pilot Development & Safety',
+        'PHASE 4 - Registration & Scale-Up',
+        'PHASE 5 - Commercial Plant & Launch'
+      ]
     },
     tooltip: {
       useHTML: true,
@@ -167,8 +173,14 @@ export class ProjectOverviewComponent implements OnInit, AfterViewInit, OnDestro
             </div>
           `;
         } else {
-          const stageNames = ['Stage 1: Feasibility', 'Stage 2: Design', 'Stage 3: Prototyping', 'Stage 4: Testing', 'Stage 5: Launch'];
-          const stageName = stageNames[point.y] || `Stage ${point.y + 1}`;
+          const stageNames = [
+            'PHASE 1 - Concept & Feasibility',
+            'PHASE 2 - Route Development & Selection',
+            'PHASE 3 - Pilot Development & Safety',
+            'PHASE 4 - Registration & Scale-Up',
+            'PHASE 5 - Commercial Plant & Launch'
+          ];
+          const stageName = stageNames[point.y] || `Phase ${point.y + 1}`;
           const startDate = Highcharts.dateFormat('%b %d, %Y', point.start);
           const endDate = Highcharts.dateFormat('%b %d, %Y', point.end);
           const statusText = point.custom?.label ? (point.custom.label === '100%' ? 'Complete' : `In Progress (${point.custom.label})`) : 'Planned';
@@ -236,17 +248,17 @@ export class ProjectOverviewComponent implements OnInit, AfterViewInit, OnDestro
             lineColor: 'transparent'
           },
           custom: {
-            gateName: 'Gate 1: Concept & Feasibility Approval',
+            gateName: 'Gate 1: Concept Approval',
             gateStatus: 'Passed & Approved',
-            gateDate: '15 Apr 2026',
-            gateDesc: 'Initial feasibility review, concept sign-off, and business case clearance approved.'
+            gateDate: '12 Mar 2026',
+            gateDesc: 'Business case, patent search and project charter approved.'
           }
         },
 
-        // STAGE 2
+        // PHASE 2
         {
           y: 1,
-          start: Date.UTC(2026, 3, 1),
+          start: Date.UTC(2026, 2, 12),
           end: Date.UTC(2026, 7, 15),
           color: '#fef08a',
           borderColor: 'transparent',
@@ -257,22 +269,11 @@ export class ProjectOverviewComponent implements OnInit, AfterViewInit, OnDestro
           },
           custom: { label: '60%' }
         },
-
-        // STAGE 3
         {
-          y: 2,
-          start: Date.UTC(2026, 6, 20),
-          end: Date.UTC(2026, 10, 20),
-          color: '#e2e8f0',
-          borderColor: 'transparent',
-          borderWidth: 0,
-          custom: { label: '' }
-        },
-        {
-          y: 2,
-          start: Date.UTC(2026, 10, 20),
+          y: 1,
+          start: Date.UTC(2026, 7, 15),
           milestone: true,
-          color: '#94a3b8',
+          color: '#f59e0b',
           marker: {
             symbol: 'diamond',
             radius: 6,
@@ -280,26 +281,26 @@ export class ProjectOverviewComponent implements OnInit, AfterViewInit, OnDestro
             lineColor: 'transparent'
           },
           custom: {
-            gateName: 'Gate 3: Prototype & Safety Clearance',
-            gateStatus: 'Scheduled / Pending',
-            gateDate: '20 Nov 2026',
-            gateDesc: 'Physical prototype testing, EHS safety compliance, and tooling validation.'
+            gateName: 'Gate 2: Process Route Selection',
+            gateStatus: 'Under Review / In Progress',
+            gateDate: '15 Aug 2026',
+            gateDesc: 'Candidate route yield, selectivity and preliminary basis of design review.'
           }
         },
 
-        // STAGE 4
+        // PHASE 3
         {
-          y: 3,
-          start: Date.UTC(2026, 9, 15),
-          end: Date.UTC(2027, 2, 25),
+          y: 2,
+          start: Date.UTC(2026, 7, 16),
+          end: Date.UTC(2026, 11, 20),
           color: '#e2e8f0',
           borderColor: 'transparent',
           borderWidth: 0,
           custom: { label: '' }
         },
         {
-          y: 3,
-          start: Date.UTC(2027, 2, 25),
+          y: 2,
+          start: Date.UTC(2026, 11, 20),
           milestone: true,
           color: '#94a3b8',
           marker: {
@@ -309,26 +310,26 @@ export class ProjectOverviewComponent implements OnInit, AfterViewInit, OnDestro
             lineColor: 'transparent'
           },
           custom: {
-            gateName: 'Gate 4: Pre-Production Pilot Audit',
+            gateName: 'Gate 3: Registration & Pilot Readiness',
             gateStatus: 'Scheduled / Pending',
-            gateDate: '25 Mar 2027',
-            gateDesc: 'Pilot line assembly run evaluation, quality yield audit, and ramp-up readiness.'
+            gateDate: '20 Dec 2026',
+            gateDesc: 'HAZOP review, analytical method validation and pilot plant readiness.'
           }
         },
 
-        // STAGE 5
+        // PHASE 4
         {
-          y: 4,
-          start: Date.UTC(2027, 2, 1),
-          end: Date.UTC(2027, 6, 15),
+          y: 3,
+          start: Date.UTC(2026, 11, 21),
+          end: Date.UTC(2027, 3, 25),
           color: '#e2e8f0',
           borderColor: 'transparent',
           borderWidth: 0,
           custom: { label: '' }
         },
         {
-          y: 4,
-          start: Date.UTC(2027, 6, 15),
+          y: 3,
+          start: Date.UTC(2027, 3, 25),
           milestone: true,
           color: '#94a3b8',
           marker: {
@@ -338,10 +339,39 @@ export class ProjectOverviewComponent implements OnInit, AfterViewInit, OnDestro
             lineColor: 'transparent'
           },
           custom: {
-            gateName: 'Gate 5: Mass Production Launch',
+            gateName: 'Gate 4: Demo-Scale Proof',
             gateStatus: 'Scheduled / Pending',
-            gateDate: '15 Jul 2027',
-            gateDesc: 'Final commercial launch clearance, line sign-off, and production handover.'
+            gateDate: '25 Apr 2027',
+            gateDesc: 'Demo campaign proof, customer qualification trials and REACH / TSCA status.'
+          }
+        },
+
+        // PHASE 5
+        {
+          y: 4,
+          start: Date.UTC(2027, 3, 26),
+          end: Date.UTC(2027, 6, 31),
+          color: '#e2e8f0',
+          borderColor: 'transparent',
+          borderWidth: 0,
+          custom: { label: '' }
+        },
+        {
+          y: 4,
+          start: Date.UTC(2027, 6, 31),
+          milestone: true,
+          color: '#94a3b8',
+          marker: {
+            symbol: 'diamond',
+            radius: 6,
+            lineWidth: 0,
+            lineColor: 'transparent'
+          },
+          custom: {
+            gateName: 'Gate 5: Commercial Production Readiness',
+            gateStatus: 'Scheduled / Pending',
+            gateDate: '31 Jul 2027',
+            gateDesc: 'Commercial plant commissioning, GHS labeling and launch authorization.'
           }
         }
       ]
@@ -402,8 +432,8 @@ export class ProjectOverviewComponent implements OnInit, AfterViewInit, OnDestro
   goBack(): void {
     this.router.navigate(['/projects/dashboard/analytics'], {
       queryParams: {
-        code: this.projectCode || '2026/GEN/001',
-        name: this.projectName || 'Generic Tablet Development'
+        code: this.projectCode || '2026/CHM/006',
+        name: this.projectName || 'Acrylic Emulsion Binder 50% Solids'
       }
     });
   }

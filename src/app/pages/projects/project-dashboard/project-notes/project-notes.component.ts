@@ -70,9 +70,9 @@ export class ProjectNotesComponent implements OnInit {
   editNoteText: string = '';
   editDialogRef: any = null;
 
-  projectName: string = 'Generic Tablet Development';
-  projectCode: string = '2026/GEN/001';
-  dynamicBreadcrumb: string = 'Notes';
+  projectName: string = 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = '2026/CHM/006';
+  dynamicBreadcrumb: string = 'Acrylic Emulsion Binder 50% Solids - 2026/CHM/006';
 
   constructor(
     private router: Router,
@@ -95,20 +95,20 @@ export class ProjectNotesComponent implements OnInit {
   }
 
   loadTags(): void {
-    const stored = localStorage.getItem('rpm_tags_v2');
+    const stored = localStorage.getItem('rpm_tags_chm_v1');
     let tagsList = [];
     if (stored) {
       tagsList = JSON.parse(stored);
     } else {
       tagsList = [
-        { id: 1, name: 'API Assessment', isActive: true, description: 'Notes regarding API evaluation and sourcing' },
-        { id: 2, name: 'Formulation', isActive: true, description: 'Notes regarding formulation trials and excipients' },
-        { id: 3, name: 'Analytical', isActive: true, description: 'Notes regarding assay and dissolution testing' },
-        { id: 4, name: 'Manufacturing', isActive: true, description: 'Notes regarding compression and batch processing' },
-        { id: 5, name: 'Stability', isActive: true, description: 'Notes regarding stability study evaluations' },
-        { id: 6, name: 'Regulatory', isActive: true, description: 'Notes regarding dossier preparation and filings' }
+        { id: 1, name: 'Raw Material', isActive: true, description: 'Notes regarding raw material and monomer evaluation' },
+        { id: 2, name: 'Recipe', isActive: true, description: 'Notes regarding polymerization recipe and surfactant screening' },
+        { id: 3, name: 'Analytical', isActive: true, description: 'Notes regarding solids, particle size and viscosity testing' },
+        { id: 4, name: 'Process', isActive: true, description: 'Notes regarding reactor runs, exotherm control and filtration' },
+        { id: 5, name: 'Stability', isActive: true, description: 'Notes regarding thermal aging and freeze-thaw stability' },
+        { id: 6, name: 'Regulatory', isActive: true, description: 'Notes regarding REACH/TSCA dossier preparation and SDS' }
       ];
-      localStorage.setItem('rpm_tags_v2', JSON.stringify(tagsList));
+      localStorage.setItem('rpm_tags_chm_v1', JSON.stringify(tagsList));
     }
     this.availableTags = tagsList.filter((t: any) => t.isActive).map((t: any) => t.name);
     if (this.availableTags.length > 0 && !this.selectedTag) {
@@ -117,7 +117,7 @@ export class ProjectNotesComponent implements OnInit {
   }
 
   loadNotes(): void {
-    const stored = localStorage.getItem('rpm_notes_v3');
+    const stored = localStorage.getItem('rpm_notes_chm_v1');
     if (stored) {
       this.notesList = JSON.parse(stored);
     } else {
@@ -126,23 +126,23 @@ export class ProjectNotesComponent implements OnInit {
           actions: '',
           date: '06/05/2026',
           postedBy: 'Rajesh Kumar',
-          message: 'API evaluation completed; supplier qualification is under review with 2 qualified DMF sources.',
-          document: 'API Specification.pdf',
-          tags: 'API Assessment'
+          message: 'Raw material evaluation completed; monomer supplier qualification is under review with 2 shortlisted sources.',
+          document: 'Monomer Specification.pdf',
+          tags: 'Raw Material'
         },
         {
           actions: '',
           date: '06/12/2026',
           postedBy: 'Anita Desai',
-          message: 'Formulation trial completed with selected excipients; dissolution similarity f2 > 65 observed against RLD.',
-          document: 'Formulation Development Report.pdf',
-          tags: 'Formulation'
+          message: 'Recipe screening completed with the selected surfactant system; particle size of 120 nm and 50% solids achieved in lab batches.',
+          document: 'Recipe Screening Report.pdf',
+          tags: 'Recipe'
         },
         {
           actions: '',
           date: '06/20/2026',
           postedBy: 'Amit Patel',
-          message: 'Analytical testing initiated for assay and degradation impurity HPLC method development.',
+          message: 'Analytical testing initiated for solids, particle size, viscosity and residual monomer (GC) method development.',
           document: 'Analytical Method Report.pdf',
           tags: 'Analytical'
         },
@@ -150,15 +150,15 @@ export class ProjectNotesComponent implements OnInit {
           actions: '',
           date: '06/28/2026',
           postedBy: 'Neha Sharma',
-          message: 'Tablet compression trial completed for the pilot development batch with uniform hardness and < 0.5% friability.',
-          document: 'Manufacturing Process Record.pdf',
-          tags: 'Manufacturing'
+          message: 'Lab-scale 2 L polymerization completed with controlled exotherm and less than 0.05% coagulum.',
+          document: 'Process Execution Record.pdf',
+          tags: 'Process'
         },
         {
           actions: '',
           date: '07/04/2026',
-          postedBy: 'Vikram Malhotra',
-          message: 'Initiated 3-month accelerated stability testing (40°C/75% RH) and controlled photostability stress testing.',
+          postedBy: 'Vikram Singh',
+          message: 'Initiated 3-month accelerated storage stability testing (50 degrees C) and freeze-thaw cycling on the emulsion.',
           document: 'Stability Protocol.pdf',
           tags: 'Stability'
         },
@@ -166,60 +166,12 @@ export class ProjectNotesComponent implements OnInit {
           actions: '',
           date: '07/11/2026',
           postedBy: 'Priya Nair',
-          message: 'Completed eCTD Module 3 Drug Substance (3.2.S) documentation, CoA verification, and specification review.',
-          document: 'eCTD Module 3 Draft.pdf',
-          tags: 'Regulatory'
-        },
-        {
-          actions: '',
-          date: '07/18/2026',
-          postedBy: 'Rajesh Kumar',
-          message: 'Second vendor audit and CEP verification completed with clean quality assurance review.',
-          document: 'Vendor Qualification Report.pdf',
-          tags: 'API Assessment'
-        },
-        {
-          actions: '',
-          date: '07/25/2026',
-          postedBy: 'Anita Desai',
-          message: 'Optimized aqueous film coating parameters to prevent tablet edge chipping during blister packaging trials.',
-          document: 'Coating Parameter Study.pdf',
-          tags: 'Formulation'
-        },
-        {
-          actions: '',
-          date: '08/02/2026',
-          postedBy: 'Amit Patel',
-          message: 'Forced degradation stress study completed; demonstrated method specificity with no co-eluting peaks.',
-          document: 'Degradation Study Report.pdf',
-          tags: 'Analytical'
-        },
-        {
-          actions: '',
-          date: '08/09/2026',
-          postedBy: 'Neha Sharma',
-          message: 'Fluid bed drying LOD endpoint mapped within optimal 1.2% - 1.8% moisture range.',
-          document: 'FBD Optimization Report.pdf',
-          tags: 'Manufacturing'
-        },
-        {
-          actions: '',
-          date: '08/16/2026',
-          postedBy: 'Vikram Malhotra',
-          message: '1-Month accelerated stability testing shows 99.8% active potency retention and no out-of-spec degradants.',
-          document: 'Stability Interim Readout.pdf',
-          tags: 'Stability'
-        },
-        {
-          actions: '',
-          date: '08/23/2026',
-          postedBy: 'Priya Nair',
-          message: 'Preliminary QA gap analysis conducted for regulatory submission readiness dossier.',
-          document: 'Regulatory Gap Analysis.pdf',
+          message: 'Completed REACH data gap analysis, SDS authoring and specification review.',
+          document: 'REACH Dossier Draft.pdf',
           tags: 'Regulatory'
         }
       ];
-      localStorage.setItem('rpm_notes_v3', JSON.stringify(this.notesList));
+      localStorage.setItem('rpm_notes_chm_v1', JSON.stringify(this.notesList));
     }
     const defaultUpdaters = ['Dr. Sarah Jenkins', 'Rajesh Kumar', 'Anita Desai', 'Amit Patel', 'Neha Sharma', 'Vikram Malhotra', 'Priya Nair'];
     const defaultDates = ['2026-06-05', '2026-06-12', '2026-06-20', '2026-06-28', '2026-07-04', '2026-07-11', '2026-07-18', '2026-07-25', '2026-08-02', '2026-08-09', '2026-08-16', '2026-08-23'];

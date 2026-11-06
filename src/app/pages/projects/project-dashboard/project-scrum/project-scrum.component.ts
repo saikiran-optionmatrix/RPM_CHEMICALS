@@ -118,20 +118,26 @@ export interface CalendarCell {
 })
 export class ProjectScrumComponent implements OnInit {
 
-  projectName: string = 'Generic Tablet Development';
-  projectCode: string = '2026/GEN/001';
+  projectName: string = 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = '2026/CHM/006';
   dynamicBreadcrumb: string = 'Scrum';
 
-  team = ['Aarav Shah', 'Priya Nair', 'Diego Ruiz', 'Mei Tanaka', 'Olivia Brown'];
+  team = ['Rajesh Kumar', 'Anita Desai', 'Priya Reddy', 'Amit Patel', 'Suresh Naidu'];
   stages: Stage[] = [
-    'Feasibility',
-    'Formulation',
-    'Development',
-    'Testing',
-    'Validation',
-    'Regulatory'
+    'S1 - Opportunity Identification',
+    'S2 - Concept Screening & Feasibility',
+    'S3 - Route Scouting & Lab Synthesis',
+    'S4 - Process Optimization (Lab Scale)',
+    'S5 - Process Route Selection & Basis of Design',
+    'S6 - Bench-to-Pilot Process Development',
+    'S7 - Process Safety & Regulatory Studies',
+    'S8 - Regulatory Registration Filing (REACH / TSCA)',
+    'S9 - Pilot Plant Campaign',
+    'S10 - Demonstration-Scale Campaign',
+    'S11 - Commercial Plant Build & Commissioning',
+    'S12 - Commercial Launch & Ramp-Up'
   ];
-  stageFilter: 'all' | Stage = 'Formulation';
+  stageFilter: 'all' | Stage = 'S4 - Process Optimization (Lab Scale)';
 
   showAssignmentView = false;
   isAddSprintMode = false;
@@ -247,34 +253,35 @@ export class ProjectScrumComponent implements OnInit {
     {
       id: 'backlog', label: 'Backlog', kind: 'backlog',
       tasks: [
-        this.t('Reference Product Characterization', 'TSK-101', 'JOB-21', '2026-01-05', '2026-01-20', 24, 10, 'Analyze the reference product\'s dosage form, strength, physical characteristics, and target quality attributes.', 'Feasibility', 'Pending'),
-        this.t('Target Product Profile Definition', 'TSK-102', 'JOB-21', '2026-02-01', '2026-02-25', 20, 8, 'Define the desired quality, performance, and formulation requirements for the generic tablet.', 'Feasibility', 'Pending'),
-        this.t('API Characterization', 'TSK-103', 'JOB-22', '2026-03-02', '2026-03-20', 32, 14, 'Evaluate API properties relevant to formulation development and product performance.', 'Formulation', 'Allocated'),
-        this.t('API–Excipient Compatibility Study', 'TSK-104', 'JOB-22', '2026-04-05', '2026-04-26', 40, 18, 'Assess potential interactions between the API and selected excipients.', 'Formulation', 'In Process'),
-        this.t('Excipient Screening', 'TSK-105', 'JOB-23', '2026-05-02', '2026-05-28', 36, 15, 'Evaluate and shortlist suitable excipients for the tablet formulation.', 'Formulation', 'In Process'),
-        this.t('Prototype Formulation Design', 'TSK-106', 'JOB-23', '2026-06-01', '2026-06-22', 48, 20, 'Develop preliminary formulation compositions using the selected API and excipients.', 'Formulation', 'On Hold'),
-        this.t('Laboratory Prototype Batch', 'TSK-107', 'JOB-24', '2026-07-01', '2026-07-15', 56, 22, 'Prepare laboratory-scale prototype batches and document formulation and process parameters.', 'Formulation', 'Cancelled'),
-        this.t('Dissolution Testing', 'TSK-108', 'JOB-24', '2026-08-03', '2026-08-25', 40, 18, 'Evaluate dissolution performance of prototype batches against predefined targets.', 'Formulation', 'Completed'),
-        this.t('Formulation Optimization', 'TSK-109', 'JOB-25', '2026-09-01', '2026-09-18', 60, 25, 'Analyze experimental results and optimize formulation composition and process parameters.', 'Formulation', 'Completed')
+        this.t('Benchmark Grade Characterization', 'TSK-101', 'JOB-21', '2026-01-05', '2026-01-20', 24, 10, 'Analyze benchmark product solids, viscosity, MFFT, Tg, and film appearance.', 'S1 - Opportunity Identification', 'Pending'),
+        this.t('Target Product Profile Definition', 'TSK-102', 'JOB-21', '2026-02-01', '2026-02-25', 20, 8, 'Define desired emulsion polymer specification, performance benchmarks, and regulatory requirements.', 'S1 - Opportunity Identification', 'Pending'),
+        this.t('Monomer and Surfactant Characterization', 'TSK-103', 'JOB-22', '2026-03-02', '2026-03-20', 32, 14, 'Evaluate monomer purity, inhibitor level and surfactant properties relevant to conversion and particle stability.', 'S4 - Process Optimization (Lab Scale)', 'Allocated'),
+        this.t('Initiator System Compatibility Study', 'TSK-104', 'JOB-22', '2026-04-05', '2026-04-26', 40, 18, 'Assess conversion and coagulum formation for candidate initiator and buffer systems.', 'S4 - Process Optimization (Lab Scale)', 'In Process'),
+        this.t('Surfactant Screening', 'TSK-105', 'JOB-23', '2026-05-02', '2026-05-28', 36, 15, 'Evaluate and shortlist surfactant and protective colloid systems for the emulsion.', 'S4 - Process Optimization (Lab Scale)', 'In Process'),
+        this.t('Monomer Feed Profile Optimization', 'TSK-106', 'JOB-23', '2026-06-01', '2026-06-22', 44, 20, 'Optimize feed rate, temperature and agitation to control exotherm and particle size.', 'S4 - Process Optimization (Lab Scale)', 'On Hold'),
+        this.t('Particle Size Control Study', 'TSK-107', 'JOB-24', '2026-07-01', '2026-07-15', 38, 16, 'Define surfactant level and seed strategy to reach the target particle size distribution.', 'S4 - Process Optimization (Lab Scale)', 'Cancelled'),
+        this.t('Residual Monomer Reduction', 'TSK-108', 'JOB-24', '2026-08-03', '2026-08-25', 42, 18, 'Develop a chaser-initiator step to reduce residual monomer below the target.', 'S4 - Process Optimization (Lab Scale)', 'Completed'),
+        this.t('Film Property Testing', 'TSK-109', 'JOB-25', '2026-09-01', '2026-09-18', 46, 22, 'Characterize minimum film-forming temperature, tensile strength and adhesion against the benchmark.', 'S4 - Process Optimization (Lab Scale)', 'Completed'),
+        this.t('Storage and Freeze-Thaw Stability Screening', 'TSK-110', 'JOB-25', '2026-09-19', '2026-10-01', 30, 12, 'Screen formulation conditions for coagulum, viscosity drift and freeze-thaw stability.', 'S4 - Process Optimization (Lab Scale)', 'Completed')
       ]
     },
     {
       id: 'sprint-1', label: 'Sprint 1', kind: 'completed',
       tasks: [
-        { ...this.t('Reference Product Characterization', 'TSK-001', 'JOB-10', '2026-06-01', '2026-06-02', 4, 1, 'Innovator RLD dissolution profile & crystalline form benchmarking.', 'Feasibility', 'Completed'), assigned: 'Aarav Shah', status: 'completed', approved: true, progress: 100, eta: '2026-06-02', actualStart: '2026-06-01', actualFinish: '2026-06-02', expenses: 250 },
-        { ...this.t('Target Product Profile Definition', 'TSK-002', 'JOB-10', '2026-06-02', '2026-06-03', 6, 1, 'Define QTPP criteria: assay, purity, content uniformity, stability.', 'Feasibility', 'Completed'), assigned: 'Diego Ruiz', status: 'completed', approved: true, progress: 85, eta: '2026-06-03', actualStart: '2026-06-02', actualFinish: '2026-06-03', expenses: 0 },
-        { ...this.t('API Characterization', 'TSK-003', 'JOB-11', '2026-06-03', '2026-06-04', 8, 1, 'Powder XRD, particle size distribution (D10/D50/D90) & DSC analysis.', 'Formulation', 'In Process'), assigned: 'Mei Tanaka', status: 'inprocess', approved: false, progress: 60, eta: '2026-06-04', actualStart: '2026-06-03', actualFinish: '', expenses: 50 },
-        { ...this.t('API–Excipient Compatibility Study', 'TSK-004', 'JOB-12', '2026-06-03', '2026-06-05', 6, 2, 'Isothermal stress testing with binders, disintegrants, and lubricants.', 'Formulation', 'Completed'), assigned: 'Olivia Brown', status: 'completed', approved: true, progress: 100, eta: '2026-06-05', actualStart: '2026-06-03', actualFinish: '2026-06-05', expenses: 1200 },
-        { ...this.t('Excipient Screening', 'TSK-005', 'JOB-12', '2026-06-02', '2026-06-04', 8, 2, 'Pharmacopoeial compliance and grade selection (USP-NF / Ph. Eur.).', 'Formulation', 'Allocated'), assigned: 'Diego Ruiz', status: 'allocated', approved: false, progress: 25, eta: '2026-06-04', actualStart: '2026-06-02', actualFinish: '', expenses: 0 }
+        { ...this.t('Benchmark Grade Characterization', 'TSK-001', 'JOB-10', '2026-06-01', '2026-06-02', 4, 1, 'Analyze benchmark product solids, viscosity, MFFT, Tg, and film appearance.', 'S1 - Opportunity Identification', 'Completed'), assigned: 'Rajesh Kumar', status: 'completed', approved: true, progress: 100, eta: '2026-06-02', actualStart: '2026-06-01', actualFinish: '2026-06-02', expenses: 250 },
+        { ...this.t('Target Product Profile Definition', 'TSK-002', 'JOB-10', '2026-06-02', '2026-06-03', 6, 1, 'Define target polymer solids, viscosity, scrub resistance, and VOC requirements.', 'S1 - Opportunity Identification', 'Completed'), assigned: 'Anita Desai', status: 'completed', approved: true, progress: 85, eta: '2026-06-03', actualStart: '2026-06-02', actualFinish: '2026-06-03', expenses: 0 },
+        { ...this.t('Monomer and Surfactant Characterization', 'TSK-003', 'JOB-11', '2026-06-03', '2026-06-04', 8, 1, 'Monomer purity, MEHQ inhibitor level and surfactant surface tension analysis.', 'S4 - Process Optimization (Lab Scale)', 'In Process'), assigned: 'Priya Reddy', status: 'inprocess', approved: false, progress: 60, eta: '2026-06-04', actualStart: '2026-06-03', actualFinish: '', expenses: 50 },
+        { ...this.t('Initiator System Compatibility Study', 'TSK-004', 'JOB-12', '2026-06-03', '2026-06-05', 6, 2, 'Redox system conversion kinetics and coagulum formation tests.', 'S4 - Process Optimization (Lab Scale)', 'Completed'), assigned: 'Amit Patel', status: 'completed', approved: true, progress: 100, eta: '2026-06-05', actualStart: '2026-06-03', actualFinish: '2026-06-05', expenses: 1200 },
+        { ...this.t('Surfactant Screening', 'TSK-005', 'JOB-12', '2026-06-02', '2026-06-04', 8, 2, 'Anionic/non-ionic emulsifier screening for emulsion particle stability.', 'S4 - Process Optimization (Lab Scale)', 'Allocated'), assigned: 'Anita Desai', status: 'allocated', approved: false, progress: 25, eta: '2026-06-04', actualStart: '2026-06-02', actualFinish: '', expenses: 0 }
       ]
     },
     {
       id: 'sprint-2', label: 'Sprint 2', kind: 'active',
       tasks: [
-        { ...this.t('Prototype Formulation Design', 'TSK-201', 'JOB-30', '2026-06-25', '2026-07-02', 16, 5, 'DOE formulation trial design matrix across 3 binder concentrations.', 'Formulation', 'In Process'), assigned: 'Priya Nair', status: 'inprocess', approved: false, progress: 75, eta: '2026-07-02', actualStart: '2026-06-26', actualFinish: '', expenses: 120, notes: [{ sender: 'Admin', date: '2026-07-02', text: 'Granulation complete, awaiting compression tool set.' }] },
-        { ...this.t('Laboratory Prototype Batch', 'TSK-202', 'JOB-30', '2026-06-26', '2026-06-30', 6, 2, '1 kg pilot blend compression and tablet hardness testing.', 'Formulation', 'Completed'), assigned: 'Priya Nair', status: 'completed', approved: true, progress: 100, eta: '2026-06-30', actualStart: '2026-06-26', actualFinish: '2026-06-29', expenses: 0 },
-        { ...this.t('Dissolution Testing', 'TSK-203', 'JOB-31', '2026-06-27', '2026-07-03', 10, 4, 'USP Apparatus II paddle dissolution at pH 1.2, 4.5, and 6.8.', 'Formulation', 'In Process'), assigned: 'Mei Tanaka', status: 'inprocess', approved: false, progress: 40, eta: '2026-07-03', actualStart: '2026-06-28', actualFinish: '', expenses: 50 },
-        { ...this.t('Formulation Optimization', 'TSK-204', 'JOB-31', '2026-06-29', '2026-07-01', 4, 2, 'Optimize disintegration time and friability (< 0.5%).', 'Formulation', 'Allocated'), assigned: 'Aarav Shah', status: 'allocated', approved: false, progress: 0, eta: '2026-07-01', actualStart: '', actualFinish: '', expenses: 0 }
+        { ...this.t('Monomer Feed Profile Optimization', 'TSK-201', 'JOB-30', '2026-06-25', '2026-07-02', 16, 5, 'Feed metering rates and jacket temperature control study.', 'S4 - Process Optimization (Lab Scale)', 'In Process'), assigned: 'Rajesh Kumar', status: 'inprocess', approved: false, progress: 75, eta: '2026-07-02', actualStart: '2026-06-26', actualFinish: '', expenses: 120, notes: [{ sender: 'Admin', date: '2026-07-02', text: 'Pre-emulsion stable, initiating continuous metering trial.' }] },
+        { ...this.t('Particle Size Control Study', 'TSK-202', 'JOB-30', '2026-06-26', '2026-06-30', 6, 2, 'Seed monomer ratio optimization for 120 nm target particle size.', 'S4 - Process Optimization (Lab Scale)', 'Completed'), assigned: 'Priya Reddy', status: 'completed', approved: true, progress: 100, eta: '2026-06-30', actualStart: '2026-06-26', actualFinish: '2026-06-29', expenses: 0 },
+        { ...this.t('Residual Monomer Reduction', 'TSK-203', 'JOB-31', '2026-06-27', '2026-07-03', 10, 4, 'Chaser initiator dosing and residual butyl acrylate stripping.', 'S4 - Process Optimization (Lab Scale)', 'In Process'), assigned: 'Amit Patel', status: 'inprocess', approved: false, progress: 40, eta: '2026-07-03', actualStart: '2026-06-28', actualFinish: '', expenses: 50 },
+        { ...this.t('Film Property Testing', 'TSK-204', 'JOB-31', '2026-06-29', '2026-07-01', 4, 2, 'Elongation at break, tensile strength and scrub resistance testing.', 'S4 - Process Optimization (Lab Scale)', 'Allocated'), assigned: 'Rajesh Kumar', status: 'allocated', approved: false, progress: 0, eta: '2026-07-01', actualStart: '', actualFinish: '', expenses: 0 }
       ]
     }
   ];

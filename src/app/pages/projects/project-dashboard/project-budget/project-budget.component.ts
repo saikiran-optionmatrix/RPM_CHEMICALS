@@ -32,21 +32,19 @@ export interface BudgetItem {
 export class ProjectBudgetComponent implements OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
-  projectName: string = this.route.snapshot.queryParamMap.get('projectName') || this.route.snapshot.queryParamMap.get('name') || 'Generic Tablet Development';
-  projectCode: string = this.route.snapshot.queryParamMap.get('code') || '2026/GEN/001';
+  projectName: string = this.route.snapshot.queryParamMap.get('projectName') || this.route.snapshot.queryParamMap.get('name') || 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = this.route.snapshot.queryParamMap.get('code') || '2026/CHM/006';
 
   allRows: BudgetItem[] = [
-    { stage: 'Product Selection', module: 'Feasibility', task: 'Reference Product Assessment', allocation: 'PR', standardHours: 25, actualHours: 18, budgetINR: 20000, usageINR: 18000, completion: 70 },
-    { stage: 'Pre-Formulation', module: 'API Characterization', task: 'API Characterization', allocation: 'AR', standardHours: 40, actualHours: 28, budgetINR: 35000, usageINR: 32500, completion: 65 },
-    { stage: 'Pre-Formulation', module: 'Compatibility', task: 'API–Excipient Compatibility', allocation: 'SK', standardHours: 35, actualHours: 22, budgetINR: 30000, usageINR: 28000, completion: 60 },
-    { stage: 'Formulation Development', module: 'Formulation Design', task: 'Prototype Formulation', allocation: 'MK', standardHours: 60, actualHours: 35, budgetINR: 55000, usageINR: 50000, completion: 55 },
-    { stage: 'Formulation Development', module: 'Excipient Screening', task: 'Excipient Optimization', allocation: 'RK', standardHours: 45, actualHours: 25, budgetINR: 40000, usageINR: 36000, completion: 50 },
-    { stage: 'Formulation Development', module: 'Prototype Batch', task: 'Laboratory Batch Preparation', allocation: 'PS', standardHours: 50, actualHours: 30, budgetINR: 65000, usageINR: 58000, completion: 45 },
-    { stage: 'Analytical Development', module: 'Analytical Testing', task: 'Assay & Related Substances', allocation: 'VN', standardHours: 50, actualHours: 22, budgetINR: 50000, usageINR: 42000, completion: 40 },
-    { stage: 'Analytical Development', module: 'Dissolution', task: 'Dissolution Method Development', allocation: 'SK', standardHours: 40, actualHours: 18, budgetINR: 45000, usageINR: 39000, completion: 35 },
-    { stage: 'Optimization', module: 'Formulation Optimization', task: 'Process & Formula Optimization', allocation: 'DR', standardHours: 55, actualHours: 20, budgetINR: 60000, usageINR: 45000, completion: 30 },
-    { stage: 'Stability', module: 'Stability Testing', task: 'Accelerated Stability Study', allocation: 'AP', standardHours: 70, actualHours: 15, budgetINR: 80000, usageINR: 55000, completion: 20 },
-    { stage: 'Scale-Up', module: 'Pilot Batch', task: 'Pilot-Scale Manufacturing', allocation: 'RK', standardHours: 80, actualHours: 10, budgetINR: 120000, usageINR: 35000, completion: 10 }
+    { stage: 'S1 - Opportunity Identification', module: 'Feasibility', task: 'Competitor Grade and Market Assessment', allocation: 'PR', standardHours: 160, actualHours: 112, budgetINR: 140000, usageINR: 126000, completion: 70 },
+    { stage: 'S3 - Route Scouting & Lab Synthesis', module: 'Raw Material Sourcing', task: 'Monomer and Surfactant Characterization', allocation: 'AR', standardHours: 240, actualHours: 156, budgetINR: 220000, usageINR: 205000, completion: 65 },
+    { stage: 'S3 - Route Scouting & Lab Synthesis', module: 'Catalyst / Initiator Qualification', task: 'Initiator and Chain-Transfer Agent Screening', allocation: 'SK', standardHours: 200, actualHours: 120, budgetINR: 180000, usageINR: 168000, completion: 60 },
+    { stage: 'S4 - Process Optimization (Lab Scale)', module: 'Recipe Design', task: 'Monomer Composition and Pre-Emulsion Design', allocation: 'MK', standardHours: 320, actualHours: 176, budgetINR: 300000, usageINR: 274000, completion: 55 },
+    { stage: 'S4 - Process Optimization (Lab Scale)', module: 'Reaction Screening', task: 'Lab Reactor Runs and Conversion Tracking', allocation: 'RK', standardHours: 280, actualHours: 140, budgetINR: 260000, usageINR: 234000, completion: 50 },
+    { stage: 'S4 - Process Optimization (Lab Scale)', module: 'Pilot Trial', task: 'Lab-Scale 2 L Polymerization Batches', allocation: 'PS', standardHours: 360, actualHours: 162, budgetINR: 340000, usageINR: 302000, completion: 45 },
+    { stage: 'S4 - Process Optimization (Lab Scale)', module: 'Analytical Testing', task: 'Solids, Particle Size and Viscosity Profiling', allocation: 'VN', standardHours: 300, actualHours: 120, budgetINR: 280000, usageINR: 235000, completion: 40 },
+    { stage: 'S4 - Process Optimization (Lab Scale)', module: 'Performance Testing', task: 'Film Property and Adhesion Testing', allocation: 'SK', standardHours: 260, actualHours: 90, budgetINR: 240000, usageINR: 209000, completion: 35 },
+    { stage: 'S4 - Process Optimization (Lab Scale)', module: 'Process Optimization', task: 'Feed Profile and Residual Monomer Optimization', allocation: 'DR', standardHours: 340, actualHours: 102, budgetINR: 320000, usageINR: 240000, completion: 30 }
   ];
 
   displayedRows: BudgetItem[] = [];
@@ -92,7 +90,7 @@ export class ProjectBudgetComponent implements OnInit {
   }
 
   fmt(n: number): string {
-    return new Intl.NumberFormat('en-IN').format(n);
+    return new Intl.NumberFormat('en-US').format(n);
   }
 
   getCompColor(val: number): string {

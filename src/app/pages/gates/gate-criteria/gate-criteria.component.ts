@@ -56,18 +56,18 @@ export class GateCriteriaComponent implements OnInit {
 
   currentGateContext: string = '';
   currentGateCode: string = 'Gate 1';
-  currentGateName: string = 'Opportunity and portfolio approval';
+  currentGateName: string = 'Concept Approval';
 
   readonly gateDefinitions: Record<string, { gateCode: string; gateName: string; criteria: GateCriteria[] }> = {
-    feasibility: {
+    'concept-approval': {
       gateCode: 'Gate 1',
-      gateName: 'Opportunity and portfolio approval',
+      gateName: 'Concept Approval',
       criteria: [
         {
           id: 1,
           status: true,
-          question: 'Therapeutic Area & Unmet Medical Need Assessment',
-          description: 'Epidemiological prevalence data, standard-of-care analysis, and addressable patient population verified and endorsed by medical affairs.',
+          question: 'Market Demand & Competitive Benchmark Assessment',
+          description: 'Target applications, market size, competitor grades and customer needs documented and approved by commercial.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -75,8 +75,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 2,
           status: true,
-          question: 'Target Product Profile (TPP) Baseline Sign-off',
-          description: 'Dosage form, strength, release mechanism, indication, route of administration, and packaging format documented in baseline TPP.',
+          question: 'Chemistry & Process Feasibility Assessment',
+          description: 'Reaction pathway, raw material availability and technical feasibility confirmed by process chemistry.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -84,8 +84,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 3,
           status: true,
-          question: 'Patent Landscape & Freedom-to-Operate (FTO) Review',
-          description: 'Orange Book/Patent register review, molecule exclusivity horizon, formulation patent expiry, and paragraph IV litigation risk evaluated by legal.',
+          question: 'Preliminary Business Case & Cost of Manufacturing Model',
+          description: 'Target product profile, projected cost of manufacturing, volume and NPV threshold validated by finance.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -93,8 +93,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 4,
           status: true,
-          question: 'Preliminary Business Case & Peak-Sales Financial Model',
-          description: 'Development budget, target unit cost of goods (COGS), gross-to-net pricing assumptions, and return on investment approved by finance.',
+          question: 'Patents & Freedom-to-Operate (FTO) Clearance',
+          description: 'Formal IP landscape search and freedom-to-operate opinion documented for the chemistry, process and application.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -102,17 +102,17 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 5,
           status: true,
-          question: 'API Sourcing Feasibility & DMF Availability',
-          description: 'At least two qualified API synthetic routes identified with Drug Master File (DMF) availability and initial pricing feasibility.',
+          question: 'Process Safety, Technology & Scale-Up Risk Assessment',
+          description: 'Critical hazards (exotherm, toxic or flammable materials) and technology risks identified with mitigation plans.',
           answer: null,
-          priority: 'High',
-          mandatory: true
+          priority: 'Medium',
+          mandatory: false
         },
         {
           id: 6,
           status: true,
-          question: 'Regulatory Filing Pathway & Exclusivity Strategy',
-          description: 'Target submission route (ANDA / 505(b)(2) / MAA) defined across target jurisdictions (US, EU, ROW) with bioequivalence expectations.',
+          question: 'Regulatory Pathway & Registration Strategy Outline',
+          description: 'Registration pathway (REACH, TSCA, India, ASEAN) and high-level data needs outlined.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -120,23 +120,23 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 7,
           status: true,
-          question: 'Portfolio Steering Committee Concept Authorization',
-          description: 'Executive R&D committee formal charter sign-off approving progression into product definition and funding allocation.',
+          question: 'Executive Committee Concept Approval Release',
+          description: 'Formal executive sign-off granting authority to fund route scouting and allocate team resources.',
           answer: null,
           priority: 'Medium',
           mandatory: false
         }
       ]
     },
-    formulation: {
+    'route-selection': {
       gateCode: 'Gate 2',
-      gateName: 'Product definition and project charter approval',
+      gateName: 'Process Route Selection',
       criteria: [
         {
           id: 1,
           status: true,
-          question: 'Reference Listed Drug (RLD) Characterization Complete',
-          description: 'Innovator sample characterization, dissolution profiling across physiological pH range, excipient deconstruction, and polymorphic form identified.',
+          question: 'Yield & Selectivity Profile',
+          description: 'Candidate route meets yield and selectivity targets at bench scale.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -144,8 +144,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 2,
           status: true,
-          question: 'Quality Target Product Profile (QTPP) Finalization',
-          description: 'Critical Quality Attributes (CQAs) mapped to patient safety and efficacy in compliance with ICH Q8 Quality by Design guidance.',
+          question: 'Process Robustness Proof',
+          description: 'Route performs consistently across repeated runs and parameter ranges.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -153,8 +153,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 3,
           status: true,
-          question: 'Regulatory Strategy & Agency Scientific Advice Plan',
-          description: 'Pre-submission briefing package, pharmacopoeial monograph compliance check, and potential guidance divergence risks documented.',
+          question: 'Impurity & Waste Assessment',
+          description: 'Impurity profile, by-products and waste streams meet product and environmental criteria.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -162,8 +162,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 4,
           status: true,
-          question: 'Cross-Functional Project Charter & Schedule Commitment',
-          description: 'Integrated master development timeline, milestone commitments across R&D, RA, QA, and Manufacturing, and Capex sign-off.',
+          question: 'Preliminary Safety Screening',
+          description: 'Reaction calorimetry and thermal stability show an acceptable safety margin.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -171,8 +171,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 5,
           status: true,
-          question: 'Analytical Strategy & Impurity Profile Specifications',
-          description: 'ICH Q3A/B impurity qualification limits, nitrosamine risk evaluation, and stability-indicating method strategy established.',
+          question: 'Basis of Design & Cost of Manufacturing Estimate',
+          description: 'Basis of Design and projected cost of manufacturing reviewed by process engineering.',
           answer: null,
           priority: 'Medium',
           mandatory: false
@@ -180,23 +180,23 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 6,
           status: true,
-          question: 'Primary Packaging Concept & Barrier Requirements',
-          description: 'Blister foil / HDPE bottle moisture, light, and oxygen barrier specifications determined based on drug substance stability sensitivity.',
+          question: 'Route Selection Committee Release',
+          description: 'Formal sign-off to select the route and start pilot development.',
           answer: null,
-          priority: 'High',
-          mandatory: true
+          priority: 'Medium',
+          mandatory: false
         }
       ]
     },
-    development: {
+    'pilot-readiness': {
       gateCode: 'Gate 3',
-      gateName: 'Formulation concept and sourcing strategy approval',
+      gateName: 'Registration & Pilot Readiness',
       criteria: [
         {
           id: 1,
           status: true,
-          question: 'Pre-Formulation & Drug-Excipient Compatibility Sign-off',
-          description: 'Differential scanning calorimetry (DSC), isothermal stress testing, and binary blend stability confirm zero adverse physical/chemical interactions.',
+          question: 'Process Hazard Analysis Package',
+          description: 'HAZOP and LOPA complete with all high-risk actions closed.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -204,8 +204,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 2,
           status: true,
-          question: 'Lead Prototype Formulation Selected via DoE',
-          description: 'Statistically designed formulation screening batches demonstrate acceptable flowability, compressibility, and in-vitro dissolution similarity.',
+          question: 'Pilot Plant Readiness',
+          description: 'Equipment, utilities and operating procedures ready for the pilot campaign.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -213,8 +213,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 3,
           status: true,
-          question: 'API & Critical Excipient Commercial Sourcing Agreements',
-          description: 'Primary and secondary API vendors contracted with Quality Agreements, GMP audit sign-off, and pilot batch delivery confirmed.',
+          question: 'Product Specification & Method Validation',
+          description: 'Product specification and analytical methods validated.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -222,8 +222,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 4,
           status: true,
-          question: 'Analytical Stability-Indicating Methods Qualified',
-          description: 'HPLC assay and related substance analytical methods qualified for prototype screening and accelerated degradation evaluation.',
+          question: 'Environmental & Toxicology Data Package',
+          description: 'Ecotoxicology, toxicology and fate data complete for registration.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -231,32 +231,32 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 5,
           status: true,
-          question: 'Container Closure System Feasibility Validated',
-          description: 'Container closure integrity and child-resistant/senior-friendly packaging compliance confirmed by vendor qualification data.',
+          question: 'REACH / TSCA Dossier & Regulator Advice',
+          description: 'Registration dossier compiled and regulator or consultant advice incorporated.',
           answer: null,
-          priority: 'Medium',
-          mandatory: false
+          priority: 'High',
+          mandatory: true
         },
         {
           id: 6,
           status: true,
-          question: 'Technology Transfer Readiness Assessment to Pilot Plant',
-          description: 'Manufacturing process train compatibility review completed between lab formulation equipment and pilot-scale GMP facility.',
+          question: 'Executive Committee Registration & Pilot Release',
+          description: 'Formal sign-off to file registration and start the pilot campaign.',
           answer: null,
-          priority: 'High',
-          mandatory: true
+          priority: 'Medium',
+          mandatory: false
         }
       ]
     },
-    testing: {
+    'demo-scale': {
       gateCode: 'Gate 4',
-      gateName: 'Formulation and process development approval',
+      gateName: 'Demo-Scale Proof',
       criteria: [
         {
           id: 1,
           status: true,
-          question: 'Formulation & Process Parameter Optimization Freeze',
-          description: 'Design of Experiments (DoE) completes mapping of Critical Process Parameters (CPPs) to CQAs, defining preliminary design space.',
+          question: 'Pilot Plant Performance Review',
+          description: 'Pilot data show target yield, quality and acceptable safety performance.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -264,8 +264,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 2,
           status: true,
-          question: 'Laboratory Stress & 3-Month Accelerated Stability Clearance',
-          description: 'Prototype batches stored at 40°C/75% RH for 3 months demonstrate no out-of-specification degradation or dissolution drift.',
+          question: 'Demo-Scale Campaign Results',
+          description: 'Demo-scale batches meet specification with a validated, repeatable process.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -273,17 +273,17 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 3,
           status: true,
-          question: 'Analytical Method Validation Protocol per ICH Q2(R1)',
-          description: 'Formal validation protocol approved covering specificity, linearity, range, accuracy, precision, LOD/LOQ, and robustness.',
+          question: 'Customer Qualification Evidence',
+          description: 'Key customers confirm performance in their applications.',
           answer: null,
-          priority: 'High',
-          mandatory: true
+          priority: 'Medium',
+          mandatory: false
         },
         {
           id: 4,
           status: true,
-          question: 'Scale-Up Batch Execution & Process Train Verification',
-          description: 'Pilot scale batch executed successfully on production-representative equipment with blend uniformity RSD < 3.0%.',
+          question: 'Process Safety Review Outcome',
+          description: 'Safety review recommends continuation with no open critical findings.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -291,32 +291,32 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 5,
           status: true,
-          question: 'Nitrosamine & Elemental Impurities Risk Assessment Sign-off',
-          description: 'ICH Q3D and FDA/EMA nitrosamine risk assessments concluded with zero detected or quantified risks below toxicological limits.',
+          question: 'Regulatory Registration Status',
+          description: 'Registration progress and authority feedback documented.',
           answer: null,
-          priority: 'Medium',
-          mandatory: false
+          priority: 'High',
+          mandatory: true
         },
         {
           id: 6,
           status: true,
-          question: 'Bioequivalence Pilot Study Batch Release Protocol',
-          description: 'Clinical trial batch manufacturing formula, master production record, and release specification approved by QA.',
+          question: 'Commercial Plant Design & Capex Approval',
+          description: 'Plant design package and capital budget approved.',
           answer: null,
-          priority: 'High',
-          mandatory: true
+          priority: 'Medium',
+          mandatory: false
         }
       ]
     },
-    scaling: {
+    'commercial-readiness': {
       gateCode: 'Gate 5',
-      gateName: 'Facility and manufacturing readiness approval',
+      gateName: 'Commercial Production Readiness',
       criteria: [
         {
           id: 1,
           status: true,
-          question: 'Commercial Manufacturing Facility GMP Qualification',
-          description: 'Cleanroom HVAC qualification (ISO Class 8/Grade C/D), differential pressure cascades, and utility validations (PW/WFI) verified.',
+          question: 'Commissioning & Performance Test Results',
+          description: 'Plant meets guaranteed capacity, yield and quality in performance tests.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -324,8 +324,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 2,
           status: true,
-          question: 'Commercial Equipment IQ/OQ/PQ & Calibrations Complete',
-          description: 'High-shear granulator, fluid bed dryer, tablet press, and blister packaging line fully qualified and release-certified.',
+          question: 'Operating Procedures & Training',
+          description: 'Operating procedures complete and operators trained and certified.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -333,8 +333,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 3,
           status: true,
-          question: 'Cleaning Validation & Maximum Allowable Carryover (MAC) Limits',
-          description: 'Analytical swab and rinse cleaning test methods validated; cleaning verification protocol approved for drug contact surfaces.',
+          question: 'Safety, Environmental & Permit Compliance',
+          description: 'Pre-startup safety review complete and operating consents in force.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -342,8 +342,8 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 4,
           status: true,
-          question: 'Commercial Batch Records (MBR/BPR) & Standard Operating Procedures',
-          description: 'Master batch manufacturing and packaging records signed off by MS&T, Production Operations, and Quality Assurance.',
+          question: 'Labeling (GHS / CLP), SDS & Emergency Response Plan',
+          description: 'Labels, SDS and emergency response plan approved.',
           answer: null,
           priority: 'High',
           mandatory: true
@@ -351,124 +351,43 @@ export class GateCriteriaComponent implements OnInit {
         {
           id: 5,
           status: true,
-          question: 'Raw Material Commercial Inventory Release for Registration Batches',
-          description: 'API and all compendial excipients received, sampled, QC tested, and released under active quarantine/inventory management.',
+          question: 'Executive Committee Production Start Release',
+          description: 'Formal sign-off to start commercial production.',
           answer: null,
           priority: 'Medium',
           mandatory: false
-        }
-      ]
-    },
-    stability: {
-      gateCode: 'Gate 6',
-      gateName: 'Validation and regulatory submission readiness',
-      criteria: [
-        {
-          id: 1,
-          status: true,
-          question: 'Process Performance Qualification (PPQ) 3 Batches Execution',
-          description: 'Three consecutive commercial-scale batches manufactured meeting all predefined intra-batch and inter-batch acceptance criteria.',
-          answer: null,
-          priority: 'High',
-          mandatory: true
-        },
-        {
-          id: 2,
-          status: true,
-          question: 'Registration Batch ICH Stability Data (6-Month Accelerated & Long-Term)',
-          description: 'Mandatory minimum 6 months stability data at 40°C/75% RH and 25°C/60% RH complies with all finished product specifications.',
-          answer: null,
-          priority: 'High',
-          mandatory: true
-        },
-        {
-          id: 3,
-          status: true,
-          question: 'Pivotal In-Vivo Bioequivalence (BE) Study Clinical Report',
-          description: '90% confidence intervals for Cmax and AUC ratios fall within 80.00% - 125.00% bioequivalence acceptance limits.',
-          answer: null,
-          priority: 'High',
-          mandatory: true
-        },
-        {
-          id: 4,
-          status: true,
-          question: 'eCTD Regulatory Dossier Compilation & Publishing',
-          description: 'Modules 1 through 5 compiled in eCTD format with zero critical technical validation errors; ready for gateway dispatch.',
-          answer: null,
-          priority: 'High',
-          mandatory: true
-        },
-        {
-          id: 5,
-          status: true,
-          question: 'Pre-Approval Inspection (PAI) Readiness Audit Clearance',
-          description: 'Mock GMP regulatory inspection completed across development laboratory and commercial manufacturing site with zero open CAPAs.',
-          answer: null,
-          priority: 'Medium',
-          mandatory: false
-        }
-      ]
-    },
-    registration: {
-      gateCode: 'Gate 7',
-      gateName: 'Commercial launch authorization',
-      criteria: [
-        {
-          id: 1,
-          status: true,
-          question: 'Marketing Authorization Approval & Product License Granted',
-          description: 'Official approval letters, approved package insert/SmPC, and marketing authorization received from regulatory authorities.',
-          answer: null,
-          priority: 'High',
-          mandatory: true
-        },
-        {
-          id: 2,
-          status: true,
-          question: 'Pre-Approval Inspection (PAI) Clearance & Site License',
-          description: 'Health authority GMP inspection successfully passed with official Establishment Inspection Report (EIR) or GMP certificate issued.',
-          answer: null,
-          priority: 'High',
-          mandatory: true
-        },
-        {
-          id: 3,
-          status: true,
-          question: 'Commercial Supply Chain & Distribution Pipeline Stocked',
-          description: 'Launch quantities manufactured, packaged in market-specific commercial cartons, and positioned at regional distribution centers.',
-          answer: null,
-          priority: 'High',
-          mandatory: true
-        },
-        {
-          id: 4,
-          status: true,
-          question: 'Pharmacovigilance (PV) & Post-Marketing Risk Management Ready',
-          description: 'Adverse drug reaction (ADR) reporting systems, safety database, and Risk Evaluation and Mitigation Strategy (REMS) operational.',
-          answer: null,
-          priority: 'High',
-          mandatory: true
-        },
-        {
-          id: 5,
-          status: true,
-          question: 'Commercial Operations Launch Authorization & Handover',
-          description: 'Executive committee sign-off transferring responsibility from R&D project team to commercial supply and brand management.',
-          answer: null,
-          priority: 'High',
-          mandatory: true
         }
       ]
     }
   };
 
+  // Route alias mappings for backwards compatibility
+  static {
+    (GateCriteriaComponent.prototype as any).aliases = {
+      feasibility: 'concept-approval',
+      formulation: 'route-selection',
+      development: 'pilot-readiness',
+      testing: 'demo-scale',
+      scaling: 'commercial-readiness',
+      validation: 'commercial-readiness'
+    };
+  }
+
   criteriaList: GateCriteria[] = [];
 
   constructor() {
     this.route.paramMap.pipe(takeUntilDestroyed()).subscribe(params => {
-      this.currentGateContext = params.get('id') || 'feasibility';
-      const def = this.gateDefinitions[this.currentGateContext] || this.gateDefinitions['feasibility'];
+      const rawContext = params.get('id') || 'concept-approval';
+      const aliases: Record<string, string> = {
+        feasibility: 'concept-approval',
+        formulation: 'route-selection',
+        development: 'pilot-readiness',
+        testing: 'demo-scale',
+        scaling: 'commercial-readiness',
+        validation: 'commercial-readiness'
+      };
+      this.currentGateContext = aliases[rawContext] || rawContext;
+      const def = this.gateDefinitions[this.currentGateContext] || this.gateDefinitions['concept-approval'];
       this.currentGateCode = def.gateCode;
       this.currentGateName = def.gateName;
       this.criteriaList = def.criteria.map(c => ({ ...c }));
@@ -488,7 +407,7 @@ export class GateCriteriaComponent implements OnInit {
 
   private populateMetadata(): void {
     const sampleDates = ['2026-02-15', '2026-02-12', '2026-02-10', '2026-02-05', '2026-01-30', '2026-01-28', '2026-01-25'];
-    const sampleUsers = ['Dr. Sarah Jenkins', 'Rajesh Kumar', 'Anita Desai', 'Priya Reddy', 'Suresh Naidu', 'Amit Patel', 'Dr. Rebecca Chen'];
+    const sampleUsers = ['Dr. Priya Raman', 'Rajesh Kumar', 'Anita Desai', 'Priya Reddy', 'Suresh Naidu', 'Amit Patel', 'Dr. Rebecca Chen'];
     this.criteriaList.forEach((c, idx) => {
       if (!c.historyCount) {
         c.historyCount = this.getHistoryCount(idx);

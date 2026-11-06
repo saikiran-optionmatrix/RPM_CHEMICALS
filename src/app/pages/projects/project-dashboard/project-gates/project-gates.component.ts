@@ -67,8 +67,8 @@ export interface GateItem {
 export class ProjectGatesComponent implements OnInit, OnDestroy {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
-  readonly projectName = this.route.snapshot.queryParamMap.get('projectName') || this.route.snapshot.queryParamMap.get('name') || 'Generic Tablet Development';
-  projectCode: string = this.route.snapshot.queryParamMap.get('code') || '2026/GEN/001';
+  readonly projectName = this.route.snapshot.queryParamMap.get('projectName') || this.route.snapshot.queryParamMap.get('name') || 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = this.route.snapshot.queryParamMap.get('code') || '2026/CHM/006';
 
   scrollLeft(): void {
     if (this.scrollContainer) {
@@ -83,243 +83,413 @@ export class ProjectGatesComponent implements OnInit, OnDestroy {
   }
 
   redirectStageOptions: string[] = [
-    'S1 - Opportunity and Portfolio Assessment',
-    'S2 - Product Definition and Project Charter',
-    'S3 - Formulation and Product Concept Development',
-    'S4 - API, Excipient and Supplier Sourcing',
-    'S5 - Formulation and Process Development',
-    'S6 - Development Batches and Verification',
-    'S7 - Facility, Equipment and Process Readiness',
-    'S8 - Analytical Validation and Technology Transfer',
-    'S9 - Registration and Process Validation Batches',
-    'S10 - Regulatory Submission and Approval',
-    'S11 - Commercial Launch and Lifecycle Management',
-  ];
+  "S1 - Opportunity Identification",
+  "S2 - Concept Screening & Feasibility",
+  "S3 - Route Scouting & Lab Synthesis",
+  "S4 - Process Optimization (Lab Scale)",
+  "S5 - Process Route Selection & Basis of Design",
+  "S6 - Bench-to-Pilot Process Development",
+  "S7 - Process Safety & Regulatory Studies",
+  "S8 - Regulatory Registration Filing (REACH / TSCA)",
+  "S9 - Pilot Plant Campaign",
+  "S10 - Demonstration-Scale Campaign",
+  "S11 - Commercial Plant Build & Commissioning",
+  "S12 - Commercial Launch & Ramp-Up"
+];
 
   gates: GateItem[] = [
-    {
-      gateCode: 'Gate 1',
-      gateName: 'Opportunity and portfolio approval',
-      status: 'Approved',
-      remarks: 'Therapeutic and market opportunity criteria approved',
-      checklistCount: 7,
-      activitiesCount: 7,
-      workflow: '3/5',
-      updatedDate: '2026-02-15',
-      timelineDate: '2026-02-15',
-      planStart: '2026-01-05',
-      planEnd: '2026-01-15',
-      actualStart: '2026-01-05',
-      actualEnd: '2026-01-15',
-      eta: '2026-01-15',
-      planDuration: '10 days',
-      actualDuration: '10 days',
-      planEffort: '80 hrs',
-      actualEffort: '80 hrs',
-      buffer: '2 days',
-      description: 'Formal gate review to evaluate therapeutic and market opportunity assessment, target product profile, freedom-to-operate clearance, business case and preliminary risk screening, approving the opportunity into formal program definition.',
-      decision: 'Go',
-      isReadonly: false,
-      checklistItems: [
-        { id: 1, text: 'Therapeutic Area & Unmet Medical Need Assessment', done: true, mandatory: true, priority: 'High' },
-        { id: 2, text: 'Target Product Profile (TPP) Baseline Sign-off', done: true, mandatory: true, priority: 'High' },
-        { id: 3, text: 'Patent Landscape & Freedom-to-Operate (FTO) Review', done: true, mandatory: true, priority: 'High' },
-        { id: 4, text: 'Preliminary Business Case & Peak-Sales Financial Model', done: true, mandatory: true, priority: 'High' },
-        { id: 5, text: 'API Sourcing Feasibility & DMF Availability', done: true, mandatory: true, priority: 'High' },
-        { id: 6, text: 'Regulatory Filing Pathway & Exclusivity Strategy', done: true, mandatory: true, priority: 'High' },
-        { id: 7, text: 'Portfolio Steering Committee Concept Authorization', done: true, mandatory: false, priority: 'Medium' }
-      ]
-    },
-    {
-      gateCode: 'Gate 2',
-      gateName: 'Product definition and project charter approval',
-      status: 'Approved',
-      remarks: 'Product definition, RLD characterization, and project charter established',
-      checklistCount: 6,
-      activitiesCount: 6,
-      workflow: '2/5',
-      updatedDate: '2026-01-25',
-      timelineDate: '2026-01-25',
-      planStart: '2026-01-16',
-      planEnd: '2026-01-25',
-      actualStart: '2026-01-16',
-      actualEnd: '2026-01-25',
-      eta: '2026-01-25',
-      planDuration: '10 days',
-      actualDuration: '10 days',
-      planEffort: '60 hrs',
-      actualEffort: '60 hrs',
-      buffer: '2 days',
-      description: 'Formal decision gate to review finalized target product profile, reference listed drug characterization, regulatory submission pathway, IP strategy, cross-functional program charter, and funding commitment before starting formulation development.',
-      decision: 'Go',
-      isReadonly: false,
-      checklistItems: [
-        { id: 1, text: 'Reference Listed Drug (RLD) Characterization Complete', done: true, mandatory: true, priority: 'High' },
-        { id: 2, text: 'Quality Target Product Profile (QTPP) Finalization', done: true, mandatory: true, priority: 'High' },
-        { id: 3, text: 'Regulatory Strategy & Agency Scientific Advice Plan', done: true, mandatory: true, priority: 'High' },
-        { id: 4, text: 'Cross-Functional Project Charter & Schedule Commitment', done: true, mandatory: true, priority: 'High' },
-        { id: 5, text: 'Analytical Strategy & Impurity Profile Specifications', done: true, mandatory: false, priority: 'Medium' },
-        { id: 6, text: 'Primary Packaging Concept & Barrier Requirements', done: true, mandatory: true, priority: 'High' }
-      ]
-    },
-    {
-      gateCode: 'Gate 3',
-      gateName: 'Formulation concept and sourcing strategy approval',
-      status: 'Approved',
-      remarks: 'Pre-formulation compatibility and prototype formulation selected',
-      checklistCount: 6,
-      activitiesCount: 6,
-      workflow: '4/5',
-      updatedDate: '2026-03-27',
-      timelineDate: '2026-03-27',
-      planStart: '2026-01-26',
-      planEnd: '2026-03-27',
-      actualStart: '2026-01-26',
-      actualEnd: '2026-03-27',
-      eta: '2026-03-27',
-      planDuration: '60 days',
-      actualDuration: '60 days',
-      planEffort: '120 hrs',
-      actualEffort: '120 hrs',
-      buffer: '5 days',
-      description: 'Formal decision gate to evaluate pre-formulation findings, prototype formulation selection, API and critical excipient sourcing readiness, primary packaging selection, and project schedule before committing capital to full formulation and process development.',
-      decision: 'Go',
-      isReadonly: false,
-      checklistItems: [
-        { id: 1, text: 'Pre-Formulation & Drug-Excipient Compatibility Sign-off', done: true, mandatory: true, priority: 'High' },
-        { id: 2, text: 'Lead Prototype Formulation Selected via DoE', done: true, mandatory: true, priority: 'High' },
-        { id: 3, text: 'API & Critical Excipient Commercial Sourcing Agreements', done: true, mandatory: true, priority: 'High' },
-        { id: 4, text: 'Analytical Stability-Indicating Methods Qualified', done: true, mandatory: true, priority: 'High' },
-        { id: 5, text: 'Container Closure System Feasibility Validated', done: true, mandatory: false, priority: 'Medium' },
-        { id: 6, text: 'Technology Transfer Readiness Assessment to Pilot Plant', done: true, mandatory: true, priority: 'High' }
-      ]
-    },
-    {
-      gateCode: 'Gate 4',
-      gateName: 'Formulation and process development approval',
-      status: 'Pending',
-      remarks: 'DoE optimization and scale-up parameters under review',
-      checklistCount: 6,
-      activitiesCount: 6,
-      workflow: '3/5',
-      updatedDate: '2026-05-15',
-      timelineDate: '2026-05-15',
-      planStart: '2026-03-28',
-      planEnd: '2026-05-15',
-      actualStart: '2026-03-28',
-      actualEnd: '',
-      eta: '2026-05-15',
-      planDuration: '48 days',
-      actualDuration: '40 days',
-      planEffort: '160 hrs',
-      actualEffort: '130 hrs',
-      buffer: '4 days',
-      description: 'Formal decision gate to review formulation optimization, DoE stability data, manufacturing process train readiness, analytical method qualification, and supplier qualification before proceeding with development batch manufacturing.',
-      decision: null,
-      isReadonly: false,
-      checklistItems: [
-        { id: 1, text: 'Formulation & Process Parameter Optimization Freeze', done: true, mandatory: true, priority: 'High' },
-        { id: 2, text: 'Laboratory Stress & 3-Month Accelerated Stability Clearance', done: false, mandatory: true, priority: 'High' },
-        { id: 3, text: 'Analytical Method Validation Protocol per ICH Q2(R1)', done: true, mandatory: true, priority: 'High' },
-        { id: 4, text: 'Scale-Up Batch Execution & Process Train Verification', done: false, mandatory: true, priority: 'High' },
-        { id: 5, text: 'Nitrosamine & Elemental Impurities Risk Assessment Sign-off', done: true, mandatory: false, priority: 'Medium' },
-        { id: 6, text: 'Bioequivalence Pilot Study Batch Release Protocol', done: false, mandatory: true, priority: 'High' }
-      ]
-    },
-    {
-      gateCode: 'Gate 5',
-      gateName: 'Facility and manufacturing readiness approval',
-      status: 'Pending',
-      remarks: 'Commercial cleanroom and packaging line qualification in preparation',
-      checklistCount: 5,
-      activitiesCount: 5,
-      workflow: '5/5',
-      updatedDate: '2026-10-31',
-      timelineDate: '2026-10-31',
-      planStart: '2026-10-01',
-      planEnd: '2026-10-31',
-      actualStart: '',
-      actualEnd: '',
-      eta: '2026-10-31',
-      planDuration: '30 days',
-      actualDuration: '0 days',
-      planEffort: '120 hrs',
-      actualEffort: '0 hrs',
-      buffer: '3 days',
-      description: 'Formal decision gate to verify equipment and facility qualification, utility readiness, cleaning validation, operator training, and supply chain readiness before initiating registration and process validation batch manufacturing.',
-      decision: null,
-      isReadonly: false,
-      checklistItems: [
-        { id: 1, text: 'Commercial Manufacturing Facility GMP Qualification', done: false, mandatory: true, priority: 'High' },
-        { id: 2, text: 'Commercial Equipment IQ/OQ/PQ & Calibrations Complete', done: false, mandatory: true, priority: 'High' },
-        { id: 3, text: 'Cleaning Validation & Maximum Allowable Carryover (MAC) Limits', done: false, mandatory: true, priority: 'High' },
-        { id: 4, text: 'Commercial Batch Records (MBR/BPR) & Standard Operating Procedures', done: false, mandatory: true, priority: 'High' },
-        { id: 5, text: 'Raw Material Commercial Inventory Release for Registration Batches', done: false, mandatory: false, priority: 'Medium' }
-      ]
-    },
-    {
-      gateCode: 'Gate 6',
-      gateName: 'Validation and regulatory submission readiness',
-      status: 'Pending',
-      remarks: 'Validation batch manufacturing and registration stability testing planned',
-      checklistCount: 5,
-      activitiesCount: 5,
-      workflow: '2/5',
-      updatedDate: '2027-02-15',
-      timelineDate: '2027-02-15',
-      planStart: '2026-12-16',
-      planEnd: '2027-02-15',
-      actualStart: '',
-      actualEnd: '',
-      eta: '2027-02-15',
-      planDuration: '61 days',
-      actualDuration: '0 days',
-      planEffort: '190 hrs',
-      actualEffort: '0 hrs',
-      buffer: '5 days',
-      description: 'Formal decision gate to evaluate registration and process validation batch outcomes, stability data, dossier readiness, and bioequivalence / clinical study reports before authorizing filing with regulatory agencies.',
-      decision: null,
-      isReadonly: false,
-      checklistItems: [
-        { id: 1, text: 'Process Performance Qualification (PPQ) 3 Batches Execution', done: false, mandatory: true, priority: 'High' },
-        { id: 2, text: 'Registration Batch ICH Stability Data (6-Month Accelerated & Long-Term)', done: false, mandatory: true, priority: 'High' },
-        { id: 3, text: 'Pivotal In-Vivo Bioequivalence (BE) Study Clinical Report', done: false, mandatory: true, priority: 'High' },
-        { id: 4, text: 'eCTD Regulatory Dossier Compilation & Publishing', done: false, mandatory: true, priority: 'High' },
-        { id: 5, text: 'Pre-Approval Inspection (PAI) Readiness Audit Clearance', done: false, mandatory: false, priority: 'Medium' }
-      ]
-    },
-    {
-      gateCode: 'Gate 7',
-      gateName: 'Commercial launch authorization',
-      status: 'Pending',
-      remarks: 'Awaiting regulatory market authorization approval',
-      checklistCount: 5,
-      activitiesCount: 5,
-      workflow: '4/5',
-      updatedDate: '2027-08-31',
-      timelineDate: '2027-08-31',
-      planStart: '2027-06-01',
-      planEnd: '2027-08-31',
-      actualStart: '',
-      actualEnd: '',
-      eta: '2027-08-31',
-      planDuration: '91 days',
-      actualDuration: '0 days',
-      planEffort: '150 hrs',
-      actualEffort: '0 hrs',
-      buffer: '4 days',
-      description: 'Final formal gate to review market authorization approvals, manufacturing site inspection clearances, commercial supply chain readiness, distribution channel stocking, and pharmacovigilance setup before authorizing commercial distribution and sale.',
-      decision: null,
-      isReadonly: false,
-      checklistItems: [
-        { id: 1, text: 'Marketing Authorization Approval & Product License Granted', done: false, mandatory: true, priority: 'High' },
-        { id: 2, text: 'Pre-Approval Inspection (PAI) Clearance & Site License', done: false, mandatory: true, priority: 'High' },
-        { id: 3, text: 'Commercial Supply Chain & Distribution Pipeline Stocked', done: false, mandatory: true, priority: 'High' },
-        { id: 4, text: 'Pharmacovigilance (PV) & Post-Marketing Risk Management Ready', done: false, mandatory: true, priority: 'High' },
-        { id: 5, text: 'Commercial Operations Launch Authorization & Handover', done: false, mandatory: true, priority: 'High' }
-      ]
-    }
-  ];
+  {
+    "gateCode": "Gate 1",
+    "gateName": "Concept Approval",
+    "status": "Approved",
+    "remarks": "Business case and project charter approved",
+    "checklistCount": 7,
+    "activitiesCount": 7,
+    "workflow": "5/5",
+    "decision": "Go",
+    "documentsCount": 3,
+    "updatedDate": "12-Mar-2026",
+    "updatedBy": "Rajesh Kumar",
+    "historyCount": 5,
+    "timelineDate": "2026-03-12",
+    "planStart": "2026-01-05",
+    "planEnd": "2026-03-12",
+    "checklistItems": [
+      {
+        "id": 1,
+        "text": "Competitor grade and market assessment complete",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "Completed and verified by commercial team"
+      },
+      {
+        "id": 2,
+        "text": "Patent and FTO review",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "No patent infringements detected"
+      },
+      {
+        "id": 3,
+        "text": "Regulatory region shortlist",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "India, ASEAN, and EU target regions documented"
+      },
+      {
+        "id": 4,
+        "text": "Business case and NPV approved",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "NPV meets hurdle rate of >15%"
+      },
+      {
+        "id": 5,
+        "text": "Budget and resource plan",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "Budget of $12.5M allocated"
+      },
+      {
+        "id": 6,
+        "text": "Risk register baselined",
+        "mandatory": false,
+        "status": "Yes",
+        "done": true,
+        "remarks": "Risk mitigations documented"
+      },
+      {
+        "id": 7,
+        "text": "Project charter signed",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "Steering committee sign-off obtained"
+      }
+    ]
+  },
+  {
+    "gateCode": "Gate 2",
+    "gateName": "Process Route Selection",
+    "status": "Pending",
+    "remarks": "Process Route Selection review pending completion of S5",
+    "checklistCount": 4,
+    "activitiesCount": 6,
+    "workflow": "2/5",
+    "decision": null,
+    "documentsCount": 1,
+    "updatedDate": "05-Oct-2026",
+    "updatedBy": "Priya Reddy",
+    "historyCount": 2,
+    "timelineDate": "2026-08-15",
+    "planStart": "2026-03-01",
+    "planEnd": "2026-08-15",
+    "checklistItems": [
+      {
+        "id": 1,
+        "text": "Reaction yield and selectivity data",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "Lab yield achieves 94% target"
+      },
+      {
+        "id": 2,
+        "text": "Candidate route conversion and impurity profile",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "Residual monomer below 100 ppm target"
+      },
+      {
+        "id": 3,
+        "text": "Preliminary benchmark equivalence data",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "Solids, viscosity and MFFT match benchmark"
+      },
+      {
+        "id": 4,
+        "text": "Raw material and catalyst supply plan",
+        "mandatory": true,
+        "status": "Yes",
+        "done": true,
+        "remarks": "Dual sourcing qualified for monomers"
+      },
+      {
+        "id": 5,
+        "text": "Basis of Design and cost update",
+        "mandatory": false,
+        "status": "No",
+        "done": false,
+        "remarks": "In progress under S5"
+      },
+      {
+        "id": 6,
+        "text": "Route selection review",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": "Scheduled upon S5 completion"
+      }
+    ]
+  },
+  {
+    "gateCode": "Gate 3",
+    "gateName": "Registration & Pilot Readiness",
+    "status": "Pending",
+    "remarks": "Registration & Pilot Readiness review",
+    "checklistCount": 0,
+    "activitiesCount": 8,
+    "workflow": "0/5",
+    "decision": null,
+    "documentsCount": 0,
+    "updatedDate": "-",
+    "updatedBy": "-",
+    "historyCount": 0,
+    "timelineDate": "2026-09-30",
+    "planStart": "2026-08-11",
+    "planEnd": "2026-09-30",
+    "checklistItems": [
+      {
+        "id": 1,
+        "text": "Process locked (reaction and separation)",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 2,
+        "text": "Equivalence package complete",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 3,
+        "text": "Analytical methods validated",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 4,
+        "text": "Technical grade and finished product validated",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 5,
+        "text": "Storage stability data",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 6,
+        "text": "Hazard study (HAZOP / LOPA) complete",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 7,
+        "text": "Tech transfer readiness",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 8,
+        "text": "QA and EHS review",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      }
+    ]
+  },
+  {
+    "gateCode": "Gate 4",
+    "gateName": "Demo-Scale Proof",
+    "status": "Pending",
+    "remarks": "Demo-Scale Proof review",
+    "checklistCount": 0,
+    "activitiesCount": 7,
+    "workflow": "0/5",
+    "decision": null,
+    "documentsCount": 0,
+    "updatedDate": "-",
+    "updatedBy": "-",
+    "historyCount": 0,
+    "timelineDate": "2027-02-20",
+    "planStart": "2026-12-21",
+    "planEnd": "2027-02-20",
+    "checklistItems": [
+      {
+        "id": 1,
+        "text": "Toxicology and ecotoxicology package",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 2,
+        "text": "Pilot batch released",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 3,
+        "text": "Customer trial protocol finalized",
+        "mandatory": false,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 4,
+        "text": "Toll manufacturer and site qualification",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 5,
+        "text": "REACH / TSCA dossier ready",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 6,
+        "text": "Regulator advice incorporated",
+        "mandatory": false,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 7,
+        "text": "Process safety plan approved",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      }
+    ]
+  },
+  {
+    "gateCode": "Gate 5",
+    "gateName": "Commercial Production Readiness",
+    "status": "Pending",
+    "remarks": "Commercial Production Readiness review",
+    "checklistCount": 0,
+    "activitiesCount": 9,
+    "workflow": "0/5",
+    "decision": null,
+    "documentsCount": 0,
+    "updatedDate": "-",
+    "updatedBy": "-",
+    "historyCount": 0,
+    "timelineDate": "2027-06-30",
+    "planStart": "2027-02-21",
+    "planEnd": "2027-06-30",
+    "checklistItems": [
+      {
+        "id": 1,
+        "text": "Demonstration campaign report",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 2,
+        "text": "Statistical and capability analysis",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 3,
+        "text": "Plant design package complete",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 4,
+        "text": "Commissioning and validation data",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 5,
+        "text": "Storage stability data",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 6,
+        "text": "Labeling (GHS / CLP) and SDS",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 7,
+        "text": "Emergency response plan",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 8,
+        "text": "Registration status review",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      },
+      {
+        "id": 9,
+        "text": "Final approval to start production",
+        "mandatory": true,
+        "status": "No",
+        "done": false,
+        "remarks": ""
+      }
+    ]
+  }
+];
 
   // Pagination
   pageSizeOptions = [5, 10, 20];

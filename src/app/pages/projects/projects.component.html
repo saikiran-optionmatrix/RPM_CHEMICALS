@@ -61,11 +61,11 @@
                   </mat-form-field>
                 </div>
 
-                <!-- 4. Molecule -->
+                <!-- 4. Chemistry / Product Family -->
                 <div class="app-filter-field">
-                  <label for="filterMolecule">Molecule:</label>
+                  <label for="filterMolecule">Chemistry / Product Family:</label>
                   <mat-form-field appearance="outline" class="app-filter-control">
-                    <mat-select id="filterMolecule" [(ngModel)]="filterMolecule" placeholder="Select Molecule">
+                    <mat-select id="filterMolecule" [(ngModel)]="filterMolecule" placeholder="Select Family">
                       <mat-option value="">All</mat-option>
                       @for (mol of molecules; track mol) {
                       <mat-option [value]="mol">{{ mol }}</mat-option>
@@ -74,11 +74,11 @@
                   </mat-form-field>
                 </div>
 
-                <!-- 5. Dosage Form -->
+                <!-- 5. Physical Form / Grade -->
                 <div class="app-filter-field">
-                  <label for="filterDosageForm">Dosage Form:</label>
+                  <label for="filterDosageForm">Physical Form / Grade:</label>
                   <mat-form-field appearance="outline" class="app-filter-control">
-                    <mat-select id="filterDosageForm" [(ngModel)]="filterDosageForm" placeholder="Select Dosage Form">
+                    <mat-select id="filterDosageForm" [(ngModel)]="filterDosageForm" placeholder="Select Form">
                       <mat-option value="">All</mat-option>
                       @for (form of dosageForms; track form) {
                       <mat-option [value]="form">{{ form }}</mat-option>
@@ -331,12 +331,12 @@
             <thead>
               <tr>
                 <th class="text-center" style="width: 150px; min-width: 150px;">Actions</th>
-                <th class="text-center" style="width: 140px; min-width: 130px;">Product ID</th>
-                <th class="text-left" style="min-width: 240px;">Product Name</th>
-                <th class="text-left" style="min-width: 200px;">Molecule</th>
+                <th class="text-center" style="width: 140px; min-width: 130px;">Project ID</th>
+                <th class="text-left" style="min-width: 240px;">Product / Grade Name</th>
+                <th class="text-left" style="min-width: 200px;">Chemistry / Product Family</th>
                 <th class="text-left" style="min-width: 180px;">Division</th>
                 <th class="text-center" style="width: 110px; min-width: 100px;">Star Product</th>
-                <th class="text-left" style="min-width: 280px;">Registration Type</th>
+                <th class="text-left" style="min-width: 280px;">Regulatory Pathway</th>
                 <th class="text-left" style="min-width: 160px;">Project Owner</th>
                 <th class="text-left" style="min-width: 160px;">Project Lead</th>
                 <th class="text-center" style="width: 100px; min-width: 90px;">Priority</th>
@@ -349,35 +349,35 @@
                 <th class="text-center" style="width: 170px; min-width: 160px;">Projected market share</th>
                 <th class="text-left" style="min-width: 180px;">Commercial attractiveness</th>
                 <th class="text-center" style="width: 180px; min-width: 170px;">Projected NPV (USD mn)</th>
-                <th class="text-left" style="min-width: 150px;">Dosage form</th>
-                <th class="text-left" style="min-width: 140px;">Strength</th>
-                <th class="text-left" style="min-width: 130px;">Fill Volume</th>
-                <th class="text-left" style="min-width: 150px;">Pharmacopoeia</th>
+                <th class="text-left" style="min-width: 150px;">Physical Form / Grade</th>
+                <th class="text-left" style="min-width: 140px;">Concentration / Specification</th>
+                <th class="text-left" style="min-width: 130px;">Pack Size</th>
+                <th class="text-left" style="min-width: 150px;">Standards & Test Methods</th>
                 <th class="text-left" style="min-width: 180px;">Packaging Details</th>
-                <th class="text-left" style="min-width: 160px;">Innovator (Company)</th>
-                <th class="text-left" style="min-width: 170px;">Innovator Brand Name</th>
-                <th class="text-left" style="min-width: 160px;">Innovator Dosage Form</th>
-                <th class="text-left" style="min-width: 150px;">Innovator Strengths</th>
-                <th class="text-center" style="width: 160px; min-width: 150px;">Innovator Approval Date</th>
-                <th class="text-left" style="min-width: 180px;">Innovator Pack Presentation</th>
-                <th class="text-left" style="min-width: 160px;">Innovator Bio Strength</th>
-                <th class="text-left" style="min-width: 220px;">RLD Information (SmPC / PIL / COA)</th>
-                <th class="text-left" style="min-width: 160px;">Innovator vs Jodas</th>
+                <th class="text-left" style="min-width: 160px;">Benchmark Product (Company)</th>
+                <th class="text-left" style="min-width: 170px;">Benchmark Product Brand Name</th>
+                <th class="text-left" style="min-width: 160px;">Benchmark Product Form</th>
+                <th class="text-left" style="min-width: 150px;">Benchmark Product Specification</th>
+                <th class="text-center" style="width: 160px; min-width: 150px;">Benchmark Product Launch Year</th>
+                <th class="text-left" style="min-width: 180px;">Benchmark Product Pack Presentation</th>
+                <th class="text-left" style="min-width: 160px;">Benchmark Product Performance Specification</th>
+                <th class="text-left" style="min-width: 220px;">Benchmark Product Information (TDS / SDS / CoA)</th>
+                <th class="text-left" style="min-width: 160px;">Benchmark Product vs Jodas Product</th>
                 <th class="text-left" style="min-width: 160px;">IP Details</th>
-                <th class="text-left" style="min-width: 160px;">API Manufacturer</th>
-                <th class="text-left" style="min-width: 200px;">Polymorph Form (if applicable)</th>
-                <th class="text-left" style="min-width: 200px;">CEP/DMF No & Receipt Status</th>
-                <th class="text-left" style="min-width: 180px;">DMF/ASMF/CEP Received</th>
-                <th class="text-left" style="min-width: 180px;">API Vendor Qualification</th>
-                <th class="text-left" style="min-width: 140px;">API - ML</th>
-                <th class="text-left" style="min-width: 140px;">API - GMP</th>
-                <th class="text-left" style="min-width: 120px;">ML</th>
-                <th class="text-left" style="min-width: 130px;">WHO GMP</th>
-                <th class="text-left" style="min-width: 170px;">Bio study CRO name</th>
-                <th class="text-left" style="min-width: 180px;">Bio Study CRO GMP Status</th>
-                <th class="text-left" style="min-width: 130px;">BE NOC</th>
-                <th class="text-left" style="min-width: 150px;">study time period</th>
-                <th class="text-left" style="min-width: 160px;">Bio Study Report</th>
+                <th class="text-left" style="min-width: 160px;">Key Intermediate / Technical Grade Manufacturer</th>
+                <th class="text-left" style="min-width: 200px;">Process Route / Catalyst System</th>
+                <th class="text-left" style="min-width: 200px;">REACH Dossier / Supplier File No & Receipt Status</th>
+                <th class="text-left" style="min-width: 180px;">REACH / SDS Received</th>
+                <th class="text-left" style="min-width: 180px;">Raw Material Vendor Qualification</th>
+                <th class="text-left" style="min-width: 140px;">Intermediate - Manufacturing Licence</th>
+                <th class="text-left" style="min-width: 140px;">Intermediate - ISO 9001 / Responsible Care</th>
+                <th class="text-left" style="min-width: 120px;">Finished Product - Manufacturing Licence</th>
+                <th class="text-left" style="min-width: 130px;">ISO 9001 Certification</th>
+                <th class="text-left" style="min-width: 170px;">Application Trial / Testing Lab Name</th>
+                <th class="text-left" style="min-width: 180px;">Testing Lab Accreditation (ISO 17025)</th>
+                <th class="text-left" style="min-width: 130px;">Trial Approval / Regulatory NOC</th>
+                <th class="text-left" style="min-width: 150px;">Study Time Period</th>
+                <th class="text-left" style="min-width: 160px;">Application Trial Report</th>
                 <th class="text-left" style="min-width: 160px;">Remarks</th>
                 <th class="text-center" style="width: 80px; min-width: 80px;">Status</th>  
                 <th class="text-center" style="width: 120px; min-width: 120px;">Updated Date</th>

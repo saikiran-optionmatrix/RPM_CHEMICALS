@@ -28,12 +28,12 @@ export class AddStageComponent implements OnInit {
   isSubmitting = false;
 
   divisionOptions: string[] = [
-    'Oral Solids - OS',
-    'Injectables - IJ',
-    'Complex Injectables - CI',
-    'Biotech - BT'
+    'Polymers & Resins - PR',
+    'Specialty Chemicals - SC',
+    'Agrochemicals - AG',
+    'Petrochemicals - PC'
   ];
-  gateOptions: string[] = ['Gate 1', 'Gate 2', 'Gate 3', 'Gate 4', 'Gate 5', 'Gate 6'];
+  gateOptions: string[] = ['-', 'Gate 1', 'Gate 2', 'Gate 3', 'Gate 4', 'Gate 5'];
 
   constructor(
     private fb: FormBuilder,
@@ -42,7 +42,7 @@ export class AddStageComponent implements OnInit {
   ) {
     this.myGroup = this.fb.group({
       stageName: ['', [Validators.required]],
-      division: [['Oral Solids - OS'], [Validators.required]],
+      division: [['Polymers & Resins - PR'], [Validators.required]],
       stageCode: [''],
       stageSerial: [null, [Validators.required, Validators.min(1)]],
       gateCode: ['', [Validators.required]],
@@ -73,7 +73,7 @@ export class AddStageComponent implements OnInit {
       } else if (typeof this.data.division === 'string' && this.data.division.trim()) {
         divisionVal = this.data.division.split(',').map((d: string) => d.trim()).filter(Boolean);
       } else {
-        divisionVal = ['Oral Solids - OS'];
+        divisionVal = ['Polymers & Resins - PR'];
       }
 
       this.myGroup.patchValue({

@@ -136,11 +136,11 @@ export class ProjectsComponent implements OnInit {
   };
 
   kanbanData = [
-    { subject: 'Dapagliflozin Film-Coated Tablets', code: '2026/RD/001', distributor: 'Film-coated tablets (5 mg and 10 mg)', Lead: 'A. Sharma', status: 'Completed', TargetDate: '2027-10-31', FailureDate: '2026-11-01' },
-    { subject: 'Levetiracetam Oral Solution', code: '2026/RD/002', distributor: 'Oral solution (100 mg/mL)', Lead: 'R. Mehta', status: 'Progress', TargetDate: '2027-11-30', FailureDate: '2026-12-01' },
-    { subject: 'Pantoprazole Sodium Delayed-Release Tablets', code: '2026/RD/003', distributor: 'Delayed-release tablets (20 mg and 40 mg)', Lead: 'S. Iyer', status: 'Allocated', TargetDate: '2027-12-31', FailureDate: '2027-01-01' },
-    { subject: 'Ceftriaxone for Injection', code: '2026/RD/004', distributor: 'Sterile powder for injection (500 mg and 1 g)', Lead: 'P. Nair', status: 'Hold', TargetDate: '2028-02-29', FailureDate: '2026-11-15' },
-    { subject: 'Budesonide/Formoterol Inhalation Powder', code: '2026/RD/005', distributor: 'Dry powder for inhalation', Lead: 'V. Rao', status: 'Pending', TargetDate: '2028-07-31', FailureDate: '2027-02-01' }
+    { subject: 'Acrylic Emulsion Binder 50% Solids', code: '2026/CHM/006', distributor: 'Water-based emulsion (50% solids)', Lead: 'Ananya Rao', status: 'Progress', TargetDate: '2027-07-31', FailureDate: '2026-03-01' },
+    { subject: 'Liquid Epoxy Resin (Bisphenol-A / ECH)', code: '2026/CHM/011', distributor: 'Liquid resin (EEW 185-192 g/eq)', Lead: 'Devendra Joshi', status: 'Allocated', TargetDate: '2027-11-30', FailureDate: '2026-05-15' },
+    { subject: 'Sodium Lauryl Ether Sulfate (SLES) 70% Paste', code: '2026/CHM/018', distributor: 'Surfactant paste (70% w/w)', Lead: 'Kavita Sundaram', status: 'Completed', TargetDate: '2026-09-30', FailureDate: '2026-01-10' },
+    { subject: 'Hydrophilic Fumed Silica 200 m²/g', code: '2026/CHM/023', distributor: 'Fluffy white powder (BET 200)', Lead: 'Manish Verma', status: 'Hold', TargetDate: '2028-03-31', FailureDate: '2026-04-01' },
+    { subject: 'Hydrogen Peroxide 50% Technical Grade', code: '2026/CHM/031', distributor: 'Clear liquid (50% w/w)', Lead: 'Suresh Nambiar', status: 'Pending', TargetDate: '2028-06-30', FailureDate: '2026-07-01' }
   ];
 
   private statusMap: Record<string, Status> = {
@@ -181,18 +181,18 @@ export class ProjectsComponent implements OnInit {
         p.updatedDate = this.updatedDates[idx % this.updatedDates.length];
       }
       if (!p.updatedBy) {
-        p.updatedBy = p.projectLead || p.projectOwner || 'Anki Reddy';
+        p.updatedBy = p.projectLead || p.projectOwner || 'Ananya Rao';
       }
       if (!p.division) {
         const form = (p.dosageForm || '').toLowerCase();
-        if (form.includes('tablet') || form.includes('capsule')) {
-          p.division = 'Oral Solids - OS';
-        } else if (form.includes('lyo') || form.includes('pfs')) {
-          p.division = 'Complex Injectables - CI';
-        } else if (form.includes('solution') || form.includes('inj') || form.includes('dpi')) {
-          p.division = 'Injectables - IJ';
+        if (form.includes('emulsion') || form.includes('resin') || form.includes('polymer')) {
+          p.division = 'Polymers & Resins';
+        } else if (form.includes('surfactant') || form.includes('paste')) {
+          p.division = 'Surfactants & Specialty Chemicals';
+        } else if (form.includes('silica') || form.includes('powder')) {
+          p.division = 'Advanced Materials';
         } else {
-          const defaults = ['Oral Solids - OS', 'Injectables - IJ', 'Complex Injectables - CI', 'Biotech - BT'];
+          const defaults = ['Polymers & Resins', 'Surfactants & Specialty Chemicals', 'Advanced Materials', 'Inorganic & Basic Chemicals'];
           p.division = defaults[idx % defaults.length];
         }
       }
@@ -202,7 +202,7 @@ export class ProjectsComponent implements OnInit {
     });
 
     const savedData = localStorage.getItem('kanbanData');
-    if (savedData && !savedData.includes('Mahindra') && !savedData.includes('Tesla') && !savedData.includes('Battery Pack') && !savedData.includes('ADAS')) {
+    if (savedData && !savedData.includes('Mahindra') && !savedData.includes('Tesla') && !savedData.includes('Battery Pack') && !savedData.includes('ADAS') && !savedData.includes('Dapagliflozin')) {
       this.cards = JSON.parse(savedData);
     } else {
       this.initializeKanbanData();
@@ -387,10 +387,10 @@ export class ProjectsComponent implements OnInit {
       if (res) {
         if (!project) {
           const newProject: Project = {
-            projectCode: res.projectCode || `2026/RD/${String(this.projects.length + 1).padStart(3, '0')}`,
+            projectCode: res.projectCode || `2026/CHM/${String(this.projects.length + 1).padStart(3, '0')}`,
             productName: res.productName || '',
             molecule: res.module || '',
-            division: res.division || 'Oral Solids - OS',
+            division: res.division || 'Polymers & Resins',
             starProduct: res.starProduct || '',
             registrationType: res.registrationType || '',
             projectOwner: res.projectOwner || '',
@@ -537,7 +537,7 @@ export class ProjectsComponent implements OnInit {
       data: {
         project: project,
         projectName: projName,
-        currentTemplate: 'Generic Tablet Development'
+        currentTemplate: 'Emulsion Polymerization Process Development'
       }
     });
 

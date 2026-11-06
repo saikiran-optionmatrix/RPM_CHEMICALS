@@ -15,6 +15,8 @@ export interface ChecklistItem {
   priority?: string;
   owner?: string;
   description?: string;
+  status?: string;
+  remarks?: string;
 }
 
 export interface ChecklistDialogData {
