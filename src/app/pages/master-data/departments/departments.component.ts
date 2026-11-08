@@ -40,31 +40,31 @@ export class DepartmentsComponent {
     {
       name: 'Research & Development',
       code: 'R&D',
-      remarks: 'API and formulation development',
+      remarks: 'Process chemistry research and route development',
       status: 'Active',
     },
     {
       name: 'Quality Control',
       code: 'QC',
-      remarks: 'Analytical and product testing',
+      remarks: 'Analytical, purity and product release testing',
       status: 'Active',
     },
     {
       name: 'Quality Assurance',
       code: 'QA',
-      remarks: 'GMP compliance and validation',
+      remarks: 'ISO 9001 compliance, batch record review and validation',
       status: 'Active',
     },
     {
-      name: 'Production',
-      code: 'PROD',
-      remarks: 'Tablet manufacturing operations',
+      name: 'Manufacturing',
+      code: 'MFG',
+      remarks: 'Reaction, separation and packing plant operations',
       status: 'Active',
     },
     {
       name: 'Regulatory Affairs',
       code: 'RA',
-      remarks: 'Regulatory submissions and documentation',
+      remarks: 'REACH / TSCA registrations and regulatory documentation',
       status: 'Active',
     },
   ];

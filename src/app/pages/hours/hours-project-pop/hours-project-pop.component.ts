@@ -24,9 +24,9 @@ export interface ProjectPopItem {
 })
 export class HoursProjectPopComponent implements OnInit {
   projects: ProjectPopItem[] = [
-    { sNo: 1, projectCode: '2026/RD/001', projectName: 'Generic Pharma Development' },
-    { sNo: 2, projectCode: '202605/Engg/002', projectName: 'Process Engineering & Formulation' },
-    { sNo: 3, projectCode: '202605/Tech/003', projectName: 'Clinical Batch Scale-up' }
+    { sNo: 1, projectCode: '2026/CHM/006', projectName: 'Acrylic Emulsion Binder 50% Solids' },
+    { sNo: 2, projectCode: '2026/CHM/002', projectName: 'Liquid Epoxy Resin (Bisphenol A Diglycidyl Ether)' },
+    { sNo: 3, projectCode: '2026/CHM/003', projectName: 'Sodium Lauryl Ether Sulfate (SLES) 70% Paste' }
   ];
 
   constructor(

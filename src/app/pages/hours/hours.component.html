@@ -58,6 +58,7 @@
                     <th class="text-center" style="width: 100px;">Actions</th>
                     <th class="text-center">Date</th>
                     <th class="text-left">Name</th>
+                    <th class="text-left">Role</th>
                     <th class="text-center">Projects</th>
                     <th class="text-center">Tasks</th>
 
@@ -90,6 +91,7 @@
                         <span style="font-size: 11px; color: #dc2626; font-weight: 600; margin-left: 6px;">(Overtime)</span>
                       }
                     </td>
+                    <td class="text-left" style="color: #475569; font-size: 13px;">{{ entry.role || '—' }}</td>
 
                     <td class="text-center">
                       <a class="app-route-link" role="button" tabindex="0" (click)="openProjectsDialog(entry)"

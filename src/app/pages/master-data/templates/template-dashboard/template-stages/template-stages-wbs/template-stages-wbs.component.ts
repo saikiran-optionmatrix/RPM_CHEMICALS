@@ -71,13 +71,13 @@ export class TemplateStagesWbsComponent implements OnInit, OnDestroy {
     this.route.snapshot.queryParamMap.get('projectName') ||
     this.route.snapshot.queryParamMap.get('name') ||
     this.route.snapshot.queryParamMap.get('templateName') ||
-    'Generic Tablet Development';
+    'Specialty Chemical Process Development Program';
   projectCode: string =
     this.route.snapshot.queryParamMap.get('projectCode') ||
     this.route.snapshot.queryParamMap.get('code') ||
-    '2026/GEN/001';
+    '2026/CHM/001';
   stageCode: string = this.route.snapshot.queryParamMap.get('stageCode') || 'S1';
-  stageName: string = this.route.snapshot.queryParamMap.get('stageName') || 'Product / Project Initiation';
+  stageName: string = this.route.snapshot.queryParamMap.get('stageName') || 'Opportunity Identification';
 
   // Filter properties
   showFilter = false;
@@ -91,9 +91,9 @@ export class TemplateStagesWbsComponent implements OnInit, OnDestroy {
   pageSize = 10;
 
   readonly delayReasonOptions: string[] = [
-    'Raw Material Shortage',
-    'Regulatory Approval Pending',
-    'Vendor Dispatch Delay',
+    'Raw Material / Catalyst Shortage',
+    'Reactor / Equipment Breakdown or Maintenance',
+    'Batch Contamination / Out of Specification',
   ];
 
   deliverables: WbsDeliverable[] = [

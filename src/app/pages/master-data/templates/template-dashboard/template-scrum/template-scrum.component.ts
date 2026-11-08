@@ -130,29 +130,24 @@ export class TemplateScrumComponent implements OnInit, OnDestroy {
     this.route.snapshot.queryParamMap.get('projectName') ||
     this.route.snapshot.queryParamMap.get('name') ||
     this.route.snapshot.queryParamMap.get('templateName') ||
-    'Oral Solid Dosage (OSD) Formulation & Commercialization';
-  projectCode: string = this.route.snapshot.queryParamMap.get('code') || '2026/GEN/001';
+    'Specialty Chemical Process Development Program';
+  projectCode: string = this.route.snapshot.queryParamMap.get('code') || '2026/CHM/001';
   dynamicBreadcrumb: string = 'Scrum';
 
-  team = ['Aarav Shah', 'Priya Nair', 'Diego Ruiz', 'Mei Tanaka', 'Olivia Brown'];
+  team = ['Rajesh Kumar', 'Anita Desai', 'Priya Reddy', 'Amit Patel', 'Suresh Naidu', 'Dr. Priya Raman'];
   stages: Stage[] = [
-    'Opportunity and Portfolio Assessment',
-    'Product Definition and Project Charter',
-    'Formulation and Product Concept Development',
-    'API, Excipient and Supplier Sourcing',
-    'Formulation and Process Development',
-    'Development Batches and Verification',
-    'Facility, Equipment and Process Readiness',
-    'Analytical Validation and Technology Transfer',
-    'Registration and Process Validation Batches',
-    'Regulatory Submission and Approval',
-    'Commercial Launch and Lifecycle Management',
-    'Feasibility',
-    'Formulation',
-    'Development',
-    'Testing',
-    'Validation',
-    'Regulatory'
+    'S1 - Opportunity Identification',
+    'S2 - Concept Screening & Feasibility',
+    'S3 - Route Scouting & Lab Synthesis',
+    'S4 - Process Optimization (Lab Scale)',
+    'S5 - Process Route Selection & Basis of Design',
+    'S6 - Bench-to-Pilot Process Development',
+    'S7 - Process Safety & Regulatory Studies',
+    'S8 - Regulatory Registration Filing (REACH / TSCA)',
+    'S9 - Pilot Plant Campaign',
+    'S10 - Demonstration-Scale Campaign',
+    'S11 - Commercial Plant Build & Commissioning',
+    'S12 - Commercial Launch & Ramp-Up',
   ];
   stageFilter: 'all' | Stage = 'all';
 

@@ -58,37 +58,32 @@ export class AssetsComponent {
 
   readonly assets: Asset[] = [
     {
-      name: 'Tablet Compression Machine',
+      name: 'Glass-Lined Jacketed Reactor (500 L)',
       code: 'AST-1001',
       status: 'Active',
     },
-
     {
-      name: 'Dissolution Testing Apparatus',
+      name: 'Gas Chromatograph (GC-FID / GC-MS)',
       code: 'AST-1002',
       status: 'Active',
     },
-
     {
-      name: 'HPLC System',
+      name: 'Laser Particle Size Analyzer',
       code: 'AST-1003',
       status: 'Active',
     },
-
     {
-      name: 'Tablet Hardness Tester',
+      name: 'Walk-in Fume Hood (Ducted, Scrubber-Connected)',
       code: 'AST-1004',
       status: 'Active',
     },
-
     {
-      name: 'Friability Tester',
+      name: 'Agitated Nutsche Filter Dryer (ANFD)',
       code: 'AST-1005',
       status: 'Active',
     },
-
     {
-      name: 'Stability Chamber',
+      name: 'Karl Fischer Titrator',
       code: 'AST-1006',
       status: 'Active',
     },

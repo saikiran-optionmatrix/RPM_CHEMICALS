@@ -27,6 +27,7 @@ export interface ResourceScheduleItem {
   status: string;
   dayPlacement: string;
   color: string;
+  updatedBy?: string;
 }
 
 @Component({
@@ -62,8 +63,8 @@ export class ResourcesComponent implements OnInit, AfterViewInit {
   canScrollRight = signal<boolean>(true);
 
   // Project Info
-  projectName = signal<string>('');
-  projectCode = signal<string>('');
+  projectName = signal<string>('Acrylic Emulsion Binder 50% Solids');
+  projectCode = signal<string>('2026/CHM/006');
 
 
 
@@ -105,28 +106,52 @@ export class ResourcesComponent implements OnInit, AfterViewInit {
   private initializeData(): void {
     this.schedules.set([
       {
-        resource: 'Lyophilizer A', initials: 'LA', stage: 'Feasibility', module: 'API Assessment',
-        task: 'API Evaluation', fromDate: '2026-06-01', fromTime: '09:00 AM', toDate: '2026-06-05',
+        resource: 'GC-MS System A', initials: 'GA', stage: 'S1 - Opportunity Identification', module: 'Competitor Grade & Market Analysis',
+        task: 'Benchmark Grade Characterization', fromDate: '2026-06-01', fromTime: '09:00 AM', toDate: '2026-06-05',
         toTime: '05:00 PM', planDuration: '5 days', actualDuration: '5 days',
-        status: 'Completed', dayPlacement: 'Monday', color: '#dcfce7'
+        status: 'Completed', dayPlacement: 'Monday', color: '#dcfce7', updatedBy: 'Priya Reddy'
       },
       {
-        resource: 'Anita Desai', initials: 'AD', stage: 'Formulation', module: 'Formulation Development',
-        task: 'Excipient Selection & Trial Batches', fromDate: '2026-06-08', fromTime: '09:00 AM', toDate: '2026-06-21',
+        resource: 'Anita Desai', initials: 'AD', stage: 'S3 - Route Scouting & Lab Synthesis', module: 'Surfactant & Monomer Sourcing',
+        task: 'Surfactant Screening & Trial Batches', fromDate: '2026-06-08', fromTime: '09:00 AM', toDate: '2026-06-21',
         toTime: '05:00 PM', planDuration: '14 days', actualDuration: '12 days',
-        status: 'Completed', dayPlacement: 'Tuesday', color: '#dcfce7'
+        status: 'Completed', dayPlacement: 'Tuesday', color: '#dcfce7', updatedBy: 'Anita Desai'
       },
       {
-        resource: 'Lyophilizer B', initials: 'LB', stage: 'Development', module: 'Process Development',
-        task: 'Granulation & Process Optimization', fromDate: '2026-06-22', fromTime: '09:00 AM', toDate: '2026-07-02',
+        resource: 'Jacketed Glass Reactor B (5 L)', initials: 'JR', stage: 'S4 - Process Optimization (Lab Scale)', module: 'Process Development',
+        task: 'Monomer Feed Profile Optimization', fromDate: '2026-06-22', fromTime: '09:00 AM', toDate: '2026-07-02',
         toTime: '05:00 PM', planDuration: '10 days', actualDuration: '8 days',
-        status: 'Active', dayPlacement: 'Wednesday', color: '#e0f2fe'
+        status: 'Active', dayPlacement: 'Wednesday', color: '#e0f2fe', updatedBy: 'Rajesh Kumar'
       },
       {
-        resource: 'Amit Patel', initials: 'AP', stage: 'Testing', module: 'Analytical Development',
-        task: 'Assay & Dissolution Testing', fromDate: '2026-07-03', fromTime: '09:00 AM', toDate: '2026-07-13',
+        resource: 'Amit Patel', initials: 'AP', stage: 'S4 - Process Optimization (Lab Scale)', module: 'Analytical Development',
+        task: 'Film Property & Viscosity Testing', fromDate: '2026-07-03', fromTime: '09:00 AM', toDate: '2026-07-13',
         toTime: '05:00 PM', planDuration: '10 days', actualDuration: 'N/A',
-        status: 'Pending', dayPlacement: 'Thursday', color: '#ffedd5'
+        status: 'Pending', dayPlacement: 'Thursday', color: '#ffedd5', updatedBy: 'Amit Patel'
+      },
+      {
+        resource: 'Particle Size Analyzer C', initials: 'PA', stage: 'S4 - Process Optimization (Lab Scale)', module: 'Analytical Development',
+        task: 'Particle Size Distribution Runs', fromDate: '2026-07-14', fromTime: '09:00 AM', toDate: '2026-07-24',
+        toTime: '05:00 PM', planDuration: '10 days', actualDuration: 'N/A',
+        status: 'Pending', dayPlacement: 'Friday', color: '#ffedd5', updatedBy: 'Priya Reddy'
+      },
+      {
+        resource: 'Fume Hood Suite 3', initials: 'FH', stage: 'S3 - Route Scouting & Lab Synthesis', module: 'Raw Material Sourcing',
+        task: 'Monomer Distillation & Inhibitor Removal', fromDate: '2026-06-05', fromTime: '09:00 AM', toDate: '2026-06-15',
+        toTime: '05:00 PM', planDuration: '10 days', actualDuration: '10 days',
+        status: 'Completed', dayPlacement: 'Friday', color: '#dcfce7', updatedBy: 'Anita Desai'
+      },
+      {
+        resource: 'Rotary Evaporator and Vacuum Oven', initials: 'RE', stage: 'S4 - Process Optimization (Lab Scale)', module: 'Polymer Purification',
+        task: 'Residual Monomer Reduction & Stripping', fromDate: '2026-07-01', fromTime: '09:00 AM', toDate: '2026-07-10',
+        toTime: '05:00 PM', planDuration: '9 days', actualDuration: '7 days',
+        status: 'Active', dayPlacement: 'Wednesday', color: '#e0f2fe', updatedBy: 'Deepa Nair'
+      },
+      {
+        resource: 'Pilot Reactor (100 L)', initials: 'PR', stage: 'S6 - Bench-to-Pilot Process Development', module: 'Pilot Plant Trials',
+        task: 'Bench-to-Pilot Polymerization Run', fromDate: '2026-07-15', fromTime: '09:00 AM', toDate: '2026-07-30',
+        toTime: '05:00 PM', planDuration: '15 days', actualDuration: 'N/A',
+        status: 'Pending', dayPlacement: 'Wednesday', color: '#ffedd5', updatedBy: 'Suresh Naidu'
       }
     ]);
   }
@@ -169,9 +194,7 @@ export class ResourcesComponent implements OnInit, AfterViewInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/app/testing/projects/dashboard/analytics'], {
-      queryParams: { code: "2026/GEN/001", name: "Generic Tablet Development" }
-    });
+    this.router.navigate(['/projects']);
   }
 
   // --- Dialog Actions ---

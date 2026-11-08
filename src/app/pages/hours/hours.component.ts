@@ -29,6 +29,7 @@ export interface HourEntry {
   dateObj: Date;
   jobCode: string;
   name: string;
+  role?: string;
   projectsCount?: number;
   tasksList: HourTaskDetail[];
   totalHours: number;
@@ -78,9 +79,9 @@ export class HoursComponent implements OnInit {
   currentDate: Date = new Date(2026, 5, 1); // June 2026
   selectedDate: Date | null = null;
 
-  projectName: string = '';
-  projectCode: string = '';
-  dynamicBreadcrumb: string = 'Hours';
+  projectName: string = 'Acrylic Emulsion Binder 50% Solids';
+  projectCode: string = '2026/CHM/006';
+  dynamicBreadcrumb: string = 'Acrylic Emulsion Binder 50% Solids - 2026/CHM/006';
 
   // Data Arrays
   entries: HourEntry[] = [];
@@ -95,9 +96,9 @@ export class HoursComponent implements OnInit {
 
   constructor() {
     this.route.queryParams.pipe(takeUntilDestroyed()).subscribe(params => {
-      if (params['name'] && params['code']) {
-        this.projectName = params['name'];
-        this.projectCode = params['code'];
+      if (params['name'] || params['code']) {
+        this.projectName = params['name'] || this.projectName;
+        this.projectCode = params['code'] || this.projectCode;
         this.dynamicBreadcrumb = `${this.projectName} - ${this.projectCode}`;
       }
     });
@@ -115,90 +116,44 @@ export class HoursComponent implements OnInit {
   }
 
   private loadMockData(): void {
-    const pharmaTasksPool: { module: string; task: string; description: string }[] = [
-      { module: 'Product Selection', task: 'Patent Freedom to Operate Assessment', description: 'Review patent claim scope and non-infringing formulation strategies' },
-      { module: 'Product Selection', task: 'Reference Listed Drug (RLD) Sourcing', description: 'Procure EU and US reference listed drug lots with certificates of analysis' },
-      { module: 'Product Selection', task: 'Competitor Patent Landscaping', description: 'Filing date, priority date, and orange book therapeutic equivalence review' },
-      { module: 'Product Selection', task: 'Market Exclusivity & Paragraph IV Evaluation', description: 'Review 180-day exclusivity potential and orange book listed patent claims' },
-      { module: 'Product Selection', task: 'Reference Product Characterization', description: 'Physicochemical characterization and comparative profiling of reference product' },
-      { module: 'Pre-Formulation', task: 'API Physicochemical Profiling', description: 'Evaluate crystalline polymorph, melting point, hygroscopicity, and pKa' },
-      { module: 'Pre-Formulation', task: 'Initial Solubility & Permeability Study', description: 'BCS class confirmation in simulated gastric and intestinal fluids' },
-      { module: 'Pre-Formulation', task: 'Excipient Compatibility Screening', description: 'Binary blend stress testing with microcrystalline cellulose and lactose' },
-      { module: 'Pre-Formulation', task: 'Thermal Analysis (DSC & TGA)', description: 'Evaluate glass transition temperature and dehydration endotherms' },
-      { module: 'Pre-Formulation', task: 'Solid State XRD Polymorph Verification', description: 'X-ray powder diffraction testing for polymorphic stability' },
-      { module: 'Pre-Formulation', task: 'Particle Size Distribution (Laser Diffraction)', description: 'Malvern Mastersizer D10, D50, D90 determination' },
-      { module: 'Pre-Formulation', task: 'API–Excipient Compatibility', description: 'Isothermal stress testing and binary blend compatibility studies' },
-      { module: 'Pre-Formulation', task: 'Moisture Adsorption Isotherm Testing', description: 'DVS analysis of API-excipient blends at 25°C/60% RH to 40°C/75% RH' },
-      { module: 'Pre-Formulation', task: 'API Particle Size Micronization Trial', description: 'Air jet mill trial to achieve target D90 < 10 microns' },
-      { module: 'Pre-Formulation', task: 'Micronized API Flow Property Testing', description: 'Angle of repose, bulk density, and tapped density testing' },
-      { module: 'Pre-Formulation', task: 'Excipient Sourcing & Vendor Audit', description: 'Co-processed excipient vendor qualification and DMF audit' },
-      { module: 'Pre-Formulation', task: 'Intrinsic Dissolution Rate (IDR) Measurement', description: 'Rotating disk apparatus test for intrinsic dissolution velocity' },
-      { module: 'Pre-Formulation', task: 'API Stability in Simulated Body Fluids', description: 'Chemical degradation profiling in SGF and SIF at 37°C' },
-      { module: 'Formulation Development', task: 'Binder Selection Study', description: 'Screen PVP K30, HPC, and HPMC for granulation binding efficiency' },
-      { module: 'Formulation Development', task: 'Disintegrant Efficiency Analysis', description: 'Evaluate Croscarmellose Sodium vs Sodium Starch Glycolate' },
-      { module: 'Formulation Development', task: 'Prototype Formulation Design', description: 'Designing target product profile (QTPP) and prototype trial compositions' },
-      { module: 'Formulation Development', task: 'Laboratory Prototype Batch Compounding', description: 'Compounding and wet granulation processing for lab prototype batch' },
-      { module: 'Formulation Development', task: 'High Shear Granulator Parameters Setup', description: 'Optimize impeller speed, chopper speed, and binder addition rate' },
-      { module: 'Formulation Development', task: 'Fluid Bed Dryer Optimization', description: 'Inlet air temperature control and loss on drying (LOD) monitoring' },
-      { module: 'Formulation Development', task: 'Granule Sieve Analysis & Flowability', description: 'Hausner ratio and Carr index evaluation for tableting readiness' },
-      { module: 'Formulation Development', task: 'Lubricant Sensitivity Profiling', description: 'Evaluate blending time impact of Magnesium Stearate on compactibility' },
-      { module: 'Formulation Development', task: 'Direct Compression vs Wet Granulation Trials', description: 'Comparing tablet hardness, friability, and dissolution profiles' },
-      { module: 'Formulation Development', task: 'Granulation Fluid Optimization', description: 'Water vs Isopropanol solvent impact on impurity profile' },
-      { module: 'Formulation Development', task: 'Film Coating Polymer Screening', description: 'Opadry II vs Kollicoat Protect coating suspension preparation' },
-      { module: 'Formulation Development', task: 'DoE Factorial Design Execution', description: '3-factor 2-level experimental design for binder and disintegrant concentration' },
-      { module: 'Formulation Development', task: 'Core Tablet Friability Testing', description: 'Ensuring weight loss < 0.5% after 4 minutes tumbling' },
-      { module: 'Analytical Development', task: 'Analytical Method Development', description: 'RP-HPLC chromatographic method development and assay validation' },
-      { module: 'Analytical Development', task: 'HPLC Column Selection & Precision Testing', description: 'C18 vs C8 column selectivity, retention time, and peak tailing factor' },
-      { module: 'Analytical Development', task: 'Related Substances Method Validation', description: 'Forced degradation study (acid, base, peroxide, thermal, and photolytic)' },
-      { module: 'Analytical Development', task: 'Dissolution Profiling in 4 Buffer Media', description: 'pH 1.2 HCl, pH 4.5 Acetate, pH 6.8 Phosphate, and Water' },
-      { module: 'Analytical Development', task: 'f1 and f2 Similarity Factor Calculation', description: 'Mathematical comparison of dissolution curves against innovator' },
-      { module: 'Analytical Development', task: 'Chromatographic Assay Method Precision', description: 'Repeatability and intermediate precision RSD calculation (< 1.0%)' },
-      { module: 'Analytical Development', task: 'Filter Compatibility Study', description: 'PTFE vs PVDF vs Nylon syringe filter recovery testing' },
-      { module: 'Analytical Development', task: 'Organic Impurities Profiling by LC-MS', description: 'Identification of degradation products exceeding ICH identification threshold' },
-      { module: 'Analytical Development', task: 'Method Validation Summary Report (MVSR)', description: 'Compiling linearity, range, precision, accuracy, and LOD/LOQ data' },
-      { module: 'Prototype & Optimization', task: 'Dissolution Testing', description: 'In-vitro multi-media comparative dissolution rate evaluation' },
-      { module: 'Prototype & Optimization', task: 'Formulation Optimization', description: 'Optimizing tablet compression parameters, hardness, and friability' },
-      { module: 'Prototype & Optimization', task: 'Compression Tooling & Feeder Speed Tuning', description: 'Evaluated D-tooling punch penetration depth and force feeder RPM' },
-      { module: 'Prototype & Optimization', task: 'Tablet Friability & Disintegration Testing', description: 'Tested 100-revolution Roche friabilator and USP disintegration apparatus' },
-      { module: 'Prototype & Optimization', task: 'Tablet Disintegration Time Optimization', description: 'Targeting < 3 minutes disintegration in water at 37°C' },
-      { module: 'Prototype & Optimization', task: 'Weight Variation Statistical Analysis', description: 'Assessing RSD across 100 individual tablet samples' },
-      { module: 'Prototype & Optimization', task: 'Aqueous Film Coating Trial', description: 'Pan speed, spray rate, and bed temperature optimization' },
-      { module: 'Prototype & Optimization', task: 'Coating Weight Gain & Uniformity Assessment', description: 'Target 3.0% weight gain verification with colour difference analysis' },
-      { module: 'Scale-Up', task: 'Scale-Up & Pilot Batch Setup', description: 'Pilot scale high shear granulator and compression trial setup' },
-      { module: 'Scale-Up', task: 'Batch Yield & Reconciliation Report', description: 'Granule weight reconciliation and theoretical yield computation' },
-      { module: 'Scale-Up', task: 'Scale-Up & Pilot Batch Calculations', description: 'Scale-up parameter calculation for fluid bed processor and high shear mixer' },
-      { module: 'Scale-Up', task: 'Fluid Bed Granulation Pilot Trial Setup', description: 'Top-spray granulation parameter setup with peristaltic pump calibration' },
-      { module: 'Scale-Up', task: 'Granule Flow & Bulk Density Confirmation', description: 'Testing tapped density and compressibility index on pilot batch' },
-      { module: 'Scale-Up', task: 'High Speed Rotary Press Pilot Run', description: 'Pilot run at 120,000 tablets/hr with compression force transducer logging' },
-      { module: 'Testing & Validation', task: 'Stability Study Sample Loading', description: 'Stability protocol execution and sample loading in ICH climate chambers' },
-      { module: 'Testing & Validation', task: 'ICH Chamber Calibration & Monitoring', description: 'Checked 25°C/60% RH and 40°C/75% RH sensor mappings and data loggers' },
-      { module: 'Testing & Validation', task: 'Packaging Leak & Seal Strength Testing', description: 'Vacuum decay and dye ingress testing on blister packed blisters' },
-      { module: 'BA/BE & Stability', task: 'Bioequivalence Readiness Assessment', description: 'Evaluating bioequivalence study readiness and comparator profile similarity' },
-      { module: 'BA/BE & Stability', task: 'In-Vitro In-Vivo Correlation (IVIVC) Modeling', description: 'GastroPlus simulation for plasma concentration-time curve matching' },
-      { module: 'Regulatory Submission', task: 'Regulatory Dossier Preparation', description: 'Compiling Module 3 Quality CMC documentation for regulatory filing' },
-      { module: 'Regulatory Submission', task: 'Regulatory Review & Gap Assessment', description: 'Internal regulatory gap assessment and compliance review' },
-      { module: 'Regulatory Submission', task: 'Drug Master File (DMF) Completeness Check', description: 'Verified Letter of Access (LoA) and active substance starting materials' },
-      { module: 'Regulatory Submission', task: 'Summary of Product Characteristics (SmPC) Draft', description: 'Drafted Section 4.2 Posology and Section 6.1 Excipient list' },
-      { module: 'Manufacturing Readiness', task: 'Commercial Manufacturing Readiness', description: 'Manufacturing transfer protocols and batch manufacturing record (BMR) drafts' },
-      { module: 'Manufacturing Readiness', task: 'Equipment Qualification (IQ/OQ/PQ) Review', description: 'Rotary press and automated blister packaging line signoff protocols' },
-      { module: 'Commercialization', task: 'Launch Readiness Plan', description: 'Commercial supply chain alignment and packaging artwork verification' },
-      { module: 'Commercialization', task: 'Primary Packaging Integrity (HVLD & Bubble Test)', description: 'Alu-Alu blister leak testing and moisture barrier confirmation' }
+    const chemicalTasksPool: { module: string; task: string; description: string }[] = [
+      { module: 'Process Chemistry', task: 'Monomer Feed Profile Optimization', description: 'Semi-batch emulsion feed dosing profile and temperature trajectory control' },
+      { module: 'Process Chemistry', task: 'Monomer-Initiator Compatibility Study', description: 'Thermal stability and half-life analysis of persulfate initiator system' },
+      { module: 'Process Chemistry', task: 'Bench Scale Polymerization Run (2 L)', description: 'Jacketed glass reactor emulsion synthesis targeting 50% w/w solids' },
+      { module: 'Process Chemistry', task: 'Exotherm Control & Heat Removal Profiling', description: 'Reaction calorimetry calculation and adiabatic runaway boundary determination' },
+      { module: 'Process Chemistry', task: 'Coagulum Reduction Study', description: 'Surfactant HLB ratio optimization to minimize reactor fouling below 0.05%' },
+      { module: 'Analytical & QC', task: 'Residual Monomer GC-FID Analysis', description: 'Gas chromatography testing for residual butyl acrylate and methyl methacrylate (< 100 ppm)' },
+      { module: 'Analytical & QC', task: 'DLS Particle Size Distribution', description: 'Dynamic light scattering measurement targeting 120-150 nm monodisperse particles' },
+      { module: 'Analytical & QC', task: 'Brookfield Viscosity Profiling', description: 'Viscosity measurements across shear rates (spindle 2 @ 60 rpm, 500-1500 cP)' },
+      { module: 'Analytical & QC', task: 'Solids Content Gravimetric Verification', description: 'Halogen moisture balance determination of non-volatile active polymer solids' },
+      { module: 'Analytical & QC', task: 'Minimum Film-Forming Temperature (MFFT)', description: 'MFFT gradient bar measurement targeting < 10°C for architectural binder' },
+      { module: 'Process Safety', task: 'RC1 Reaction Calorimetry', description: 'Reaction heat flow calorimeter assessment of polymerization heat release' },
+      { module: 'Process Safety', task: 'HAZOP Node Preparation & LOPA', description: 'Hazard and operability node reviews for emergency vent and cooling water failure' },
+      { module: 'Process Safety', task: 'Emergency Vent Sizing (DIERS)', description: 'Two-phase relief valve and rupture disk hydraulic calculation' },
+      { module: 'Pilot Plant Operations', task: 'Jacketed Reactor Cleaning & Inspection', description: 'Caustic boil-out and mechanical seal integrity check on 500 L reactor' },
+      { module: 'Pilot Plant Operations', task: 'Monomer Feed Pump Stroke Calibration', description: 'Peristaltic and diaphragm metering pump accuracy calibration' },
+      { module: 'Pilot Plant Operations', task: 'Pilot Batch Execution (100 L)', description: 'Scale-up batch run with automated cascade jacket cooling control' },
+      { module: 'Pilot Plant Operations', task: 'Chaser Catalyst Addition & Deodorization', description: 'Redox chaser feeding to reduce unreacted free monomer' },
+      { module: 'Pilot Plant Operations', task: 'Post-Polymerization Filtration & Drumming', description: '100 mesh filter bag filtration and sealed drum packaging' },
+      { module: 'Regulatory & Quality', task: 'REACH Registration Dossier Compilation', description: 'Data gap analysis, toxicological profiling and lead registrant submission' },
+      { module: 'Regulatory & Quality', task: 'Safety Data Sheet (GHS/CLP) Authoring', description: '16-section SDS compilation with transport classifications (ADR/IMDG)' },
+      { module: 'Regulatory & Quality', task: 'Technical Transfer Dossier (TTD) Review', description: 'Verification of PFDs, P&IDs, CPP/CQA design space and SOPs' }
     ];
 
-    const teamMembers = [
-      { name: 'Rajesh Kumar', code: 'JB-301' },
-      { name: 'Anita Desai', code: 'JB-302' },
-      { name: 'Priya Reddy', code: 'JB-303' },
-      { name: 'Amit Patel', code: 'JB-304' },
-      { name: 'Suresh Naidu', code: 'JB-305' },
-      { name: 'Arun Joseph', code: 'JB-306' },
-      { name: 'Lakshmi Devi', code: 'JB-307' },
-      { name: 'Deepa Nair', code: 'JB-308' },
-      { name: 'Vikram Singh', code: 'JB-309' },
-      { name: 'Sneha Sharma', code: 'JB-310' }
+    const teamMembers: { name: string; code: string; role: string }[] = [
+      { name: 'Rajesh Kumar', code: 'JB-301', role: 'Process Engineer' },
+      { name: 'Anita Desai', code: 'JB-302', role: 'Supply Chain & Quality Specialist' },
+      { name: 'Priya Reddy', code: 'JB-303', role: 'Regulatory Affairs Specialist' },
+      { name: 'Amit Patel', code: 'JB-304', role: 'Analytical Chemist, QC' },
+      { name: 'Suresh Naidu', code: 'JB-305', role: 'Plant Operator' },
+      { name: 'Arun Joseph', code: 'JB-306', role: 'Process Safety Engineer' },
+      { name: 'Lakshmi Devi', code: 'JB-307', role: 'QA Chemist' },
+      { name: 'Deepa Nair', code: 'JB-308', role: 'Polymer Scientist' },
+      { name: 'Vikram Singh', code: 'JB-309', role: 'Pilot Plant Engineer' },
+      { name: 'Sneha Sharma', code: 'JB-310', role: 'Synthesis Chemist' }
     ];
 
-    // Day task distributions: Target total tasks per day = 40, 55, 60, etc.
+    // Day task distributions
     const daySchedules: { day: number; targetTasks: number; empCount: number }[] = [
       { day: 1, targetTasks: 40, empCount: 6 },
       { day: 2, targetTasks: 55, empCount: 8 },
@@ -229,52 +184,123 @@ export class HoursComponent implements OnInit {
 
     daySchedules.forEach((schedule, schedIdx) => {
       const dateObj = new Date(2026, 5, schedule.day);
+      const isDay2 = schedule.day === 2;
       const employees = teamMembers.slice(0, schedule.empCount);
       const totalTasks = schedule.targetTasks;
-      
+
       const baseTasksPerEmp = Math.floor(totalTasks / employees.length);
       const remainder = totalTasks % employees.length;
 
       employees.forEach((emp, empIdx) => {
-        const count = baseTasksPerEmp + (empIdx < remainder ? 1 : 0);
+        let count = baseTasksPerEmp + (empIdx < remainder ? 1 : 0);
+        let empTotalHours = 7.9;
+        let approved = true;
+        let declined = false;
+        let pending = false;
+        let isOvertime = false;
+        let overtimeHours = 0;
+        let msgList: HourMessage[] = [];
+
+        if (isDay2) {
+          // Exact specification for 06-02-26 from section 1. Sample rows
+          switch (emp.name) {
+            case 'Rajesh Kumar':
+              count = 7;
+              empTotalHours = 7.9;
+              approved = true;
+              declined = false;
+              pending = false;
+              msgList = [{ sender: 'Ananya Rao', date: '2026-06-02', text: 'Reviewed and approved monomer optimization hours.' }];
+              break;
+            case 'Anita Desai':
+              count = 7;
+              empTotalHours = 7.9;
+              approved = true;
+              declined = false;
+              pending = false;
+              break;
+            case 'Priya Reddy':
+              count = 7;
+              empTotalHours = 7.9;
+              approved = true;
+              declined = false;
+              pending = false;
+              break;
+            case 'Amit Patel':
+              count = 7;
+              empTotalHours = 10.7;
+              isOvertime = true;
+              overtimeHours = 2.7;
+              approved = true;
+              declined = false;
+              pending = false;
+              break;
+            case 'Suresh Naidu':
+              count = 7;
+              empTotalHours = 7.9;
+              approved = false;
+              declined = false;
+              pending = true;
+              break;
+            case 'Arun Joseph':
+              count = 7;
+              empTotalHours = 7.9;
+              approved = true;
+              declined = false;
+              pending = false;
+              break;
+            case 'Lakshmi Devi':
+              count = 7;
+              empTotalHours = 7.9;
+              approved = false;
+              declined = true;
+              pending = false;
+              break;
+            case 'Deepa Nair':
+              count = 6;
+              empTotalHours = 10.5;
+              isOvertime = true;
+              overtimeHours = 2.5;
+              approved = true;
+              declined = false;
+              pending = false;
+              break;
+          }
+        } else {
+          isOvertime = (schedIdx * 2 + empIdx) % 4 === 1;
+          empTotalHours = isOvertime ? Number((10.0 + ((empIdx * 3) % 4) * 0.5).toFixed(1)) : 7.9;
+          overtimeHours = isOvertime ? Number((empTotalHours - 7.9).toFixed(1)) : 0;
+          approved = (schedIdx + empIdx) % 5 !== 0;
+          pending = (schedIdx + empIdx) % 5 === 0;
+        }
+
         const tasksList: HourTaskDetail[] = [];
-        let empTotalHours = 0;
-
-        // Overtime for few records (~25% of records)
-        const isOvertime = (schedIdx * 2 + empIdx) % 4 === 1;
-        const targetHours = isOvertime ? Number((10.0 + ((empIdx * 3) % 4) * 0.5).toFixed(1)) : 8.0;
-
         for (let t = 0; t < count; t++) {
-          const taskTemplate = pharmaTasksPool[taskPoolIdx % pharmaTasksPool.length];
+          const taskTemplate = chemicalTasksPool[taskPoolIdx % chemicalTasksPool.length];
           taskPoolIdx++;
-          const hourAlloc = Number(((targetHours / count) + (t % 2 === 0 ? 0.2 : -0.2)).toFixed(1));
-          empTotalHours += hourAlloc;
-
+          const hourAlloc = Number(((empTotalHours / count) + (t % 2 === 0 ? 0.2 : -0.2)).toFixed(1));
           tasksList.push({
             module: taskTemplate.module,
             task: taskTemplate.task,
-            hours: hourAlloc > 0 ? hourAlloc : 1.0,
+            hours: Math.max(0.5, hourAlloc),
             description: taskTemplate.description
           });
         }
 
-        const isPending = (schedIdx + empIdx) % 5 === 0;
-        const isDeclined = (schedIdx + empIdx) % 7 === 0 && !isPending;
-        const isApproved = !isPending && !isDeclined;
-
         entries.push({
           dateObj,
-          jobCode: `${emp.code}-${schedule.day}`,
+          jobCode: emp.code,
           name: emp.name,
+          role: emp.role,
           projectsCount: 3,
           tasksList,
-          totalHours: Number(empTotalHours.toFixed(1)) || targetHours,
-          approved: isApproved,
-          declined: isDeclined,
-          pending: isPending,
+          totalHours: empTotalHours,
+          approved,
+          declined,
+          pending,
           isOvertime,
-          overtimeHours: isOvertime ? Number((empTotalHours - 8.0).toFixed(1)) : 0,
-          messages: empIdx === 0 ? [{ sender: emp.name, date: `2026-06-${String(schedule.day).padStart(2, '0')}`, text: `Completed all assigned batch tasks for day ${schedule.day}.` }] : []
+          overtimeHours,
+          messages: msgList
         });
       });
     });
@@ -282,15 +308,59 @@ export class HoursComponent implements OnInit {
     this.entries = entries;
   }
 
-  // --- Calendar Logic ---
+  // --- Calendar Generation ---
 
-  get currentMonthLabel(): string {
-    return `${this.monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
+  buildCalendar(): void {
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    const days: CalendarDay[] = [];
+
+    // Days from previous month
+    const prevMonthLastDay = new Date(year, month, 0).getDate();
+    for (let i = firstDay.getDay() - 1; i >= 0; i--) {
+      const d = new Date(year, month - 1, prevMonthLastDay - i);
+      days.push(this.createCalendarDay(d, false));
+    }
+
+    // Days from current month
+    for (let i = 1; i <= lastDay.getDate(); i++) {
+      const d = new Date(year, month, i);
+      days.push(this.createCalendarDay(d, true));
+    }
+
+    // Days from next month
+    const remainingDays = 42 - days.length;
+    for (let i = 1; i <= remainingDays; i++) {
+      const d = new Date(year, month + 1, i);
+      days.push(this.createCalendarDay(d, false));
+    }
+
+    this.calendarDays = days;
   }
 
-  get totalClaimsInRange(): number {
-    return this.calendarDays.filter(d => d.inCurrentMonth).reduce((sum, d) => sum + d.claims, 0);
+  private createCalendarDay(d: Date, inCurrentMonth: boolean): CalendarDay {
+    const today = new Date();
+    const isToday = this.isSameDay(d, today);
+    const isSelected = this.selectedDate ? this.isSameDay(d, this.selectedDate) : false;
+
+    // Count claims for that day from our master entries
+    const claims = this.entries.filter(e => this.isSameDay(e.dateObj, d)).length;
+
+    return {
+      date: d,
+      dayNumber: d.getDate(),
+      inCurrentMonth,
+      isToday,
+      isSelected,
+      claims
+    };
   }
+
+  // --- Navigation & Date Filtering ---
 
   prevMonth(): void {
     this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1);
@@ -302,51 +372,33 @@ export class HoursComponent implements OnInit {
     this.buildCalendar();
   }
 
-  buildCalendar(): void {
-    const year = this.currentDate.getFullYear();
-    const month = this.currentDate.getMonth();
-    const firstOfMonth = new Date(year, month, 1);
-    const gridStart = new Date(year, month, 1 - firstOfMonth.getDay());
-    const today = new Date();
-    const days: CalendarDay[] = [];
+  get currentMonthLabel(): string {
+    return `${this.monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
+  }
 
-    for (let i = 0; i < 42; i++) {
-      const cellDate = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
-      const inCurrentMonth = cellDate.getMonth() === month;
-      days.push({
-        date: cellDate,
-        dayNumber: cellDate.getDate(),
-        inCurrentMonth,
-        isToday: this.isSameDay(cellDate, today),
-        isSelected: this.selectedDate ? this.isSameDay(cellDate, this.selectedDate) : false,
-        claims: inCurrentMonth
-          ? this.entries
-              .filter(e => this.isSameDay(e.dateObj, cellDate))
-              .reduce((sum, e) => sum + (e.tasksList?.length || 0), 0)
-          : 0
-      });
-    }
-    this.calendarDays = days;
+  get totalClaimsInRange(): number {
+    return this.calendarDays
+      .filter(d => d.inCurrentMonth)
+      .reduce((sum, d) => sum + d.claims, 0);
   }
 
   filterByDate(day: CalendarDay): void {
-    if (!day.inCurrentMonth) return;
-
     this.selectedDate = day.date;
-    this.filteredEntries = this.entries.filter(e => this.isSameDay(e.dateObj, day.date));
-    this.totalSize = this.filteredEntries.length;
     this.calendarDays.forEach(d => d.isSelected = this.isSameDay(d.date, day.date));
 
+    this.filteredEntries = this.entries.filter(e => this.isSameDay(e.dateObj, day.date));
+    this.totalSize = this.filteredEntries.length;
     this.currentPage = 1;
     this.updatePagination();
   }
 
-  isSameDay(a: Date, b: Date): boolean {
+  private isSameDay(a: Date, b: Date): boolean {
     return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
   }
 
   formatDate(d: Date): string {
-    return `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}-${String(d.getFullYear()).slice(-2)}`;
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${String(d.getDate()).padStart(2, '0')}-${months[d.getMonth()]}-${d.getFullYear()}`;
   }
 
   // --- Pagination ---
@@ -362,81 +414,78 @@ export class HoursComponent implements OnInit {
     this.updatePagination();
   }
 
-  // --- Status & Actions ---
+  // --- Actions ---
 
-  toggleRowStatus(entry: HourEntry, field: 'approved' | 'declined' | 'pending'): void {
-    if (field === 'approved') {
-      entry.approved = !entry.approved;
-      if (entry.approved) { entry.declined = false; entry.pending = false; }
-    } else if (field === 'declined') {
-      entry.declined = !entry.declined;
-      if (entry.declined) { entry.approved = false; entry.pending = false; }
-    } else if (field === 'pending') {
-      entry.pending = !entry.pending;
-      if (entry.pending) { entry.approved = false; entry.declined = false; }
+  toggleStatus(entry: HourEntry, statusType: 'approved' | 'declined' | 'pending'): void {
+    entry.approved = false;
+    entry.declined = false;
+    entry.pending = false;
+    entry[statusType] = true;
+  }
+
+  toggleRowStatus(entry: HourEntry, statusType: 'approved' | 'declined' | 'pending'): void {
+    this.toggleStatus(entry, statusType);
+  }
+
+  openMessages(entry: HourEntry): void {
+    this.dialog.open(this.messageDialog, {
+      width: '500px',
+      data: {
+        entry,
+        messages: entry.messages || []
+      }
+    });
+  }
+
+  openMessagesDialog(entry: HourEntry): void {
+    this.openMessages(entry);
+  }
+
+  addMessage(data: any, text: string): void {
+    if (!text || !text.trim()) return;
+    if (data && data.entry) {
+      if (!data.entry.messages) {
+        data.entry.messages = [];
+      }
+      const newMsg: HourMessage = {
+        sender: 'Current User',
+        date: this.formatDate(new Date()),
+        text: text.trim()
+      };
+      data.entry.messages.push(newMsg);
+      if (data.messages && data.messages !== data.entry.messages) {
+        data.messages.push(newMsg);
+      }
     }
   }
 
   openTasksDialog(entry: HourEntry): void {
-    this.dialog.open(this.tasksDialog, { width: '1100px', maxWidth: '95vw', data: entry });
+    this.dialog.open(this.tasksDialog, {
+      width: '800px',
+      maxWidth: '95vw',
+      data: {
+        entry,
+        tasks: entry.tasksList || []
+      }
+    });
   }
-
-  openMessagesDialog(entry: HourEntry): void {
-    this.dialog.open(this.messageDialog, { width: '600px', maxWidth: '95vw', data: entry });
-  }
-
-  addMessage(entry: HourEntry, text: string): void {
-    if (!text.trim()) return;
-    if (!entry.messages) entry.messages = [];
-    entry.messages.push({ sender: 'Current User', date: new Date().toISOString().split('T')[0], text: text.trim() });
-  }
-
-  // addTimesheet(): void {
-  //   const dialogRef = this.dialog.open(AddHoursPopComponent, { width: '800px', height: 'auto', data: null });
-  //   dialogRef.afterClosed().subscribe((result: any) => {
-  //     if (result) {
-  //       const tasks: HourTaskDetail[] = (result.rows || []).map((r: any) => ({
-  //         module: r.module || 'General', task: r.task || 'Task Log',
-  //         hours: Number(r.hours) || 0, description: r.description || ''
-  //       }));
-
-  //       const newEntry: HourEntry = {
-  //         dateObj: result.dateObj, jobCode: `JB-${200 + this.entries.length + 1}`,
-  //         name: result.name || 'Anonymous',
-  //         tasksList: tasks.length ? tasks : [{ module: 'General', task: 'Task Log', hours: 1, description: 'General work' }],
-  //         totalHours: tasks.reduce((sum, t) => sum + t.hours, 0) || 1,
-  //         approved: false, declined: false, pending: true, messages: []
-  //       };
-
-  //       this.entries.push(newEntry);
-  //       this.buildCalendar();
-  //       if (this.selectedDate) this.filterByDate(this.calendarDays.find(d => this.isSameDay(d.date, this.selectedDate!))!);
-  //     }
-  //   });
-  // }
 
   editEntry(entry: HourEntry): void {
     const dialogRef = this.dialog.open(HoursTimesheetComponent, {
-      width: '950px',
+      width: '850px',
       maxWidth: '95vw',
       data: {
-        dateObj: entry.dateObj,
-        name: entry.name,
-        tasksList: entry.tasksList
+        entry: {
+          ...entry,
+          tasksList: [...entry.tasksList]
+        }
       }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        entry.dateObj = result.dateObj;
-        entry.name = result.name;
-        if (result.rows && result.rows.length > 0) {
-          entry.tasksList = result.rows.map((r: any) => ({
-            module: r.module || 'General',
-            task: r.task || 'Task Log',
-            hours: Number(r.hours) || 0,
-            description: r.description || ''
-          }));
+        if (result.tasksList) {
+          entry.tasksList = [...result.tasksList];
           entry.totalHours = entry.tasksList.reduce((sum, t) => sum + t.hours, 0);
           entry.isOvertime = entry.totalHours > 8.0;
           entry.overtimeHours = entry.isOvertime ? Number((entry.totalHours - 8.0).toFixed(1)) : 0;
@@ -477,6 +526,6 @@ export class HoursComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/app/testing/projects/dashboard/analytics'], { queryParams: { code: "2026/GEN/001", name: "Generic Tablet Development" } });
+    this.router.navigate(['/projects']);
   }
 }

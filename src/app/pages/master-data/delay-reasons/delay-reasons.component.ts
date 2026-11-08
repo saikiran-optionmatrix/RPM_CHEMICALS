@@ -41,37 +41,37 @@ export class DelayReasonsComponent {
   readonly delayReasons: DelayReason[] = [
     {
       id: 1,
-      reason: 'Raw Material Shortage',
+      reason: 'Raw Material / Catalyst Shortage',
       context: 'Activity',
       status: 'Active',
     },
     {
       id: 2,
-      reason: 'Equipment Breakdown / Maintenance',
+      reason: 'Reactor / Equipment Breakdown or Maintenance',
       context: 'Task',
       status: 'Active',
     },
     {
       id: 3,
-      reason: 'Quality Control Hold / Out of Specification',
+      reason: 'Batch Contamination / Out of Specification',
       context: 'Issue',
       status: 'Active',
     },
     {
       id: 4,
-      reason: 'Regulatory Approval Pending',
+      reason: 'Environmental Clearance / Regulatory Approval Pending',
       context: 'Gate',
       status: 'Active',
     },
     {
       id: 5,
-      reason: 'Documentation Clearance Delay',
+      reason: 'Documentation and Process Safety (HAZOP) Clearance Delay',
       context: 'Requirement',
       status: 'Active',
     },
     {
       id: 6,
-      reason: 'Vendor Dispatch Delay',
+      reason: 'Hazardous Material Shipment Delay',
       context: 'Activity',
       status: 'Inactive',
     },
@@ -83,7 +83,7 @@ export class DelayReasonsComponent {
     },
     {
       id: 8,
-      reason: 'Packaging Material Rejection',
+      reason: 'Drum / IBC Packaging Lot Rejection',
       context: 'Issue',
       status: 'Inactive',
     },

@@ -44,38 +44,28 @@ export class FacilitiesComponent {
   constructor(private dialog: MatDialog) {}
   readonly assets: Asset[] = [
     {
-      name: 'API & Raw Material Store',
-      code: 'FAC-1001',
+      name: 'Chemical Manufacturing Plant',
+      code: 'LOC-MFG',
       status: 'Active',
     },
-
     {
-      name: 'Formulation Development Lab',
-      code: 'FAC-1002',
+      name: 'Process R&D Center',
+      code: 'LOC-RND',
       status: 'Active',
     },
-
     {
-      name: 'Analytical Testing Lab',
-      code: 'FAC-1003',
+      name: 'Quality Control & Analytical Lab',
+      code: 'LOC-QC',
       status: 'Active',
     },
-
     {
-      name: 'Tablet Manufacturing Area',
-      code: 'FAC-1004',
+      name: 'Pilot Plant & Process Safety Testing Facility',
+      code: 'LOC-PLT',
       status: 'Active',
     },
-
     {
-      name: 'Stability Testing Room',
-      code: 'FAC-1005',
-      status: 'Active',
-    },
-
-    {
-      name: 'Quality Control Lab',
-      code: 'FAC-1006',
+      name: 'Hazardous Materials Storage & Warehouse',
+      code: 'LOC-WHS',
       status: 'Active',
     },
   ];

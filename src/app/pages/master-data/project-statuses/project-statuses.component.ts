@@ -38,27 +38,27 @@ export class ProjectStatusesComponent {
   readonly items: MasterItem[] = [
     {
       name: 'Planning',
-      description: 'Project requirements and development planning',
+      description: 'Target product profile, research scope and development planning',
       status: 'Active',
     },
     {
       name: 'Approved',
-      description: 'Project approved for execution',
+      description: 'Project approved for execution and funding released',
       status: 'Active',
     },
     {
       name: 'In Progress',
-      description: 'Development and testing activities underway',
+      description: 'Route development, process development and pilot or plant activities underway',
       status: 'Active',
     },
     {
       name: 'On Hold',
-      description: 'Project temporarily paused',
+      description: 'Project temporarily paused pending data review, safety review or regulatory feedback',
       status: 'Inactive',
     },
     {
       name: 'Completed',
-      description: 'Development successfully completed',
+      description: 'Development successfully completed and ready for technology transfer',
       status: 'Active',
     },
   ];

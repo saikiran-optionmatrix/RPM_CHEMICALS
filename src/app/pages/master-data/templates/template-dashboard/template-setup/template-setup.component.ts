@@ -39,10 +39,10 @@ export class TemplateSetupComponent implements OnInit {
     this.route.snapshot.queryParamMap.get('projectName') ||
     this.route.snapshot.queryParamMap.get('name') ||
     this.route.snapshot.queryParamMap.get('templateName') ||
-    'Oral Solid Dosage (OSD) Formulation & Commercialization';
+    'Specialty Chemical Process Development Program';
 
-  projectCode: string = '2026/GEN/001';
-  dynamicBreadcrumb: string = 'Oral Solid Dosage (OSD) Formulation & Commercialization - 2026/GEN/001';
+  projectCode: string = '2026/CHM/001';
+  dynamicBreadcrumb: string = 'Specialty Chemical Process Development Program - 2026/CHM/001';
 
   selectedStage: StageItem | null = null;
   selectedModule: ModuleItem | null = null;

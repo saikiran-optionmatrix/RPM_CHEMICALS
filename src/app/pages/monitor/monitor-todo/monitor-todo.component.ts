@@ -131,11 +131,90 @@ export class MonitorTodoComponent implements OnInit, OnDestroy {
 
   private loadMockData(): void {
     this.mockData = [
-      { id: 1, ProjectCode: '2026/RD/001', Subject: 'Opportunity Assessment - Market & Therapeutic Area Analysis', delayReason: 'Prevalence Registry Slot Confirmation', Description: 'Conduct competitive landscape and epidemiology benchmarking on SGLT2 generic market share.', Comments: 'Analysis against innovator formulations underway', IsActive: true, CreatedDate: '2026-01-10T00:00:00', DueDate: '2026-06-15T00:00:00', CompletionDate: null, Responsibility: 'Dr. Sarah Jenkins', Group: 'R&D', Department: 'Formulation R&D', ProjectName: 'Dapagliflozin Film-Coated Tablets', Status: 'Pending' },
-      { id: 2, ProjectCode: '2026/RD/002', Subject: 'Product Definition - Target Product Profile (TPP) Sign-off', Description: 'Finalize critical quality attributes (CQAs) and dissolution profile specifications for extended-release matrix.', Comments: 'Approved by clinical and regulatory directors', IsActive: true, CreatedDate: '2026-01-15T00:00:00', DueDate: '2026-03-25T00:00:00', CompletionDate: '2026-03-24T00:00:00', Responsibility: 'Priya Reddy', Group: 'Regulatory', Department: 'Regulatory Affairs', ProjectName: 'Levetiracetam Extended-Release Tablets', Status: 'Completed' },
-      { id: 3, ProjectCode: '2026/RD/003', Subject: 'Concept Development - Enteric Coating Design Space', delayReason: 'Fluid Bed Pan Spray Gun Optimization', Description: 'Optimize enteric polymer sub-coating and plasticizer concentration to resist acidic gastric juice.', Comments: 'Design of Experiments (DoE) parameters submitted for review', IsActive: true, CreatedDate: '2026-02-01T00:00:00', DueDate: '2026-07-01T00:00:00', CompletionDate: null, Responsibility: 'Rajesh Kumar', Group: 'R&D', Department: 'Formulation R&D', ProjectName: 'Pantoprazole Gastro-Resistant Tablets', Status: 'Progress' },
-      { id: 4, ProjectCode: '2026/RD/004', Subject: 'Supplier Sourcing - Sterile API Vendor Audit', delayReason: 'European Inspection Travel Clearance', Description: 'Perform on-site cGMP audit of sterile crystallization manufacturing site for ceftriaxone sodium.', Comments: 'Pending audit checklist clearance by QA director', IsActive: true, CreatedDate: '2026-02-10T00:00:00', DueDate: '2026-06-30T00:00:00', CompletionDate: null, Responsibility: 'Anita Desai', Group: 'Quality', Department: 'Quality Assurance', ProjectName: 'Ceftriaxone Powder for Injection', Status: 'Hold' },
-      { id: 5, ProjectCode: '2026/RD/005', Subject: 'Facility Readiness - Aseptic Cleanroom Environmental Qualification', Description: 'Execute HVAC smoke study and non-viable particulate counting in sterile nebule filling suite.', Comments: 'ISO Class 5 filling line qualification certified by engineering', IsActive: true, CreatedDate: '2026-03-05T00:00:00', DueDate: '2026-05-20T00:00:00', CompletionDate: '2026-05-19T00:00:00', Responsibility: 'Amit Patel', Group: 'Validation', Department: 'MS&T / Process Engineering', ProjectName: 'Budesonide Inhalation Suspension', Status: 'Allocated' }
+      {
+        id: 1,
+        ProjectCode: '2026/CHM/001',
+        Subject: 'Concept Screening - Chemistry Feasibility',
+        delayReason: 'Calorimetry Lab Slot',
+        Description: 'Conduct feasibility and competitor benchmarking on polyurethane dispersion chemistry, particle size and film performance.',
+        Comments: 'Competitor benchmarking and reaction calorimetry underway',
+        IsActive: true,
+        CreatedDate: '2026-01-10T00:00:00',
+        DueDate: '2026-06-15T00:00:00',
+        CompletionDate: null,
+        Responsibility: 'Dr. Sarah Jenkins',
+        Group: 'Research',
+        Department: 'Process Chemistry',
+        ProjectName: 'Waterborne Polyurethane Dispersion (PUD) Discovery Project',
+        Status: 'Pending'
+      },
+      {
+        id: 2,
+        ProjectCode: '2026/CHM/002',
+        Subject: 'Project Definition - Target Product Profile & Specifications',
+        Description: 'Cascade target product profile, activity and selectivity specifications for the pilot lot.',
+        Comments: 'Signed off by project manager and technical lead',
+        IsActive: true,
+        CreatedDate: '2026-01-15T00:00:00',
+        DueDate: '2026-03-25T00:00:00',
+        CompletionDate: '2026-03-24T00:00:00',
+        Responsibility: 'Priya Reddy',
+        Group: 'Project Management',
+        Department: 'Finance & Project Management',
+        ProjectName: 'Hydrogenation Catalyst Development (Pd/C)',
+        Status: 'Completed'
+      },
+      {
+        id: 3,
+        ProjectCode: '2026/CHM/003',
+        Subject: 'Process Development - Synthesis Route Strategy',
+        delayReason: 'Reactor Allocation Delay',
+        Description: 'Finalize multi-step synthesis route strategy, intermediate selection criteria and batch process design.',
+        Comments: 'Bench-scale route screening in progress',
+        IsActive: true,
+        CreatedDate: '2026-02-01T00:00:00',
+        DueDate: '2026-07-01T00:00:00',
+        CompletionDate: null,
+        Responsibility: 'Rajesh Kumar',
+        Group: 'Process Development',
+        Department: 'Process Chemistry',
+        ProjectName: 'Agrochemical Active Ingredient Synthesis Development',
+        Status: 'Progress'
+      },
+      {
+        id: 4,
+        ProjectCode: '2026/CHM/004',
+        Subject: 'Supplier Sourcing - Raw Material Qualification',
+        delayReason: 'Solvent Specification Update',
+        Description: 'Issue qualification package for technical-grade solvents, including impurity limits and certificates of analysis.',
+        Comments: 'Vendor CoA under review by quality',
+        IsActive: true,
+        CreatedDate: '2026-02-10T00:00:00',
+        DueDate: '2026-06-30T00:00:00',
+        CompletionDate: null,
+        Responsibility: 'Anita Desai',
+        Group: 'Sourcing',
+        Department: 'Sourcing & Procurement',
+        ProjectName: 'Solvent Recovery & Fractional Distillation Process Development',
+        Status: 'Hold'
+      },
+      {
+        id: 5,
+        ProjectCode: '2026/CHM/005',
+        Subject: 'Plant Readiness - Assay Validation & Tech Transfer',
+        delayReason: 'Resource Reallocation',
+        Description: 'Execute validation of active-content and suspensibility assays on WDG pilot lots.',
+        Comments: 'Pilot lot analytical method qualification completed',
+        IsActive: true,
+        CreatedDate: '2026-03-05T00:00:00',
+        DueDate: '2026-05-20T00:00:00',
+        CompletionDate: '2026-05-19T00:00:00',
+        Responsibility: 'Amit Patel',
+        Group: 'Quality',
+        Department: 'Quality Assurance',
+        ProjectName: 'Water-Dispersible Granule (WDG) Formulation Development',
+        Status: 'Completed'
+      }
     ];
   }
 
