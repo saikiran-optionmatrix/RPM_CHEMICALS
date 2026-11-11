@@ -66,7 +66,7 @@ export class AssignRequirementsHistoryComponent implements OnInit {
   }
 
   initHistoryRecords(): void {
-    const curReqName = this.requirementName || 'API Solubility, Solid-State Form, and Stability Requirements';
+    const curReqName = this.requirementName || 'Target Product Profile (TPP): intended application, grade, purity, concentration and performance criteria';
     const count = this.historyCount || 3;
 
     const baseDates = [
@@ -111,45 +111,45 @@ export class AssignRequirementsHistoryComponent implements OnInit {
     const otherReqsCatalog: AssignRequirementHistoryItem[] = [
       {
         id: 101,
-        requirementName: 'Critical Quality Attribute Risk Assessment and Control Strategy Requirements',
+        requirementName: 'Target Product Profile (TPP): intended application, grade, purity, concentration and performance criteria',
         revision: 'Rev 2',
         changedDate: '2026-05-19 16:40',
-        changedBy: 'Dr. Sarah Jenkins'
+        changedBy: 'Dr. Priya Raman'
       },
       {
         id: 102,
-        requirementName: 'Critical Quality Attribute Risk Assessment Baseline Specification - Initial Study',
+        requirementName: 'Market demand, customer segment and competitor grade assessment',
         revision: 'Rev 1',
         changedDate: '2026-05-01 10:30',
-        changedBy: 'Dr. Sarah Jenkins'
+        changedBy: 'Rajesh Kumar'
       },
       {
         id: 103,
-        requirementName: 'Dosage Form Dissolution Profile and Drug Release Acceptance Criteria',
+        requirementName: 'Preliminary business case, project economics and cost-of-manufacturing estimate',
         revision: 'Rev 3',
         changedDate: '2026-05-15 09:20',
-        changedBy: 'Michael Chang'
+        changedBy: 'Anita Desai'
       },
       {
         id: 104,
-        requirementName: 'Reference Product Selection and Characterization Requirements',
+        requirementName: 'Raw material, catalyst, solvent and critical supplier availability assessment',
         revision: 'Rev 2',
         changedDate: '2026-05-10 11:45',
-        changedBy: 'Vikram Sharma'
+        changedBy: 'Priya Reddy'
       },
       {
         id: 105,
-        requirementName: 'Pharmaceutical Excipient Grade, Compendial Compliance, and CoA Requirements',
+        requirementName: 'Preliminary process chemistry feasibility and route selection rationale',
         revision: 'Rev 1',
         changedDate: '2026-05-05 14:15',
-        changedBy: 'Emily Watson'
+        changedBy: 'Suresh Naidu'
       },
       {
         id: 106,
-        requirementName: 'Primary and Secondary Packaging Material Compatibility and Barrier Requirements',
+        requirementName: 'Initial process hazard identification and environmental screening',
         revision: 'Rev 2',
         changedDate: '2026-05-12 13:00',
-        changedBy: 'David Miller'
+        changedBy: 'Amit Patel'
       }
     ];
 

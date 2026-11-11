@@ -72,9 +72,9 @@ export class AssignTasksHistoryComponent implements OnInit {
   }
 
   initHistoryRecords(): void {
-    const curTaskName = this.taskName || 'API Solubility, Stability, and Solid-State Characterization Specification';
-    const curTaskCode = this.taskCode || 'TC-101';
-    const curJobCode = this.jobCode || 'RND-01';
+    const curTaskName = this.taskName || 'Review industrial application demand, customer specifications and market opportunities';
+    const curTaskCode = this.taskCode || 'CHM-T001';
+    const curJobCode = this.jobCode || 'BD01';
     const count = this.historyCount || 3;
 
     const baseDates = [
@@ -129,120 +129,111 @@ export class AssignTasksHistoryComponent implements OnInit {
     const otherTasksCatalog: AssignTaskHistoryItem[] = [
       {
         id: 101,
-        taskName: 'API Solubility, Stability, and Solid-State Characterization Specification',
-        taskCode: 'TC-101',
-        jobCode: 'RND-01',
+        taskName: 'Review industrial application demand, customer specifications and market opportunities',
+        taskCode: 'CHM-T001',
+        jobCode: 'BD01',
         revision: 'Rev 3',
         changedDate: '2024-05-19 16:40',
-        changedBy: 'Sarah Jenkins'
+        changedBy: 'Rajesh Kumar'
       },
       {
         id: 102,
-        taskName: 'Finished Dosage Form Dissolution Profile and Release Criteria',
-        taskCode: 'TC-102',
-        jobCode: 'RND-02',
+        taskName: 'Benchmark competing chemical grades, suppliers and production technologies',
+        taskCode: 'CHM-T002',
+        jobCode: 'BD01',
         revision: 'Rev 2',
         changedDate: '2024-05-01 10:30',
-        changedBy: 'Sarah Jenkins'
+        changedBy: 'Rajesh Kumar'
       },
       {
         id: 103,
-        taskName: 'Reference Product Characterization and Comparative Assessment Protocol',
-        taskCode: 'TC-103',
-        jobCode: 'RND-03',
+        taskName: 'Define target product profile, purity, concentration and performance attributes',
+        taskCode: 'CHM-T003',
+        jobCode: 'RND01',
         revision: 'Rev 3',
         changedDate: '2024-05-15 09:20',
-        changedBy: 'Michael Chang'
+        changedBy: 'Dr. Priya Raman'
       },
       {
         id: 104,
-        taskName: 'Analytical Method Development for API, Impurities, and Degradation Products',
-        taskCode: 'TC-104',
-        jobCode: 'QA-01',
+        taskName: 'Prepare preliminary business case, project economics and opportunity assessment',
+        taskCode: 'CHM-T004',
+        jobCode: 'PM01',
         revision: 'Rev 2',
         changedDate: '2024-05-10 14:15',
-        changedBy: 'Emily Watson'
+        changedBy: 'Anita Desai'
       },
       {
         id: 105,
-        taskName: 'API–Excipient Compatibility Study Protocol',
-        taskCode: 'TC-105',
-        jobCode: 'FORM1',
+        taskName: 'Screen reaction chemistry, formulation options and product feasibility',
+        taskCode: 'CHM-T005',
+        jobCode: 'RND01',
         revision: 'Rev 1',
         changedDate: '2024-04-28 11:00',
-        changedBy: 'Dr. Robert Vance'
+        changedBy: 'Dr. Priya Raman'
       },
       {
         id: 106,
-        taskName: 'Formulation Prototype Batch Manufacturing and Documentation Protocol',
-        taskCode: 'TC-106',
-        jobCode: 'PROC1',
+        taskName: 'Assess raw material availability, critical reagent supply and vendor capability',
+        taskCode: 'CHM-T006',
+        jobCode: 'RM01',
         revision: 'Rev 2',
         changedDate: '2024-04-22 15:30',
-        changedBy: 'David Miller'
+        changedBy: 'Priya Reddy'
       },
       {
         id: 107,
-        taskName: 'Accelerated and Long-Term Stability Study Protocol',
-        taskCode: 'TC-107',
-        jobCode: 'RND-01',
+        taskName: 'Conduct preliminary process hazard, environmental and regulatory screening',
+        taskCode: 'CHM-T007',
+        jobCode: 'PSE01',
         revision: 'Rev 1',
         changedDate: '2024-04-18 13:45',
-        changedBy: 'Sarah Jenkins'
+        changedBy: 'Suresh Naidu'
       },
       {
         id: 108,
-        taskName: 'Container Closure System Suitability and Compatibility Evaluation Report',
-        taskCode: 'TC-108',
-        jobCode: 'QA-01',
+        taskName: 'Prepare feasibility report, target specifications and Gate 1 submission',
+        taskCode: 'CHM-T008',
+        jobCode: 'QA03',
         revision: 'Rev 1',
         changedDate: '2024-04-12 17:00',
-        changedBy: 'Emily Watson'
+        changedBy: 'Amit Patel'
       },
       {
         id: 109,
-        taskName: 'Preformulation Assessment and Biopharmaceutical Risk Screening',
-        taskCode: 'TC-109',
-        jobCode: 'BC01',
+        taskName: 'Develop candidate synthesis routes and reaction pathway hypotheses',
+        taskCode: 'CHM-T009',
+        jobCode: 'RND01',
         revision: 'Rev 2',
         changedDate: '2024-04-08 10:15',
-        changedBy: 'Michael Chang'
+        changedBy: 'Dr. Priya Raman'
       },
       {
         id: 110,
-        taskName: 'Bioequivalence Study Design and Protocol Development',
-        taskCode: 'TC-110',
-        jobCode: 'CLIN-01',
+        taskName: 'Conduct laboratory-scale reaction and catalyst screening experiments',
+        taskCode: 'CHM-T010',
+        jobCode: 'REAC01',
         revision: 'Rev 1',
         changedDate: '2024-03-30 16:50',
-        changedBy: 'Dr. Robert Vance'
+        changedBy: 'Priya Reddy'
       },
       {
         id: 111,
-        taskName: 'Chromatographic Analytical Method Validation Protocol',
-        taskCode: 'TC-111',
-        jobCode: 'QA-02',
+        taskName: 'Characterize intermediates, impurities and product composition using GC/HPLC and spectroscopy',
+        taskCode: 'CHM-T011',
+        jobCode: 'CHRO01',
         revision: 'Rev 2',
         changedDate: '2024-03-24 11:20',
-        changedBy: 'Sarah Jenkins'
+        changedBy: 'Anita Desai'
       },
       {
         id: 112,
-        taskName: 'Microbial Limits and Specified Microorganisms Method Validation Framework',
-        taskCode: 'TC-112',
-        jobCode: 'TEST-01',
+        taskName: 'Document route scouting results, material balance and preliminary yield assessment',
+        taskCode: 'CHM-T012',
+        jobCode: 'QC02',
         revision: 'Rev 1',
         changedDate: '2024-03-18 14:10',
-        changedBy: 'Michael Chang'
-      },
-      {
-        id: 113,
-        taskName: 'Raw Material and API Supplier Qualification, Audit, and Quality Agreement Review',
-        taskCode: 'TC-113',
-        jobCode: 'AUD-01',
-        revision: 'Rev 2',
-        changedDate: '2024-03-12 09:30',
-        changedBy: 'Emily Watson'
+        changedBy: 'Rajesh Kumar'
       }
     ];
 
