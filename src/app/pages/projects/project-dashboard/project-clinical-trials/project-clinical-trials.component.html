@@ -1,0 +1,292 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+
+  <!-- Header Section with Title & Back Button -->
+  <header class="analytics-header">
+    <div>
+      <h1>{{ projectName }}</h1>
+      <div class="page-subtitle">Preclinical / Clinical Trials / BE Live Tracking Sheet</div>
+    </div>
+
+    <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon><span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Table Container (Taking CSS Globally from Master Data Assets) -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+
+    <!-- Top Action Bar with Filter & Add Buttons -->
+    <div class="app-page-actions" style="margin-bottom: 16px;">
+      <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()">
+        <mat-icon>filter_list</mat-icon>
+        <span>Filter</span>
+      </button>
+
+      <button type="button" class="app-btn app-btn-primary" (click)="addclinicaltrial()">
+        <mat-icon>add</mat-icon>
+        <span>Add Clinical Trial</span>
+      </button>
+    </div>
+
+    <!-- Scroll Buttons -->
+    <div class="d-flex justify-content-end mb-2" style="gap: 10px;">
+      <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+        (click)="scrollLeft()" matTooltip="Scroll Left">
+        <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+      </button>
+      <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+        matTooltip="Scroll Right">
+        <mat-icon style="color: #414141;">fast_forward</mat-icon>
+      </button>
+    </div>
+
+    <!-- Filter Panel (Same Global CSS Structure as Master Data) -->
+    @if (showFilter) {
+    <mat-card class="app-filter-panel">
+      <mat-card-content>
+        <div class="app-filter-grid">
+
+          <!-- Filter Fields -->
+          <div class="app-filter-fields">
+            <!-- Keyword / Molecule Search -->
+            <div class="app-filter-field">
+              <label for="trialKeyword">Search:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <input matInput id="trialKeyword" [(ngModel)]="keyword"
+                  placeholder="Molecule, Study Code, CRO, Lead...">
+              </mat-form-field>
+            </div>
+
+            <!-- Region Filter -->
+            <div class="app-filter-field">
+              <label for="trialRegion">Region:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <mat-select id="trialRegion" [(ngModel)]="selectedRegion" placeholder="All Regions">
+                  <mat-option value="">All Regions</mat-option>
+                  @for (r of regions; track r) {
+                  <mat-option [value]="r">{{ r }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Study Type Filter -->
+            <div class="app-filter-field">
+              <label for="trialStudyType">Study Type:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <mat-select id="trialStudyType" [(ngModel)]="selectedStudyType" placeholder="All Study Types">
+                  <mat-option value="">All Study Types</mat-option>
+                  @for (st of studyTypes; track st) {
+                  <mat-option [value]="st">{{ st }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- CRO Selection Filter -->
+            <div class="app-filter-field">
+              <label for="trialCro">CRO:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <mat-select id="trialCro" [(ngModel)]="selectedCro" placeholder="All CROs">
+                  <mat-option value="">All CROs</mat-option>
+                  @for (c of cros; track c) {
+                  <mat-option [value]="c">{{ c }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Filter Actions -->
+          <div class="app-filter-actions">
+            <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+              <mat-icon>search</mat-icon>
+              <span>Search</span>
+            </button>
+            <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+              <mat-icon>settings_backup_restore</mat-icon>
+              <span>Clear</span>
+            </button>
+          </div>
+
+          <!-- Collapse Filter -->
+          <div class="app-filter-toggle">
+            <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+              <mat-icon>keyboard_double_arrow_up</mat-icon>
+            </button>
+          </div>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+    }
+
+    <!-- Table Responsive Wrapper -->
+    <div #scrollContainer class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 85px;">Actions</th>
+            <th class="text-center" style="width: 65px;">S.No.</th>
+            <th class="text-left">Molecule</th>
+            <th class="text-left">Region</th>
+            <th class="text-left">Formulation Lead</th>
+            <th class="text-left">PCT/CT Lead</th>
+            <th class="text-left">CRO Selection</th>
+            <th class="text-center">Quote Finalisation</th>
+            <th class="text-center">Study Code</th>
+            <th class="text-center">Study Type</th>
+            <th class="text-left">CRO POC</th>
+            <th class="text-center">Protocol Finalization</th>
+            <th class="text-center">Agreement Execution</th>
+            <th class="text-left">RLD Status / Country</th>
+            <th class="text-center">Study Initiation Date</th>
+            <th class="text-center">Dosing Status</th>
+            <th class="text-left study-updates-col">Study Updates</th>
+            <th class="text-center">Bio Analytical Status</th>
+            <th class="text-center">CSR Status</th>
+            <th class="text-center">Escalation Required</th>
+            <th class="text-left">Management Remarks</th>
+            <th class="text-center">Last Updated On</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (trial of paginatedTrials; track trial.sNo + '-' + trial.molecule) {
+          <tr>
+            <!-- Actions -->
+            <td class="text-center">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit" (click)="openEditTrial(trial)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete" (click)="onDelete(trial)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+
+            <!-- S.No. -->
+            <td class="text-center">
+              {{ trial.sNo }}
+            </td>
+
+            <!-- Molecule / Product -->
+            <td class="text-left">
+              {{ trial.molecule }}
+            </td>
+
+            <!-- Region -->
+            <td class="text-left">
+              {{ trial.region || '-' }}
+            </td>
+
+            <!-- Formulation Lead -->
+            <td class="text-left">
+              {{ trial.formulationLead || '-' }}
+            </td>
+
+            <!-- PCT/CT Lead -->
+            <td class="text-left">
+              {{ trial.pctCtLead || '-' }}
+            </td>
+
+            <!-- CRO Selection -->
+            <td class="text-left">
+              {{ trial.croSelection || '-' }}
+            </td>
+
+            <!-- Quote Finalisation -->
+            <td class="text-center">
+              {{ trial.quoteFinalisation || '-' }}
+            </td>
+
+            <!-- Study Code -->
+            <td class="text-center">
+              {{ trial.studyCode || '-' }}
+            </td>
+
+            <!-- Study Type -->
+            <td class="text-center">
+              {{ trial.studyType || '-' }}
+            </td>
+
+            <!-- CRO POC -->
+            <td class="text-left">
+              {{ trial.croPoc || '-' }}
+            </td>
+
+            <!-- Protocol Finalization -->
+            <td class="text-center">
+              {{ trial.protocolFinalization || '-' }}
+            </td>
+
+            <!-- Agreement Execution -->
+            <td class="text-center">
+              {{ trial.agreementExecution || '-' }}
+            </td>
+
+            <!-- RLD Status / Country -->
+            <td class="text-left text-cell-wrap" [matTooltip]="trial.rldStatus">
+              {{ trial.rldStatus || '-' }}
+            </td>
+
+            <!-- Study Initiation Date -->
+            <td class="text-center">
+              {{ trial.studyInitiationDate || '-' }}
+            </td>
+
+            <!-- Dosing Status -->
+            <td class="text-center">
+              {{ trial.dosingStatus || '-' }}
+            </td>
+
+            <!-- Study Updates -->
+            <td class="text-left study-updates-col" [matTooltip]="trial.studyUpdates || ''">
+              <div class="study-updates-clamp">
+                {{ trial.studyUpdates || '-' }}
+              </div>
+            </td>
+
+            <!-- Bio Analytical Status -->
+            <td class="text-center">
+              {{ trial.bioAnalyticalStatus || '-' }}
+            </td>
+
+            <!-- CSR Status -->
+            <td class="text-center">
+              {{ trial.csrStatus || '-' }}
+            </td>
+
+            <!-- Escalation Required -->
+            <td class="text-center">
+              {{ trial.escalationRequired || '-' }}
+            </td>
+
+            <!-- Management Remarks -->
+            <td class="text-left text-cell-wrap">
+              {{ trial.managementRemarks || '-' }}
+            </td>
+
+            <!-- Last Updated On -->
+            <td class="text-center">
+              {{ trial.lastUpdatedOn || '-' }}
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="22" class="empty-table">No records found</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginator (Same Structure as Master Data) -->
+    <mat-paginator [length]="filteredTrials.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+    </mat-paginator>
+
+  </div>
+</div>

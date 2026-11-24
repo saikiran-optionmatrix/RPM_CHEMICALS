@@ -1,0 +1,237 @@
+:host {
+  display: block;
+}
+
+.material-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.budget-info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: #ebf3ff;
+  border: 1px solid #cce0ff;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #1e3a8a;
+  font-size: 13.5px;
+  line-height: 1.45;
+
+  .banner-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    color: #2563eb;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .banner-text {
+    flex: 1;
+
+    strong {
+      color: #1e293b;
+    }
+  }
+}
+
+.tools-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .app-btn-light {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 12px;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+    }
+  }
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.xl-table {
+  width: 100%;
+  margin-bottom: 0;
+  border-collapse: collapse;
+  font-size: 13.5px;
+
+  thead th {
+    background-color: #3f3f3f !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    border: 1px solid #6b7280;
+    padding: 8px 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    vertical-align: middle;
+    white-space: nowrap;
+    color: #212529;
+  }
+
+  tbody tr:hover td {
+    background-color: #f8fafc;
+  }
+
+  .table-total-row {
+    background-color: #e2e8f0 !important;
+    font-weight: 700;
+
+    td {
+      font-size: 13.5px;
+      color: #0f172a;
+      border-top: 2px solid #94a3b8;
+      border-bottom: 2px solid #94a3b8;
+      background-color: #e2e8f0;
+    }
+  }
+
+  tbody tr:hover {
+    background-color: #f8fafc;
+  }
+
+  .row-highlight {
+    background-color: #fef9c3 !important;
+  }
+
+  .wbs-link {
+    color: #1976d2;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+      color: #0d47a1;
+    }
+  }
+
+  .wrap-cell {
+    white-space: normal !important;
+    min-width: 220px;
+    max-width: 320px;
+    line-height: 1.35;
+  }
+
+  .text-mono {
+    font-family: inherit;
+    font-size: 13.5px;
+    color: inherit;
+  }
+
+  .highlight-col {
+    background-color: #f8fafc;
+  }
+}
+
+// Table actions
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .table-action-button {
+    background: transparent;
+    border: none;
+    padding: 3px 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease;
+
+    &.edit {
+      color: #1976d2;
+      i {
+        font-size: 15px;
+      }
+    }
+
+    &.delete {
+      color: #dc3545;
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+  }
+}
+
+// Clickable headers for 20-trial breakdown (clean without arrows)
+.clickable-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #4a4a4a !important;
+  }
+}
+
+// Clickable cells for drilling into 20-trial breakdown (no underlines)
+.drill-cell-link {
+  color: #1976d2;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none !important;
+  display: inline-block;
+  user-select: none;
+
+  &:hover {
+    color: #0d47a1;
+    text-decoration: none !important;
+  }
+}
+
+// Floating rewind & forward buttons matching ProjectOutsourcing / SourcingChecklist
+.mine {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+  background-color: #dfdfdf !important;
+  color: #414141 !important;
+  z-index: 9999 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+
+  mat-icon {
+    color: #414141 !important;
+  }
+}

@@ -1,0 +1,177 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.inner-screen-page {
+  width: 100%;
+  padding: 10px 25px 80px 25px;
+  box-sizing: border-box;
+}
+
+// ─── TOP HEADER AREA ───
+.inner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.title-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.inner-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.activity-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #64748b;
+  flex-wrap: wrap;
+}
+
+.activity-badge {
+  background-color: #e2e8f0;
+  color: #334155;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.activity-text {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.stage-sep {
+  color: #cbd5e1;
+}
+
+.resource-meta-tag,
+.date-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #f1f5f9;
+  color: #475569;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+// Align Back Button to Top Right
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+ 
+
+@media (max-width: 520px) {
+  .back-btn span {
+    display: none;
+  }
+  .back-btn {
+    padding: 0 10px;
+  }
+}
+
+// ─── TABLE CONTAINER & TABLE STYLES ───
+.app-table-container {
+  width: 100%;
+  padding: 0 !important;
+}
+
+.table-responsive {
+  width: 100%;
+  max-height: none !important;
+  overflow-y: visible !important;
+  overflow-x: auto;
+}
+
+.table.app-table {
+  min-width: 1050px;
+  width: 100%;
+}
+
+.project-code-badge {
+  background-color: #f1f5f9;
+  color: #334155;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.task-title {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.hours-badge {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.description-text {
+  color: #475569;
+  font-size: 13px;
+  max-width: 250px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Readonly History Column
+.readonly-history-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background-color: #f1f5f9;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: default;
+  user-select: none;
+}
+
+.empty-table {
+  text-align: center;
+  padding: 24px;
+  color: #94a3b8;
+  font-size: 14px;
+}

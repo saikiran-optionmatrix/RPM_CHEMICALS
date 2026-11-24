@@ -1,0 +1,268 @@
+@if (study) {
+  <!-- Scroll Buttons -->
+  <div class="d-flex justify-content-end mb-2" style="gap: 10px;">
+    <button type="button" class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+      (click)="scrollLeft()" matTooltip="Scroll Left">
+      <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+    </button>
+    <button type="button" class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;"
+      (click)="scrollRight()" matTooltip="Scroll Right">
+      <mat-icon style="color: #414141;">fast_forward</mat-icon>
+    </button>
+  </div>
+
+  <!-- Section 1: Risks and issues -->
+  <section class="rad-section">
+    <div class="section-header">
+      <h3 class="section-title">Risks and issues ({{ risks.length }})</h3>
+      <button type="button" class="app-btn app-btn-primary" (click)="openRiskDialog()">
+        <mat-icon>add</mat-icon>
+        <span>Add risk / issue</span>
+      </button>
+    </div>
+
+    <div class="app-table-container rad-table-container">
+      <div #scrollContainer class="table-responsive">
+        <table class="table app-table rad-table">
+          <thead>
+            <tr>
+              <th class="text-center col-actions">Actions</th>
+              <th class="text-left col-id">ID</th>
+              <th class="text-left col-wide">Description</th>
+              <th class="text-left">Category</th>
+              <th class="text-left col-date">Identified</th>
+              <th class="text-left">Prob. &middot; impact</th>
+              <th class="text-left">Severity</th>
+              <th class="text-left col-mid">Effect on milestone / cost / programme</th>
+              <th class="text-left">Owner</th>
+              <th class="text-left col-wide">Mitigation</th>
+              <th class="text-left col-date">Target date</th>
+              <th class="text-left">Status</th>
+              <th class="text-left">Escalation</th>
+              <th class="text-left">Closure</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (r of risks; track r.id) {
+            <tr>
+              <td class="text-center">
+                <div class="table-actions">
+                  <button type="button" class="table-action-button edit"
+                    [attr.aria-label]="'Edit ' + r.id"
+                    matTooltip="Edit risk"
+                    (click)="openRiskDialog(r)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </div>
+              </td>
+              <td class="text-nowrap">{{ r.id }}</td>
+              <td>{{ r.description }}</td>
+              <td class="text-nowrap">{{ r.category }}</td>
+              <td class="text-nowrap">{{ r.identifiedOn || '—' }}</td>
+              <td class="text-nowrap">{{ r.probability }} &middot; {{ r.impact }}</td>
+              <td>
+                <span class="status-pill" [ngClass]="getRiskSeverityClass(r.severity)">
+                  {{ r.severity }}
+                </span>
+              </td>
+              <td class="cell-small">{{ r.effect || '—' }}</td>
+              <td class="text-nowrap">{{ r.owner || '—' }}</td>
+              <td class="cell-small">{{ r.mitigation || '—' }}</td>
+              <td class="text-nowrap">{{ r.targetDate || '—' }}</td>
+              <td>
+                <span class="status-pill" [ngClass]="getRiskStatusClass(r.status)">
+                  {{ r.status }}
+                </span>
+              </td>
+              <td class="text-nowrap">{{ r.escalation }}</td>
+              <td class="cell-small">
+                @if (r.closedOn) {
+                  {{ r.closedOn }} &middot; {{ r.closureEvidence || 'Closed' }}
+                } @else {
+                  —
+                }
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="14" class="empty-cell">None</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Actions -->
+  <section class="rad-section">
+    <div class="section-header">
+      <h3 class="section-title">Actions ({{ actions.length }})</h3>
+      <button type="button" class="app-btn app-btn-primary" (click)="openActionDialog()">
+        <mat-icon>add</mat-icon>
+        <span>Add action</span>
+      </button>
+    </div>
+
+    <div class="app-table-container rad-table-container">
+      <div #scrollContainer class="table-responsive">
+        <table class="table app-table rad-table">
+          <thead>
+            <tr>
+              <th class="text-center col-actions">Actions</th>
+              <th class="text-left col-id">ID</th>
+              <th class="text-left col-wide">Action</th>
+              <th class="text-left">Related to</th>
+              <th class="text-left">Owner</th>
+              <th class="text-left col-date">Due</th>
+              <th class="text-left">Status</th>
+              <th class="text-left col-wide">Latest update</th>
+              <th class="text-left col-date">Completed</th>
+              <th class="text-left col-mid">Evidence / closure note</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (a of actions; track a.id) {
+            <tr>
+              <td class="text-center">
+                <div class="table-actions">
+                  <button type="button" class="table-action-button edit"
+                    [attr.aria-label]="'Edit ' + a.id"
+                    matTooltip="Edit action"
+                    (click)="openActionDialog(a)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </div>
+              </td>
+              <td class="text-nowrap">{{ a.id }}</td>
+              <td>{{ a.description }}</td>
+              <td class="cell-small">{{ a.relatedTo || '—' }}</td>
+              <td class="text-nowrap">
+                @if (a.owner) {
+                  {{ a.owner }}
+                } @else {
+                  <span class="missing-pill">No owner</span>
+                }
+              </td>
+              <td class="text-nowrap">
+                @if (a.dueDate) {
+                  <span [class.late-date]="isActionOverdue(a)">{{ a.dueDate }}</span>
+                } @else {
+                  <span class="missing-pill">No due date</span>
+                }
+              </td>
+              <td>
+                <span class="status-pill" [ngClass]="getActionStatusClass(a.status)">
+                  {{ a.status }}
+                </span>
+              </td>
+              <td class="cell-small">{{ a.latestUpdate || '—' }}</td>
+              <td class="text-nowrap">{{ a.completedOn || '—' }}</td>
+              <td class="cell-small">{{ a.evidence || '—' }}</td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="10" class="empty-cell">None</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Management decisions -->
+  <section class="rad-section rad-section-last">
+    <div class="section-header">
+      <h3 class="section-title">Management decisions ({{ decisions.length }})</h3>
+      <button type="button" class="app-btn app-btn-primary" (click)="openRequestDecisionDialog()">
+        <mat-icon>add</mat-icon>
+        <span>Request decision</span>
+      </button>
+    </div>
+
+    <div class="app-table-container rad-table-container">
+      <div #scrollContainer class="table-responsive">
+        <table class="table app-table rad-table">
+          <thead>
+            <tr>
+              <th class="text-center col-dec-actions">Actions</th>
+              <th class="text-left col-id">ID</th>
+              <th class="text-left col-wide">Decision requested</th>
+              <th class="text-left col-wide">Background &amp; options</th>
+              <th class="text-left">Recommended</th>
+              <th class="text-left">Decision owner</th>
+              <th class="text-left col-date">Required by</th>
+              <th class="text-left">Status</th>
+              <th class="text-left col-wide">Decision taken &middot; rationale &middot; date</th>
+              <th class="text-left col-mid">Resulting action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (d of decisions; track d.id) {
+            <tr>
+              <td class="text-center text-nowrap">
+                @if (d.status === 'Open') {
+                <div class="decision-actions">
+                  <button type="button" class="app-btn app-btn-primary decide-sm-btn"
+                    (click)="openRecordDecisionDialog(d, 'decide')">
+                    Decide
+                  </button>
+                  <button type="button" class="table-action-button withdraw-btn"
+                    matTooltip="Withdraw"
+                    [attr.aria-label]="'Withdraw ' + d.id"
+                    (click)="openRecordDecisionDialog(d, 'withdraw')">
+                    <mat-icon>block</mat-icon>
+                  </button>
+                </div>
+                } @else {
+                  <span class="muted-dash">—</span>
+                }
+              </td>
+              <td class="text-nowrap">
+                <span>{{ d.id }}</span>
+                @if (d.critical) {
+                  <span class="status-pill pill-red critical-badge">Critical</span>
+                }
+              </td>
+              <td>{{ d.requested }}</td>
+              <td class="cell-small">
+                <div>{{ d.background }}</div>
+                <div class="options-sub">{{ d.options }}</div>
+              </td>
+              <td>{{ d.recommended || '—' }}</td>
+              <td class="text-nowrap">{{ d.owner || '—' }}</td>
+              <td class="text-nowrap">
+                <span [class.late-date]="isDecisionOverdue(d)">{{ d.requiredBy || '—' }}</span>
+              </td>
+              <td>
+                <span class="status-pill" [ngClass]="getDecisionStatusClass(d.status)">
+                  {{ d.status }}
+                </span>
+              </td>
+              <td class="cell-small">
+                @if (d.decisionTaken) {
+                  <strong>{{ d.decisionTaken }}</strong> &mdash; {{ d.rationale }} &middot; {{ d.decidedOn }}
+                } @else if (d.status === 'Withdrawn' && d.rationale) {
+                  <span class="options-sub">Withdrawn: {{ d.rationale }}</span>
+                } @else {
+                  <span class="muted-dash">—</span>
+                }
+              </td>
+              <td class="cell-small">{{ d.resultingAction || '—' }}</td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="10" class="empty-cell">None</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-footnote">
+      A decision stays visible in the pending-decisions view until it is taken or formally withdrawn (&sect;10.3).
+    </div>
+  </section>
+}

@@ -1,0 +1,136 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Request a Management Decision</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <form [formGroup]="decisionForm" (ngSubmit)="save()">
+      <div class="row">
+        <!-- Decision Requested (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Decision Requested :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <input class="form-control name back" type="text"
+                placeholder="State the decision required"
+                formControlName="requested" style="height: 35px;">
+              @if ((isSubmitting || f['requested'].touched) && f['requested'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Background (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Background :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <textarea class="form-control back" rows="3" formControlName="background"
+                placeholder="Context and operational impact"
+                style="resize: vertical; height: auto !important; padding-top: 6px; padding-bottom: 6px;"></textarea>
+              @if ((isSubmitting || f['background'].touched) && f['background'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Available Options (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Available Options :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <textarea class="form-control back" rows="2" formControlName="options"
+                placeholder="A) Option one · B) Option two"
+                style="resize: vertical; height: auto !important; padding-top: 6px; padding-bottom: 6px;"></textarea>
+              @if ((isSubmitting || f['options'].touched) && f['options'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Left Column -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Recommended Option :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="e.g. A"
+                formControlName="recommended" style="height: 35px;">
+              @if ((isSubmitting || f['recommended'].touched) && f['recommended'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Required By :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="requiredBy" style="height: 35px;">
+              @if ((isSubmitting || f['requiredBy'].touched) && f['requiredBy'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Decision Owner :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="owner"
+                placeholder="Select Decision Owner" style="height: 35px; line-height: 23px;">
+                @for (person of ownerOptions; track person) {
+                  <mat-option [value]="person">{{ person }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['owner'].touched) && f['owner'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Critical? :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="critical"
+                style="height: 35px; line-height: 23px;">
+                @for (opt of criticalOptions; track opt) {
+                  <mat-option [value]="opt">{{ opt }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+          <mat-icon>cancel</mat-icon> <span>Close</span>
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> <span>Save</span>
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>
+

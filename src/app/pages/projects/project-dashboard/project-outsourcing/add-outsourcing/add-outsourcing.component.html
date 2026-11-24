@@ -1,0 +1,176 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Outsourcing Requisition' : 'Add Outsourcing Requisition' }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <form [formGroup]="outForm" (ngSubmit)="save()">
+      <div class="row">
+
+        <!-- Left Column -->
+        <div class="col-sm-6">
+
+          <!-- Date -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. 12-Jan-2026" formControlName="date"
+                style="height: 35px;">
+              @if (isSubmitting && f['date'].errors) {
+              <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Product Name -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Product Name :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Acrylic Emulsion Binder 50% Solids 250mg"
+                formControlName="productName" style="height: 35px;">
+              @if (isSubmitting && f['productName'].errors) {
+              <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Required Test -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Required test :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Particle size"
+                formControlName="requiredTest" style="height: 35px;">
+              @if (isSubmitting && f['requiredTest'].errors) {
+              <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Instrument Name -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Instrument Name :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Malvern master sizer"
+                formControlName="instrumentName" style="height: 35px;">
+              @if (isSubmitting && f['instrumentName'].errors) {
+              <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Sample Details -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Sample details :</label>
+            </div>
+            <div class="col-sm-7">
+              <textarea class="form-control back" rows="2" placeholder="e.g. API Micronized Lot M-101 (10g)"
+                formControlName="sampleDetails"></textarea>
+            </div>
+          </div>
+
+          <!-- Reason for Requirement -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Reason for requirement :</label>
+            </div>
+            <div class="col-sm-7">
+              <textarea class="form-control back" rows="2"
+                placeholder="e.g. In-house equipment breakdown / routine validation"
+                formControlName="reasonForRequirement"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+
+          <!-- Initiated By -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Initiated By :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Tathagata"
+                formControlName="initiatedBy" style="height: 35px;">
+              @if (isSubmitting && f['initiatedBy'].errors) {
+              <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Approved By -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Approved By :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Dr. Satish"
+                formControlName="approvedBy" style="height: 35px;">
+              @if (isSubmitting && f['approvedBy'].errors) {
+              <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Duration -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Duration :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. 3 Days" formControlName="duration"
+                style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Report Received On -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Report recived on :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. 15-Jan-2026 or Pending"
+                formControlName="reportReceivedOn" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Remarks -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Remarks :</label>
+            </div>
+            <div class="col-sm-7">
+              <textarea class="form-control back" rows="3" placeholder="e.g. Complies with D90 < 10 µm specification"
+                formControlName="remarks"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end" style="padding: 12px 24px; gap: 8px;">
+  <button type="button" class="app-btn app-btn-default" (click)="close()">
+    <mat-icon>cancel</mat-icon>
+    <span>Close</span>
+  </button>
+  <button type="button" class="app-btn app-btn-primary" (click)="save()">
+    <mat-icon>save</mat-icon>
+    <span>Save</span>
+  </button>
+</div>

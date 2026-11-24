@@ -1,0 +1,127 @@
+<div class="rld-container">
+
+  <!-- Project Header & Project Switcher Tools with Back Button on Top-Right -->
+  <header class="analytics-header">
+    <h1>{{ projectName }}</h1>
+
+    <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon><span>Back</span>
+      </button>
+    </div>
+  </header>
+
+
+  <div class="proj-tools">
+    <span class="switcher-label">Prototype: switch project</span>
+    <select class="form-select project-switcher-select" [ngModel]="activeProject?.code"
+      (ngModelChange)="onProjectChange($event)">
+      @for (p of allProjects; track p.code) {
+      <option [value]="p.code">{{ p.code }} &middot; {{ p.name }}</option>
+      }
+    </select>
+
+
+  </div>
+
+  <!-- 6 KPI Summary Cards Grid -->
+  <div class="kpi-grid mb-3">
+    <!-- 1: Comparators Approved -->
+    <div class="kpi-card kpi-approved">
+      <div class="kpi-label">COMPARATORS APPROVED</div>
+      <div class="kpi-value">{{ kpis.approvedComparators }}</div>
+      <div class="kpi-sub">RA approval + current verification</div>
+    </div>
+
+    <!-- 2: Total Requirement -->
+    <div class="kpi-card kpi-req">
+      <div class="kpi-label">TOTAL REQUIREMENT</div>
+      <div class="kpi-value">{{ kpis.totalRequirement }}</div>
+      <div class="kpi-sub">{{ kpis.reqCount }} activities incl. buffer</div>
+    </div>
+
+    <!-- 3: Allocated Usable / Shortfall -->
+    <div class="kpi-card kpi-alloc"
+      [ngClass]="{'kpi-warning': kpis.shortfall > 0, 'kpi-success': kpis.shortfall === 0}">
+      <div class="kpi-label">ALLOCATED USABLE / SHORTFALL</div>
+      <div class="kpi-value">{{ kpis.allocatedUsable }} / {{ kpis.shortfall }}</div>
+      <div class="kpi-sub">Only QA-accepted, reserved stock counts</div>
+    </div>
+
+    <!-- 4: Next Open Need Date -->
+    <div class="kpi-card kpi-date">
+      <div class="kpi-label">NEXT OPEN NEED DATE</div>
+      <div class="kpi-value">{{ kpis.nextOpenNeedDate }}</div>
+      <div class="kpi-sub">{{ kpis.openReqsCount }} requirement(s) not ready</div>
+    </div>
+
+    <!-- 5: Alerts -->
+    <div class="kpi-card kpi-alerts" [ngClass]="{'kpi-danger': kpis.highAlertsCount > 0}">
+      <div class="kpi-label">ALERTS</div>
+      <div class="kpi-value">{{ kpis.alertsCount }}</div>
+      <div class="kpi-sub">{{ kpis.highAlertsCount }} high severity</div>
+    </div>
+
+    <!-- 6: Landed Cost vs Budget -->
+    <div class="kpi-card kpi-cost">
+      <div class="kpi-label">LANDED COST VS BUDGET</div>
+      <div class="kpi-value">
+        {{ kpis.landedVsBudget >= 0 ? '+' : '' }}{{ kpis.landedVsBudget | number:'1.0-0' }}
+      </div>
+      <div class="kpi-sub">INR &middot; from Budgeting</div>
+    </div>
+  </div>
+
+  <!-- Horizontal Tab Navigation -->
+  <nav class="rld-nav-tabs mb-2">
+    <a [routerLink]="['reference-products']" routerLinkActive="on" queryParamsHandling="preserve" class="rld-tab-link">
+      <span>Reference products</span>
+      @if (kpis.comparatorTotal > 0) {
+      <span class="tab-badge">{{ kpis.comparatorTotal }}</span>
+      }
+    </a>
+    <a [routerLink]="['utilisation-breakup']" routerLinkActive="on" queryParamsHandling="preserve" class="rld-tab-link">
+      <span>Utilisation break-up</span>
+      @if (kpis.reqCount > 0) {
+      <span class="tab-badge">{{ kpis.reqCount }}</span>
+      }
+    </a>
+    <a [routerLink]="['stock-allocation']" routerLinkActive="on" queryParamsHandling="preserve" class="rld-tab-link">
+      <span>Stock &amp; allocation</span>
+      @if (kpis.lotsCount > 0) {
+      <span class="tab-badge">{{ kpis.lotsCount }}</span>
+      }
+    </a>
+    <a [routerLink]="['procurement-cost']" routerLinkActive="on" queryParamsHandling="preserve" class="rld-tab-link">
+      <span>Procurement &amp; cost</span>
+      @if (kpis.procCount > 0) {
+      <span class="tab-badge">{{ kpis.procCount }}</span>
+      }
+    </a>
+    <a [routerLink]="['alerts']" routerLinkActive="on" queryParamsHandling="preserve" class="rld-tab-link">
+      <span>Alerts</span>
+      @if (kpis.alertsCount > 0) {
+      <span class="tab-badge" [class.danger]="kpis.highAlertsCount > 0">{{ kpis.alertsCount }}</span>
+      }
+    </a>
+    <a [routerLink]="['history']" routerLinkActive="on" queryParamsHandling="preserve" class="rld-tab-link">
+      <span>History</span>
+    </a>
+  </nav>
+
+  <!-- Routed Screen Content -->
+  <div class="rld-screen-content">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>
+
+  <!-- Floating Scroll Buttons matching Budgeting / Feasibility -->
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;" (click)="scrollLeft()"
+    matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 40px; z-index: 9999;" (click)="scrollRight()"
+    matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>

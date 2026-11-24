@@ -1,0 +1,126 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+
+  <!-- Header Section with Title & Action Buttons -->
+  <header class="analytics-header">
+    <h1>{{ projectName }}</h1>
+
+    <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <button type="button" class="app-btn app-btn-primary" (click)="openAddSourcing()">
+        <mat-icon>add</mat-icon>
+        <span>Add Requisites</span>
+      </button>
+
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Scroll Buttons (Reference from ProjectStagesComponent) -->
+  <div class="d-flex justify-content-end mb-2" style="gap: 10px;">
+    <div class="d-flex justify-content-end mb-2">
+      <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+        (click)="scrollLeft()" matTooltip="Scroll Left">
+        <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+      </button>
+      <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+        matTooltip="Scroll Right">
+        <mat-icon style="color: #414141;">fast_forward</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Sourcing Table with Table Classes from AssetsComponent -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #scrollContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 80px; min-width: 80px;">Actions</th>
+            <th class="text-center" style="width: 65px; min-width: 65px;">Serial</th>
+            <th class="text-center" style="min-width: 130px;">Material Code</th>
+            <th class="text-center" style="min-width: 140px;">Material Group</th>
+            <th class="text-center" style="min-width: 180px;">Material Name</th>
+            <th class="text-center" style="min-width: 140px;">Material Type</th>
+            <th class="text-center" style="min-width: 165px;">Development Qty</th>
+            <th class="text-center" style="min-width: 180px;">Specs</th>
+            <th class="text-center" style="min-width: 130px;">TDS / REACH</th>
+            <th class="text-center" style="min-width: 165px;">Vendor Qualification</th>
+            <th class="text-center" style="min-width: 170px;">Projected EB Quantity</th>
+            <th class="text-center" style="min-width: 130px;">Issued Qty</th>
+            <th class="text-center" style="min-width: 130px;">Stock Available</th>
+            <th class="text-center" style="min-width: 90px;">Unit</th>
+            <th class="text-center" style="min-width: 130px;">Unit Rate (Rs.)</th>
+            <th class="text-center" style="min-width: 100px;">Usage</th>
+            <th class="text-center" style="min-width: 110px;">Shortfall</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of paginatedSourcing; track row.serial; let idx = $index) {
+          <tr>
+            <!-- Actions -->
+            <td class="text-center">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit Sourcing"
+                  aria-label="Edit Sourcing" (click)="openEditSourcing(row)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete Sourcing"
+                  aria-label="Delete Sourcing" (click)="deleteSourcing(row)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+
+            <!-- Data Columns without custom CSS -->
+            <td class="text-center">{{ row.serial }}</td>
+            <td class="text-center">{{ row.itemCode }}</td>
+            <td class="text-center">{{ row.itemCategory }}</td>
+            <td class="text-center">{{ row.itemName }}</td>
+            <td class="text-center">{{ row.itemType }}</td>
+            <td class="text-center">{{ row.devQuantity }}</td>
+            <td class="text-center">{{ row.specs }}</td>
+            <td class="text-center">
+              <a href="javascript:void(0)" (click)="openDmfModal(row)">
+                {{ row.dmf || 'View / Update' }}
+              </a>
+            </td>
+            <td class="text-center">
+              <a href="javascript:void(0)" (click)="navigateToVendorQualification(row)"
+                matTooltip="View Vendor Qualification">
+                {{ row.vendorQualification || '3/7' }}
+              </a>
+            </td>
+            <td class="text-center">{{ row.projectedEbQuantity }}</td>
+            <td class="text-center">{{ row.issuedQuantity }}</td>
+            <td class="text-center">{{ row.stockAvailable }}</td>
+            <td class="text-center">{{ row.unit }}</td>
+            <td class="text-center">{{ row.unitRate }}</td>
+            <td class="text-center">
+              <a href="javascript:void(0)" (click)="navigateToUsage(row)" class="project-name-link">
+                {{ row.usage }}
+              </a>
+            </td>
+            <td class="text-center">
+              {{ getShortfall(row) }}
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="17" class="empty-table text-center">
+              No records found
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator [length]="sourcingList.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions" [showFirstLastButtons]="true" (page)="handlePage($event)">
+    </mat-paginator>
+  </div>
+
+</div>

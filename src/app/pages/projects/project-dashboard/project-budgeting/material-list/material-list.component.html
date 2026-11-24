@@ -1,0 +1,188 @@
+<div class="material-list-container">
+
+  <!-- ========================================================
+       VIEW 1: MAIN MATERIAL LIST VIEW (Clean, 1 column each)
+       ======================================================== -->
+  @if (!isTrialDetailView) {
+  <!-- Banner -->
+  <div class="budget-info-banner">
+    <mat-icon class="banner-icon">inventory_2</mat-icon>
+    <div class="banner-text">
+      <strong>Material List</strong> — as in the Excel, with the same formulas. Click on <strong>No of trials</strong> to navigate to the trials breakdown inner screen.
+    </div>
+  </div>
+
+  <!-- Tools Bar with Add Material Button & 20-Trial Breakdown Shortcut -->
+  <div class="tools-bar d-flex justify-content-between align-items-center mb-2">
+    <button type="button" class="app-btn-light" (click)="openTrialDetails(undefined, 'all')" matTooltip="Open all 20 trial input quantities and costs">
+      <mat-icon>view_column</mat-icon>
+      <span>View 20-Trial Breakdown</span>
+    </button>
+
+    <button type="button" class="app-btn app-btn-primary" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      <span>Add Material</span>
+    </button>
+  </div>
+
+  <!-- Main Table -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #scrollContainer class="table-responsive">
+      <table class="table app-table xl-table">
+        <thead>
+          <tr>
+            <th style="width: 80px; min-width: 80px;" class="text-center">Actions</th>
+            <th style="min-width: 100px;">WBS (Dev)</th>
+            <th style="min-width: 130px;">WBS (Scale-up / EB)</th>
+            <th>Category</th>
+            <th>Mtl code</th>
+            <th style="min-width: 220px;">Description</th>
+            <th>Uom</th>
+            <th class="text-right">Price</th>
+            <th class="text-right">Purchased Qty</th>
+            <th class="text-right">Total Cost</th>
+            <th class="text-right">No of Cycles Planned</th>
+            <th class="text-right">Input Qty per Cycle</th>
+            <th>In put Qty UOM</th>
+            <th class="text-right">CF</th>
+            <th class="text-right">Developments batch size</th>
+
+            <!-- Clickable Single Column for Trials Navigation (Img1: No of trials) -->
+            <th class="text-right clickable-header" (click)="openTrialDetails(undefined, 'qty')"
+              matTooltip="Click to open trials breakdown">
+              No of trials
+            </th>
+            <!-- Cost per trial column commented out per user request
+            <th class="text-right clickable-header" (click)="openTrialDetails(undefined, 'cost')"
+              matTooltip="Click to open 20-trial breakdown">
+              Cost per trial
+            </th>
+            -->
+
+            <th class="text-right highlight-col">Total Development cost for 20 trials</th>
+            <th class="text-right">Input Qty per Cycle</th>
+            <th class="text-right">ScaleUP Batch size</th>
+            <th class="text-right">ScaleUP Batch Input Materis</th>
+            <th class="text-right">EB Size</th>
+            <th class="text-right">3 EB Input Qty</th>
+            <th class="text-right highlight-col">3 EB Batches Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of itemsWithCalc; track row.item.code) {
+          <tr [class.row-highlight]="row.isHighlighted">
+            <!-- Actions -->
+            <td class="text-center">
+              <div class="table-actions" style="justify-content: center;">
+                <button type="button" class="table-action-button edit" matTooltip="Edit Material"
+                  aria-label="Edit Material" (click)="openEditDialog(row.item)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete Material"
+                  aria-label="Delete Material" (click)="deleteMaterial(row.item)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+
+            <!-- Dev WBS -->
+            <td>
+              <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(row.item.wdev)">{{ row.item.wdev }}</a>
+            </td>
+
+            <!-- SU WBS -->
+            <td>
+              <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(row.item.wsu)">{{ row.item.wsu }}</a>
+            </td>
+
+            <td>{{ row.item.cat }}</td>
+            <td>{{ row.item.code }}</td>
+            <td class="wrap-cell">{{ row.item.d }}</td>
+            <td>{{ row.item.uom }}</td>
+            <td class="text-right">{{ formatDec(row.item.price) }}</td>
+            <td class="text-right">{{ formatDec(row.item.pq) }}</td>
+            <td class="text-right">{{ formatDec(row.calc.H) }}</td>
+            <td class="text-right">{{ row.item.cyc !== null ? row.item.cyc : '' }}</td>
+            <td class="text-right">{{ formatDec(row.item.inq) }}</td>
+            <td>{{ row.item.inu }}</td>
+            <td class="text-right">{{ format(row.item.cf) }}</td>
+            <td class="text-right">{{ format(row.item.dbs) }}</td>
+
+            <!-- Clickable No of trials (Img1: No of trials data, No underline) -->
+            <td class="text-right">
+              <span class="drill-cell-link" role="button" tabindex="0" (click)="openTrialDetails(row.item, 'qty')"
+                matTooltip="View trials breakdown for {{ row.item.d }}">
+                {{ row.item.customTrials?.length || row.item.cyc || 20 }}
+              </span>
+            </td>
+
+            <!-- Clickable Cost per trial commented out per user request
+            <td class="text-right">
+              <span class="drill-cell-link" role="button" tabindex="0"
+                (click)="openTrialDetails(row.item, 'cost')" matTooltip="View 20-Trial breakdown for {{ row.item.d }}">
+                {{ format(row.calc.trials[0]) }}
+              </span>
+            </td>
+            -->
+
+            <td class="text-right highlight-col font-weight-bold">{{ format(row.calc.AI) }}</td>
+            <td class="text-right">{{ formatDec(row.item.inq3) }}</td>
+            <td class="text-right">{{ format(row.item.sbs) }}</td>
+            <td class="text-right">{{ format(row.calc.AL) }}</td>
+            <td class="text-right">{{ format(row.item.ebs) }}</td>
+            <td class="text-right">{{ format(row.calc.AN) }}</td>
+            <td class="text-right highlight-col font-weight-bold">{{ format(row.calc.AO) }}</td>
+          </tr>
+          }
+
+          <!-- Total Row -->
+          <tr class="table-total-row">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="font-weight-bold">Total</td>
+            <td colspan="11"></td>
+
+            <!-- Input Qty per Cycle -->
+            <td></td>
+
+            <!-- Cost per trial total for trial 1 commented out per user request
+            <td class="text-right font-weight-bold">{{ format(trialTotal1) }}</td>
+            -->
+
+            <td class="text-right highlight-col font-weight-bold">{{ format(totalAI) }}</td>
+            <td></td>
+            <td></td>
+            <td class="text-right font-weight-bold">{{ format(totalAL) }}</td>
+            <td></td>
+            <td></td>
+            <td class="text-right highlight-col font-weight-bold">{{ format(totalAO) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Floating Scroll Buttons for Main Table -->
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;" (click)="scrollLeft()"
+    matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+    matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>
+  }
+
+  <!-- ========================================================
+       VIEW 2: INNER SCREEN (Separate Component)
+       ======================================================== -->
+  @else {
+    <app-material-trials-detail
+      [initialMaterialCode]="selectedMaterialCode"
+      [initialViewMode]="trialViewMode"
+      (back)="closeTrialDetails()">
+    </app-material-trials-detail>
+  }
+
+</div>

@@ -1,0 +1,151 @@
+<div class="materials-plan-container">
+  <!-- 4 KPI Summary Cards Grid -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <span class="kpi-label">Estimated landed cost (INR)</span>
+      <strong class="kpi-value">{{ formatCurrency(totalEstimatedCost) }}</strong>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-label">Final budget (approved)</span>
+      <strong class="kpi-value">{{ cntApproved }}</strong>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-label">Forecast (awaiting approval)</span>
+      <strong class="kpi-value">{{ cntPending }}</strong>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-label">Rejected / re-source</span>
+      <strong class="kpi-value">{{ cntRejected }}</strong>
+    </div>
+  </div>
+
+  <!-- Link to Budget Info Box (Neutral styling) -->
+  <section class="budget-link-box" aria-label="Link to Budget">
+    <div class="budget-link-header">
+      <mat-icon class="link-icon">sync_alt</mat-icon>
+      <strong>Linked to Budget › Material List (same materials, matched on material code)</strong>
+    </div>
+    <div class="budget-link-content">
+      <p><strong>From Budget:</strong> material code, unit price, development / scale-up / 3 EB quantities (→ Net
+        required qty), and the WBS mapping — development to 3.1.1 (API) or 3.1.3 (excipients, solvents), scale-up and EB
+        to 5.1.5 RM, PM, Consumables, Miscellaneous procurement.</p>
+      <p><strong>To Budget:</strong> Estimated landed cost rolls into the Material bucket of the scale-up / EB WBS
+        activity. Budget decision is read-only here: Forecast until management approves, then Final budget.</p>
+      <p class="calc-formula">Suggested buy qty = ROUNDUP((Net × (1 + allowance) + QC − stock − open PO) ÷ MOQ) × MOQ;
+        Landed cost = buy qty × unit price + freight/duty.</p>
+    </div>
+  </section>
+
+  <!-- Top Toolbar with info and Add Material button using global app-btn-primary -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div class="sheet-title-info">
+      <span>Procurement planning and budget integration · {{ planRows.length }} materials</span>
+    </div>
+
+    <button type="button" class="app-btn app-btn-primary" (click)="openAddMaterialDialog()">
+      <mat-icon>add</mat-icon>
+      <span>Add Material</span>
+    </button>
+  </div>
+
+  <!-- Global App Table System (All color codes removed) -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #tableContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 80px;">Actions</th>
+            <th class="text-left" style="min-width: 120px;">Mtl code (Budget)</th>
+            <th class="text-left" style="min-width: 180px;">Material name</th>
+            <th class="text-center" style="min-width: 90px;">WBS (Dev)</th>
+            <th class="text-center" style="min-width: 110px;">WBS (Scale-up / EB)</th>
+            <th class="text-left" style="min-width: 220px;">Purpose / stage</th>
+            <th class="text-center" style="width: 70px;">Unit</th>
+            <th class="text-end" style="min-width: 120px;">Net required qty</th>
+            <th class="text-end" style="min-width: 100px;">QC / retain qty</th>
+            <th class="text-end" style="min-width: 110px;">Process allowance %</th>
+            <th class="text-end" style="min-width: 120px;">Approved usable stock</th>
+            <th class="text-end" style="min-width: 120px;">Open PO usable qty</th>
+            <th class="text-end" style="min-width: 130px;">Pack size / MOQ multiple</th>
+            <th class="text-end" style="min-width: 120px;">Suggested buy qty</th>
+            <th class="text-end" style="min-width: 100px;">Supplier lead days</th>
+            <th class="text-end" style="min-width: 110px;">Unit price INR</th>
+            <th class="text-end" style="min-width: 110px;">Freight / duty INR</th>
+            <th class="text-end" style="min-width: 150px;">Estimated landed cost INR → Budget</th>
+            <th class="text-left" style="min-width: 190px;">Manufacturer / site</th>
+            <th class="text-left" style="min-width: 170px;">Supplier / trader</th>
+            <th class="text-center" style="min-width: 170px;">Qualification Status</th>
+            <th class="text-center" style="min-width: 180px;">Pre-Qualification Checklist</th>
+            <th class="text-center" style="min-width: 130px;">Qualification record ID</th>
+            <th class="text-center" style="min-width: 130px;">Budget decision</th>
+            <th class="text-left" style="min-width: 240px;">Evidence / blocker</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of planRows; track m.id) {
+          <tr>
+            <td class="text-center">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit Material Plan" aria-label="Edit material plan"
+                  (click)="onEditPlanRow(m)">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </div>
+            </td>
+            <td class="text-left font-weight-bold">{{ m.id }}</td>
+            <td class="text-left">{{ m.name }}</td>
+            <td class="text-center">{{ m.wdev }}</td>
+            <td class="text-center">5.1.5</td>
+            <td class="text-left">{{ activeProject?.name }} – Development + EB/PV</td>
+            <td class="text-center">{{ m.unit }}</td>
+            <td class="text-end font-monospace">{{ formatNum(m.net) }}</td>
+            <td class="text-end font-monospace">{{ formatNum(m.qc) }}</td>
+            <td class="text-end font-monospace">{{ formatNum(m.allow * 100) }}%</td>
+            <td class="text-end font-monospace">{{ formatNum(m.stock) }}</td>
+            <td class="text-end font-monospace">{{ formatNum(m.po) }}</td>
+            <td class="text-end font-monospace">{{ formatNum(m.moq) }}</td>
+            <td class="text-end font-monospace">{{ formatNum(m.buy) }}</td>
+            <td class="text-end font-monospace">{{ m.lead }}</td>
+            <td class="text-end font-monospace">{{ formatNum(m.price) }}</td>
+            <td class="text-end freight-cell">
+              <input type="number" class="freight-input" placeholder="0" [value]="freightValues[m.id] || ''"
+                (input)="onFreightChange(m.id, $any($event.target).value)">
+            </td>
+            <td class="text-end font-monospace">{{ formatNum((m.cost || 0) + (freightValues[m.id] || 0)) }}</td>
+            <td class="text-left">{{ m.mfr }}</td>
+            <td class="text-left">{{ m.supplier }}</td>
+            <td class="text-center">{{ m.QualificationStatus || 'Satisfaction' }}</td>
+            <td class="text-center">
+              <a class="pre-qual-link" role="button" tabindex="0" (click)="navigateToPreQualification(m.id)"
+                title="View Pre-Qualification Checklist for {{ m.id }}">
+                {{ m.PreQualificationChecklist || '0 / 55' }}
+              </a>
+            </td>
+            <td class="text-center">{{ m.qr }}</td>
+            <td class="text-center">{{ getDecisionLabel(m.decision) }}</td>
+            <td class="text-left blocker-cell">{{ m.blocker }}</td>
+          </tr>
+          }
+          @if (planRows.length === 0) {
+          <tr>
+            <td colspan="25" class="empty-table">No materials plan recorded for this project.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Floating Horizontal Scroll Buttons -->
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;" (click)="scrollLeft()"
+    matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+    matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>
+</div>

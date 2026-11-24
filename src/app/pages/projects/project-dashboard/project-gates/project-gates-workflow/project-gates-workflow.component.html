@@ -1,0 +1,85 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ dialogTitle }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="padding: 16px 24px;">
+  <div class="col-sm-12" style="margin-bottom: 10px; padding: 0;">
+
+    <!-- Table referencing Assets Table Classes -->
+    <div class="app-table-container">
+      <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+        <table class="table app-table" style="width: 100%;">
+          <thead>
+            <tr>
+              <th class="text-left" style="width: 140px; min-width: 130px;">Workflow</th>
+              <th class="text-left" style="min-width: 180px;">Name</th>
+              <th class="text-center" style="width: 80px; min-width: 75px;">Done</th>
+              <th class="text-center" style="width: 130px; min-width: 120px;">Done date</th>
+              <th class="text-center" style="width: 80px; min-width: 75px;">Signed</th>
+              <th class="text-center" style="width: 130px; min-width: 120px;">Date signed</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of signees; track item.name) {
+              <tr>
+                <!-- 1. Workflow (either Approver or Reviewer) -->
+                <td class="text-left font-weight-500" style="vertical-align: middle;">
+                  {{ item.workflow || 'Reviewer' }}
+                </td>
+
+                <!-- 2. Name -->
+                <td class="text-left font-weight-500" style="vertical-align: middle;">
+                  {{ item.name }}
+                </td>
+
+                <!-- 3. Done -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox [(ngModel)]="item.done" (change)="toggleDone(item)" color="primary"></mat-checkbox>
+                </td>
+
+                <!-- 4. Done date -->
+                <td class="text-center" style="vertical-align: middle;">
+                  {{ item.doneDate || '—' }}
+                </td>
+
+                <!-- 5. Signed -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox [(ngModel)]="item.signed" (change)="toggleSigned(item)" color="primary"></mat-checkbox>
+                </td>
+
+                <!-- 6. Date signed -->
+                <td class="text-center" style="vertical-align: middle;">
+                  {{ item.dateSigned || '—' }}
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="empty-table text-center">No records found</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Download button below table -->
+    <div class="workflow-table-actions" style="margin-top: 14px; margin-bottom: 8px;">
+      <button type="button" class="app-btn app-btn-primary" (click)="download()">
+        <mat-icon>download</mat-icon>
+        <span>Download</span>
+      </button>
+    </div>
+
+    <!-- Close button at the bottom of the popup referencing AddAssetComponent -->
+    <div style="margin-top: 16px; margin-bottom: 5px;">
+      <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()">
+          <mat-icon>cancel</mat-icon> Close
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

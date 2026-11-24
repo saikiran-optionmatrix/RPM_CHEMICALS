@@ -1,0 +1,71 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    Upload Holidays CSV
+  </h1>
+</div>
+
+<div mat-dialog-content>
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+
+    <!-- CSV File Input -->
+    <div class="row" style="margin-bottom: 16px; margin-top: 10px;">
+      <div class="col-sm-3">
+        <label class="add-member-label control-label" style="margin-top: 5px;">Select CSV :</label>
+      </div>
+      <div class="col-sm-9">
+        <input class="form-control white" type="file" accept=".csv" (change)="onFileSelected($event)"
+          style="height: 38px; padding: 6px 12px;">
+        <div style="font-size: 12px; color: #64748b; margin-top: 6px;">
+          Choose a CSV file with <strong>Date</strong> and <strong>Description</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Template Helper -->
+    <div class="row" style="margin-bottom: 20px;">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-9">
+        <button type="button" class="app-btn app-btn-default" (click)="downloadSample()"
+          style="height: 32px; font-size: 13px;">
+          <mat-icon style="font-size: 18px; width: 18px; height: 18px;">description</mat-icon>
+          <span>Download Sample CSV Template</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Feedback messages -->
+    @if (errorMessage) {
+    <div class="alert alert-danger"
+      style="font-size: 13px; padding: 8px 12px; margin-bottom: 15px; border-radius: 4px;">
+      <mat-icon
+        style="vertical-align: middle; font-size: 18px; width: 18px; height: 18px; margin-right: 6px;">error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+    }
+
+    @if (parsedHolidays.length > 0) {
+    <div class="alert alert-success"
+      style="font-size: 13px; padding: 8px 12px; margin-bottom: 15px; border-radius: 4px;">
+      <mat-icon
+        style="vertical-align: middle; font-size: 18px; width: 18px; height: 18px; margin-right: 6px;">check_circle</mat-icon>
+      <span>Ready to import <strong>{{ parsedHolidays.length }}</strong> holiday(s).</span>
+    </div>
+    }
+
+    <!-- Action Buttons -->
+    <div style="margin-bottom: 10px;">
+      <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()"
+          style="background-color: lightgray; color: red;">
+          <mat-icon>cancel</mat-icon> Close
+        </button>
+        <button type="button" class="app-btn app-btn-primary" [disabled]="parsedHolidays.length === 0"
+          (click)="upload()">
+          <mat-icon>upload</mat-icon> Upload
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+

@@ -1,0 +1,244 @@
+<div class="wbs-summary-container">
+  <!-- Info Banner -->
+  <div class="budget-info-banner">
+    <mat-icon class="banner-icon">account_tree</mat-icon>
+    <div class="banner-text">
+      <strong>WBS Summary is the master.</strong> Each activity's Man, Material and Resource value is the sum of the
+      costs mapped to it in the six sheets. 0 means the bucket does not apply. <span
+        class="badge-estimate">Estimate</span> means a cost is expected but none of the six sheets carries it yet. Click
+      any blue value to open the sheet behind it.
+    </div>
+  </div>
+
+  <!-- Search & Filter Bar -->
+  <div class="budget-tools-bar">
+    <div class="search-box">
+      <mat-icon>search</mat-icon>
+      <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()"
+        placeholder="Search WBS ID, activity, responsible">
+    </div>
+
+    <div class="gate-selector">
+      <select [(ngModel)]="selectedGate" (change)="onGateChange()" class="app-select">
+        <option value="all">All gates</option>
+        @for (g of budgetService.gateIds; track g) {
+        <option [value]="g">{{ getGateName(g) }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="tools-actions">
+      <button type="button" class="app-btn-light" (click)="expandAll()">
+        <mat-icon>unfold_more</mat-icon>
+        <span>Expand all</span>
+      </button>
+      <button type="button" class="app-btn-light" (click)="collapseAll()">
+        <mat-icon>unfold_less</mat-icon>
+        <span>Collapse all</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- WBS Tree Table -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #scrollContainer class="table-responsive">
+      <table class="table app-table wbs-table">
+        <thead>
+          <tr>
+            <th rowspan="2" class="col-wbs-id">WBS ID</th>
+            <th rowspan="2" class="col-wbs-name">Gate / Stage / Deliverable / Activity</th>
+            <th rowspan="2" class="col-wbs-resp">Responsible</th>
+            <th colspan="2" class="text-center group-header">Man</th>
+            <th colspan="2" class="text-center group-header">Material</th>
+            <th colspan="2" class="text-center group-header">Resource</th>
+            <th colspan="3" class="text-center group-header">Total</th>
+          </tr>
+          <tr>
+            <th class="text-right sub-th">Plan</th>
+            <th class="text-right sub-th">Actual</th>
+            <th class="text-right sub-th">Plan</th>
+            <th class="text-right sub-th">Actual</th>
+            <th class="text-right sub-th">Plan</th>
+            <th class="text-right sub-th">Actual</th>
+            <th class="text-right sub-th">Plan</th>
+            <th class="text-right sub-th">Actual</th>
+            <th class="text-right sub-th">Variance</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of displayedNodes; track r.id) {
+          <tr [id]="'r-' + r.id.replace('.', '_')" [class.lv0]="r.lvl === 'Gate'" [class.lv1]="r.lvl === 'Stage'"
+            [class.lv2]="r.lvl === 'Deliverable'" [class.lv3]="r.lvl === 'Activity'"
+            [class.row-highlight]="highlightWbs === r.id">
+
+            <!-- WBS ID -->
+            <td class="col-wbs-id text-mono">{{ r.id }}</td>
+
+            <!-- Node Hierarchy Name -->
+            <td class="col-wbs-name">
+              <div class="node-tree-cell"
+                [style.padding-left.px]="r.lvl === 'Gate' ? 0 : r.lvl === 'Stage' ? 18 : r.lvl === 'Deliverable' ? 36 : 54">
+                @if (r.lvl !== 'Activity') {
+                <button type="button" class="chevron-btn" (click)="toggleNode(r.id)"
+                  [attr.aria-expanded]="isOpen(r.id)">
+                  <mat-icon>{{ isOpen(r.id) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+                </button>
+                <span class="node-title clickable-title" (click)="toggleNode(r.id)">{{ r.name }}</span>
+                } @else {
+                <span class="chevron-spacer"></span>
+                <span class="node-title">{{ r.name }}</span>
+                }
+              </div>
+            </td>
+
+            <!-- Responsible -->
+            <td class="col-wbs-resp">{{ r.resp || '—' }}</td>
+
+            <!-- MAN: Plan -->
+            <td class="text-right">
+              @if (isEstimate(r.id, 'man')) {
+              <span class="badge-estimate">Estimate</span>
+              } @else if (getCost(r.id, 'man', 'P') > 0) {
+              <a class="cost-link" role="button" tabindex="0" (click)="drill(r.id, 'man')"
+                [title]="'Open Manpower sheet for ' + r.id">
+                {{ format(getCost(r.id, 'man', 'P')) }}
+              </a>
+              } @else {
+              <span class="text-muted-zero">0</span>
+              }
+            </td>
+
+            <!-- MAN: Actual -->
+            <td class="text-right">
+              @if (getCost(r.id, 'man', 'A') > 0) {
+              <a class="cost-link" role="button" tabindex="0" (click)="drill(r.id, 'man')">
+                {{ format(getCost(r.id, 'man', 'A')) }}
+              </a>
+              } @else {
+              <span class="text-muted-zero">0</span>
+              }
+            </td>
+
+            <!-- MATERIAL: Plan -->
+            <td class="text-right">
+              @if (isEstimate(r.id, 'mat')) {
+              <span class="badge-estimate">Estimate</span>
+              } @else if (getCost(r.id, 'mat', 'P') > 0) {
+              <a class="cost-link" role="button" tabindex="0" (click)="drill(r.id, 'mat')"
+                [title]="'Open Material sheet for ' + r.id">
+                {{ format(getCost(r.id, 'mat', 'P')) }}
+              </a>
+              } @else {
+              <span class="text-muted-zero">0</span>
+              }
+            </td>
+
+            <!-- MATERIAL: Actual -->
+            <td class="text-right">
+              @if (getCost(r.id, 'mat', 'A') > 0) {
+              <a class="cost-link" role="button" tabindex="0" (click)="drill(r.id, 'mat')">
+                {{ format(getCost(r.id, 'mat', 'A')) }}
+              </a>
+              } @else {
+              <span class="text-muted-zero">0</span>
+              }
+            </td>
+
+            <!-- RESOURCE: Plan -->
+            <td class="text-right">
+              @if (isEstimate(r.id, 'res')) {
+              <span class="badge-estimate">Estimate</span>
+              } @else if (getCost(r.id, 'res', 'P') > 0) {
+              <a class="cost-link" role="button" tabindex="0" (click)="drill(r.id, 'res')"
+                [title]="'Open Resource sheet for ' + r.id">
+                {{ format(getCost(r.id, 'res', 'P')) }}
+              </a>
+              } @else {
+              <span class="text-muted-zero">0</span>
+              }
+            </td>
+
+            <!-- RESOURCE: Actual -->
+            <td class="text-right">
+              @if (getCost(r.id, 'res', 'A') > 0) {
+              <a class="cost-link" role="button" tabindex="0" (click)="drill(r.id, 'res')">
+                {{ format(getCost(r.id, 'res', 'A')) }}
+              </a>
+              } @else {
+              <span class="text-muted-zero">0</span>
+              }
+            </td>
+
+            <!-- TOTAL: Plan -->
+            <td class="text-right">
+              @if (getNodeTotalP(r.id) > 0) {
+              <a class="cost-link total-link" role="button" tabindex="0" (click)="drill(r.id, null)">
+                {{ format(getNodeTotalP(r.id)) }}
+              </a>
+              } @else {
+              <span class="text-muted-zero">0</span>
+              }
+            </td>
+
+            <!-- TOTAL: Actual -->
+            <td class="text-right">
+              {{ format(getNodeTotalA(r.id)) }}
+            </td>
+
+            <!-- VARIANCE -->
+            <td class="text-right">
+              @let v = getVariance(getNodeTotalP(r.id), getNodeTotalA(r.id));
+              @if (v === 0) {
+              <span class="text-muted-zero">—</span>
+              } @else if (v > 0) {
+              <span class="variance-over">+{{ format(v) }}</span>
+              } @else {
+              <span class="variance-under">−{{ format(-v) }}</span>
+              }
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="12" class="text-center py-4 text-muted">No activities match your search.</td>
+          </tr>
+          }
+
+          <!-- Project Total Row -->
+          <tr class="table-total-row">
+            <td></td>
+            <td class="font-weight-bold">{{ selectedGate === 'all' ? 'Project total' : getGateName(selectedGate) + '
+              total' }}</td>
+            <td></td>
+            <td class="text-right font-weight-bold">{{ format(totals.manP) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totals.manA) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totals.matP) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totals.matA) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totals.resP) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totals.resA) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totals.totalP) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totals.totalA) }}</td>
+            <td class="text-right font-weight-bold">
+              @if (totals.variance === 0) {
+              <span>—</span>
+              } @else if (totals.variance > 0) {
+              <span class="variance-over">+{{ format(totals.variance) }}</span>
+              } @else {
+              <span class="variance-under">−{{ format(-totals.variance) }}</span>
+              }
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Floating Scroll Buttons -->
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;" (click)="scrollLeft()"
+    matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+    matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>
+</div>

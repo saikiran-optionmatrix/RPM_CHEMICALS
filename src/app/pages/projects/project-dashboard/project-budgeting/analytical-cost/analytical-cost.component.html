@@ -1,0 +1,213 @@
+<div class="analytical-cost-container">
+  <!-- Banner -->
+  <div class="budget-info-banner">
+    <mat-icon class="banner-icon">biotech</mat-icon>
+    <div class="banner-text">
+      <strong>Analytical cost</strong> — as in the Excel. Chemicals, glassware and consumables map to 3.1.6 / 3.1.7; HPLC columns and standards map to 3.1.7 (Material). Third-party testing maps to 7.1.2 (Resource) and is empty in the template, so 7.1.2 shows <span class="badge-estimate">Estimate</span> in the WBS.
+    </div>
+  </div>
+
+  <!-- SECTION 1: QC cost -->
+  <div class="section-title">QC cost</div>
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table ana-table">
+        <thead>
+          <tr>
+            <th style="width: 110px;">WBS ID</th>
+            <th style="width: 60px;">S.No</th>
+            <th>TEST</th>
+            <th style="min-width: 240px;">Column Description</th>
+            <th>Lot No (or) Part No</th>
+            <th>Standard Details</th>
+            <th class="text-right">Cost per Column</th>
+            <th class="text-right">No of columns required</th>
+            <th class="text-right" style="width: 140px;">Total cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (q of qcItems; track q.sl) {
+            <tr [class.row-highlight]="isHighlighted(q.w)">
+              <td>
+                <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(q.w)">{{ q.w }}</a>
+              </td>
+              <td>{{ q.sl }}</td>
+              <td></td>
+              <td class="font-weight-500">{{ q.d }}</td>
+              <td></td>
+              <td></td>
+              <td class="text-right"></td>
+              <td class="text-right"></td>
+              <td class="text-right font-weight-500">{{ format(q.i) }}</td>
+            </tr>
+          }
+
+          <!-- Total Row -->
+          <tr class="table-total-row">
+            <td></td>
+            <td>3</td>
+            <td></td>
+            <td class="font-weight-bold">Total</td>
+            <td colspan="4"></td>
+            <td class="text-right font-weight-bold">{{ format(totalQcCost) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Analytical cost -->
+  <div class="section-title">Analytical cost</div>
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table ana-table">
+        <thead>
+          <tr>
+            <th style="width: 110px;">WBS ID</th>
+            <th style="width: 60px;">S.No</th>
+            <th>TEST</th>
+            <th style="min-width: 220px;">Column Description</th>
+            <th>Lot No (or) Part No</th>
+            <th>Standard Details</th>
+            <th class="text-right">Cost per Column</th>
+            <th class="text-right">No of columns required</th>
+            <th class="text-right" style="width: 140px;">Total cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of colItems; track $index) {
+            <tr [class.row-highlight]="isHighlighted(colWbs)">
+              @if (!c.cont) {
+                <td [attr.rowspan]="c.span && c.span > 1 ? c.span : null">
+                  <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(colWbs)">{{ colWbs }}</a>
+                </td>
+                <td [attr.rowspan]="c.span && c.span > 1 ? c.span : null">{{ c.sl }}</td>
+                <td [attr.rowspan]="c.span && c.span > 1 ? c.span : null">{{ c.t }}</td>
+                <td [attr.rowspan]="c.sl !== 8 && c.span && c.span > 1 ? c.span : null">{{ c.d }}</td>
+                <td [attr.rowspan]="c.span && c.span > 1 ? c.span : null">{{ c.e }}</td>
+              } @else {
+                @if (c.d2) {
+                  <td>{{ c.d2 }}</td>
+                }
+              }
+              <td>{{ c.f }}</td>
+              <td class="text-right">{{ c.g != null ? format(c.g) : '' }}</td>
+              <td class="text-right">{{ c.h }}</td>
+              <td class="text-right font-weight-500">{{ format(c.g ? c.g * c.h : 0) }}</td>
+            </tr>
+          }
+
+          <!-- Sum Product Row -->
+          <tr class="subtotal-row">
+            <td></td>
+            <td colspan="4"></td>
+            <td class="font-weight-500">sum product</td>
+            <td class="text-right font-weight-bold">{{ format(totalSumProductCol) }}</td>
+            <td></td>
+            <td class="text-right font-weight-bold">{{ format(totalColCost) }}</td>
+          </tr>
+
+          <!-- Total Row -->
+          <tr class="table-total-row">
+            <td></td>
+            <td>11</td>
+            <td></td>
+            <td class="font-weight-bold">Total</td>
+            <td colspan="4"></td>
+            <td class="text-right font-weight-bold">{{ format(totalColCost) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Analytical cost / out side ( 3rd party) -->
+  <div class="section-title">Analytical cost / out side ( 3rd party)</div>
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table ana-table">
+        <thead>
+          <tr>
+            <th style="width: 110px;">WBS ID</th>
+            <th style="width: 60px;">S.No</th>
+            <th>TEST</th>
+            <th>Activity Description</th>
+            <th>Vendor Name</th>
+            <th>Vendor GMP status</th>
+            <th class="text-right">No of Tests</th>
+            <th class="text-right">Time required each test</th>
+            <th class="text-right">Cost per test</th>
+            <th class="text-right" style="width: 120px;">Total cost</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of thirdPartyItems; track t.sl) {
+            <tr [class.row-highlight]="isHighlighted(thirdPartyWbs)">
+              <td>
+                <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(thirdPartyWbs)">{{ thirdPartyWbs }}</a>
+              </td>
+              <td>{{ t.sl }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="text-right"></td>
+              <td class="text-right"></td>
+              <td class="text-right"></td>
+              <td class="text-right">0</td>
+              <td></td>
+            </tr>
+          }
+
+          <!-- Total Row -->
+          <tr class="table-total-row">
+            <td></td>
+            <td colspan="8" class="font-weight-bold">Total Cost</td>
+            <td class="text-right font-weight-bold">0</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Batches and column usage -->
+  <div class="section-title">Batches and column usage</div>
+  <div class="app-table-container" style="padding: 0; max-width: 440px;">
+    <div class="table-responsive">
+      <table class="table app-table usage-table">
+        <tbody>
+          @for (b of batches; track b[0]) {
+            <tr>
+              <td>{{ b[0] }}</td>
+              <td class="text-right font-weight-500">{{ b[1] }}</td>
+            </tr>
+          }
+          <tr class="subtotal-row">
+            <td class="font-weight-bold">Total No of Batches</td>
+            <td class="text-right font-weight-bold">{{ totalBatches }}</td>
+          </tr>
+          <tr>
+            <td>Each column analysis time</td>
+            <td class="text-right">{{ colTime }}</td>
+          </tr>
+          <tr>
+            <td>No of columns required</td>
+            <td class="text-right">{{ colReq }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Floating Scroll Buttons -->
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+    (click)="scrollLeft()" matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+    matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>
+</div>

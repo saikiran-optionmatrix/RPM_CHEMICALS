@@ -1,0 +1,95 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ title }}
+  </h1>
+</div>
+
+<div mat-dialog-content class="acceptance-dialog-content">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+
+    <!-- Table using classes from AssetsComponent -->
+    <div class="app-table-container" style="padding: 0 !important; width: 100%;">
+      <div class="table-responsive" style="overflow-x: auto;">
+        <table class="table app-table" style="width: 100%;">
+          <thead>
+            <tr>
+              <th rowspan="2" class="text-left" style="min-width: 120px; vertical-align: middle;">Workflow</th>
+              <th rowspan="2" class="text-left" style="min-width: 160px; vertical-align: middle;">Name</th>
+              <th colspan="2" class="text-center" style="border-bottom: 1px solid #e2e8f0;">Status</th>
+            </tr>
+            <tr>
+              <th class="text-center" style="min-width: 320px;">Rejected</th>
+              <th class="text-center" style="width: 90px;">Accepted</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of acceptanceList; track item.id) {
+              <tr>
+                <!-- Workflow -->
+                <td class="text-left" style="vertical-align: middle; color: #1e293b; font-weight: 500;">
+                  {{ item.workflow }}
+                </td>
+
+                <!-- Name -->
+                <td class="text-left" style="vertical-align: middle; color: #334155;">
+                  {{ item.name }}
+                </td>
+
+                <!-- Rejected Checkbox & Dropdown (modeled after project-gates Redirect column) -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <div class="reject-cell-wrap">
+                    <mat-checkbox
+                      color="primary"
+                      [checked]="item.status === 'Rejected'"
+                      (change)="onStatusChange(item, 'Rejected', $event.checked)"
+                      matTooltip="Mark as Rejected">
+                    </mat-checkbox>
+                    <div class="reject-dropdown-wrap">
+                      <mat-select
+                        [(ngModel)]="item.rejectionReason"
+                        [disabled]="item.status !== 'Rejected'"
+                        placeholder="Select rejection reason"
+                        class="form-control reject-reason-select">
+                        @for (reason of rejectionReasons; track reason) {
+                          <mat-option [value]="reason">
+                            {{ reason }}
+                          </mat-option>
+                        }
+                      </mat-select>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Accepted Checkbox -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox
+                    color="primary"
+                    [checked]="item.status === 'Accepted'"
+                    (change)="onStatusChange(item, 'Accepted', $event.checked)"
+                    matTooltip="Mark as Accepted">
+                  </mat-checkbox>
+                </td>
+
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Bottom Actions: Sticky at bottom with same paddings as AddAssetComponent -->
+    <div class="sticky-action-container">
+      <div style="margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> Close
+          </button>
+          <button type="button" class="app-btn app-btn-primary" (click)="save()">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

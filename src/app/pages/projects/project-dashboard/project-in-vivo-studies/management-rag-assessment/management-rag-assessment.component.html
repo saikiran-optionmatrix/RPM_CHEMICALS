@@ -1,0 +1,54 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Management RAG Assessment</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px; padding-top: 6px;">
+    <form [formGroup]="ragForm" (ngSubmit)="save()">
+      <!-- Management assessment -->
+      <div class="row" style="margin-bottom: 14px;">
+        <div class="col-sm-5">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Management assessment :</label>
+        </div>
+        <div class="col-sm-7">
+          <mat-select class="form-control back" formControlName="ragStatus"
+            placeholder="Select Management assessment" style="height: 35px; line-height: 23px;">
+            @for (status of assessmentOptions; track status) {
+              <mat-option [value]="status">{{ status }}</mat-option>
+            }
+          </mat-select>
+          @if ((isSubmitting || f['ragStatus'].touched) && f['ragStatus'].errors?.['required']) {
+            <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+          }
+        </div>
+      </div>
+
+      <!-- Assessment note -->
+      <div class="row" style="margin-bottom: 14px;">
+        <div class="col-sm-5">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Assessment note :</label>
+        </div>
+        <div class="col-sm-7">
+          <textarea class="form-control back" rows="4" formControlName="ragReason"
+            placeholder="Enter assessment note"
+            style="min-height: 92px; padding-top: 8px; padding-bottom: 8px;"></textarea>
+          @if ((isSubmitting || f['ragReason'].touched) && f['ragReason'].errors?.['required']) {
+            <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+          }
+        </div>
+      </div>
+
+      <!-- Actions (Close & Save) -->
+      <div style="margin-top: 15px; margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> <span>Close</span>
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

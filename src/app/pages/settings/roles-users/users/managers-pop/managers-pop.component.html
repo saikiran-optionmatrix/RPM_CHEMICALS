@@ -1,0 +1,50 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    Managers
+  </h1>
+</div>
+
+<div mat-dialog-content class="managers-dialog-content">
+  <div class="app-table-container">
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center">Manager Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (mgr of paginatedManagers; track mgr) {
+            <tr>
+              <td class="text-center">{{ mgr }}</td>
+            </tr>
+          }
+          @if (paginatedManagers.length === 0) {
+            <tr>
+              <td class="text-center" style="padding: 20px; color: #64748b;">
+                No managers found
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <mat-paginator
+      [length]="managers.length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5]"
+      [hidePageSize]="true"
+      [showFirstLastButtons]="true"
+      (page)="handlePage($event)">
+    </mat-paginator>
+  </div>
+</div>
+
+<!-- Close Action Button -->
+<mat-dialog-actions align="end" class="managers-dialog-actions">
+  <button type="button" class="app-btn app-btn-default" (click)="close()" style="background-color: lightgray; color: red;">
+    <mat-icon>cancel</mat-icon> Close
+  </button>
+</mat-dialog-actions>

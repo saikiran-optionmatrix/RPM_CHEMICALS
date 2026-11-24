@@ -1,0 +1,75 @@
+:host {
+  display: block;
+}
+
+.analytics-page {
+  width: 100%;
+}
+
+.analytics-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 20px;
+
+  h1 {
+    min-width: 0;
+    margin: 0 0 4px 0;
+    overflow: hidden;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 32px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .page-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 400;
+  }
+}
+
+
+
+.text-cell-wrap {
+  max-width: 280px;
+  white-space: normal !important;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* Study Updates Column: increased width and 3-line clamp with ellipsis dots */
+.study-updates-col {
+  min-width: 380px;
+  width: 380px;
+}
+
+.study-updates-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.45;
+}
+
+.mine {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+  background-color: #dfdfdf !important;
+  color: #414141 !important;
+  z-index: 9999 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+
+  mat-icon {
+    color: #414141 !important;
+  }
+}

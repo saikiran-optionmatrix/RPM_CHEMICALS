@@ -1,0 +1,350 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Task' : 'Add Task' }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="padding: 16px 24px; overflow: hidden;">
+  <form [formGroup]="myGroup" (ngSubmit)="upsertTask()">
+    <div style="display: flex; gap: 24px; align-items: stretch;">
+
+      <!-- Left Column: Navigation Tabs with Pills Styling from AddProjectComponent -->
+      <div class="pills left-nav-pills"
+        style="width: 175px; flex-shrink: 0; border-right: 1px solid #e2e8f0; padding-right: 16px;">
+        <ul class="nav nav-pills"
+          style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+          @for (tab of tabs; track tab.id) {
+          <li [class.active]="activeTab === tab.id" style="width: 100%;">
+            <a mat-raised-button type="button" (click)="setActiveTab(tab.id)"
+              style="width: 100%; display: flex; align-items: center; justify-content: center; text-align: center;">
+              {{ tab.label }}
+            </a>
+          </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Right Column: Tab Scroll Container (overflow-x: hidden to eliminate x-axis scroll bar) -->
+      <div class="tab-scroll-container"
+        style="flex: 1; min-width: 0; max-height: 60vh; overflow-y: auto; overflow-x: hidden; padding-right: 8px;">
+
+        <!-- ==========================================
+             TAB 1: OVERVIEW
+             ========================================== -->
+        @if (activeTab === 'overview') {
+        <div class="row" style="margin-left: 0; margin-right: 0;">
+          <!-- Left Column -->
+          <div class="col-sm-6" style="padding-left: 0; padding-right: 15px;">
+            <!-- Task Name -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Task Name : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control name back" maxlength="150" placeholder="Enter Task Name"
+                  formControlName="taskName" type="text">
+                @if (isSubmitting && f['taskName'].errors?.['required']) {
+                <span class="text-danger" style="font-size: 12px; display: block; margin-top: 2px;">Task name is
+                  required</span>
+                }
+              </div>
+            </div>
+
+            <!-- Task Code -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Task Code : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control" placeholder="Enter Task Code" formControlName="taskCode" type="text">
+              </div>
+            </div>
+
+            <!-- Reference -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Reference : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control" placeholder="Enter Reference" formControlName="reference" type="text">
+              </div>
+            </div>
+
+            <!-- Job Code -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Job Code : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control" placeholder="Enter Job Code" formControlName="jobCode" type="text">
+              </div>
+            </div>
+
+            <!-- Department -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Department : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <select class="form-control back" formControlName="department" style="cursor: pointer;">
+                  <option value="" disabled>Select Department</option>
+                  @for (dept of departments; track dept) {
+                  <option [value]="dept">{{ dept }}</option>
+                  }
+                </select>
+                @if (isSubmitting && f['department'].errors?.['required']) {
+                <span class="text-danger" style="font-size: 12px; display: block; margin-top: 2px;">Department is
+                  required</span>
+                }
+              </div>
+            </div>
+
+            <!-- Section -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Section : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <select class="form-control white" formControlName="section" style="cursor: pointer;">
+                  <option value="" disabled>Select Section</option>
+                  @for (sec of sections; track sec) {
+                  <option [value]="sec">{{ sec }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <!-- Plan Effort (hours) -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Plan Effort : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control name back" placeholder="Enter Plan Hours" formControlName="planEffort"
+                  type="number" min="0" step="0.5">
+              </div>
+            </div>
+
+
+            <!-- Actual Effort (hours) (readonly) -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Actual Effort : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control readonly-effort" placeholder="0" formControlName="actualEffort" type="number"
+                  readonly
+                  style="background-color: #e2e8f0 !important; color: #475569 !important; cursor: not-allowed; border: 1px solid #cbd5e1;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="col-sm-6" style="padding-left: 15px; padding-right: 0;">
+            <!-- Responsibility -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Responsibility : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control" placeholder="Enter Responsibility" formControlName="responsibility"
+                  type="text">
+              </div>
+            </div>
+
+            <!-- Start Date -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Start Date : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control name back" formControlName="startDate" type="date">
+              </div>
+            </div>
+
+            <!-- Due Date -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Due Date : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control name back" formControlName="dueDate" type="date">
+              </div>
+            </div>
+
+            <!-- Priority -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Priority : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <select class="form-control back" formControlName="priority" style="cursor: pointer;">
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Date Completed -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Date Completed : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control white" formControlName="completedDate" type="date">
+              </div>
+            </div>
+
+            <!-- Date Approved -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Date Approved : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <input class="form-control white" formControlName="approvedDate" type="date">
+              </div>
+            </div>
+
+
+
+            <!-- Remarks -->
+            <div class="row" style="margin-left: 0; margin-right: 0; margin-bottom: 12px;">
+              <div class="col-sm-4" style="padding-left: 0; padding-right: 8px;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Remarks : </label>
+              </div>
+              <div class="col-sm-8" style="padding-left: 0; padding-right: 0;">
+                <textarea class="form-control white" rows="4" placeholder="Enter Remarks" formControlName="remarks"
+                  style="resize: vertical; min-height: 84px; height: 84px;"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+
+        <!-- ==========================================
+             TAB 2: ALLOCATION
+             ========================================== -->
+        @if (activeTab === 'allocation') {
+        <div>
+          <!-- Summary Header: Task Name & Plan Effort from Overview -->
+          <div
+            style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label class="control-label" style="font-weight: 600; font-size: 13px; color: #475569; margin: 0;">Task
+                Name :</label>
+              <span style="font-size: 14px; font-weight: 600; color: #1e293b;">
+                {{ myGroup.get('taskName')?.value || '—' }}
+              </span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label class="control-label" style="font-weight: 600; font-size: 13px; color: #475569; margin: 0;">Plan
+                Effort :</label>
+              <span style="font-size: 14px; font-weight: 600; color: #1e293b;">
+                {{ myGroup.get('planEffort')?.value != null && myGroup.get('planEffort')?.value !== '' ?
+                (myGroup.get('planEffort')?.value + ' hrs') : '—' }}
+              </span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label class="control-label" style="font-weight: 600; font-size: 13px; color: #475569; margin: 0;">Actual
+                Effort :</label>
+              <span style="font-size: 14px; font-weight: 600; color: #2563eb;">
+                {{ totalAllocatedHours }} hrs
+              </span>
+            </div>
+          </div>
+
+          <!-- Header with Add Button -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #334155;">Allocations</h3>
+            <button type="button" class="app-btn app-btn-primary" (click)="addAllocationRow()"
+              style="display: inline-flex; align-items: center; gap: 4px;">
+              <mat-icon style="font-size: 18px; width: 18px; height: 18px;">add</mat-icon>
+              <span>Add</span>
+            </button>
+          </div>
+
+          <!-- Timesheet Allocation Table -->
+          <div class="table-responsive" style="border: 1px solid #e2e8f0; border-radius: 6px; overflow-x: auto;">
+            <table class="timesheet-table" style="width: 100%; margin-bottom: 0;">
+              <thead>
+                <tr>
+                  <th style="width: 45%; padding: 10px 14px;">Date</th>
+                  <th style="width: 35%; padding: 10px 14px;">Hours</th>
+                  <th style="width: 20%; padding: 10px 14px; text-align: center;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of allocations; track row.id || $index; let idx = $index) {
+                <tr>
+                  <!-- Date -->
+                  <td style="padding: 6px 14px; vertical-align: middle;">
+                    <input type="date" class="form-control back" [(ngModel)]="row.date"
+                      [ngModelOptions]="{standalone: true}" style="height: 34px; font-size: 13px;" required />
+                  </td>
+
+                  <!-- Hours -->
+                  <td style="padding: 6px 14px; vertical-align: middle;">
+                    <input type="number" class="form-control back" [(ngModel)]="row.hours"
+                      [ngModelOptions]="{standalone: true}" min="0" step="0.5" placeholder="Hours"
+                      style="height: 34px; font-size: 13px;" (input)="updateActualEffortFromAllocations()" required />
+                  </td>
+
+                  <!-- Action (Only Delete) -->
+                  <td class="text-center" style="padding: 6px 14px; vertical-align: middle; text-align: center;">
+                    <button type="button" class="table-action-button delete" matTooltip="Delete Allocation"
+                      (click)="deleteAllocationRow(idx)"
+                      style="background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;">
+                      <mat-icon style="color: #dc2626; font-size: 18px; width: 18px; height: 18px;">delete</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+                } @empty {
+                <tr>
+                  <td colspan="3" class="text-center"
+                    style="padding: 28px; color: #94a3b8; font-size: 13px; text-align: center;">
+                    No allocations added yet. Click <strong>+ Add</strong> above to log task hours.
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+        }
+
+      </div>
+    </div>
+
+    <!-- ==========================================
+         BOTTOM ACTION BAR (Prev, Next, Close, Save)
+         ========================================== -->
+    <div
+      style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="prevTab()" [disabled]="activeTab === 'overview'"
+          [style.opacity]="activeTab === 'overview' ? '0.45' : '1'"
+          [style.cursor]="activeTab === 'overview' ? 'not-allowed' : 'pointer'">
+          <mat-icon>arrow_back</mat-icon> Prev
+        </button>
+
+        <button type="button" class="app-btn app-btn-default" (click)="nextTab()"
+          [disabled]="activeTab === 'allocation'" [style.opacity]="activeTab === 'allocation' ? '0.45' : '1'"
+          [style.cursor]="activeTab === 'allocation' ? 'not-allowed' : 'pointer'">
+          Next <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()">
+          <mat-icon>cancel</mat-icon> Close
+        </button>
+        <button type="submit" class="app-btn app-btn-primary" [disabled]="myGroup.invalid">
+          <mat-icon>save</mat-icon> Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,105 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update RLD Item' : 'Add RLD Item' }}
+  </h1>
+</div>
+
+<div mat-dialog-content class="dialog-body">
+  <form [formGroup]="form" (ngSubmit)="save()">
+
+    <!-- Row 1: WBS ID & Item Type -->
+    <div class="row">
+      <div class="col-md-6 mb-2">
+        <label class="add-member-label control-label">WBS Mapping</label>
+        <select class="form-control" formControlName="w">
+          @for (opt of wbsOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+        @if (isSubmitting && form.get('w')?.invalid) {
+          <div class="field-error">WBS mapping is required</div>
+        }
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <label class="add-member-label control-label">Line Item Type</label>
+        <select class="form-control" formControlName="k">
+          @for (k of kindOptions; track k.value) {
+            <option [value]="k.value">{{ k.label }}</option>
+          }
+        </select>
+        @if (isSubmitting && form.get('k')?.invalid) {
+          <div class="field-error">Item type is required</div>
+        }
+      </div>
+    </div>
+
+    <!-- Row 2: Product Name -->
+    <div class="row">
+      <div class="col-12 mb-2">
+        <label class="add-member-label control-label">Product / Description</label>
+        <input type="text" class="form-control" placeholder="e.g. Batch D / Reference Product" formControlName="b">
+        @if (isSubmitting && form.get('b')?.invalid) {
+          <div class="field-error">Product name or description is required</div>
+        }
+      </div>
+    </div>
+
+    <!-- Row 3: Packs, Currency, Cost (FOB) -->
+    <div class="row">
+      <div class="col-md-4 mb-2">
+        <label [class.add-member-label]="isBatchKind" class="control-label">NO of Packs</label>
+        <input type="number" class="form-control" [class.white]="!isBatchKind" placeholder="e.g. 500" formControlName="c">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <label class="add-member-label control-label">Currency</label>
+        <select class="form-control" formControlName="d">
+          @for (cur of currencyOptions; track cur) {
+            <option [value]="cur">{{ cur }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <label [class.add-member-label]="isBatchKind" class="control-label">Cost (FOB)</label>
+        <input type="number" step="0.01" class="form-control" [class.white]="!isBatchKind" placeholder="e.g. 475" formControlName="e">
+      </div>
+    </div>
+
+    <!-- Row 4: Exchange Rate & Calculation Summary -->
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-2">
+        <label class="add-member-label control-label">Exchange Rate in INR</label>
+        <input type="number" step="0.1" class="form-control" placeholder="e.g. 96.5" formControlName="g">
+        @if (isSubmitting && form.get('g')?.invalid) {
+          <div class="field-error">Exchange rate is required</div>
+        }
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <div class="cost-summary-box">
+          <div class="summary-line">
+            <span class="label">Total (USD):</span>
+            <span class="val usd">$ {{ calculatedUsd | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-line">
+            <span class="label">Total (INR):</span>
+            <span class="val inr">₹ {{ calculatedInr | number:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dialog Actions Footer -->
+    <div class="dialog-actions-footer">
+      <button type="button" class="app-btn app-btn-default" (click)="close()">
+        <mat-icon>cancel</mat-icon> Close
+      </button>
+      <button type="submit" class="app-btn app-btn-primary">
+        <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Save' }}
+      </button>
+    </div>
+
+  </form>
+</div>

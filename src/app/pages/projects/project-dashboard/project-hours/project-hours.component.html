@@ -1,0 +1,292 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+
+  <!-- Header Section with Title & Action Buttons -->
+  <header class="analytics-header">
+    <h1>{{ projectName }}</h1>
+
+    <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <!-- <button mat-raised-button class="app-btn app-btn-primary" (click)="addTimesheet()" style="height: 38px;">
+        <mat-icon>add</mat-icon> Add Timesheet
+      </button> -->
+
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon><span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="dashboard-content" style="display: flex; gap: 16px; align-items: flex-start;">
+
+    <!-- Left Calendar Sidebar -->
+    <aside class="calendar-sidebar"
+      style="width: 310px; flex-shrink: 0; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px; box-sizing: border-box;">
+      <div class="calendar-card">
+        <div class="month-selector"
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <button class="nav-arrow" (click)="prevMonth()" aria-label="Previous month"
+            style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_left</mat-icon>
+          </button>
+          <strong style="font-size: 14px; color: #0f172a;">{{ currentMonthLabel }}</strong>
+          <button class="nav-arrow" (click)="nextMonth()" aria-label="Next month"
+            style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_right</mat-icon>
+          </button>
+        </div>
+
+        <div class="calendar-grid"
+          style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; margin-bottom: 16px;">
+          @for (d of dayNames; track $index) {
+          <div class="weekday" style="font-size: 11.5px; color: #64748b; font-weight: 600; padding: 4px 0;">{{ d }}
+          </div>
+          }
+
+          @for (day of calendarDays; track $index) {
+          <div class="day-cell" [class.faded]="!day.inCurrentMonth" [class.active]="day.isSelected"
+            (click)="filterByDate(day)"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 42px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease;">
+            <span class="date-num" style="font-size: 13px; line-height: 1;">{{ day.dayNumber }}</span>
+            @if (day.claims > 0) {
+            <span class="claims-num"
+              style="display: block; font-size: 10px; font-weight: 700; color: #2563eb; line-height: 12px; margin-top: 2px;">{{
+              day.claims }}</span>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="total-claims-box"
+          style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <div class="box-text" style="display: flex; align-items: center; gap: 8px;">
+            <mat-icon style="font-size: 18px; width: 18px; height: 18px; color: #475569;">event_available</mat-icon>
+            <strong style="font-size: 12px; color: #334155;">Allocations in Month</strong>
+          </div>
+          <div class="total-number" style="font-size: 16px; font-weight: 700; color: #2563eb;">{{ totalClaimsInRange }}
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Table Container -->
+    <main class="table-container"
+      style="flex: 1; border: 1px solid #cbd5e1; border-radius: 0px; background: white; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+
+      <div class="table-responsive" #tableWrapper style="overflow-x: auto; width: 100%;">
+        <table class="table table-bordered table-hover expenses-table"
+          style="width: 100%; border-collapse: collapse; margin-bottom: 0; white-space: nowrap;">
+          <thead class="tbl-head" style="background-color: #3f3f3f !important; color: white;">
+            <tr>
+              <th class="text-left" style="color: white; font-size: 13px; padding: 10px 12px; font-weight: 600;">Name</th>
+              <th class="text-center" style="color: white; font-size: 13px; padding: 10px 8px; font-weight: 600; width: 80px;">Projects</th>
+              <th class="text-center" style="color: white; font-size: 13px; padding: 10px 8px; font-weight: 600; width: 80px;">Tasks</th>
+              <th class="text-center" style="color: white; font-size: 13px; padding: 10px 8px; font-weight: 600; width: 85px;">Approved</th>
+              <th class="text-center" style="color: white; font-size: 13px; padding: 10px 8px; font-weight: 600; width: 85px;">Declined</th>
+              <th class="text-center" style="color: white; font-size: 13px; padding: 10px 8px; font-weight: 600; width: 85px;">Pending</th>
+              <th class="text-center" style="color: white; font-size: 13px; padding: 10px 8px; font-weight: 600; width: 95px;">Work Hours</th>
+              <th class="text-center" style="color: white; font-size: 13px; padding: 10px 8px; font-weight: 600; width: 95px;">Total Hours</th>
+              <th class="text-center" style="color: white; font-size: 13px; padding: 10px 8px; font-weight: 600; width: 90px;">Load (%)</th>
+              <th class="text-center" style="color: white; font-size: 13px; padding: 10px 8px; font-weight: 600; width: 90px;">Messages</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of paginatedEntries; track entry.id || $index) {
+            <tr>
+              <!-- Name -->
+              <td class="text-left" style="vertical-align: middle; padding: 8px 12px;">
+                <div class="name-wrapper">
+                  <mat-icon>person</mat-icon>
+                  <span style="font-weight: 500; font-size: 13.5px; color: #1e293b;">{{ entry.name }}</span>
+                </div>
+              </td>
+
+              <!-- Projects -->
+              <td class="text-center" style="vertical-align: middle; padding: 8px 6px;">
+                <a class="tdLink" role="button" tabindex="0" (click)="openProjectsDialog(entry)" matTooltip="View Projects">
+                  {{ entry.projectsCount }}
+                </a>
+              </td>
+
+              <!-- Tasks -->
+              <td class="text-center" style="vertical-align: middle; padding: 8px 6px;">
+                <a class="tdLink" role="button" tabindex="0" (click)="openTasks(entry)" matTooltip="View Tasks">
+                  {{ getTaskFraction(entry) }}
+                </a>
+              </td>
+
+              <!-- Approved -->
+              <td class="text-center col-approved" style="vertical-align: middle; padding: 8px 6px; font-size: 13.5px;">
+                {{ entry.approved }}
+              </td>
+
+              <!-- Declined -->
+              <td class="text-center col-declined" style="vertical-align: middle; padding: 8px 6px; font-size: 13.5px;">
+                {{ entry.declined }}
+              </td>
+
+              <!-- Pending -->
+              <td class="text-center col-pending" style="vertical-align: middle; padding: 8px 6px; font-size: 13.5px;">
+                {{ entry.pending }}
+              </td>
+
+              <!-- Work Hours -->
+              <td class="text-center" style="vertical-align: middle; padding: 8px 6px; font-size: 13.5px; color: #1e293b;">
+                {{ entry.workHours || 8.0 }}
+              </td>
+
+              <!-- Total Hours -->
+              <td class="text-center col-total" style="vertical-align: middle; padding: 8px 6px; font-size: 13.5px;">
+                {{ entry.totalHours }}
+              </td>
+
+              <!-- Load (%) -->
+              <td class="text-center" style="vertical-align: middle; padding: 8px 6px; font-size: 13.5px;"
+                  [style.color]="entry.loadPercentage > 100 ? '#dc2626' : 'inherit'"
+                  [style.font-weight]="entry.loadPercentage > 100 ? '700' : 'normal'">
+                {{ entry.loadPercentage }}%
+              </td>
+
+              <!-- Messages -->
+              <td class="text-center" style="vertical-align: middle; padding: 8px 6px; font-size: 13.5px;">
+                <a class="tdLink" role="button" tabindex="0" (click)="openMessagesDialog(entry)" matTooltip="View Messages">
+                  {{ entry.messages?.length || 0 }}
+                </a>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="10" class="text-center" style="padding: 24px; font-size: 13.5px; color: #64748b;">
+                No resource allocation found for the selected date.
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <mat-paginator [length]="filteredEntries.length" [pageIndex]="currentPage - 1" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)" [showFirstLastButtons]="true"
+        style="border-top: 1px solid #e2e8f0;">
+      </mat-paginator>
+    </main>
+
+  </div>
+
+  <!-- ============ MULTIPLE TASKS POP-UP DIALOG TEMPLATE ============ -->
+  <ng-template #tasksDialog let-data>
+    <div class="NewHeader">
+      <h1 mat-dialog-title style="color: white; margin: 0; font-size: 18px; text-align: center;">
+        Allocation Tasks &mdash; {{ data.name }} ({{ formatDate(data.dateObj) }})
+      </h1>
+    </div>
+    <div mat-dialog-content style="padding: 20px 25px; max-height: 450px; overflow-y: auto;">
+      <div style="overflow-x: auto; border: 1px solid #cbd5e1; border-radius: 6px;">
+        <table class="table table-bordered table-striped dialog-table" style="width: 100%; margin-bottom: 0;">
+          <thead>
+            <tr style="background-color: #3f3f3f !important;">
+              <th class="text-left"
+                style="background-color: #3f3f3f !important; color: #ffffff !important; font-weight: 600; padding: 10px 12px; font-size: 13px;">
+                Project
+              </th>
+              <th class="text-left"
+                style="background-color: #3f3f3f !important; color: #ffffff !important; font-weight: 600; padding: 10px 12px; font-size: 13px;">
+                Deliverable / Module
+              </th>
+              <th class="text-left"
+                style="background-color: #3f3f3f !important; color: #ffffff !important; font-weight: 600; padding: 10px 12px; font-size: 13px;">
+                Task
+              </th>
+              <th class="text-center"
+                style="background-color: #3f3f3f !important; color: #ffffff !important; font-weight: 600; padding: 10px 12px; font-size: 13px; width: 80px;">
+                Hours
+              </th>
+              <th class="text-left"
+                style="background-color: #3f3f3f !important; color: #ffffff !important; font-weight: 600; padding: 10px 12px; font-size: 13px;">
+                Description
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (t of data.tasksList; track $index) {
+            <tr>
+              <td class="text-left"
+                style="vertical-align: middle; font-weight: 500; padding: 10px 12px; font-size: 13px; color: #374151;">
+                {{ t.project || projectName }}
+              </td>
+              <td class="text-left"
+                style="vertical-align: middle; font-weight: 500; padding: 10px 12px; font-size: 13px; color: #374151;">
+                {{ t.module || 'General' }}
+              </td>
+              <td class="text-left"
+                style="vertical-align: middle; font-weight: 600; padding: 10px 12px; font-size: 13px; color: #1e3a8a;">
+                {{ t.task }}
+              </td>
+              <td class="text-center"
+                style="vertical-align: middle; font-weight: 700; padding: 10px 12px; font-size: 13px; color: #2563eb;">
+                {{ t.hours }}
+              </td>
+              <td class="text-left"
+                style="vertical-align: middle; padding: 10px 12px; font-size: 13px; color: #475569;">
+                {{ t.description || '—' }}
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <button class="app-btn app-btn-default" mat-dialog-close style="background-color: lightgray; color: red;">
+          <mat-icon>cancel</mat-icon> Close
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- ============ MESSAGES POP-UP DIALOG TEMPLATE ============ -->
+  <ng-template #messageDialog let-data>
+    <div class="NewHeader" style="background-color: #3f3f3f; padding: 15px 20px; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+      <h1 mat-dialog-title style="color: white; margin: 0; font-size: 18px; text-align: center;">Messages History &mdash; {{ data.name }}</h1>
+    </div>
+    <div mat-dialog-content style="padding: 20px; max-height: 400px; overflow-y: auto;">
+      @if (data.messages && data.messages.length > 0) {
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+          @for (msg of data.messages; track $index) {
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <strong style="color: #1e293b; font-size: 13px;">{{ msg.sender }}</strong>
+                <span style="color: #64748b; font-size: 11px;">{{ msg.date }}</span>
+              </div>
+              <p style="margin: 0; color: #334155; font-size: 12.5px; line-height: 1.4;">{{ msg.text }}</p>
+            </div>
+          }
+        </div>
+      } @else {
+        <div style="text-align: center; color: #94a3b8; padding: 20px 0; font-size: 13px;">
+          No messages recorded yet.
+        </div>
+      }
+
+      <!-- Add New Message -->
+      <div class="dialog-new-message-section" style="margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+        <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 8px;">Add New Message:</label>
+        <textarea
+          class="form-control white dialog-message-textarea"
+          #newMsgInput
+          placeholder="Type message..."
+          rows="3"
+          style="width: 100%; box-sizing: border-box; min-height: 72px; padding: 10px 12px; font-size: 13.5px; line-height: 1.45; color: #1e293b; background-color: #ffffff !important; border: 1px solid #cbd5e1; border-radius: 6px; resize: vertical; outline: none;"
+        ></textarea>
+        <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+          <button type="button" class="app-btn app-btn-primary" (click)="addMessage(data, newMsgInput.value); newMsgInput.value = ''">
+            <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">send</mat-icon>
+            <span>Send Message</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions align="end" style="padding: 12px 20px; border-top: 1px solid #e2e8f0;">
+      <button type="button" class="app-btn app-btn-default" mat-dialog-close>Close</button>
+    </div>
+  </ng-template>
+
+</div>

@@ -1,0 +1,72 @@
+:host {
+  display: block;
+}
+
+.reorder-confirmation-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  padding: 0 24px;
+  background-color: #cd4343;
+  color: #ffffff;
+}
+
+.reorder-confirmation-header h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.reorder-confirmation-content {
+  padding: 28px 24px 20px;
+}
+
+.reorder-confirmation-content p {
+  margin: 0;
+  color: #222222;
+  font-size: 14px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.reorder-confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 24px 28px;
+}
+
+.reorder-confirmation-actions button {
+  min-width: 80px;
+  min-height: 48px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.reorder-confirm-button {
+  background-color: #cd4343;
+  color: #ffffff;
+
+  &:hover {
+    background-color: #b71c1c;
+  }
+}
+
+.reorder-cancel-button {
+  background-color: #e0e0e0;
+  color: #222222;
+
+  &:hover {
+    background-color: #cfcfcf;
+  }
+}
+

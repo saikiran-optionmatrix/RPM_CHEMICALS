@@ -1,0 +1,184 @@
+<div class="manpower-container">
+  <!-- Banner -->
+  <div class="budget-info-banner">
+    <mat-icon class="banner-icon">groups</mat-icon>
+    <div class="banner-text">
+      <strong>Manpower</strong> — built on the Excel's method (annual cost → hours per month → rate per hour; cost =
+      rate × head count × hours per day × occupancy × cycles) and extended to summarise all manpower cost across the
+      WBS. Rows marked <span class="badge-template">Template</span> are the six rows from the Excel.
+    </div>
+  </div>
+
+  <!-- SECTION 1: Manpower cost by function -->
+  <div class="section-title">Manpower cost by function</div>
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table summary-table">
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th class="text-right">Activities</th>
+            <th class="text-right">Planned hours</th>
+            <th class="text-right">Manpower cost (plan)</th>
+            <th class="text-right">Booked hours</th>
+            <th class="text-right">Manpower cost (actual)</th>
+            <th style="min-width: 170px;">Share of manpower cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of functionSummaries; track s.fn) {
+          <tr>
+            <td>
+              <a class="filter-fn-link" role="button" tabindex="0" (click)="selectFunction(s.fn)">{{ s.fn }}</a>
+            </td>
+            <td class="text-right">{{ s.activitiesCount }}</td>
+            <td class="text-right">{{ format(s.plannedHours) }}</td>
+            <td class="text-right font-weight-bold">{{ format(s.planCost) }}</td>
+            <td class="text-right">{{ format(s.bookedHours) }}</td>
+            <td class="text-right">{{ format(s.actualCost) }}</td>
+            <td>
+              <div class="progress-cell">
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill" [style.width.%]="s.sharePercent"></div>
+                </div>
+                <span class="share-text">{{ s.sharePercent.toFixed(1) }}%</span>
+              </div>
+            </td>
+          </tr>
+          }
+
+          <!-- Total Row -->
+          <tr class="table-total-row">
+            <td class="font-weight-bold">Total</td>
+            <td class="text-right font-weight-bold">{{ distinctActivitiesCount }}</td>
+            <td class="text-right font-weight-bold">{{ format(fnTotalPlannedHours) }}</td>
+            <td class="text-right font-weight-bold">{{ format(fnTotalPlanCost) }}</td>
+            <td class="text-right font-weight-bold"></td>
+            <td class="text-right font-weight-bold">{{ format(fnTotalActualCost) }}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Rate Card -->
+  <div class="section-title">Rate card</div>
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table rate-card-table">
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th>Resources</th>
+            <th class="text-right">Annual Cost</th>
+            <th class="text-right">Hours per month</th>
+            <th class="text-right">Rate per hour</th>
+            <th class="text-right">Lines</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of rateCardList; track r.fn + r.res) {
+          <tr>
+            <td>{{ r.fn }}</td>
+            <td>
+              <span>{{ r.res }}</span>
+              @if (r.isTemplate) {
+              <span class="badge-template">Template</span>
+              }
+            </td>
+            <td class="text-right">{{ format(r.ac) }}</td>
+            <td class="text-right">{{ format(budgetService.hpm) }}</td>
+            <td class="text-right font-weight-500">{{ format(r.rate) }}</td>
+            <td class="text-right">{{ r.linesCount }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="footnote">
+    Hours per month = (365 − 53 − 27 − 10 − 10 − 10) × 8 ÷ 12 × 0.7 = {{ format(budgetService.hpm) }}, as in the Excel.
+    Rows other than Template are example rates for the other functions.
+  </p>
+
+  <!-- SECTION 3: Manpower allocation by WBS activity -->
+  <div class="section-title" id="manpower-alloc-heading">Manpower allocation by WBS activity</div>
+  <div class="tools-bar">
+    <div class="search-box">
+      <mat-icon>search</mat-icon>
+      <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="filterAllocations()"
+        placeholder="Search WBS ID, activity, resource">
+    </div>
+
+    <div class="fn-selector">
+      <select [(ngModel)]="selectedFunction" (change)="filterAllocations()" class="app-select">
+        <option value="all">All functions</option>
+        @for (f of functionList; track f) {
+        <option [value]="f">{{ f }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table allocation-table">
+        <thead>
+          <tr>
+            <th style="width: 80px;">WBS ID</th>
+            <th style="min-width: 240px;">Activity</th>
+            <th>Function</th>
+            <th>Resources</th>
+            <th class="text-right">Rate per hour</th>
+            <th class="text-right">Head count</th>
+            <th class="text-right">Hours / day</th>
+            <th class="text-right">Occupancy</th>
+            <th class="text-right">No of Cycles</th>
+            <th class="text-right font-weight-bold">Manpower cost</th>
+            <th class="text-right">Cycles booked</th>
+            <th class="text-right">Actual cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of allocationRows; track row.w + row.res + row.m.rc) {
+          <tr [class.row-highlight]="row.isHighlighted">
+            <td>
+              <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(row.w)">{{ row.w }}</a>
+            </td>
+            <td class="wrap-cell">{{ row.activityName }}</td>
+            <td>{{ row.fn }}</td>
+            <td>
+              <span>{{ row.res }}</span>
+              @if (row.isTemplate) {
+              <span class="badge-template">Template</span>
+              }
+            </td>
+            <td class="text-right">{{ format(row.rate) }}</td>
+            <td class="text-right">{{ row.m.hc }}</td>
+            <td class="text-right">{{ row.m.hpd }}</td>
+            <td class="text-right">{{ (row.m.occ * 100).toFixed(1) }}%</td>
+            <td class="text-right">{{ row.m.cyc }}</td>
+            <td class="text-right font-weight-bold">{{ format(row.costP) }}</td>
+            <td class="text-right">{{ row.m.acyc }}</td>
+            <td class="text-right">{{ format(row.costA) }}</td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="12" class="text-center py-4 text-muted">No manpower lines for this filter.</td>
+          </tr>
+          }
+
+          <!-- Total Row -->
+          <tr class="table-total-row">
+            <td colspan="9" class="font-weight-500">{{ allocationRows.length }} line{{ allocationRows.length === 1 ? ''
+              : 's' }}</td>
+            <td class="text-right font-weight-bold">{{ format(allocTotalP) }}</td>
+            <td></td>
+            <td class="text-right font-weight-bold">{{ format(allocTotalA) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

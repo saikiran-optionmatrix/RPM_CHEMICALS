@@ -1,0 +1,71 @@
+<div class="rld-tab-screen">
+
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+
+    <div class="rld-info-banner mb-3">
+      <mat-icon>rule</mat-icon>
+      <div>
+        Readiness alerts trigger based on active supply chain events, RA verification deadlines, and expiration tolerances.
+        Stock that has only been physically received never qualifies as ready: lots only clear when receipt checks pass and QA accepts the batch.
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 100px;">Severity</th>
+            <th class="text-center" style="width: 90px;">Req ID</th>
+            <th class="text-left" style="min-width: 220px;">Affected Activity</th>
+            <th class="text-left" style="min-width: 160px;">Milestone</th>
+            <th class="text-center" style="min-width: 110px;">Need Date</th>
+            <th class="text-left" style="min-width: 240px;">Alert Reason</th>
+            <th class="text-left" style="min-width: 160px;">Accountable Owner</th>
+            <th class="text-left" style="min-width: 240px;">Corrective Action</th>
+            <th class="text-center" style="min-width: 110px;">Action Due</th>
+            <th class="text-center" style="min-width: 120px;">Action Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (a of projectAlerts; track a.r.id) {
+          <tr [class.high-alert-row]="a.sev === 'High'">
+            <td class="text-center">
+              <span class="pill" [class.bad]="a.sev === 'High'" [class.warn]="a.sev === 'Medium'" [class.ok]="a.sev === 'Low'">
+                {{ a.sev }}
+              </span>
+            </td>
+            <td class="text-center font-weight-bold">{{ a.r.id }}</td>
+            <td class="text-left">
+              <strong>{{ a.r.wbs }}</strong> {{ a.r.act }}
+            </td>
+            <td class="text-left">{{ a.r.gate }}</td>
+            <td class="text-center">{{ rldService.formatDate(a.r.need) }}</td>
+            <td class="text-left">
+              <strong style="color: #b91c1c;">{{ a.msg }}</strong>
+            </td>
+            <td class="text-left">{{ a.owner }}</td>
+            <td class="text-left">
+              <input class="form-control form-control-sm" [(ngModel)]="a.action"
+                (change)="updateActionStatus(a, a.ast)" placeholder="Enter corrective action...">
+            </td>
+            <td class="text-center">{{ rldService.formatDate(a.due) || '—' }}</td>
+            <td class="text-center">
+              <select class="form-select form-select-sm" [(ngModel)]="a.ast" (change)="updateActionStatus(a, a.ast)">
+                <option value="Open">Open</option>
+                <option value="In progress">In progress</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="10" class="empty-table">No open readiness alerts for this project. All supply requirements are on track!</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+

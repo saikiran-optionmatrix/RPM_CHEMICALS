@@ -1,0 +1,181 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    @if (isWithdraw) {
+      Withdraw Decision Request &middot; {{ decision?.id }}
+    } @else {
+      Record Decision &middot; {{ decision?.id }}
+    }
+  </h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    @if (decision) {
+      <p class="dialog-subnote">{{ decision.requested }}</p>
+    }
+
+    @if (validationError) {
+      <div class="validation-alert" role="alert">{{ validationError }}</div>
+    }
+
+    @if (isWithdraw) {
+      <form [formGroup]="withdrawForm" (ngSubmit)="save()">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-sm-2" style="width: 22%;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Reason for Withdrawal :</label>
+              </div>
+              <div class="col-sm-10" style="width: 78%;">
+                <textarea class="form-control back" rows="3" formControlName="reason"
+                  placeholder="Explain why this decision request is being withdrawn"
+                  style="resize: vertical; height: auto !important; padding-top: 6px; padding-bottom: 6px;"></textarea>
+                @if ((isSubmitting || wf['reason'].touched) && wf['reason'].errors?.['required']) {
+                  <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+            <mat-icon>cancel</mat-icon> <span>Close</span>
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>check</mat-icon> <span>Confirm Withdraw</span>
+          </button>
+        </mat-dialog-actions>
+      </form>
+    } @else {
+      @if (decision) {
+      <div class="decision-info-box">
+        <div><strong>Options:</strong> {{ decision.options }}</div>
+        <div><strong>Recommended:</strong> {{ decision.recommended }}</div>
+      </div>
+      }
+
+      <form [formGroup]="decideForm" (ngSubmit)="save()">
+        <div class="row">
+          <!-- Left Column -->
+          <div class="col-sm-6">
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-sm-5">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Decision Taken :</label>
+              </div>
+              <div class="col-sm-7">
+                <input class="form-control name back" type="text"
+                  placeholder="Decision outcome"
+                  formControlName="decisionTaken" style="height: 35px;">
+                @if ((isSubmitting || df['decisionTaken'].touched) && df['decisionTaken'].errors?.['required']) {
+                  <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="col-sm-6">
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-sm-5">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Date of Decision :</label>
+              </div>
+              <div class="col-sm-7">
+                <input class="form-control name back" type="date"
+                  formControlName="decidedOn" style="height: 35px;">
+                @if ((isSubmitting || df['decidedOn'].touched) && df['decidedOn'].errors?.['required']) {
+                  <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Rationale (Full Width) -->
+          <div class="col-sm-12">
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-sm-2" style="width: 20.8%;">
+                <label class="add-member-label control-label" style="margin-top: 5px;">Rationale :</label>
+              </div>
+              <div class="col-sm-10" style="width: 79.2%;">
+                <textarea class="form-control back" rows="3" formControlName="rationale"
+                  placeholder="Rationale behind the decision"
+                  style="resize: vertical; height: auto !important; padding-top: 6px; padding-bottom: 6px;"></textarea>
+                @if ((isSubmitting || df['rationale'].touched) && df['rationale'].errors?.['required']) {
+                  <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Resulting Action (Full Width) -->
+          <div class="col-sm-12">
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-sm-2" style="width: 20.8%;">
+                <label class="control-label" style="margin-top: 5px;">Resulting Action :</label>
+              </div>
+              <div class="col-sm-10" style="width: 79.2%;">
+                <input class="form-control name back" type="text"
+                  placeholder="Optional action automatically added to the Actions table"
+                  formControlName="resultingActionDesc" style="height: 35px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Owner / Action Due Date -->
+          <div class="col-sm-6">
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-sm-5">
+                <label class="control-label" [class.add-member-label]="hasResultingAction" style="margin-top: 5px;">Action Owner :</label>
+              </div>
+              <div class="col-sm-7">
+                <mat-select class="form-control back" formControlName="actionOwner"
+                  placeholder="Select Owner" style="height: 35px; line-height: 23px;">
+                  <mat-option value="">—</mat-option>
+                  @for (person of ownerOptions; track person) {
+                    <mat-option [value]="person">{{ person }}</mat-option>
+                  }
+                </mat-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-sm-5">
+                <label class="control-label" [class.add-member-label]="hasResultingAction" style="margin-top: 5px;">Action Due Date :</label>
+              </div>
+              <div class="col-sm-7">
+                <input class="form-control name back" type="date"
+                  formControlName="actionDueDate" style="height: 35px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Supporting Evidence (Full Width) -->
+          <div class="col-sm-12">
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-sm-2" style="width: 20.8%;">
+                <label class="control-label" style="margin-top: 5px;">Supporting Evidence :</label>
+              </div>
+              <div class="col-sm-10" style="width: 79.2%;">
+                <input class="form-control name back" type="text"
+                  placeholder="Supporting evidence / approval reference"
+                  formControlName="evidence" style="height: 35px;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+            <mat-icon>cancel</mat-icon> <span>Close</span>
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> <span>Record decision</span>
+          </button>
+        </mat-dialog-actions>
+      </form>
+    }
+  </div>
+</div>
+

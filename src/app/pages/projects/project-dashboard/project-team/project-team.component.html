@@ -1,0 +1,191 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+
+  <!-- Header Section with Title & Back Button -->
+  <header class="analytics-header">
+    <h1>{{ projectName }}</h1>
+
+    <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon><span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Department, Section & Location Filters Bar -->
+  <div class="team-filters-bar">
+    <div class="filter-field">
+      <label class="filter-label">Department:</label>
+      <div class="filter-select-wrap">
+        <mat-select [(ngModel)]="selectedDepartment" (selectionChange)="onDepartmentChange()"
+          placeholder="All Departments" class="team-filter-select">
+          <mat-option value="">All Departments</mat-option>
+          @for (dept of departmentList; track dept) {
+            <mat-option [value]="dept">{{ dept }}</mat-option>
+          }
+        </mat-select>
+      </div>
+    </div>
+
+    <div class="filter-field">
+      <label class="filter-label">Section:</label>
+      <div class="filter-select-wrap">
+        <mat-select [(ngModel)]="selectedSection" (selectionChange)="onSectionChange()"
+          placeholder="All Sections" class="team-filter-select">
+          <mat-option value="">All Sections</mat-option>
+          @for (sec of availableSections; track sec) {
+            <mat-option [value]="sec">{{ sec }}</mat-option>
+          }
+        </mat-select>
+      </div>
+    </div>
+
+    <div class="filter-field">
+      <label class="filter-label">Location:</label>
+      <div class="filter-select-wrap">
+        <mat-select [(ngModel)]="selectedLocation" (selectionChange)="onLocationChange()"
+          placeholder="All Locations" class="team-filter-select">
+          <mat-option value="">All Locations</mat-option>
+          @for (loc of locationList; track loc) {
+            <mat-option [value]="loc">{{ loc }}</mat-option>
+          }
+        </mat-select>
+      </div>
+    </div>
+
+    @if (selectedDepartment || selectedSection || selectedLocation) {
+      <button type="button" class="reset-filter-btn" (click)="clearFilters()" matTooltip="Reset filters">
+        <mat-icon>restart_alt</mat-icon>
+        <span>Reset</span>
+      </button>
+    }
+  </div>
+  
+  <div class="dialog-container">
+    <div class="transfer-layout">
+        <div class="list-panel">
+            <div class="panel-header">
+                <span>Available Members</span>
+                <span class="count-badge">
+                    @if (availableSearch || selectedDepartment || selectedSection || selectedLocation) {
+                        {{ filteredAvailableMembers.length }} / {{ availableMembers.length }}
+                    } @else {
+                        {{ availableMembers.length }}
+                    }
+                </span>
+            </div>
+            <div class="panel-search">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input type="text" class="search-input" placeholder="Search available members..."
+                    [(ngModel)]="availableSearch" />
+                @if (availableSearch) {
+                    <button type="button" class="clear-search-btn" (click)="availableSearch = ''" aria-label="Clear search">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                }
+            </div>
+             
+            <div class="list-content">
+                @for (member of filteredAvailableMembers; track member.id) {
+                    <div class="list-item"
+                        [class.selected]="isSelected(member, selectedAvailable)"
+                        (click)="toggleSelection(member, selectedAvailable)">
+                        <input type="checkbox" class="member-checkbox" [checked]="isSelected(member, selectedAvailable)">
+                        <div class="avatar">{{ getInitials(member.name) }}</div>
+                        <div class="member-info">
+                            <span class="member-name">{{ member.name }}</span>
+                            <span class="member-subtext">
+                              {{ member.section }} &bull; {{ member.department }}@if (member.location) { &bull; {{ member.location }} }
+                            </span>
+                        </div>
+                    </div>
+                } @empty {
+                    <div class="empty-state">
+                        @if (availableSearch || selectedDepartment || selectedSection || selectedLocation) {
+                            No members found matching the selected filters.
+                        } @else {
+                            No more available members.
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="action-controls">
+            <button mat-flat-button class="action-btn add-btn" (click)="addMembers()"
+                [disabled]="!selectedAvailable.length">
+                <span>Add</span>
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+            <button mat-flat-button class="action-btn remove-btn" (click)="removeMembers()"
+                [disabled]="!selectedAssigned.length">
+                <mat-icon>chevron_left</mat-icon>
+                <span>Remove</span>
+            </button>
+        </div>
+
+        <div class="list-panel">
+            <div class="panel-header assigned-header">
+                <span>Assigned Team</span>
+                <span class="count-badge">
+                    @if (assignedSearch) {
+                        {{ filteredAssignedMembers.length }} / {{ assignedMembers.length }}
+                    } @else {
+                        {{ assignedMembers.length }}
+                    }
+                </span>
+            </div>
+            <div class="panel-search">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input type="text" class="search-input" placeholder="Search assigned members..."
+                    [(ngModel)]="assignedSearch" />
+                @if (assignedSearch) {
+                    <button type="button" class="clear-search-btn" (click)="assignedSearch = ''" aria-label="Clear search">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                }
+            </div>
+            <div class="list-column-header">
+                <span class="col-title-member">Name /Member</span>
+                <span class="col-title-lead">Lead</span>
+            </div>
+            <div class="list-content">
+                @for (member of filteredAssignedMembers; track member.id) {
+                    <div class="list-item"
+                        [class.selected]="isSelected(member, selectedAssigned)"
+                        (click)="toggleSelection(member, selectedAssigned)">
+                        <input type="checkbox" class="member-checkbox" [checked]="isSelected(member, selectedAssigned)">
+                        <div class="avatar assigned-avatar">{{ getInitials(member.name) }}</div>
+                        <div class="member-info">
+                            <span class="member-name">{{ member.name }}</span>
+                            <span class="member-subtext">
+                              {{ member.section }} &bull; {{ member.department }}@if (member.location) { &bull; {{ member.location }} }
+                            </span>
+                        </div>
+                        <div class="lead-col" (click)="$event.stopPropagation()">
+                            <mat-checkbox [(ngModel)]="member.isLead" color="primary" matTooltip="Team Lead">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                } @empty {
+                    <div class="empty-state">
+                        @if (assignedSearch) {
+                            No members found matching "{{ assignedSearch }}".
+                        } @else {
+                            No members assigned yet.
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="dialog-footer">
+        <button class="app-btn app-btn-default" (click)="goBack()">
+            <mat-icon style="margin-bottom: -4px;">cancel</mat-icon> Cancel
+        </button>
+        <button class="app-btn app-btn-primary" (click)="save()">
+            <mat-icon style="margin-bottom: -4px;">save</mat-icon> Save
+        </button>
+    </div>
+  </div>
+</div>

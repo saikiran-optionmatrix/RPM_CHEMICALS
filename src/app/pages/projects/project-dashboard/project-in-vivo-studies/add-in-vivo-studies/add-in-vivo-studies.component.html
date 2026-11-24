@@ -1,0 +1,267 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update In-Vivo Study' : 'Add In-Vivo Study' }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <form [formGroup]="studyForm" (ngSubmit)="save()">
+      <div class="row">
+
+        <!-- Left Column -->
+        <div class="col-sm-6">
+
+          <!-- Study Title -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Study Title :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="e.g. Semaglutide pen injection — Demonstration Campaign study"
+                formControlName="study" style="height: 35px;">
+              @if ((isSubmitting || f['study'].touched) && f['study'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Category / Subtype -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Category / Subtype :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="categorySubtype"
+                placeholder="Select Category / Subtype" style="height: 35px; line-height: 23px;">
+                <mat-option value="">—</mat-option>
+                @for (opt of categorySubtypeOptions; track opt) {
+                  <mat-option [value]="opt">{{ opt }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['categorySubtype'].touched) && f['categorySubtype'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- CRO Study Code(s) / Protocol No. -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Study Code(s) :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="Comma-separated (e.g. BE/26/038, BE/26/039)"
+                formControlName="studyCode" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Target Market(s) -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Target Market(s) :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="targetMarketsList" multiple
+                placeholder="Select Target Market(s)" style="height: 35px; line-height: 23px;">
+                @for (market of marketOptions; track market) {
+                  <mat-option [value]="market">{{ moleculePrefix }} - {{ market }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['targetMarketsList'].touched) && f['targetMarketsList'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Select at least one market</small>
+              }
+            </div>
+          </div>
+
+          <!-- Study Location -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Study Location :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="Country, site"
+                formControlName="studyLocation" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Study Priority -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Study Priority :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="studyPriority"
+                placeholder="Select Priority" style="height: 35px; line-height: 23px;">
+                @for (p of priorityOptions; track p) {
+                  <mat-option [value]="p">{{ p }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Priority Rationale -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Priority Rationale :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="Enter priority rationale"
+                formControlName="priorityRationale" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Study Objective -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Study Objective :</label>
+            </div>
+            <div class="col-sm-7">
+              <textarea class="form-control name back" rows="2" placeholder="Describe study objective..."
+                formControlName="studyObjective" style="font-size: 13px;"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+
+          <!-- Study Owner (Accountable) -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Study Owner :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="studyOwner"
+                placeholder="Select Study Owner" style="height: 35px; line-height: 23px;">
+                <mat-option value="">—</mat-option>
+                @for (owner of studyOwnerOptions; track owner) {
+                  <mat-option [value]="owner">{{ owner }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['studyOwner'].touched) && f['studyOwner'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Formulation Lead -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Formulation Lead :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="formulationLead"
+                placeholder="Select Formulation Lead" style="height: 35px; line-height: 23px;">
+                <mat-option value="">—</mat-option>
+                @for (lead of formulationLeadOptions; track lead) {
+                  <mat-option [value]="lead">{{ lead }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Regulatory Lead -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Regulatory Lead :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="regulatoryLead"
+                placeholder="Select Regulatory Lead" style="height: 35px; line-height: 23px;">
+                <mat-option value="">—</mat-option>
+                @for (lead of regulatoryLeadOptions; track lead) {
+                  <mat-option [value]="lead">{{ lead }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- CRO -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">CRO :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="cro"
+                placeholder="Select CRO" style="height: 35px; line-height: 23px;">
+                @for (cro of croOptions; track cro) {
+                  <mat-option [value]="cro">{{ cro }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- CRO Contact -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">CRO Contact :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Sheetal K"
+                formControlName="croContact" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Lifecycle Status -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Lifecycle Status :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="lifecycle"
+                placeholder="Select Lifecycle Status" style="height: 35px; line-height: 23px;">
+                @for (status of lifecycleOptions; track status) {
+                  <mat-option [value]="status">{{ status }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Status Reason -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label [class.add-member-label]="isStatusReasonRequired" class="control-label" style="margin-top: 5px;">Status Reason :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="Required for on hold, terminated, cancelled"
+                formControlName="statusReason" style="height: 35px;">
+              @if ((isSubmitting || f['statusReason'].touched) && f['statusReason'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required for {{ studyForm.get('lifecycle')?.value }}</small>
+              }
+            </div>
+          </div>
+
+          <!-- Planned Start -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Planned Start :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="plannedStart" style="height: 35px;">
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Actions (Close & Save) -->
+      <div style="margin-top: 15px; margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> <span>Close</span>
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

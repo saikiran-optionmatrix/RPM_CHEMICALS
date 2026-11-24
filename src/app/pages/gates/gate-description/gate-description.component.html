@@ -1,0 +1,26 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Gate Description</h1>
+</div>
+
+<div mat-dialog-content class="gate-desc-content">
+  <!-- Code Badge & Name -->
+  <div class="desc-header-row">
+    <span class="gate-code-pill">{{ data?.gateCode || 'Gate' }}</span>
+    <span class="gate-name-title">{{ data?.gateName || '' }}</span>
+  </div>
+
+  <!-- Description Details Card matching img2 -->
+  <div class="desc-card">
+    <div class="desc-card-label">DESCRIPTION DETAILS</div>
+    <p class="desc-card-text">
+      {{ data?.description || 'No description available for this gate.' }}
+    </p>
+  </div>
+</div>
+
+<div mat-dialog-actions class="gate-desc-actions">
+  <button type="button" class="btn-close-custom" (click)="close()">
+    Close
+  </button>
+</div>
+

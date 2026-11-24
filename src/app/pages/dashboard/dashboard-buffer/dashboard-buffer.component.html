@@ -1,0 +1,35 @@
+<div class="buffer-tab">
+  <div class="buffer-grid">
+    <!-- Left Card: Fever Chart -->
+    <div class="dash-card fever-card">
+      <div class="card-header">
+        <h3 class="card-title">FEVER CHART · BUFFER CONSUMED VS CHAIN COMPLETED</h3>
+        <p class="card-subtitle">Green = safe, amber = plan recovery, red = act now</p>
+      </div>
+
+      <div class="chart-wrapper">
+        <div id="feverChartContainer"></div>
+      </div>
+    </div>
+
+    <!-- Right Card: Buffer Status by Project -->
+    <div class="dash-card status-card">
+      <div class="card-header">
+        <h3 class="card-title">BUFFER STATUS BY PROJECT</h3>
+        <p class="card-subtitle">Consumed buffer % by project active critical chain</p>
+      </div>
+
+      <div class="project-buffer-list">
+        <div class="buffer-item" *ngFor="let item of bufferProjects">
+          <div class="item-name">{{ item.name }}</div>
+          <div class="item-bar-wrapper">
+            <div class="bar-track">
+              <div class="bar-fill" [style.width.%]="item.percent" [ngClass]="'fill-' + item.status"></div>
+            </div>
+            <div class="bar-pct">{{ item.percent }}%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

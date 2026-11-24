@@ -1,0 +1,62 @@
+<div class="pipeline-tab">
+  <!-- Top Process Flow Card -->
+  <div class="dash-card">
+    <div class="card-header">
+      <h3 class="card-title">STAGE-GATE PROCESS FLOW · S1 – S12, GATE 1 – 5</h3>
+      <p class="card-subtitle">Each column is a stage; diamonds are decision gates. Cards show projects currently in that stage.</p>
+    </div>
+
+    <div class="pipeline-scroll-container">
+      <div class="pipeline-flow-grid">
+        <ng-container *ngFor="let stage of stages; let i = index">
+          <!-- Stage Column -->
+          <div class="stage-column">
+            <div class="stage-col-header">
+              <div class="stage-code">{{ stage.code }}</div>
+              <div class="stage-name">{{ stage.name }}</div>
+            </div>
+
+            <div class="stage-cards-container">
+              <div *ngFor="let proj of stage.projects" class="project-mini-card" (click)="navigateToProject(proj)">
+                <div class="proj-title">{{ proj.name }}</div>
+                <div class="health-chip" [ngClass]="{
+                  'chip-green': proj.health === 'On track',
+                  'chip-amber': proj.health === 'Watch',
+                  'chip-red': proj.health === 'At risk'
+                }">
+                  {{ proj.health }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Decision Gate Diamond if attached to this stage -->
+          <div *ngIf="stage.gateAfter" class="gate-connector">
+            <div class="gate-diamond">
+              <span class="diamond-text">{{ stage.gateAfter.code }}</span>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Gate Summary Cards -->
+  <div class="gates-summary-row">
+    <div class="gate-card" *ngFor="let gate of gates">
+      <div class="gate-header">
+        <div class="gate-diamond-icon">◆</div>
+        <span class="gate-label">GATE {{ gate.gateNum }}</span>
+      </div>
+      <div class="gate-title">{{ gate.name }}</div>
+      <div class="gate-stats">
+        <span class="stat-highlight">{{ gate.passedCount }}</span>
+        <span class="stat-total">/ {{ gate.totalCount }} passed</span>
+      </div>
+      <div class="gate-bar-track">
+        <div class="gate-bar-fill" [style.width.%]="gate.percent" [ngClass]="{'empty-bar': gate.percent === 0}"></div>
+      </div>
+      <div class="gate-sits-on">Sits on {{ gate.sitsOn }}</div>
+    </div>
+  </div>
+</div>

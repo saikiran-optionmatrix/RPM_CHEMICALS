@@ -1,0 +1,113 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+
+  <!-- Top Action Row: Add Usage & Back Buttons -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap: 12px;">
+    <!-- Top Reference Area: Item Code, Item Category, Item Name, Item Type (Side by Side) -->
+    <div class="reference-panel">
+      <div class="reference-grid">
+        <div class="ref-item">
+          <label class="ref-label">Item Code :</label>
+          <span class="ref-value">{{ itemCode }}</span>
+        </div>
+        <div class="ref-item">
+          <label class="ref-label">Item Category :</label>
+          <span class="ref-value">{{ itemCategory }}</span>
+        </div>
+        <div class="ref-item">
+          <label class="ref-label">Item Name :</label>
+          <span class="ref-value font-weight-600">{{ itemName }}</span>
+        </div>
+        <div class="ref-item">
+          <label class="ref-label">Item Type :</label>
+          <span class="ref-value">{{ itemType }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Action Buttons -->
+    <div class="d-flex align-items-center" style="gap: 10px;">
+      <button type="button" class="app-btn app-btn-primary" (click)="openAddUsage()">
+        <mat-icon>add</mat-icon>
+        <span>Add Usage</span>
+      </button>
+
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Usage Table with Table Classes from AssetsComponent -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive" style="overflow-x: auto;">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 80px; min-width: 80px;">Actions</th>
+            <th class="text-left" style="min-width: 170px;">Stage Name</th>
+            <th class="text-left" style="min-width: 190px;">Deliverable</th>
+            <th class="text-left" style="min-width: 200px;">Activity</th>
+            <th class="text-left" style="min-width: 210px;">Task</th>
+            <th class="text-center" style="width: 110px; min-width: 110px;">Quantity</th>
+            <th class="text-left" style="min-width: 160px;">Issued To</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of paginatedUsage; track row.id) {
+          <tr>
+            <!-- Actions (Edit & Delete using AssetsComponent table classes) -->
+            <td class="text-center">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit Usage"
+                  aria-label="Edit Usage" (click)="openEditUsage(row)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete Usage"
+                  aria-label="Delete Usage" (click)="deleteUsage(row)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+
+            <!-- Stage Name -->
+            <td class="text-left">{{ row.stageName }}</td>
+
+            <!-- Deliverable -->
+            <td class="text-left">{{ row.deliverable }}</td>
+
+            <!-- Activity -->
+            <td class="text-left">{{ row.activity }}</td>
+
+            <!-- Task -->
+            <td class="text-left">{{ row.task }}</td>
+
+            <!-- Quantity -->
+            <td class="text-center font-weight-500">{{ row.quantity }} </td>
+
+            <!-- Issued To -->
+            <td class="text-left">{{ row.issuedTo }}</td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="7" class="empty-table text-center">
+              No records found
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator
+      [length]="usageList.length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="true"
+      (page)="handlePage($event)">
+    </mat-paginator>
+  </div>
+
+</div>

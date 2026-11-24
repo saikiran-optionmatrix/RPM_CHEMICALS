@@ -1,0 +1,87 @@
+@if (study) {
+<div class="identification-toolbar">
+  <span class="linked-note">
+    Fields held in another PRAGATI master are linked, not retyped (§8.1)
+  </span>
+
+  <div class="toolbar-actions">
+    <button type="button" class="rag-assessment-btn" (click)="openRagAssessment()">
+      <mat-icon>assignment</mat-icon>
+      <span>Management RAG assessment</span>
+    </button>
+
+    <button type="button" class="app-btn app-btn-primary" (click)="editRequested.emit()">
+      <mat-icon>edit</mat-icon>
+      <span>Edit study</span>
+    </button>
+  </div>
+</div>
+
+<div class="identification-grid">
+  <!-- Left Card: Study identification -->
+  <section class="id-card">
+    <h3 class="id-card-title">Study identification (§8.1)</h3>
+    <div class="id-rows">
+      @for (row of leftRows; track row.label) {
+      <div class="id-row">
+        <div class="id-label">{{ row.label }}</div>
+        <div class="id-value" [class.is-bold]="row.bold">
+          <span>{{ row.value }}</span>
+          @if (row.hint) {
+          <span class="id-hint">{{ row.hint }}</span>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </section>
+
+  <!-- Right Card: Markets, priority and people -->
+  <section class="id-card">
+    <h3 class="id-card-title">Markets, priority and people</h3>
+    <div class="id-rows">
+      @for (row of rightRows; track row.label) {
+      <div class="id-row">
+        <div class="id-label">{{ row.label }}</div>
+        <div class="id-value">
+          @if (row.lifecycleBadge) {
+          <span class="lifecycle-pill" [ngClass]="getLifecycleClass(row.lifecycleBadge)">
+            {{ row.value }}
+          </span>
+          } @else {
+          <span>{{ row.value }}</span>
+          }
+          @if (row.hint) {
+          <span class="id-hint">{{ row.hint }}</span>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </section>
+</div>
+
+<!-- Bottom Full-Width Card: Migration source -->
+<section class="id-card migration-card">
+  <h3 class="id-card-title with-icon">
+    <mat-icon>swap_horiz</mat-icon>
+    <span>Migration source (§17.2)</span>
+  </h3>
+  <div class="id-rows">
+    @for (row of migrationRows; track row.label) {
+    <div class="id-row migration-row">
+      <div class="id-label">{{ row.label }}</div>
+      <div class="id-value">
+        @if (row.confirmedBadge) {
+        <span class="confirmed-pill" [class.is-pending]="row.confirmedBadge === 'Pending'">
+          {{ row.confirmedBadge }}
+        </span>
+        } @else {
+        <span>{{ row.value }}</span>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</section>
+}

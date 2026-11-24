@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+
+.app-table-container {
+  width: 100%;
+}
+
+.history-number-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 992px) {
+  .app-table-container {
+    width: 100%;
+  }
+}

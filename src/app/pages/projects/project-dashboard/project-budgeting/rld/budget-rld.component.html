@@ -1,0 +1,113 @@
+<div class="rld-container">
+  <!-- Banner -->
+  <div class="budget-info-banner">
+    <mat-icon class="banner-icon">local_shipping</mat-icon>
+    <div class="banner-text">
+      <strong>RLD</strong> — as in the Excel. R&amp;D and QC reference product (batches, freight, duty) maps to 3.1.2; BA-BE study packs map to 5.4.5. The agreement block at the bottom is commercial and does not roll up.
+    </div>
+  </div>
+
+  <!-- Tools Bar with Add RLD Button -->
+  <div class="tools-bar d-flex justify-content-end align-items-center mb-2">
+    <button type="button" class="app-btn app-btn-primary" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      <span>Add RLD</span>
+    </button>
+  </div>
+
+  <!-- RLD Table -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #scrollContainer class="table-responsive">
+      <table class="table app-table rld-table">
+        <thead>
+          <tr>
+            <th style="width: 80px; min-width: 80px;" class="text-center">Actions</th>
+            <th style="width: 110px;">WBS ID</th>
+            <th>Product</th>
+            <th class="text-right" style="width: 110px;">NO of Packs</th>
+            <th style="width: 70px;">Cur</th>
+            <th class="text-right" style="width: 120px;">Cost ( FOB )</th>
+            <th class="text-right" style="width: 120px;">USD</th>
+            <th class="text-right" style="width: 150px;">Exchange Rate in INR</th>
+            <th class="text-right" style="width: 150px;">Cost in INR</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of renderedRows; track $index) {
+            @if (row.kind === 'gap') {
+              <tr class="gap-row">
+                <td></td>
+                <td></td>
+                <td colspan="7"></td>
+              </tr>
+            } @else {
+              <tr [class]="row.rowClass" [class.row-highlight]="row.isHighlighted">
+                <!-- Actions -->
+                <td class="text-center">
+                  @if (row.canAction) {
+                    <div class="table-actions" style="justify-content: center;">
+                      <button type="button" class="table-action-button edit" matTooltip="Edit RLD Item" aria-label="Edit RLD Item"
+                        (click)="openEditDialog(row)">
+                        <i class="fa fa-edit"></i>
+                      </button>
+                      <button type="button" class="table-action-button delete" matTooltip="Delete RLD Item"
+                        aria-label="Delete RLD Item" (click)="deleteRld(row)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  }
+                </td>
+
+                <!-- WBS ID Column -->
+                <td>
+                  @if (row.kind === 'ag') {
+                    <span class="zero-na" title="Commercial agreement — not a development cost">n/a</span>
+                  } @else if (row.w) {
+                    <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(row.w)">{{ row.w }}</a>
+                  } @else {
+                    <span class="text-muted"></span>
+                  }
+                </td>
+
+                <!-- Product -->
+                <td [class.font-weight-bold]="row.rowClass === 'subtotal-row' || row.rowClass === 'grandtotal-row'">
+                  {{ row.product }}
+                </td>
+
+                <!-- No of Packs -->
+                <td class="text-right">{{ row.packs !== null ? row.packs : '' }}</td>
+
+                <!-- Currency -->
+                <td>{{ row.cur || '' }}</td>
+
+                <!-- Cost (FOB) -->
+                <td class="text-right">{{ row.costFob != null ? formatDec(row.costFob) : '' }}</td>
+
+                <!-- USD -->
+                <td class="text-right">{{ row.usd != null ? formatDec(row.usd) : '' }}</td>
+
+                <!-- FX -->
+                <td class="text-right">{{ row.fx != null ? row.fx : '' }}</td>
+
+                <!-- Cost in INR -->
+                <td class="text-right" [class.font-weight-bold]="row.rowClass === 'subtotal-row' || row.rowClass === 'grandtotal-row'">
+                  {{ row.costInr != null ? format(row.costInr) : '' }}
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Floating Scroll Buttons -->
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+    (click)="scrollLeft()" matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+    matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>
+</div>

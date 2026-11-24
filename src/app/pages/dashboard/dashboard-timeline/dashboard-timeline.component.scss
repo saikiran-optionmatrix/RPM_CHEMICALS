@@ -1,0 +1,247 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.timeline-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 24px;
+}
+
+.dash-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+
+  .card-header {
+    margin-bottom: 20px;
+
+    &.flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #334155;
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: #64748b;
+      margin: 0;
+    }
+  }
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  color: #64748b;
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+
+      &.dot-completed { background-color: #059669; }
+      &.dot-progress { background-color: #0d9488; }
+      &.dot-behind { background-color: #dc2626; }
+      &.dot-notstarted { background-color: #cbd5e1; }
+    }
+  }
+}
+
+/* Roadmap Grid */
+.roadmap-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.roadmap-header-row {
+  display: flex;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+
+  .proj-col-header {
+    width: 220px;
+    min-width: 200px;
+  }
+
+  .timeline-grid-header {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+
+    .year-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+      flex: 1;
+      text-align: center;
+    }
+  }
+}
+
+.roadmap-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .today-marker-line {
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: calc(220px + (100% - 220px) * 0.35);
+    width: 1px;
+    background-color: #cbd5e1;
+    border-left: 1px dashed #94a3b8;
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+.roadmap-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+
+  .proj-info-col {
+    width: 220px;
+    min-width: 200px;
+    padding-right: 12px;
+
+    .proj-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.2;
+    }
+
+    .proj-sub {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+  }
+
+  .bars-col {
+    flex: 1;
+    height: 18px;
+    position: relative;
+    background-color: #fafafa;
+    border-radius: 4px;
+
+    .bar {
+      position: absolute;
+      border-radius: 4px;
+
+      &.baseline-bar {
+        height: 6px;
+        top: 2px;
+        background-color: #e2e8f0;
+      }
+
+      &.forecast-bar {
+        height: 8px;
+        bottom: 2px;
+
+        &.bar-teal {
+          background-color: #0f766e;
+        }
+        &.bar-amber {
+          background-color: #f59e0b;
+        }
+        &.bar-red {
+          background-color: #dc2626;
+        }
+      }
+    }
+  }
+}
+
+/* Deliverables Section */
+.deliverables-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .deliverable-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+
+    .d-num {
+      width: 20px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .d-name {
+      flex: 1;
+      color: #1e293b;
+      font-weight: 500;
+    }
+
+    .d-bar-col {
+      width: 200px;
+
+      .d-track {
+        width: 100%;
+        height: 6px;
+        background-color: #f1f5f9;
+        border-radius: 3px;
+        overflow: hidden;
+
+        .d-fill {
+          height: 100%;
+          border-radius: 3px;
+
+          &.fill-completed {
+            background-color: #059669;
+          }
+          &.fill-in-progress {
+            background-color: #0f766e;
+          }
+          &.fill-behind {
+            background-color: #dc2626;
+          }
+          &.fill-not-started {
+            background-color: #cbd5e1;
+          }
+        }
+      }
+    }
+
+    .d-pct {
+      width: 36px;
+      text-align: right;
+      font-weight: 700;
+      color: #334155;
+      font-size: 11px;
+    }
+  }
+}

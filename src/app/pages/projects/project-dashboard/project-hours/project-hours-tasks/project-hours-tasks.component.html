@@ -1,0 +1,154 @@
+<div class="inner-screen-page">
+  <!-- Top Header Area -->
+  <header class="inner-header">
+    <div class="header-left">
+      <div class="title-meta">
+        <h2 class="inner-title">Hours Tasks</h2>
+        <div class="activity-subtitle">
+          @if (projectCode) {
+            <span class="activity-badge">{{ projectCode }}</span>
+          }
+          @if (projectName) {
+            <span class="activity-text">{{ projectName }}</span>
+          }
+          @if (selectedResource) {
+            <span class="stage-sep">•</span>
+            <span class="resource-meta-tag">
+              <mat-icon>person</mat-icon>
+              <span>{{ selectedResource }}</span>
+            </span>
+          }
+          @if (selectedDate) {
+            <span class="stage-sep">•</span>
+            <span class="date-meta-tag">
+              <mat-icon>calendar_today</mat-icon>
+              <span>{{ selectedDate }}</span>
+            </span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Standard Application Table Container (Add Task button excluded per requirements) -->
+  <div class="app-table-container">
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center col-actions">Actions</th>
+            <th class="text-center col-code">Project Code</th>
+            <th class="text-left col-deliverable">Deliverable</th>
+            <th class="text-left col-activity">Activity</th>
+            <th class="text-left col-task">Task</th>
+            <th class="text-center col-hours">Hours</th>
+            <th class="text-left col-description">Description</th>
+            <th class="text-center col-status">Approved</th>
+            <th class="text-center col-status">Declined</th>
+            <th class="text-center col-status">Pending</th>
+            <th class="text-center col-updated">Last Updated</th>
+            <th class="text-center col-by">Updated By</th>
+            <th class="text-center col-history">History</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (task of paginatedTasks; track task.id) {
+            <tr>
+              <!-- 1. Actions -->
+              <td class="text-center col-actions">
+                <div class="table-actions">
+                  <button type="button" class="table-action-button edit" matTooltip="Edit" aria-label="Edit task" (click)="openEditTask(task)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button type="button" class="table-action-button delete" matTooltip="Delete" aria-label="Delete task" (click)="deleteTask(task)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </td>
+
+              <!-- 2. Project Code -->
+              <td class="text-center col-code">
+                <span >{{ task.projectCode }}</span>
+              </td>
+
+              <!-- 3. Deliverable -->
+              <td class="text-left col-deliverable">
+                <span>{{ task.deliverable }}</span>
+              </td>
+
+              <!-- 4. Activity -->
+              <td class="text-left col-activity">
+                <span>{{ task.activity }}</span>
+              </td>
+
+              <!-- 5. Task -->
+              <td class="text-left col-task">
+                <span >{{ task.task }}</span>
+              </td>
+
+              <!-- 6. Hours -->
+              <td class="text-center col-hours">
+                <span>{{ task.hours }}</span>
+              </td>
+
+              <!-- 7. Description -->
+              <td class="text-left col-description">
+                <span  [matTooltip]="task.description">{{ task.description }}</span>
+              </td>
+
+              <!-- 8. Approved (mat checkbox) -->
+              <td class="text-center col-status">
+                <mat-checkbox [checked]="task.approved" (change)="toggleStatus(task, 'approved', $event.checked)" color="primary"></mat-checkbox>
+              </td>
+
+              <!-- 9. Declined (mat checkbox) -->
+              <td class="text-center col-status">
+                <mat-checkbox [checked]="task.declined" (change)="toggleStatus(task, 'declined', $event.checked)" color="warn"></mat-checkbox>
+              </td>
+
+              <!-- 10. Pending (mat checkbox) -->
+              <td class="text-center col-status">
+                <mat-checkbox [checked]="task.pending" (change)="toggleStatus(task, 'pending', $event.checked)"></mat-checkbox>
+              </td>
+
+              <!-- 11. Last Updated -->
+              <td class="text-center col-updated">
+                <span class="date-text">{{ task.lastUpdated }}</span>
+              </td>
+
+              <!-- 12. Updated By -->
+              <td class="text-center col-by">
+                <span>{{ task.updatedBy }}</span>
+              </td>
+
+              <!-- 13. History (Readonly) -->
+              <td class="text-center col-history">
+                <span class="readonly-history-count">{{ task.history }}</span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="13" class="empty-table">No records found</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <mat-paginator
+      [length]="filteredTasks.length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 20, 50, 100]"
+      [showFirstLastButtons]="true"
+      (page)="handlePage($event)">
+    </mat-paginator>
+  </div>
+</div>

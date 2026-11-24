@@ -1,0 +1,163 @@
+<div class="main-cost-sheet-container">
+  <!-- Banner -->
+  <div class="budget-info-banner">
+    <mat-icon class="banner-icon">summarize</mat-icon>
+    <div class="banner-text">
+      <strong>Main Cost Sheet</strong> — as in the Excel. Budget is split into Development budget, EB Scale up budget, and Total budget from the underlying detail sheets. The added column shows which WBS activities each line feeds.
+    </div>
+  </div>
+
+  <!-- Form Info Grid -->
+  <div class="info-form-grid">
+    <div class="info-field">
+      <span class="field-label">Product ( Molecule )</span>
+      <span class="field-val">Amphotericin B Liposome</span>
+    </div>
+    <div class="info-field">
+      <span class="field-label">Product Strength</span>
+      <span class="field-val">50 mg</span>
+    </div>
+    <div class="info-field">
+      <span class="field-label">Targeted Market/Region</span>
+      <span class="field-val">—</span>
+    </div>
+    <div class="info-field">
+      <span class="field-label">Project Owner</span>
+      <span class="field-val">—</span>
+    </div>
+    <div class="info-field">
+      <span class="field-label">Project Manager</span>
+      <span class="field-val">—</span>
+    </div>
+  </div>
+
+  <!-- Main Cost Sheet Table -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #scrollContainer class="table-responsive">
+      <table class="table app-table cost-sheet-table">
+        <thead>
+          <tr>
+            <th style="width: 70px;">Sl No</th>
+            <th style="min-width: 200px;">Activity</th>
+            <th class="text-right" style="min-width: 170px;">Development budget</th>
+            <th class="text-right" style="min-width: 170px;">EB Scale up budget</th>
+            <th class="text-right" style="min-width: 170px;">Total budget</th>
+            <th class="text-right" style="min-width: 150px;">Actual</th>
+            <th class="text-right" style="min-width: 120px;">Variance</th>
+            <th style="min-width: 180px;">Feeds WBS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Material Items -->
+          @for (item of materialItems; track item.activity) {
+            <tr>
+              <td>{{ item.sl }}</td>
+              <td>{{ item.activity }}</td>
+              <td class="text-right">{{ format(item.devBudget) }}</td>
+              <td class="text-right">{{ format(item.ebSuBudget) }}</td>
+              <td class="text-right font-weight-bold">{{ format(item.totalBudget) }}</td>
+              <td class="text-right">{{ format(item.actual) }}</td>
+              <td class="text-right">
+                @let v = getVarianceDisplay(item.totalBudget, item.actual);
+                <span [class]="v.css">{{ v.text }}</span>
+              </td>
+              <td>
+                @if (item.wbs.length) {
+                  @for (w of item.wbs; track w; let last = $last) {
+                    <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(w)">{{ w }}</a>@if (!last) {, }
+                  }
+                } @else {
+                  <span class="text-muted">—</span>
+                }
+              </td>
+            </tr>
+          }
+
+          <!-- Total Material Cost Subtotal -->
+          <tr class="subtotal-row">
+            <td>A</td>
+            <td><strong>Total Material Cost</strong></td>
+            <td class="text-right font-weight-bold">{{ format(totalMaterialCost.devBudget) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totalMaterialCost.ebSuBudget) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totalMaterialCost.totalBudget) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totalMaterialCost.actual) }}</td>
+            <td class="text-right">
+              @let vm = getVarianceDisplay(totalMaterialCost.totalBudget, totalMaterialCost.actual);
+              <span [class]="vm.css">{{ vm.text }}</span>
+            </td>
+            <td></td>
+          </tr>
+
+          <!-- Other Costs -->
+          @for (item of otherItems; track item.activity) {
+            <tr>
+              <td>{{ item.sl }}</td>
+              <td>{{ item.activity }}</td>
+              <td class="text-right">{{ item.devBudget != null ? format(item.devBudget) : '—' }}</td>
+              <td class="text-right">{{ item.ebSuBudget != null ? format(item.ebSuBudget) : '—' }}</td>
+              <td class="text-right font-weight-bold">{{ item.totalBudget != null ? format(item.totalBudget) : '—' }}</td>
+              <td class="text-right">{{ item.actual != null ? format(item.actual) : '—' }}</td>
+              <td class="text-right">
+                @let vo = getVarianceDisplay(item.totalBudget, item.actual);
+                <span [class]="vo.css">{{ vo.text }}</span>
+              </td>
+              <td>
+                @if (item.wbs.length) {
+                  @for (w of item.wbs; track w; let last = $last) {
+                    <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(w)">{{ w }}</a>@if (!last) {, }
+                  }
+                } @else {
+                  <span class="text-muted">—</span>
+                }
+              </td>
+            </tr>
+          }
+
+          <!-- Other Cost Subtotal -->
+          <tr class="subtotal-row">
+            <td>B</td>
+            <td><strong>Other Cost</strong></td>
+            <td class="text-right font-weight-bold">{{ format(totalOtherCost.devBudget) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totalOtherCost.ebSuBudget) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totalOtherCost.totalBudget) }}</td>
+            <td class="text-right font-weight-bold">{{ format(totalOtherCost.actual) }}</td>
+            <td class="text-right">
+              @let vb = getVarianceDisplay(totalOtherCost.totalBudget, totalOtherCost.actual);
+              <span [class]="vb.css">{{ vb.text }}</span>
+            </td>
+            <td></td>
+          </tr>
+
+          <!-- Cost A + B Grand Total -->
+          <tr class="grandtotal-row">
+            <td></td>
+            <td><strong>Cost A + B</strong></td>
+            <td class="text-right font-weight-bold">{{ format(costAPlusB.devBudget) }}</td>
+            <td class="text-right font-weight-bold">{{ format(costAPlusB.ebSuBudget) }}</td>
+            <td class="text-right font-weight-bold">{{ format(costAPlusB.totalBudget) }}</td>
+            <td class="text-right font-weight-bold">{{ format(costAPlusB.actual) }}</td>
+            <td class="text-right">
+              @let vab = getVarianceDisplay(costAPlusB.totalBudget, costAPlusB.actual);
+              <span [class]="vab.css">{{ vab.text }}</span>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="footnote">
+    Variance = Actual ÷ Total budget − 1. Development budget uses the development-trial total (column AI); EB Scale up budget uses scale-up and 3 EB batches from the Material List.
+  </p>
+
+  <!-- Floating Scroll Buttons -->
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+    (click)="scrollLeft()" matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+    matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>
+</div>

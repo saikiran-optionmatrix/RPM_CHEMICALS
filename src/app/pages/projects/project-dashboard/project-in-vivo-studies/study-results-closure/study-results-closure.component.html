@@ -1,0 +1,58 @@
+@if (study) {
+  <div class="results-container">
+    <div class="results-banner">
+      <i class="fa fa-gavel banner-icon" aria-hidden="true"></i>
+      <div>
+        Each status is recorded separately. <strong>"Study completed" never means "study successful"</strong> (&sect;12).
+      </div>
+    </div>
+
+    <div class="results-card">
+      <div class="results-card-head">
+        <h3>Results, reporting and closure</h3>
+        <button type="button" class="app-btn app-btn-primary" (click)="openEditDialog()">
+          <i class="fa fa-edit" aria-hidden="true"></i>
+          Update
+        </button>
+      </div>
+
+      <div class="app-table-container results-table-container">
+        <div class="table-responsive">
+          <table class="table app-table results-table">
+            <thead>
+              <tr>
+                <th class="text-center col-num">#</th>
+                <th class="text-left col-item">Item</th>
+                <th class="text-left col-status">Status</th>
+                <th class="text-left">How it is set</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of rows; track row.index) {
+                <tr>
+                  <td class="text-center col-num">{{ row.index }}</td>
+                  <td class="item-cell">{{ row.item }}</td>
+                  <td>
+                    <div class="status-cell">
+                      <span class="status-pill" [ngClass]="getStatusPillClass(row.status)">
+                        {{ row.status }}
+                      </span>
+                      @if (row.meta) {
+                        <span class="status-meta">{{ row.meta }}</span>
+                      }
+                    </div>
+                  </td>
+                  <td class="how-cell">{{ row.howItIsSet }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="results-footnote">
+        Linked records: final report and decision record are listed under Documents.
+      </p>
+    </div>
+  </div>
+}

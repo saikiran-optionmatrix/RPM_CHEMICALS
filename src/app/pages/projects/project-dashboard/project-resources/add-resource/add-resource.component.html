@@ -1,0 +1,190 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Resource' : 'Add Resource' }}
+  </h1>
+</div>
+
+<div mat-dialog-content>
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <form (ngSubmit)="save()">
+      <div class="row">
+        <!-- Left Column: Stage, Deliverable, Activity, Task, Resource Name, From Date -->
+        <div class="col-sm-6">
+
+          <!-- 1. Stage -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Stage :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" [(ngModel)]="stage" name="stage" placeholder="Select Stage"
+                style="height: 35px; line-height: 23px;">
+                @for (stg of stages; track stg) {
+                  <mat-option [value]="stg">{{ stg }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- 2. Deliverable -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Deliverable :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" [(ngModel)]="deliverable" name="deliverable" placeholder="Select Deliverable"
+                style="height: 35px; line-height: 23px;">
+                @for (del of deliverables; track del) {
+                  <mat-option [value]="del">{{ del }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- 3. Activity -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Activity :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" [(ngModel)]="activity" name="activity" placeholder="Select Activity"
+                style="height: 35px; line-height: 23px;">
+                @for (act of activities; track act) {
+                  <mat-option [value]="act">{{ act }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- 4. Task -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Task :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" [(ngModel)]="task" name="task" placeholder="Select Task"
+                style="height: 35px; line-height: 23px;">
+                @for (tsk of tasks; track tsk) {
+                  <mat-option [value]="tsk">{{ tsk }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- 5. Resource Name -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Resource Name :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" [(ngModel)]="resource" name="resource" placeholder="Select Resource"
+                style="height: 35px; line-height: 23px;">
+                <div style="padding: 6px 10px; position: sticky; top: 0; background: white; z-index: 100; border-bottom: 1px solid #e2e8f0;">
+                  <input type="text" class="form-control" placeholder="Search Resource..." [(ngModel)]="resourceSearchTerm" name="resourceSearchTerm" (keydown)="$event.stopPropagation()" style="height: 32px; font-size: 13px;">
+                </div>
+                @for (opt of filteredResourceOptions; track opt) {
+                  <mat-option [value]="opt">{{ opt }}</mat-option>
+                } @empty {
+                  <mat-option disabled style="font-size: 12px; color: #94a3b8;">No matching resources</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- 6. From Date -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">From Date :</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="date" class="form-control name back" [(ngModel)]="fromDate" name="fromDate">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: To Date, From Time, To Time, Plan Duration, Actual Duration, Status -->
+        <div class="col-sm-6">
+
+          <!-- 1. To Date -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">To Date :</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="date" class="form-control name back" [(ngModel)]="toDate" name="toDate">
+            </div>
+          </div>
+
+          <!-- 2. From Time -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">From Time :</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control name back" [(ngModel)]="fromTime" name="fromTime" placeholder="e.g. 09:00 AM">
+            </div>
+          </div>
+
+          <!-- 3. To Time -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">To Time :</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control name back" [(ngModel)]="toTime" name="toTime" placeholder="e.g. 05:00 PM">
+            </div>
+          </div>
+
+          <!-- 4. Plan Duration -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Plan Duration :</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control name back" [(ngModel)]="planDuration" name="planDuration" placeholder="e.g. 4 hours">
+            </div>
+          </div>
+
+          <!-- 5. Actual Duration -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Actual Duration :</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control name back" [(ngModel)]="actualDuration" name="actualDuration" placeholder="e.g. 4 hours">
+            </div>
+          </div>
+
+          <!-- 6. Status -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Status :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" [(ngModel)]="status" name="status" placeholder="Select Status"
+                style="height: 35px; line-height: 23px;">
+                @for (st of statuses; track st) {
+                  <mat-option [value]="st">{{ st }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div style="margin-bottom: 10px; margin-top: 20px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> Close
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,150 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Update Milestone</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    @if (milestone) {
+    <div class="milestone-context-box">
+      <div class="ctx-title">
+        {{ data?.studyId }} &middot; {{ milestone.name }}
+        @if (evidenceRequired) {
+          <span class="ctx-req-note">&middot; evidence required to complete</span>
+        }
+      </div>
+      <div class="ctx-meta">
+        <strong>Baseline:</strong> {{ milestone.baseline || '—' }} (changed only by a formal rebaseline)
+        &nbsp;&middot;&nbsp;
+        <strong>Current forecast variance:</strong> {{ currentVarianceLabel }}
+      </div>
+    </div>
+    }
+
+    @if (validationError) {
+    <div class="milestone-error-alert" role="alert">{{ validationError }}</div>
+    }
+
+    <form [formGroup]="milestoneForm" (ngSubmit)="save()">
+      <div class="row">
+        <!-- Milestone Owner -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Milestone Owner :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="owner"
+                placeholder="Select Owner" style="height: 35px; line-height: 23px;">
+                @for (person of ownerOptions; track person) {
+                  <mat-option [value]="person">{{ person }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['owner'].touched) && f['owner'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone Status -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Milestone Status :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="status"
+                style="height: 35px; line-height: 23px;">
+                @for (st of statusOptions; track st) {
+                  <mat-option [value]="st">{{ st }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Forecast Date -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Current Forecast :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date" formControlName="forecast"
+                style="height: 35px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Actual Completion Date -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Actual Completion :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date" formControlName="actual"
+                style="height: 35px;">
+              <small class="field-hint">Required to mark Completed</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reason for change -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="control-label" style="margin-top: 5px;">Reason for Change :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <textarea class="form-control back" rows="2" formControlName="changeReason"
+                placeholder="Required when forecast changes or when marking Not applicable"
+                style="min-height: 64px; padding-top: 8px; padding-bottom: 8px;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evidence -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="control-label" style="margin-top: 5px;">Evidence Link :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <input class="form-control name back" type="text" formControlName="evidence"
+                placeholder="Document repository reference (e.g. DMS/IVS-2026-001/AGREEMENT)"
+                style="height: 35px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="control-label" style="margin-top: 5px;">Notes :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <textarea class="form-control back" rows="2" formControlName="notes"
+                placeholder="Optional milestone notes"
+                style="min-height: 60px; padding-top: 8px; padding-bottom: 8px;"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions (Close & Save) -->
+      <div style="margin-top: 15px; margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> <span>Close</span>
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

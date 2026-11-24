@@ -1,0 +1,49 @@
+<div class="variance-tab">
+  <!-- Top 4 KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card" *ngFor="let kpi of kpis">
+      <div class="kpi-label">{{ kpi.label }}</div>
+      <div class="kpi-value" [ngClass]="kpi.colorClass">{{ kpi.value }}</div>
+      <div class="kpi-subtext" *ngIf="kpi.subtext">{{ kpi.subtext }}</div>
+    </div>
+  </div>
+
+  <!-- Middle Section: Grouped Column Chart -->
+  <div class="dash-card">
+    <div class="card-header">
+      <h3 class="card-title">ALLOCATED VS ACTUAL BY DELIVERABLE</h3>
+      <p class="card-subtitle">Budget distribution across deliverables (All projects)</p>
+    </div>
+
+    <div class="chart-wrapper">
+      <div id="varianceChartContainer"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Section: 3 Phase Cards -->
+  <div class="phases-grid">
+    <div class="phase-card" *ngFor="let phase of phases">
+      <div class="phase-header">
+        <h4 class="phase-title">{{ phase.title }}</h4>
+        <p class="phase-subtitle">{{ phase.stageRange }}</p>
+      </div>
+
+      <div class="phase-items-list">
+        <div class="phase-item" *ngFor="let item of phase.items">
+          <div class="item-top-row">
+            <span class="item-name">{{ item.name }}</span>
+            <span class="item-variance" [ngClass]="item.isOverBudget ? 'var-over' : 'var-under'">
+              {{ item.varianceText }}
+            </span>
+          </div>
+
+          <div class="item-progress-track">
+            <div class="item-progress-fill" [style.width.%]="item.pct" [ngClass]="item.isOverBudget ? 'fill-over' : 'fill-under'"></div>
+          </div>
+
+          <div class="item-spent">{{ item.spentText }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

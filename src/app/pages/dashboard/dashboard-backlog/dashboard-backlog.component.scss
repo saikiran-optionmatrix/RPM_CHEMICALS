@@ -1,0 +1,124 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.backlog-tab {
+  width: 100%;
+  padding-bottom: 24px;
+}
+
+.backlog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dash-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+
+  .card-header {
+    margin-bottom: 20px;
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #334155;
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: #64748b;
+      margin: 0;
+    }
+  }
+}
+
+.ranked-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  .ranked-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .rank-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: #e0f2fe;
+      color: #0284c7;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .activity-content {
+      flex: 1;
+
+      .act-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 2px;
+        line-height: 1.25;
+      }
+
+      .act-stage {
+        font-size: 11px;
+        color: #64748b;
+        margin-bottom: 6px;
+      }
+
+      .act-bar-track {
+        width: 100%;
+        height: 5px;
+        background-color: #f1f5f9;
+        border-radius: 3px;
+        overflow: hidden;
+
+        .act-bar-fill {
+          height: 100%;
+          border-radius: 3px;
+
+          &.fill-red {
+            background-color: #dc2626;
+          }
+          &.fill-amber {
+            background-color: #d97706;
+          }
+        }
+      }
+    }
+
+    .act-count {
+      width: 32px;
+      text-align: right;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+  }
+}
+
+.chart-wrapper {
+  width: 100%;
+  min-height: 380px;
+}

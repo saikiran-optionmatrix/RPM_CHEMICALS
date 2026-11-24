@@ -1,0 +1,199 @@
+<div class="inner-screen-page">
+  <!-- Top Header Area -->
+  <header class="inner-header">
+    <div class="header-left">
+      <div class="title-meta">
+        <h2 class="inner-title">Timesheet Tasks</h2>
+        <div class="activity-subtitle">
+          @if (projectCode) {
+            <span class="activity-badge">{{ projectCode }}</span>
+          }
+          @if (projectName) {
+            <span class="activity-text">{{ projectName }}</span>
+          }
+          @if (selectedResource) {
+            <span class="stage-sep">•</span>
+            <span class="resource-meta-tag">
+              <mat-icon>person</mat-icon>
+              <span>{{ selectedResource }}</span>
+            </span>
+          }
+          @if (selectedDate) {
+            <span class="stage-sep">•</span>
+            <span class="date-meta-tag">
+              <mat-icon>calendar_today</mat-icon>
+              <span>{{ selectedDate }}</span>
+            </span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="container-fluid" style="padding: 0;">
+    <div class="row">
+      <div class="col-12">
+        <div class="app-table-container" style="padding: 0 !important;">
+
+          <div class="app-page-actions">
+           
+          </div>
+
+          @if (showFilter) {
+          <!-- HTML Structure Requirement for this Global CSS Template -->
+          <mat-card class="app-filter-panel">
+            <mat-card-content>
+              <div class="app-filter-grid">
+
+                <!-- 1. Wrap your fields here -->
+                <div class="app-filter-fields">
+                  <div class="app-filter-field">
+                    <label for="slotKeyword">Keyword:</label>
+                    <mat-form-field appearance="outline" class="app-filter-control">
+                      <input matInput id="slotKeyword" [(ngModel)]="keyword" placeholder="Search Task" (keyup.enter)="onSearch()">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="app-filter-field">
+                    <label for="slotStatus">Status:</label>
+                    <mat-form-field appearance="outline" class="app-filter-control">
+                      <mat-select id="slotStatus" [(ngModel)]="status" placeholder="Select Status">
+                        <mat-option value="">All</mat-option>
+                        <mat-option value="Approved">Approved</mat-option>
+                        <mat-option value="Declined">Declined</mat-option>
+                        <mat-option value="Pending">Pending</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <!-- 2. Actions sit under the fields -->
+                <div class="app-filter-actions">
+                  <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                    <mat-icon>search</mat-icon>
+                    <span>Search</span>
+                  </button>
+                  <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                    <mat-icon>settings_backup_restore</mat-icon>
+                    <span>Clear</span>
+                  </button>
+                </div>
+
+                <!-- 3. Wrap your toggle button -->
+                <div class="app-filter-toggle">
+                  <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                    <mat-icon>keyboard_double_arrow_up</mat-icon>
+                  </button>
+                </div>
+
+              </div>
+            </mat-card-content>
+          </mat-card>
+          }
+
+          <div class="table-responsive">
+            <table class="table app-table">
+              <thead>
+                <tr>
+                  <th class="text-center" style="width: 85px;">Actions</th>
+                  <th class="text-left" style="min-width: 150px;">Stage</th>
+                  <th class="text-left" style="min-width: 170px;">Deliverable</th>
+                  <th class="text-left" style="min-width: 180px;">Activity</th>
+                  <th class="text-left" style="min-width: 180px;">Task</th>
+                  <th class="text-center" style="width: 110px;">From Time</th>
+                  <th class="text-center" style="width: 110px;">To Time</th>
+                  <th class="text-center" style="width: 85px;">Approved</th>
+                  <th class="text-center" style="width: 85px;">Declined</th>
+                  <th class="text-center" style="width: 85px;">Pending</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (slot of paginatedSlots; track slot.id) {
+                  <tr>
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="table-actions">
+                        <button type="button" class="table-action-button edit" matTooltip="Edit" aria-label="Edit slot" (click)="openEditSlot(slot)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" class="table-action-button delete" matTooltip="Delete" aria-label="Delete slot" (click)="deleteSlot(slot)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+
+                    <!-- Stage -->
+                    <td class="text-left" style="color: #1e293b; font-weight: 500;">
+                      {{ slot.stage }}
+                    </td>
+
+                    <!-- Deliverable -->
+                    <td class="text-left" style="color: #334155;">
+                      {{ slot.deliverable }}
+                    </td>
+
+                    <!-- Activity -->
+                    <td class="text-left" style="color: #334155;">
+                      {{ slot.activity }}
+                    </td>
+
+                    <!-- Task -->
+                    <td class="text-left" style="color: #0f172a; font-weight: 500;">
+                      {{ slot.task }}
+                    </td>
+
+                    <!-- From time -->
+                    <td class="text-center">
+                      <span class="time-badge">{{ slot.fromTime }}</span>
+                    </td>
+
+                    <!-- To time -->
+                    <td class="text-center">
+                      <span class="time-badge">{{ slot.toTime }}</span>
+                    </td>
+
+                    <!-- Approved -->
+                    <td class="text-center">
+                      <mat-checkbox [checked]="slot.approved" (change)="toggleStatus(slot, 'approved', $event.checked)" color="primary"></mat-checkbox>
+                    </td>
+
+                    <!-- Declined -->
+                    <td class="text-center">
+                      <mat-checkbox [checked]="slot.declined" (change)="toggleStatus(slot, 'declined', $event.checked)" color="warn"></mat-checkbox>
+                    </td>
+
+                    <!-- Pending -->
+                    <td class="text-center">
+                      <mat-checkbox [checked]="slot.pending" (change)="toggleStatus(slot, 'pending', $event.checked)"></mat-checkbox>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="10" class="empty-table">No records found</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <mat-paginator
+            [length]="filteredSlots.length"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="[5, 10, 20, 50, 100]"
+            [showFirstLastButtons]="true"
+            (page)="handlePage($event)">
+          </mat-paginator>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

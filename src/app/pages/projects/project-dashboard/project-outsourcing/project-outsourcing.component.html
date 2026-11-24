@@ -1,0 +1,235 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+
+  <!-- Header Section with Title & Back Button -->
+  <header class="analytics-header">
+    <div>
+      <h1>{{ projectName }}</h1>
+      <div class="page-subtitle">Outsourcing Requisition & Testing Tracking Sheet</div>
+    </div>
+
+    <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon><span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Table Container (Using Global CSS System) -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+
+    <!-- Top Action Bar with Filter & Add Buttons -->
+    <div class="app-page-actions" style="margin-bottom: 16px;">
+      <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()">
+        <mat-icon>filter_list</mat-icon>
+        <span>Filter</span>
+      </button>
+
+      <button type="button" class="app-btn app-btn-primary" (click)="addOutsourcing()">
+        <mat-icon>add</mat-icon>
+        <span>Add Outsourcing</span>
+      </button>
+    </div>
+
+    <!-- Scroll Buttons -->
+    <div class="d-flex justify-content-end mb-2" style="gap: 10px;">
+      <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+        (click)="scrollLeft()" matTooltip="Scroll Left">
+        <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+      </button>
+      <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+        matTooltip="Scroll Right">
+        <mat-icon style="color: #414141;">fast_forward</mat-icon>
+      </button>
+    </div>
+
+    <!-- Filter Panel -->
+    @if (showFilter) {
+    <mat-card class="app-filter-panel">
+      <mat-card-content>
+        <div class="app-filter-grid">
+
+          <!-- Filter Fields -->
+          <div class="app-filter-fields">
+            <!-- Keyword Search -->
+            <div class="app-filter-field">
+              <label for="outKeyword">Search:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <input matInput id="outKeyword" [(ngModel)]="keyword"
+                  placeholder="Product, Test, Instrument, Personnel...">
+              </mat-form-field>
+            </div>
+
+            <!-- Product Filter -->
+            <div class="app-filter-field">
+              <label for="outProduct">Product Name:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <mat-select id="outProduct" [(ngModel)]="selectedProduct" placeholder="All Products">
+                  <mat-option value="">All Products</mat-option>
+                  @for (p of products; track p) {
+                  <mat-option [value]="p">{{ p }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Required Test Filter -->
+            <div class="app-filter-field">
+              <label for="outTest">Required Test:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <mat-select id="outTest" [(ngModel)]="selectedTest" placeholder="All Tests">
+                  <mat-option value="">All Tests</mat-option>
+                  @for (t of tests; track t) {
+                  <mat-option [value]="t">{{ t }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Initiated By Filter -->
+            <div class="app-filter-field">
+              <label for="outInit">Initiated By:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <mat-select id="outInit" [(ngModel)]="selectedInitiatedBy" placeholder="All Initiators">
+                  <mat-option value="">All Initiators</mat-option>
+                  @for (init of initiators; track init) {
+                  <mat-option [value]="init">{{ init }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Filter Actions -->
+          <div class="app-filter-actions">
+            <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+              <mat-icon>search</mat-icon>
+              <span>Search</span>
+            </button>
+            <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+              <mat-icon>settings_backup_restore</mat-icon>
+              <span>Clear</span>
+            </button>
+          </div>
+
+          <!-- Collapse Filter -->
+          <div class="app-filter-toggle">
+            <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+              <mat-icon>keyboard_double_arrow_up</mat-icon>
+            </button>
+          </div>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+    }
+
+    <!-- Table Responsive Wrapper -->
+    <div #scrollContainer class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 85px;">Actions</th>
+            <th class="text-center" style="width: 65px;">S.No</th>
+            <th class="text-center date-col">Date</th>
+             
+            <th class="text-left">Required test</th>
+            <th class="text-left">Instrument Name</th>
+            <th class="text-left">Sample details</th>
+            <th class="text-left">Reason for requirement</th>
+            <th class="text-left">Initiated By</th>
+            <th class="text-left">Approved By</th>
+            <th class="text-center" style="width: 95px;">Duration</th>
+            <th class="text-center" style="width: 135px;">Report recived on</th>
+            <th class="text-left remarks-col">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of paginatedItems; track item.sNo + '-' + item.productName) {
+          <tr>
+            <!-- Actions -->
+            <td class="text-center">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit" (click)="openEdit(item)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete" (click)="onDelete(item)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+
+            <!-- S.No -->
+            <td class="text-center">
+              {{ item.sNo }}
+            </td>
+
+            <!-- Date -->
+            <td class="text-center date-col">
+              {{ item.date || '-' }}
+            </td>
+
+           
+
+            <!-- Required test -->
+            <td class="text-left">
+              {{ item.requiredTest || '-' }}
+            </td>
+
+            <!-- Instrument Name -->
+            <td class="text-left">
+              {{ item.instrumentName || '-' }}
+            </td>
+
+            <!-- Sample details -->
+            <td class="text-left text-cell-wrap" [matTooltip]="item.sampleDetails">
+              {{ item.sampleDetails || '-' }}
+            </td>
+
+            <!-- Reason for requirement -->
+            <td class="text-left text-cell-wrap" [matTooltip]="item.reasonForRequirement">
+              {{ item.reasonForRequirement || '-' }}
+            </td>
+
+            <!-- Initiated By -->
+            <td class="text-left">
+              {{ item.initiatedBy || '-' }}
+            </td>
+
+            <!-- Approved By -->
+            <td class="text-left">
+              {{ item.approvedBy || '-' }}
+            </td>
+
+            <!-- Duration -->
+            <td class="text-center">
+              {{ item.duration || '-' }}
+            </td>
+
+            <!-- Report recived on -->
+            <td class="text-center">
+              {{ item.reportReceivedOn || '-' }}
+            </td>
+
+            <!-- Remarks -->
+            <td class="text-left remarks-col" [matTooltip]="item.remarks || ''">
+              <div class="remarks-clamp">
+                {{ item.remarks || '-' }}
+              </div>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="13" class="empty-table">No records found</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator [length]="filteredItems.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+    </mat-paginator>
+
+  </div>
+</div>

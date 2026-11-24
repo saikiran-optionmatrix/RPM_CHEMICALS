@@ -1,0 +1,453 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.analytics-page {
+  width: 100%;
+}
+
+.analytics-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 24px;
+
+  h1 {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 34px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+ 
+
+/* ========================================
+   FULL-HEIGHT PILLS LAYOUT (No Trapping Card)
+======================================== */
+.pills-layout-wrapper {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Side Pills Classes from AddProjectComponent */
+.left-nav-pills {
+  width: 175px;
+  flex-shrink: 0;
+  border-right: 1px solid #e2e8f0;
+  padding-right: 16px;
+  position: sticky;
+  top: 12px;
+
+  .nav-pills {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    li {
+      width: 100%;
+
+      a {
+        width: 100%;
+        text-align: left;
+        justify-content: flex-start;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 500;
+        display: block;
+        box-sizing: border-box;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        border-radius: 4px;
+        background-color: #f1f5f9;
+        color: #334155;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: all 0.15s ease;
+
+        &:hover {
+          background-color: #e2e8f0;
+          color: #0f172a;
+        }
+      }
+
+    
+    }
+  }
+}
+
+/* Right Content Area: natural full height without inner scroll */
+.tab-content-area {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+/* ========================================
+   FORM GRID (From AddProjectComponent)
+======================================== */
+.fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+.add-member-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.form-control {
+  font-size: 13px;
+  height: 36px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  padding: 5px 12px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  color: #1e293b;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  &:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+  }
+}
+
+textarea.form-control {
+  height: auto;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+select.form-control,
+mat-select.form-control {
+  cursor: pointer !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ========================================
+   UPLOAD DOCUMENTS (From UploadDocumentsComponent)
+======================================== */
+.drag-drop-zone {
+  border: 2px dashed #16a34a !important;
+  border-radius: 8px !important;
+  background-color: #f0fdf4 !important;
+  min-height: 155px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+
+  &.dragging {
+    background-color: #dcfce7 !important;
+    border-color: #15803d !important;
+  }
+
+  .upload-icon {
+    font-size: 38px;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    color: #334155;
+    margin-bottom: 8px;
+  }
+
+  .upload-text {
+    font-size: 14px;
+    color: #1e293b;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .app-btn-primary {
+    background-color: #0284c7;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: #0369a1;
+    }
+  }
+}
+
+.uploaded-files-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.uploaded-file-row {
+  padding: 6px 12px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12.5px;
+
+  .file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+
+    .file-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: #2563eb;
+    }
+
+    .file-name {
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #1e293b;
+      font-weight: 500;
+    }
+  }
+
+  .file-remove {
+    cursor: pointer;
+    color: #ef4444;
+    display: inline-flex;
+    align-items: center;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+/* ========================================
+   SIGNATURE ROWS
+======================================== */
+.signature-single-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: flex-end;
+  margin-top: 6px;
+
+  &.edit-mode {
+    grid-template-columns: 2fr 1fr 1.5fr;
+  }
+
+  .sig-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sig-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 6px;
+  }
+}
+
+.sig-spacer-label {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  visibility: hidden;
+  user-select: none;
+  pointer-events: none;
+
+  &::after {
+    content: none !important;
+    display: none !important;
+  }
+}
+
+.signed-checkbox-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+
+  .required-star {
+    color: red;
+    font-weight: 700;
+    margin-left: 3px;
+  }
+}
+
+/* ========================================
+   TABLES (Using AssetsComponent Global .app-table Classes)
+======================================== */
+.app-table {
+  tbody tr td {
+    &.font-medium {
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    ::ng-deep .mat-mdc-checkbox {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+/* ========================================
+   BOTTOM ACTIONS
+======================================== */
+.form-bottom-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &.app-btn-default {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+
+    &:hover {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+  }
+
+  &.app-btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+
+    &:hover {
+      background: #1d4ed8;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+    }
+  }
+}
+
+.back {
+  background-color: #fefec4 !important;
+}
+
+.category-change-table {
+  tbody tr td {
+    vertical-align: middle;
+    padding: 6px 12px;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+@media (max-width: 900px) {
+  .pills-layout-wrapper {
+    flex-direction: column;
+  }
+
+  .left-nav-pills {
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid #e2e8f0;
+    padding-right: 0 !important;
+    padding-bottom: 12px;
+    position: static;
+
+    .nav-pills {
+      flex-direction: row !important;
+    }
+  }
+
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signature-single-row.edit-mode {
+    grid-template-columns: 1fr;
+  }
+}

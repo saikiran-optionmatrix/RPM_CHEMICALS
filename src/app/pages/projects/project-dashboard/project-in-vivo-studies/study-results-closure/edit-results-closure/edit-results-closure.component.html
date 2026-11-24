@@ -1,0 +1,99 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Results and closure &middot; {{ data.study.studyId }}</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <p class="dialog-subnote">
+      Conduct: {{ data.conductStatus }} &middot; Analysis: {{ data.analysisStatus }} &middot; Report:
+      {{ data.reportStatus }} (from milestones)
+    </p>
+
+    @if (validationError) {
+      <div class="validation-alert" role="alert">{{ validationError }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Outcome Assessment :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="outcome" style="height: 35px; line-height: 23px;">
+                @for (opt of outcomeOptions; track opt) {
+                  <mat-option [value]="opt">{{ opt }}</mat-option>
+                }
+              </mat-select>
+              <small class="field-hint">Quality / scientific reviewer</small>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Management Decision :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="decision" style="height: 35px; line-height: 23px;">
+                @for (opt of decisionOptions; track opt) {
+                  <mat-option [value]="opt">{{ opt }}</mat-option>
+                }
+              </mat-select>
+              <small class="field-hint">CEO / Head of Development</small>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" [class.add-member-label]="isClosing" style="margin-top: 5px;">Closure Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date" formControlName="closureDate" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Scientific Review :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="reviewStatus" style="height: 35px; line-height: 23px;">
+                @for (opt of reviewStatusOptions; track opt) {
+                  <mat-option [value]="opt">{{ opt }}</mat-option>
+                }
+              </mat-select>
+              <small class="field-hint">Quality / scientific reviewer</small>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Formal Closure :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="closureStatus" style="height: 35px; line-height: 23px;">
+                @for (opt of closureStatusOptions; track opt) {
+                  <mat-option [value]="opt">{{ opt }}</mat-option>
+                }
+              </mat-select>
+              <small class="field-hint">Head of Development</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+          <mat-icon>cancel</mat-icon> <span>Close</span>
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> <span>Save</span>
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>
+

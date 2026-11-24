@@ -1,0 +1,267 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Material' : 'Add Material' }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="padding: 16px 24px; overflow: hidden;">
+  <form [formGroup]="materialForm" (ngSubmit)="save()">
+    <div style="display: flex; gap: 24px; align-items: stretch;">
+
+      <!-- Left Column: Navigation Tabs with Pills Styling -->
+      <div class="pills left-nav-pills"
+        style="width: 175px; flex-shrink: 0; border-right: 1px solid #e2e8f0; padding-right: 16px;">
+        <ul class="nav nav-pills"
+          style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+          @for (tab of tabs; track tab.id) {
+          <li [class.active]="activeTab === tab.id">
+            <a mat-raised-button type="button" (click)="setActiveTab(tab.id)">
+              {{ tab.label }}
+            </a>
+          </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Right Column: Tab Form Fields -->
+      <div class="tab-scroll-container"
+        style="flex: 1; min-width: 0; max-height: 60vh; overflow-y: auto; padding-right: 8px;">
+
+        <!-- ==========================================
+             TAB 1: MATERIAL MASTER (Basic Info)
+             ========================================== -->
+        @if (activeTab === 'overview') {
+        <div class="fields-grid">
+          <!-- Category -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Category : *</label>
+            <select class="form-control name back" formControlName="category">
+              <option value="">Select Category</option>
+              @for (cat of categoryOptions; track cat) {
+              <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+            @if (isSubmitting && f['category'].errors?.['required']) {
+            <span class="text-danger" style="font-size: 12px; margin-top: 2px;">Category is required</span>
+            }
+          </div>
+
+          <!-- Material Code -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Material Code (Mtl code) : *</label>
+            <input class="form-control name back" placeholder="e.g. 10000435" formControlName="mtlCode" type="text">
+            @if (isSubmitting && f['mtlCode'].errors?.['required']) {
+            <span class="text-danger" style="font-size: 12px; margin-top: 2px;">Material code is required</span>
+            }
+          </div>
+
+          <!-- Description -->
+          <div class="form-field-group full-width">
+            <label class="add-member-label control-label">Description : *</label>
+            <input class="form-control name back" placeholder="Enter material description"
+              formControlName="description" type="text">
+            @if (isSubmitting && f['description'].errors?.['required']) {
+            <span class="text-danger" style="font-size: 12px; margin-top: 2px;">Description is required</span>
+            }
+          </div>
+
+          <!-- Base UOM -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Base UOM : *</label>
+            <select class="form-control name back" formControlName="uom">
+              <option value="">Select UOM</option>
+              @for (u of uomOptions; track u) {
+              <option [value]="u">{{ u }}</option>
+              }
+            </select>
+            @if (isSubmitting && f['uom'].errors?.['required']) {
+            <span class="text-danger" style="font-size: 12px; margin-top: 2px;">UOM is required</span>
+            }
+          </div>
+
+          <!-- Price -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Unit Price (₹) : *</label>
+            <input class="form-control name back" placeholder="Enter unit price" formControlName="price" type="number"
+              step="any" min="0">
+            @if (isSubmitting && f['price'].errors?.['required']) {
+            <span class="text-danger" style="font-size: 12px; margin-top: 2px;">Price is required</span>
+            }
+          </div>
+
+          <!-- Purchased Qty -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Purchased Qty : *</label>
+            <input class="form-control name back" placeholder="Enter purchased qty" formControlName="purchasedQty"
+              type="number" step="any" min="0">
+            @if (isSubmitting && f['purchasedQty'].errors?.['required']) {
+            <span class="text-danger" style="font-size: 12px; margin-top: 2px;">Purchased quantity is required</span>
+            }
+          </div>
+
+          <!-- Total Cost -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Total Cost (₹) :</label>
+            <input class="form-control name back" placeholder="Calculated automatically" formControlName="totalCost"
+              type="number" step="any">
+          </div>
+        </div>
+        }
+
+        <!-- ==========================================
+             TAB 2: CYCLE & INPUT SPECS
+             ========================================== -->
+        @if (activeTab === 'cycles') {
+        <div class="fields-grid">
+          <!-- Cycles Planned -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">No of Cycles Planned :</label>
+            <input class="form-control name back" placeholder="e.g. 20" formControlName="cyclesPlanned" type="number"
+              min="0">
+          </div>
+
+          <!-- Input Qty per Cycle -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Input Qty per Cycle :</label>
+            <input class="form-control name back" placeholder="e.g. 62.5" formControlName="inputQtyPerCycle"
+              type="number" step="any">
+          </div>
+
+          <!-- Input Qty UOM -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Input Qty UOM :</label>
+            <input class="form-control name back" placeholder="e.g. mg, ml, KG, NOS" formControlName="inputQtyUom"
+              type="text">
+          </div>
+
+          <!-- Conversion Factor (CF) -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Conversion Factor (CF) :</label>
+            <input class="form-control name back" placeholder="e.g. 1000000" formControlName="cf" type="number"
+              step="any">
+          </div>
+
+          <!-- Developments batch size -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Developments Batch Size :</label>
+            <input class="form-control name back" placeholder="e.g. 200" formControlName="devBatchSize" type="number"
+              step="any">
+          </div>
+
+          <!-- Dev Input Qty per Cycle -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Dev Input Qty per Cycle :</label>
+            <input class="form-control name back" placeholder="e.g. 62.5" formControlName="devInputQtyPerCycle"
+              type="number" step="any">
+          </div>
+        </div>
+        }
+
+        <!-- ==========================================
+             TAB 3: TRIAL COSTING
+             ========================================== -->
+        @if (activeTab === 'trials') {
+        <div class="fields-grid">
+          <!-- Cost per trial -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Cost Per Trial (₹) :</label>
+            <input class="form-control name back" placeholder="e.g. 34437.5" formControlName="costPerTrial"
+              type="number" step="any">
+            <span style="font-size: 11.5px; color: #64748b; margin-top: 3px;">
+              Applied across development cycles (Trials 1 through 20).
+            </span>
+          </div>
+
+          <!-- Total Development Cost for 20 -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">Total Dev Cost for 20 Trials (₹) :</label>
+            <input class="form-control name back" placeholder="Auto-calculated (Cost per trial × 20)"
+              formControlName="totalDevCost" type="number" step="any">
+          </div>
+        </div>
+        }
+
+        <!-- ==========================================
+             TAB 4: SCALE-UP & EXHIBITION BATCH (EB)
+             ========================================== -->
+        @if (activeTab === 'scaleup') {
+        <div class="fields-grid">
+          <!-- ScaleUP Input Qty per Cycle -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">ScaleUP Input Qty per Cycle :</label>
+            <input class="form-control name back" placeholder="e.g. 62.5" formControlName="scaleUpInputQty"
+              type="number" step="any">
+          </div>
+
+          <!-- ScaleUP Batch size -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">ScaleUP Batch Size :</label>
+            <input class="form-control name back" placeholder="e.g. 2000" formControlName="scaleUpBatchSize"
+              type="number" step="any">
+          </div>
+
+          <!-- ScaleUP Batch Input Materials Cost -->
+          <div class="form-field-group full-width">
+            <label class="add-member-label control-label">ScaleUP Batch Input Materials Cost (₹) :</label>
+            <input class="form-control name back" placeholder="e.g. 344375" formControlName="scaleUpBatchCost"
+              type="number" step="any">
+          </div>
+
+          <!-- EB Size -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">EB Size :</label>
+            <input class="form-control name back" placeholder="e.g. 2000" formControlName="ebSize" type="number"
+              step="any">
+          </div>
+
+          <!-- 3 EB Input Qty -->
+          <div class="form-field-group">
+            <label class="add-member-label control-label">3 EB Input Qty :</label>
+            <input class="form-control name back" placeholder="e.g. 6000" formControlName="ebInputQty" type="number"
+              step="any">
+          </div>
+
+          <!-- 3 EB Batches Cost -->
+          <div class="form-field-group full-width">
+            <label class="add-member-label control-label">3 EB Batches Cost (₹) :</label>
+            <input class="form-control name back" placeholder="e.g. 1033125" formControlName="ebBatchesCost"
+              type="number" step="any">
+          </div>
+        </div>
+        }
+
+      </div>
+    </div>
+
+    <!-- ==========================================
+         BOTTOM ACTION BAR (Prev, Next, Close, Save)
+         ========================================== -->
+    <div
+      style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="prevTab()"
+          [disabled]="activeTab === tabs[0].id" [style.opacity]="activeTab === tabs[0].id ? '0.45' : '1'"
+          [style.cursor]="activeTab === tabs[0].id ? 'not-allowed' : 'pointer'">
+          <mat-icon>arrow_back</mat-icon> Prev
+        </button>
+
+        <button type="button" class="app-btn app-btn-default" (click)="nextTab()"
+          [disabled]="activeTab === tabs[tabs.length - 1].id"
+          [style.opacity]="activeTab === tabs[tabs.length - 1].id ? '0.45' : '1'"
+          [style.cursor]="activeTab === tabs[tabs.length - 1].id ? 'not-allowed' : 'pointer'">
+          Next <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()">
+          <mat-icon>cancel</mat-icon> Close
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> Save
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>

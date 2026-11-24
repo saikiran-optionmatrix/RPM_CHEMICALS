@@ -1,0 +1,283 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Clinical Trial' : 'Add Clinical Trial' }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <form [formGroup]="trialForm" (ngSubmit)="save()">
+      <div class="row">
+
+        <!-- Left Column -->
+        <div class="col-sm-6">
+
+          <!-- Molecule / Product -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Molecule / Product * :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Taphalgin"
+                formControlName="molecule" style="height: 35px;">
+              @if (isSubmitting && f['molecule'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Region -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Region * :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="region" placeholder="Select Region"
+                style="height: 35px; line-height: 23px;">
+                @for (r of regionOptions; track r) {
+                  <mat-option [value]="r">{{ r }}</mat-option>
+                }
+              </mat-select>
+              @if (isSubmitting && f['region'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Formulation Lead -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Formulation Lead :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Tathagata"
+                formControlName="formulationLead" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- PCT / CT Lead -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">PCT/CT Lead :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Dr. Prriya"
+                formControlName="pctCtLead" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- CRO Selection -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">CRO Selection * :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. RYT Life Sciences"
+                formControlName="croSelection" style="height: 35px;">
+              @if (isSubmitting && f['croSelection'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Quote Finalisation -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Quote Finalisation :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="quoteFinalisation" placeholder="Select Quote Status"
+                style="height: 35px; line-height: 23px;">
+                @for (q of quoteOptions; track q) {
+                  <mat-option [value]="q">{{ q }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Study Code -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Study Code :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. JE-CT-2026-001"
+                formControlName="studyCode" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Study Type -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Study Type :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="studyType" placeholder="Select Study Type"
+                style="height: 35px; line-height: 23px;">
+                @for (st of studyTypeOptions; track st) {
+                  <mat-option [value]="st">{{ st }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- CRO POC -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">CRO POC :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Yadvendra"
+                formControlName="croPoc" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Protocol Finalization -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Protocol Finalization :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="protocolFinalization" placeholder="Select Status"
+                style="height: 35px; line-height: 23px;">
+                @for (p of protocolOptions; track p) {
+                  <mat-option [value]="p">{{ p }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+
+          <!-- Agreement Execution -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Agreement Execution :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="agreementExecution" placeholder="Select Status"
+                style="height: 35px; line-height: 23px;">
+                @for (a of agreementOptions; track a) {
+                  <mat-option [value]="a">{{ a }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- RLD Status / Country -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">RLD Status / Country :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Russia / Awaited"
+                formControlName="rldStatus" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Study Initiation Date -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Study Initiation Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. 15-Nov-2026 or DD-Mon-YYYY"
+                formControlName="studyInitiationDate" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Dosing Status -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Dosing Status :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="dosingStatus" placeholder="Select Dosing Status"
+                style="height: 35px; line-height: 23px;">
+                @for (d of dosingOptions; track d) {
+                  <mat-option [value]="d">{{ d }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Bio Analytical Status -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Bio Analytical Status :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Completed or Pending"
+                formControlName="bioAnalyticalStatus" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- CSR Status -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">CSR Status :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. Draft Ready or Under Review"
+                formControlName="csrStatus" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Escalation Required -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Escalation Required :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="escalationRequired" placeholder="Escalation Required"
+                style="height: 35px; line-height: 23px;">
+                @for (e of escalationOptions; track e) {
+                  <mat-option [value]="e">{{ e }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Study Updates -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Study Updates :</label>
+            </div>
+            <div class="col-sm-7">
+              <textarea class="form-control name back" rows="2" placeholder="Brief progress update..."
+                formControlName="studyUpdates" style="font-size: 13px;"></textarea>
+            </div>
+          </div>
+
+          <!-- Management Remarks -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Remarks :</label>
+            </div>
+            <div class="col-sm-7">
+              <textarea class="form-control name back" rows="2" placeholder="Management comments..."
+                formControlName="managementRemarks" style="font-size: 13px;"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Actions (Close & Save) -->
+      <div style="margin-top: 15px; margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> <span>Close</span>
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,194 @@
+.materials-plan-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 4 KPI Summary Cards Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-card {
+    background: #ffffff;
+    border: 1px solid #dfe2e6;
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+    .kpi-label {
+      font-size: 12px;
+      color: #5b616b;
+      font-weight: 500;
+    }
+
+    .kpi-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1f2328;
+    }
+  }
+}
+
+/* Link to Budget Box (Neutral styling) */
+.budget-link-box {
+  background: #f8fafc;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .budget-link-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .link-icon {
+      color: #475569;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    strong {
+      font-size: 13px;
+      color: #1e293b;
+    }
+  }
+
+  .budget-link-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    p {
+      margin: 0;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.45;
+
+      strong {
+        color: #1e293b;
+      }
+
+      &.calc-formula {
+        font-size: 12px;
+        color: #64748b;
+      }
+    }
+  }
+}
+
+.sheet-title-info {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* Specific styling enhancements over global app-table (No custom color codes) */
+.app-table {
+  tbody tr td {
+    &.blocker-cell {
+      max-width: 280px;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+
+    &.freight-cell {
+      padding: 4px 6px;
+
+      .freight-input {
+        width: 85px;
+        text-align: right;
+        font-family: inherit;
+        font-size: 13px;
+        padding: 4px 8px;
+        border: 1px solid #c4c8cf;
+        border-radius: 4px;
+        background: #ffffff;
+        outline: none;
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: #287db3;
+        }
+      }
+    }
+  }
+}
+
+/* Pre-Qualification Checklist Navigation Link */
+.pre-qual-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: #1d4ed8;
+    background-color: #eff6ff;
+    text-decoration: underline;
+  }
+}
+
+/* Floating Scroll Buttons (.mine) */
+.mine {
+  position: fixed;
+  bottom: 30px;
+  background-color: #dfdfdf !important;
+  color: #414141 !important;
+  z-index: 100 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 50% !important;
+  --mdc-fab-container-shape: 50%;
+  --mat-fab-container-shape: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: right 0.3s ease, background-color 0.15s ease;
+
+  mat-icon {
+    color: #414141 !important;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover {
+    background-color: #cecdcd !important;
+  }
+
+  &.scroll-btn-right {
+    right: 250px;
+  }
+
+  &.scroll-btn-left {
+    right: 310px;
+  }
+}

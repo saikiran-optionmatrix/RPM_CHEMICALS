@@ -1,0 +1,69 @@
+<div class="timeline-tab">
+  <!-- Top Roadmap Card -->
+  <div class="dash-card">
+    <div class="card-header">
+      <h3 class="card-title">MULTI-YEAR ROADMAP · BASELINE VS FORECAST</h3>
+      <p class="card-subtitle">Grey = baseline plan, coloured = forecast finish. Vertical line = today.</p>
+    </div>
+
+    <div class="roadmap-container">
+      <!-- Years Header -->
+      <div class="roadmap-header-row">
+        <div class="proj-col-header"></div>
+        <div class="timeline-grid-header">
+          <div class="year-label" *ngFor="let year of years">{{ year }}</div>
+        </div>
+      </div>
+
+      <!-- Roadmap Rows Container with vertical 'today' line -->
+      <div class="roadmap-body">
+        <div class="today-marker-line"></div>
+
+        <div class="roadmap-row" *ngFor="let item of roadmapItems">
+          <div class="proj-info-col">
+            <div class="proj-title">{{ item.name }}</div>
+            <div class="proj-sub">{{ item.code }} · {{ item.slipText }}</div>
+          </div>
+
+          <div class="bars-col">
+            <!-- Baseline Bar (Grey) -->
+            <div class="bar baseline-bar" [style.left.%]="item.baselineStartPct" [style.width.%]="item.baselineWidthPct"></div>
+            <!-- Forecast Bar (Coloured) -->
+            <div class="bar forecast-bar" [ngClass]="'bar-' + item.statusColor" [style.left.%]="item.forecastStartPct" [style.width.%]="item.forecastWidthPct"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Deliverables Card -->
+  <div class="dash-card">
+    <div class="card-header flex-between">
+      <div>
+        <h3 class="card-title">GATE 1 DELIVERABLES · ACRYLIC EMULSION BINDER 50% SOLIDS (2026/CHM/006)</h3>
+        <p class="card-subtitle">Benchmark-matching product starting from a competitor grade</p>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend-row">
+        <span class="legend-item"><span class="dot dot-completed"></span> Completed</span>
+        <span class="legend-item"><span class="dot dot-progress"></span> In progress</span>
+        <span class="legend-item"><span class="dot dot-behind"></span> Behind schedule</span>
+        <span class="legend-item"><span class="dot dot-notstarted"></span> Not started</span>
+      </div>
+    </div>
+
+    <div class="deliverables-list">
+      <div class="deliverable-item" *ngFor="let d of deliverables">
+        <div class="d-num">{{ d.num }}.</div>
+        <div class="d-name">{{ d.name }}</div>
+        <div class="d-bar-col">
+          <div class="d-track">
+            <div class="d-fill" [style.width.%]="d.percent" [ngClass]="'fill-' + d.status"></div>
+          </div>
+        </div>
+        <div class="d-pct">{{ d.percent }}%</div>
+      </div>
+    </div>
+  </div>
+</div>

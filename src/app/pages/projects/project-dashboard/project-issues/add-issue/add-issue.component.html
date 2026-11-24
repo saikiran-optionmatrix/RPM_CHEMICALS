@@ -1,0 +1,190 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ data ? 'Edit' : 'Add' }} Issue
+  </h1>
+</div>
+
+<div mat-dialog-content style="padding: 16px 24px; width: 100%; box-sizing: border-box; overflow-x: hidden;">
+  <div style="margin-bottom: 10px; width: 100%;">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="row" style="margin: 0 -12px;">
+        <!-- Left Column: Hierarchy & Subject/Description -->
+        <div class="col-sm-6" style="padding: 0 12px;">
+
+          <!-- Stage (Dropdown) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Stage :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" placeholder="Select Stage" formControlName="stage"
+                style="height: 35px; line-height: 23px;" (selectionChange)="onStageChange()">
+                @for (stage of stageOptions; track stage) {
+                <mat-option [value]="stage">{{ stage }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Deliverable (Dropdown) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Deliverable :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" placeholder="Select Deliverable" formControlName="deliverable"
+                style="height: 35px; line-height: 23px;" (selectionChange)="onDeliverableChange()">
+                @for (del of filteredDeliverables; track del) {
+                <mat-option [value]="del">{{ del }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Activity (Dropdown) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Activity :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" placeholder="Select Activity" formControlName="activity"
+                style="height: 35px; line-height: 23px;" (selectionChange)="onActivityChange()">
+                @for (act of filteredActivities; track act) {
+                <mat-option [value]="act">{{ act }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Task (Dropdown) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Task :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" placeholder="Select Task" formControlName="task"
+                style="height: 35px; line-height: 23px;">
+                @for (task of filteredTasks; track task) {
+                <mat-option [value]="task">{{ task }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Subject (Input) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Subject :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control name back" maxlength="200" placeholder="Enter Subject"
+                formControlName="subject" type="text" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Description (Textarea) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: flex-start;">
+            <div class="col-sm-4">
+              <label class="control-label" style="margin-top: 5px;">Description :</label>
+            </div>
+            <div class="col-sm-8">
+              <textarea class="form-control white" rows="3" placeholder="Enter Issue Description"
+                formControlName="issueDescription" style="resize: vertical;"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Status, Assignment, Date, Remarks & Attachments -->
+        <div class="col-sm-6" style="padding: 0 12px;">
+
+          <!-- Status -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Status :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select formControlName="status" class="form-control back" placeholder="Select Status"
+                style="height: 35px; line-height: 23px;">
+                <mat-option value="Pending">Pending</mat-option>
+                <mat-option value="Allocated">Allocated</mat-option>
+                <mat-option value="Process">Process</mat-option>
+                <mat-option value="Hold">Hold</mat-option>
+                <mat-option value="Cancelled">Cancelled</mat-option>
+                <mat-option value="Closed">Closed</mat-option>
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Assigned To -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Assigned To :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control name back" placeholder="Enter Assignee Name" formControlName="assignedTo"
+                type="text" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Due Date -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Due Date :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control back" type="date" formControlName="targetDate" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Remarks -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: flex-start;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Remarks :</label>
+            </div>
+            <div class="col-sm-8">
+              <textarea class="form-control back" rows="2" placeholder="Enter Remarks" formControlName="remarks"
+                style="resize: vertical;"></textarea>
+            </div>
+          </div>
+
+          <!-- Upload Image -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="control-label" style="margin-top: 5px;">Upload Image :</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="file" (change)="onFileSelected($event, 'image')" accept="image/*" class="form-control white"
+                style="height: auto; padding: 4px;">
+            </div>
+          </div>
+
+          <!-- Upload File -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="control-label" style="margin-top: 5px;">Upload File :</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="file" (change)="onFileSelected($event, 'document')" class="form-control white"
+                style="height: auto; padding: 4px;">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Action Buttons Footer -->
+      <div style="margin-bottom: 10px; margin-top: 15px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> Close
+          </button>
+          <button type="submit" class="app-btn app-btn-primary" [disabled]="!form.valid">
+            <mat-icon>save</mat-icon> {{ data ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

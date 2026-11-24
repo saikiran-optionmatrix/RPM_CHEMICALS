@@ -1,0 +1,48 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Checkpoint' : 'Add Checkpoint' }}
+  </h1>
+</div>
+
+<div mat-dialog-content>
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <form [formGroup]="myGroup" (ngSubmit)="upsertCheckpoint()">
+
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Checkpoint Name :</label>
+        </div>
+        <div class="col-sm-8">
+          <input class="form-control name back" maxlength="200" placeholder="Enter Checkpoint Name"
+            formControlName="checkpointName" type="text">
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Dimension :</label>
+        </div>
+        <div class="col-sm-8">
+          <mat-select formControlName="dimension" class="form-control back" placeholder="Select Dimension"
+            style="height: 35px; line-height: 23px;">
+            @for (dim of dimensions; track dim) {
+              <mat-option [value]="dim">{{ dim }}</mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> Close
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

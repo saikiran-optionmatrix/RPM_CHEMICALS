@@ -1,0 +1,52 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.managers-dialog-content {
+  padding: 16px 20px !important;
+  margin: 0 !important;
+}
+
+.app-table-container {
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.app-table-container .table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.app-table-container .app-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.app-table thead th,
+.app-table tbody td {
+  padding: 8px 12px !important;
+  vertical-align: middle;
+}
+
+.app-table tbody tr:hover td {
+  background-color: #f8fafc;
+}
+
+.app-table-container mat-paginator {
+  
+  border-top: none;
+  background-color: #ffffff;
+}
+
+.managers-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 20px 16px 20px !important;
+  margin: 0 !important;
+  border-top: 1px solid #e5e7eb;
+  background-color: #ffffff;
+}

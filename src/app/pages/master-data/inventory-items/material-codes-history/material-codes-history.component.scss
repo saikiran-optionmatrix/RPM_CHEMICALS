@@ -1,0 +1,52 @@
+:host {
+  display: block;
+}
+
+.inner-screen-page {
+  width: 100%;
+}
+
+.inner-header {
+  .inner-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.25;
+  }
+}
+
+.table-responsive {
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.app-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead th {
+    background-color: #3f3f3f !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    border: 1px solid #6b7280;
+    padding: 8px 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-size: 13.5px;
+  }
+
+  tbody td {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-size: 13.5px;
+    color: #212529;
+  }
+
+  tbody tr:hover td {
+    background-color: #f8fafc;
+  }
+}
+

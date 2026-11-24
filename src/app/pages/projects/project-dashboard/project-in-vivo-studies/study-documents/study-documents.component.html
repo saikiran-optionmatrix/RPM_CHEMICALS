@@ -1,0 +1,51 @@
+@if (study) {
+  <section class="docs-section">
+    <div class="docs-toolbar">
+      <span class="docs-lead">
+        References to the controlled-document repository &mdash; PRAGATI stores the link, not the file (&sect;14)
+      </span>
+      <button type="button" class="app-btn app-btn-primary" (click)="openAddDocumentDialog()">
+        <i class="fa fa-link" aria-hidden="true"></i>
+        Add reference
+      </button>
+    </div>
+
+    <div class="app-table-container docs-table-container">
+      <div class="table-responsive">
+        <table class="table app-table docs-table">
+          <thead>
+            <tr>
+              <th class="text-left col-type">Type</th>
+              <th class="text-left">Title</th>
+              <th class="text-left">Repository reference</th>
+              <th class="text-left col-ver">Version</th>
+              <th class="text-left col-date">Date</th>
+              <th class="text-center col-open">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (doc of documents; track doc.id) {
+              <tr>
+                <td class="text-nowrap">{{ doc.type }}</td>
+                <td>{{ doc.title }}</td>
+                <td class="text-nowrap ref-cell">{{ doc.ref }}</td>
+                <td class="text-nowrap">{{ doc.version || '—' }}</td>
+                <td class="text-nowrap">{{ doc.date || '—' }}</td>
+                <td class="text-center">
+                  <button type="button" class="app-btn app-btn-default doc-open-btn" (click)="openDocument(doc)">
+                    <i class="fa fa-external-link" aria-hidden="true"></i>
+                    <span>Open</span>
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="empty-cell">No references yet</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+}

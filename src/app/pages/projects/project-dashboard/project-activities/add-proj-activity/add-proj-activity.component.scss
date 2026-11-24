@@ -1,0 +1,93 @@
+:host {
+  display: block;
+}
+
+.left-nav-pills {
+  .nav-pills {
+    li {
+      width: 100%;
+
+      a {
+        width: 100%;
+        text-align: center;
+        justify-content: center !important;
+        align-items: center !important;
+        display: flex !important;
+        padding: 8px 12px;
+        min-height: 38px;
+        font-size: 13px;
+        font-weight: 500;
+        box-sizing: border-box;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        ::ng-deep .mdc-button__label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+.tab-scroll-container {
+  overflow-x: hidden !important;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+}
+
+.app-table-container {
+  width: 100%;
+  padding: 0 !important;
+}
+
+.table-action-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+
+  &.delete {
+    color: #dc2626;
+
+    &:hover {
+      background-color: #fef2f2;
+      border-color: #fecaca;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .mat-mdc-dialog-content {
+  overflow: hidden !important;
+  max-height: none !important;
+}

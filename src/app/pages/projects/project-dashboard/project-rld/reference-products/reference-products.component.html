@@ -1,0 +1,235 @@
+<div class="rld-tab-screen">
+
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+
+    <!-- Top Action Bar (Matching ttd-master) -->
+    <div class="app-page-actions">
+      <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()">
+        <mat-icon>filter_list</mat-icon>
+        <span>Filter</span>
+      </button>
+
+      <button type="button" class="app-btn app-btn-primary" (click)="openAddDialog()">
+        <mat-icon>add</mat-icon>
+        <span>Add RLD</span>
+      </button>
+    </div>
+
+    <!-- Filter Panel (Matching ttd-master) -->
+    @if (showFilter) {
+    <mat-card class="app-filter-panel mb-3">
+      <mat-card-content>
+        <div class="app-filter-grid">
+          <div class="app-filter-fields">
+            <div class="app-filter-field">
+              <label for="compKeyword">Search:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <input matInput id="compKeyword" [(ngModel)]="keyword" placeholder="Brand, ID, Manufacturer, NDC...">
+              </mat-form-field>
+            </div>
+
+            <div class="app-filter-field">
+              <label for="compMarket">Target Market:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <mat-select id="compMarket" [(ngModel)]="selectedMarket" placeholder="All Markets">
+                  <mat-option value="">All Markets</mat-option>
+                  <mat-option value="Russia / EAEU">Russia / EAEU</mat-option>
+                  <mat-option value="EU (DCP)">EU (DCP)</mat-option>
+                  <mat-option value="US (FDA)">US (FDA)</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="app-filter-field">
+              <label for="compRa">RA Approval:</label>
+              <mat-form-field appearance="outline" class="app-filter-control">
+                <mat-select id="compRa" [(ngModel)]="selectedRa" placeholder="All Statuses">
+                  <mat-option value="">All Statuses</mat-option>
+                  <mat-option value="Approved">Approved</mat-option>
+                  <mat-option value="Pending">Pending</mat-option>
+                  <mat-option value="Pending RA Review">Pending RA Review</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="app-filter-actions">
+            <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+              <mat-icon>search</mat-icon><span>Search</span>
+            </button>
+            <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+              <mat-icon>settings_backup_restore</mat-icon><span>Clear</span>
+            </button>
+          </div>
+
+          <div class="app-filter-toggle">
+            <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+              <mat-icon>keyboard_double_arrow_up</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    }
+
+    <!-- Table Responsive Container (27 Columns as specified) -->
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 80px;">Actions</th>
+            <th class="text-center" style="width: 60px;">S.No.</th>
+            <th class="text-center" style="min-width: 140px;">Comparator ID</th>
+            <th class="text-left" style="min-width: 180px;">RLD/Reference Product</th>
+            <th class="text-left" style="min-width: 170px;">Innovator (Company)</th>
+            <th class="text-left" style="min-width: 150px;">Manufacturer</th>
+            <th class="text-left" style="min-width: 190px;">MA / NDA holder</th>
+            <th class="text-left" style="min-width: 180px;">Country of manufacture</th>
+            <th class="text-left" style="min-width: 150px;">Dosage Form</th>
+            <th class="text-left" style="min-width: 100px;">Strength</th>
+            <th class="text-center" style="min-width: 90px;">Fill volume</th>
+            <th class="text-left" style="min-width: 150px;">Pack</th>
+            <th class="text-center" style="min-width: 130px;">Units per pack</th>
+            <th class="text-left" style="min-width: 140px;">Target market</th>
+            <th class="text-left" style="min-width: 140px;">Country of purchase</th>
+            <th class="text-center" style="min-width: 140px;">Identifier type</th>
+            <th class="text-center" style="min-width: 150px;">NDC No./MA No.</th>
+            <th class="text-center" style="min-width: 110px;">RLD (US)</th>
+            <th class="text-center" style="min-width: 180px;">Reference Standard (US)</th>
+            <th class="text-center" style="min-width: 220px;">Reference medicinal product (EU/other)</th>
+            <th class="text-left" style="min-width: 140px;">Evidence</th>
+            <th class="text-center" style="min-width: 170px;">RIMS / controlled doc</th>
+            <th class="text-left" style="min-width: 170px;">Verified on / by</th>
+            <th class="text-center" style="min-width: 140px;">RA approval</th>
+            <th class="text-center" style="min-width: 130px;">Comparator status</th>
+            <th class="text-center" style="min-width: 140px;">Stock pool</th>
+            <th class="text-left" style="min-width: 220px;">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of paginatedComparators; track c.id; let idx = $index) {
+          <tr>
+            <!-- 1. Actions -->
+            <td class="text-center">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit" (click)="openEditDialog(c)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete"
+                  (click)="deleteComparator(c)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+
+            <!-- 2. S.No. -->
+            <td class="text-center">{{ pageIndex * pageSize + idx + 1 }}</td>
+
+            <!-- 3. Comparator ID -->
+            <td class="text-center font-weight-bold">{{ c.id }}</td>
+
+            <!-- 4. RLD/Reference Product -->
+            <td class="text-left font-weight-bold">{{ c.brand }}</td>
+
+            <!-- 5. Innovator (Company) -->
+            <td class="text-left">{{ c.proj?.innov || '–' }}</td>
+
+            <!-- 6. Manufacturer -->
+            <td class="text-left">{{ c.mfr }}</td>
+
+            <!-- 7. MA / NDA holder -->
+            <td class="text-left">{{ c.mah }}</td>
+
+            <!-- 8. Country of manufacture -->
+            <td class="text-left">{{ c.mfgC || '–' }}</td>
+
+            <!-- 9. Dosage Form -->
+            <td class="text-left">{{ c.form }}</td>
+
+            <!-- 10. Strength -->
+            <td class="text-left">{{ c.strength }}</td>
+
+            <!-- 11. Fill volume -->
+            <td class="text-center">{{ c.fill || 'NA' }}</td>
+
+            <!-- 12. Pack -->
+            <td class="text-left">{{ c.pack }}</td>
+
+            <!-- 13. Units per pack -->
+            <td class="text-center">{{ c.upp }}</td>
+
+            <!-- 14. Target market -->
+            <td class="text-left">{{ c.market }}</td>
+
+            <!-- 15. Country of purchase -->
+            <td class="text-left">{{ c.purch }}</td>
+
+            <!-- 16. Identifier type -->
+            <td class="text-center">{{ c.idType }}</td>
+
+            <!-- 17. NDC No./MA No. -->
+            <td class="text-center font-weight-bold">{{ c.idNo }}</td>
+
+            <!-- 18. RLD (US) -->
+            <td class="text-center">{{ c.rld || 'N/A' }}</td>
+
+            <!-- 19. Reference Standard (US) -->
+            <td class="text-center">{{ c.rs || 'N/A' }}</td>
+
+            <!-- 20. Reference medicinal product (EU/other) -->
+            <td class="text-center">{{ c.rmp || 'N/A' }}</td>
+
+            <!-- 21. Evidence -->
+            <td class="text-left">{{ c.evid || '–' }}</td>
+
+            <!-- 22. RIMS / controlled doc -->
+            <td class="text-center">{{ c.rims || '–' }}</td>
+
+            <!-- 23. Verified on / by -->
+            <td class="text-left">
+              @if (c.verOn) {
+              <div>{{ rldService.formatDate(c.verOn) }}</div>
+              <div class="sub-text">{{ c.verBy }}</div>
+              } @else {
+              <span>–</span>
+              }
+            </td>
+
+            <!-- 24. RA approval -->
+            <td class="text-center">
+              <button type="button" class="status-button" [class.status-active]="c.ra === 'Approved'"
+                [class.status-inactive]="c.ra !== 'Approved'">
+                {{ c.ra || 'Pending' }}
+              </button>
+            </td>
+
+            <!-- 25. Comparator status -->
+            <td class="text-center">
+              <button type="button" class="status-button" [class.status-active]="c.status === 'Approved'"
+                [class.status-inactive]="c.status !== 'Approved'">
+                {{ c.status }}
+              </button>
+            </td>
+
+            <!-- 26. Stock pool -->
+            <td class="text-center font-weight-bold">{{ c.pool }}</td>
+
+            <!-- 27. Remarks -->
+            <td class="text-left">{{ c.rem || '–' }}</td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="27" class="empty-table">No comparators configured for this project.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginator (Matching ttd-master) -->
+    <mat-paginator [length]="filteredComparators.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+      (page)="handlePage($event)"></mat-paginator>
+
+  </div>
+
+</div>

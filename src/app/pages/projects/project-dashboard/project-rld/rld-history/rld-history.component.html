@@ -1,0 +1,50 @@
+<div class="rld-tab-screen">
+
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+
+    <div class="rld-info-banner mb-3">
+      <mat-icon>verified_user</mat-icon>
+      <div>
+        System-generated, read-only audit log for 21 CFR Part 11 / GxP compliance.
+        All comparator approvals, QA disposition releases, buffer overrides, and allocation blocks are timestamped and
+        attributed to the active user.
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="min-width: 150px;">Timestamp</th>
+            <th class="text-left" style="min-width: 180px;">User</th>
+            <th class="text-center" style="min-width: 100px;">Role</th>
+            <th class="text-center" style="min-width: 120px;">Record</th>
+            <th class="text-center" style="min-width: 100px;">ID</th>
+            <th class="text-left" style="min-width: 140px;">Field</th>
+            <th class="text-left" style="min-width: 260px;">Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (a of projectAudit; track a.timestamp + a.id) {
+          <tr>
+            <td class="text-center font-weight-bold">{{ a.timestamp }}</td>
+            <td class="text-left">{{ a.user }}</td>
+            <td class="text-center">
+              <span class="role-badge">{{ a.role }}</span>
+            </td>
+            <td class="text-center">{{ a.record }}</td>
+            <td class="text-center font-weight-bold">{{ a.id }}</td>
+            <td class="text-left">{{ a.field }}</td>
+            <td class="text-left">{{ a.change }}</td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="7" class="empty-table">No audit trail entries recorded for this project yet.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

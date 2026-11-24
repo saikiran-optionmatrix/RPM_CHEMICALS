@@ -1,0 +1,162 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+  <header class="analytics-header">
+    <h1>{{ projectName }}</h1>
+    <button type="button" class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon><span>Back</span>
+    </button>
+  </header>
+
+  <div class="container-fluid" style="padding: 0;">
+    <div class="row">
+      <div class="col-12">
+        <div class="app-table-container" style="padding: 0; width: 100%;">
+
+          <div class="app-page-actions">
+            <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()">
+              <mat-icon>filter_list</mat-icon>
+              <span>Filter</span>
+            </button>
+
+            <button type="button" class="app-btn app-btn-primary" (click)="onAdd()">
+              <mat-icon>add</mat-icon>
+              <span>Add Change Control</span>
+            </button>
+          </div>
+
+          @if (showFilter) {
+          <!-- HTML Structure Requirement for this Global CSS Template -->
+          <mat-card class="app-filter-panel">
+            <mat-card-content>
+              <div class="app-filter-grid">
+
+                <!-- 1. Wrap your fields here -->
+                <div class="app-filter-fields">
+                  <div class="app-filter-field">
+                    <label for="ccnKeyword">Keyword:</label>
+                    <mat-form-field appearance="outline" class="app-filter-control back">
+                      <input matInput id="ccnKeyword" class="back" [(ngModel)]="keyword"
+                        placeholder="Search Change Control">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="app-filter-field">
+                    <label for="ccnDept">Department:</label>
+                    <mat-form-field appearance="outline" class="app-filter-control back">
+                      <mat-select id="ccnDept" class="back" [(ngModel)]="selectedDepartment"
+                        placeholder="Select Department">
+                        <mat-option value="">All</mat-option>
+                        @for (dept of departments; track dept) {
+                        <mat-option [value]="dept">{{ dept }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="app-filter-field">
+                    <label for="ccnCategory">Category:</label>
+                    <mat-form-field appearance="outline" class="app-filter-control back">
+                      <mat-select id="ccnCategory" class="back" [(ngModel)]="selectedCategory"
+                        placeholder="Select Category">
+                        <mat-option value="">All</mat-option>
+                        @for (cat of categories; track cat) {
+                        <mat-option [value]="cat">{{ cat }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <!-- 2. Actions sit under the fields -->
+                <div class="app-filter-actions">
+                  <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                    <mat-icon>search</mat-icon>
+                    <span>Search</span>
+                  </button>
+                  <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                    <mat-icon>settings_backup_restore</mat-icon>
+                    <span>Clear</span>
+                  </button>
+                </div>
+
+                <!-- 3. Wrap your toggle button -->
+                <div class="app-filter-toggle">
+                  <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                    <mat-icon>keyboard_double_arrow_up</mat-icon>
+                  </button>
+                </div>
+
+              </div>
+            </mat-card-content>
+          </mat-card>
+          }
+
+          <div class="table-responsive">
+            <table class="table app-table">
+              <thead>
+                <tr>
+                  <th class="text-center" style="width: 85px;">Actions</th>
+                  <th class="text-left" style="min-width: 180px;">Change Control Number</th>
+                  <th class="text-center" style="width: 200px">Change Type</th>
+                  <th class="text-left" style="min-width: 170px;">Initiation Department</th>
+                  <th class="text-left" style="min-width: 150px;">Initiated By</th>
+                  <th class="text-center" style="width: 130px;">Initiation Date</th>
+                  <th class="text-center" style="width: 200px;">Permanent Change Control</th>
+                  <th class="text-center" style="width: 110px;">Market</th>
+                  <th class="text-center" style="width: 160px;">Category of Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of paginatedChangeControls; track item.changeControlNumber) {
+                <tr>
+                  <td class="text-center">
+                    <div class="table-actions">
+                      <button type="button" class="table-action-button edit" matTooltip="Edit"
+                        aria-label="Edit change control" (click)="onEdit(item)">
+                        <i class="fa fa-edit"></i>
+                      </button>
+                      <button type="button" class="table-action-button delete" matTooltip="Delete"
+                        aria-label="Delete change control" (click)="onDelete(item)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </td>
+                  <td class="text-left" style="font-weight: 500;">
+                    <a class="app-route-link" (click)="onOpenDashboard(item)"
+                      matTooltip="View Change Control Dashboard">
+                      {{ item.changeControlNumber }}
+                    </a>
+                  </td>
+                  <td>{{item.changeType}}</td>
+                  <td class="text-left">{{ item.initiationDepartment }}</td>
+                  <td class="text-left">{{ item.initiatedBy }}</td>
+                  <td class="text-center">{{ formatToDdMmYyyy(item.initiationDate) }}</td>
+                  <td class="text-center">
+                    <mat-checkbox [(ngModel)]="item.permanentChangeControl" color="primary"></mat-checkbox>
+                  </td>
+                  <td class="text-center">
+                    <span>{{ item.market }}</span>
+                  </td>
+                  <td class="text-center">
+                    <span>
+                      {{ item.categoryOfChange }}
+                    </span>
+                  </td>
+                </tr>
+                } @empty {
+                <tr>
+                  <td colspan="8" class="empty-table">No records found</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <mat-paginator [length]="filteredChangeControls.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+            [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+          </mat-paginator>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

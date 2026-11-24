@@ -1,0 +1,180 @@
+@if (study) {
+  @if (budget; as b) {
+    <div class="budget-container">
+      <div class="budget-kpis-grid">
+        <div class="budget-kpi blue">
+          <span class="kpi-label">Approved budget</span>
+          <span class="kpi-value">{{ formatMoney(b.approved) }}</span>
+          <span class="kpi-sub">{{ b.approvedOn ? 'Approved ' + b.approvedOn : 'Approval date —' }}</span>
+        </div>
+
+        <div class="budget-kpi purple">
+          <span class="kpi-label">Total committed</span>
+          <span class="kpi-value">{{ formatMoney(committedAmount) }}</span>
+          <span class="kpi-sub">
+            Contracted {{ formatMoney(b.contracted) }} + changes {{ formatMoney(b.changes) }}
+          </span>
+        </div>
+
+        <div class="budget-kpi green">
+          <span class="kpi-label">Actual</span>
+          <span class="kpi-value">{{ formatMoney(actualAmount) }}</span>
+          <span class="kpi-sub">
+            Paid {{ formatMoney(b.paid) }} · Invoiced {{ formatMoney(b.invoiced) }} ({{ budgetBasis }} basis)
+          </span>
+        </div>
+
+        <div class="budget-kpi orange">
+          <span class="kpi-label">Forecast cost to complete</span>
+          <span class="kpi-value">{{ formatMoney(b.forecastToComplete) }}</span>
+          <span class="kpi-sub">Remaining estimate</span>
+        </div>
+
+        <div class="budget-kpi teal">
+          <span class="kpi-label">Forecast total</span>
+          <span class="kpi-value">{{ formatMoney(forecastTotalAmount) }}</span>
+          <span class="kpi-sub">Actual + to complete</span>
+        </div>
+
+        <div class="budget-kpi" [ngClass]="varianceAmount > 0 ? 'red' : 'green'">
+          <span class="kpi-label">Variance vs approved</span>
+          <span class="kpi-value">{{ formatMoney(varianceAmount, true) }}</span>
+          <span class="kpi-sub">{{ varianceSubtext }}</span>
+        </div>
+      </div>
+
+      <div class="budget-grid-2">
+        <div class="budget-card">
+          <div class="budget-card-head">
+            <h3>Budget record (§11)</h3>
+            <button
+              type="button"
+              class="table-action-button edit"
+              title="Edit budget"
+              aria-label="Edit budget"
+              (click)="openBudgetDialog()">
+              <i class="fa fa-edit" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="budget-kv-list">
+            <div class="kv-row">
+              <div class="kv-label">Currency</div>
+              <div class="kv-value">{{ b.currency }}</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">Approved budget</div>
+              <div class="kv-value num">{{ formatMoney(b.approved) }}</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">Budget approval date</div>
+              <div class="kv-value">{{ b.approvedOn || '—' }}</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">CRO quotation (version)</div>
+              <div class="kv-value">{{ croQuotationDisplay }}</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">Contracted amount</div>
+              <div class="kv-value num">{{ formatMoney(b.contracted) }}</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">Additional approved changes</div>
+              <div class="kv-value num">{{ formatMoney(b.changes) }}</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">Actual — paid</div>
+              <div class="kv-value num">{{ formatMoney(b.paid) }}</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">Actual — invoiced</div>
+              <div class="kv-value num">{{ formatMoney(b.invoiced) }}</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">Forecast cost to complete</div>
+              <div class="kv-value num">{{ formatMoney(b.forecastToComplete) }}</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">Finance reference</div>
+              <div class="kv-value">{{ b.financeRef || '—' }}</div>
+            </div>
+          </div>
+
+          <p class="budget-footnote">
+            Paid and invoiced are kept separate and never combined. Original currency is shown; consolidated values
+            need a conversion rate, date and source agreed with Finance.
+          </p>
+        </div>
+
+        <div class="budget-card">
+          <div class="budget-card-head">
+            <h3>Payment milestones</h3>
+            <button type="button" class="app-btn app-btn-primary" (click)="openPaymentDialog(-1)">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              Add
+            </button>
+          </div>
+
+          <div class="app-table-container payment-table-container">
+            <div class="table-responsive">
+              <table class="table app-table payment-table">
+                <thead>
+                  <tr>
+                    <th class="text-center col-actions">Actions</th>
+                    <th class="text-right n">Amount</th>
+                    <th class="text-left">Trigger</th>
+                    <th class="text-left">Due</th>
+                    <th class="text-left">Approval status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if (b.payments.length === 0) {
+                    <tr>
+                      <td colspan="5" class="empty-cell">None</td>
+                    </tr>
+                  } @else {
+                    @for (p of b.payments; track $index; let i = $index) {
+                      <tr>
+                        <td class="text-center col-actions">
+                          <div class="table-actions">
+                            <button
+                              type="button"
+                              class="table-action-button edit"
+                              title="Edit payment milestone"
+                              aria-label="Edit payment milestone"
+                              (click)="openPaymentDialog(i)">
+                              <i class="fa fa-edit" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                        </td>
+                        <td class="n">{{ formatMoney(p.amount) }}</td>
+                        <td>{{ p.trigger || '—' }}</td>
+                        <td class="nw">{{ p.dueDate || '—' }}</td>
+                        <td>
+                          <span class="status-pill" [ngClass]="getPaymentStatusClass(p.status)">
+                            {{ p.status }}
+                          </span>
+                        </td>
+                      </tr>
+                    }
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="budget-empty-banner">
+      <div class="banner-content">
+        <i class="fa fa-info-circle banner-icon" aria-hidden="true"></i>
+        <span>No budget recorded for this study yet.</span>
+      </div>
+      <button type="button" class="app-btn app-btn-primary" (click)="openBudgetDialog()">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        Add budget
+      </button>
+    </div>
+  }
+}

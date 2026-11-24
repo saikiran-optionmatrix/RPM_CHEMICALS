@@ -1,0 +1,157 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Material' : 'Add Material' }}
+  </h1>
+</div>
+
+<div mat-dialog-content class="dialog-body">
+  <form [formGroup]="form" (ngSubmit)="save()">
+
+    <!-- Row 1: Category & Material Code -->
+    <div class="row">
+      <div class="col-md-6 mb-2">
+        <label class="add-member-label control-label">Category</label>
+        <select class="form-control" formControlName="category">
+          <option value="">Select Category</option>
+          @for (cat of categoryOptions; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+        @if (isSubmitting && form.get('category')?.invalid) {
+          <div class="field-error">Category is required</div>
+        }
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <label class="add-member-label control-label">Material Code (Mtl code)</label>
+        <input type="number" class="form-control" placeholder="e.g. 10000435" formControlName="code">
+        @if (isSubmitting && form.get('code')?.invalid) {
+          <div class="field-error">Material code is required</div>
+        }
+      </div>
+    </div>
+
+    <!-- Row 2: Description -->
+    <div class="row">
+      <div class="col-12 mb-2">
+        <label class="add-member-label control-label">Description</label>
+        <input type="text" class="form-control" placeholder="Enter material description / name" formControlName="description">
+        @if (isSubmitting && form.get('description')?.invalid) {
+          <div class="field-error">Description is required</div>
+        }
+      </div>
+    </div>
+
+    <!-- Row 3: UOM, Price, Purchased Qty -->
+    <div class="row">
+      <div class="col-md-4 mb-2">
+        <label class="add-member-label control-label">UOM</label>
+        <select class="form-control" formControlName="uom">
+          @for (u of uomOptions; track u) {
+            <option [value]="u">{{ u }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <label class="add-member-label control-label">Price (₹)</label>
+        <input type="number" step="0.01" class="form-control" placeholder="e.g. 125000" formControlName="price">
+        @if (isSubmitting && form.get('price')?.invalid) {
+          <div class="field-error">Valid price is required</div>
+        }
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <label class="add-member-label control-label">Purchased Qty</label>
+        <input type="number" step="0.001" class="form-control" placeholder="e.g. 1.5" formControlName="purchasedQty">
+        @if (isSubmitting && form.get('purchasedQty')?.invalid) {
+          <div class="field-error">Purchased quantity is required</div>
+        }
+      </div>
+    </div>
+
+    <!-- Total Cost Summary Strip -->
+    <div class="cost-summary-strip mb-2">
+      <span class="cost-label">Calculated Total Cost:</span>
+      <span class="cost-value">₹ {{ totalCost | number:'1.2-2' }}</span>
+    </div>
+
+    <!-- Row 4: Cycles Planned, Input Qty UOM, CF -->
+    <div class="row">
+      <div class="col-md-4 mb-2">
+        <label class="control-label">No of Cycles Planned</label>
+        <input type="number" class="form-control white" placeholder="e.g. 20" formControlName="cyclesPlanned">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <label class="control-label">Input Qty UOM</label>
+        <select class="form-control white" formControlName="inputQtyUom">
+          @for (u of uomOptions; track u) {
+            <option [value]="u">{{ u }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <label class="control-label">CF (Conversion Factor)</label>
+        <input type="number" step="0.01" class="form-control white" placeholder="e.g. 1" formControlName="cf">
+      </div>
+    </div>
+
+    <!-- Row 5: Batch Sizes -->
+    <div class="row">
+      <div class="col-md-4 mb-2">
+        <label class="control-label">Developments Batch Size</label>
+        <input type="number" class="form-control white" placeholder="e.g. 10000" formControlName="devBatchSize">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <label class="control-label">ScaleUP Batch Size</label>
+        <input type="number" class="form-control white" placeholder="e.g. 50000" formControlName="scaleUpBatchSize">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <label class="control-label">EB Size</label>
+        <input type="number" class="form-control white" placeholder="e.g. 100000" formControlName="ebSize">
+      </div>
+    </div>
+
+    <!-- Row 6: WBS Mapping -->
+    <div class="row">
+      <div class="col-md-6 mb-2">
+        <label class="add-member-label control-label">WBS (Dev)</label>
+        <select class="form-control" formControlName="wdev">
+          @for (w of wbsDevOptions; track w) {
+            <option [value]="w">{{ w }}</option>
+          }
+        </select>
+        @if (isSubmitting && form.get('wdev')?.invalid) {
+          <div class="field-error">WBS (Dev) is required</div>
+        }
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <label class="add-member-label control-label">WBS (Scale-up / EB)</label>
+        <select class="form-control" formControlName="wsu">
+          @for (w of wbsSuOptions; track w) {
+            <option [value]="w">{{ w }}</option>
+          }
+        </select>
+        @if (isSubmitting && form.get('wsu')?.invalid) {
+          <div class="field-error">WBS (Scale-up/EB) is required</div>
+        }
+      </div>
+    </div>
+
+    <!-- Dialog Action Buttons Footer -->
+    <div class="dialog-actions-footer">
+      <button type="button" class="app-btn app-btn-default" (click)="close()">
+        <mat-icon>cancel</mat-icon> Close
+      </button>
+      <button type="submit" class="app-btn app-btn-primary">
+        <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Save' }}
+      </button>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,53 @@
+<div class="more-screen-container">
+  <!-- Header Bar -->
+  <div class="more-header-bar">
+    <div>
+      <h2 class="more-title">Activities Path Comparison (No Constrained &amp; Constrained)</h2>
+      <p class="more-subtitle">Sequential project activity chains with No Constrained and Constrained durations</p>
+    </div>
+  </div>
+
+  <!-- Table Matching img1 -->
+  <div class="app-table-container">
+    <div class="table-responsive">
+      <table class="table app-table more-table">
+        <thead>
+          <tr>
+            <th class="text-center col-sno">S No.</th>
+            <th class="text-left col-activities">Activities</th>
+            <th class="text-center col-metric">No Constrained</th>
+            <th class="text-center col-metric">Constrained</th>
+            <th class="text-center col-details">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of pathRows; track row.sno) {
+            <tr>
+              <td class="text-center col-sno-cell">{{ row.sno }}</td>
+              <td class="text-left activities-cell">
+                @for (act of row.activities; track act; let isLast = $last) {
+                  <span class="activity-name">{{ act }}</span>
+                  @if (!isLast) {
+                    <strong class="bold-arrow">&gt;&gt;</strong>
+                  }
+                }
+              </td>
+              <td class="text-center col-metric-cell">{{ row.ccp }}</td>
+              <td class="text-center col-metric-cell">{{ row.ccm }}</td>
+              <td class="text-center col-details-cell">
+                <button
+                  type="button"
+                  class="details-arrow-btn"
+                  matTooltip="View Details for Path #{{ row.sno }}"
+                  aria-label="View Path Details"
+                  (click)="openPathDetails(row)">
+                  <mat-icon>arrow_forward</mat-icon>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

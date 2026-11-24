@@ -1,0 +1,51 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+
+        <!-- Working Days Table -->
+        <div class="table-responsive">
+          <table class="table app-table">
+            <thead>
+              <tr>
+                <th style="padding-left: 20px;">Day</th>
+                <th class="text-center" style="width: 100px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (day of workingDays; track day.name) {
+              <tr>
+                <!-- Day -->
+                <td style="padding-left: 20px; font-weight: 500;">
+                  {{ day.name }}
+                </td>
+
+                <!-- Empty Column Checkbox -->
+                <td class="text-center">
+                  <mat-checkbox [(ngModel)]="day.isWorking" color="primary"></mat-checkbox>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        @if (saveSuccessMessage) {
+        <div class="alert alert-success mt-3" style="font-size: 14px; padding: 10px 16px; margin-bottom: 0; border-radius: 4px;">
+          <mat-icon style="vertical-align: middle; font-size: 18px; width: 18px; height: 18px; margin-right: 6px;">check_circle</mat-icon>
+          <span>{{ saveSuccessMessage }}</span>
+        </div>
+        }
+
+        <!-- Save Button at the end -->
+        <div class="d-flex justify-content-end mt-3">
+          <button type="button" class="app-btn app-btn-primary" (click)="onSave()">
+            <mat-icon>save</mat-icon>
+            <span>Save</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

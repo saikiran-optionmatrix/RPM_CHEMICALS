@@ -1,0 +1,585 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+
+        <!-- ==========================================
+             PAGE ACTIONS & TOGGLES
+             ========================================== -->
+        <div class="app-page-actions"
+          style="justify-content: flex-end; flex-wrap: wrap; gap: 12px; align-items: center;">
+
+          <!-- 1. Exclude Completed Checkbox -->
+          <mat-checkbox [(ngModel)]="excludeCompleted" (change)="onExcludeCompletedChange()" color="primary"
+            style="margin-right: 8px;">
+            Exclude Completed
+          </mat-checkbox>
+
+          <!-- 2. Overdue Checkbox -->
+          <mat-checkbox [(ngModel)]="showOverdueOnly" (change)="toggleOverdueOnly($event.checked)" color="primary"
+            style="margin-right: 8px;">
+            Overdue
+          </mat-checkbox>
+
+         
+
+
+
+          <!-- 4. View Toggles -->
+          <div class="view-toggle" style="background: #f1f5f9; border-radius: 6px; padding: 4px; display: inline-flex; gap: 4px;">
+            <button type="button" class="app-btn" [class.app-btn-filter]="activeView === 'calendar'"
+              [class.app-btn-default]="activeView !== 'calendar'" (click)="toggleView('calendar')">
+              <mat-icon>calendar_month</mat-icon>
+              <span>Calendar View</span>
+            </button>
+            <button type="button" class="app-btn" [class.app-btn-filter]="activeView === 'table'"
+              [class.app-btn-default]="activeView !== 'table'" (click)="toggleView('table')">
+              <mat-icon>view_column</mat-icon>
+              <span>Table View</span>
+            </button>
+          </div>
+
+          <!-- 3. Grid Columns -->
+          <button type="button" class="app-btn app-btn-default">
+            <mat-icon>grid_on</mat-icon>
+            <span>Grid Columns</span>
+          </button>
+
+          <!-- 4. Filter Toggle -->
+          <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()" [class.active]="showFilter">
+            <mat-icon>filter_list</mat-icon>
+            <span>Filter</span>
+          </button>
+        </div>
+
+        <!-- ==========================================
+             FILTER PANEL
+             ========================================== -->
+        @if (showFilter) {
+        <mat-card class="app-filter-panel" style="margin-bottom: 20px;">
+          <mat-card-content>
+            <form [formGroup]="filterForm" class="app-filter-grid">
+
+              <div class="app-filter-fields">
+                <div class="app-filter-field">
+                  <label for="todoKeyword">Keyword:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="todoKeyword" formControlName="Keyword" placeholder="Search keyword">
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="todoStage">Select Stage:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="todoStage" formControlName="Stage" placeholder="Select Stage">
+                      <mat-option [value]="null">All Stages</mat-option>
+                      @for (s of stageOptions; track s) {
+                      <mat-option [value]="s">{{ s }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="todoDepartment">Select Department:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="todoDepartment" formControlName="Department" placeholder="Select Department">
+                      <mat-option [value]="null">All Departments</mat-option>
+                      @for (dept of departmentOptions; track dept) {
+                      <mat-option [value]="dept">{{ dept }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="todoRole">Select Role:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="todoRole" formControlName="Role" placeholder="Select Role">
+                      <mat-option [value]="null">All Roles</mat-option>
+                      @for (r of roleOptions; track r) {
+                      <mat-option [value]="r">{{ r }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="app-filter-actions">
+                <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                  <mat-icon>search</mat-icon>
+                  <span>Search</span>
+                </button>
+                <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                  <mat-icon>settings_backup_restore</mat-icon>
+                  <span>Clear</span>
+                </button>
+              </div>
+
+              <div class="app-filter-toggle">
+                <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                  <mat-icon>keyboard_double_arrow_up</mat-icon>
+                </button>
+              </div>
+
+            </form>
+          </mat-card-content>
+        </mat-card>
+        }
+
+        <!-- Scroll Buttons -->
+        <div class="d-flex justify-content-end mb-2" style="gap: 10px;">
+          <div class="d-flex justify-content-end mb-2">
+            <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+              (click)="activeView === 'calendar' ? scrollCalendarLeft() : scrollLeft()">
+              <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+            </button>
+            <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;"
+              (click)="activeView === 'calendar' ? scrollCalendarRight() : scrollRight()">
+              <mat-icon style="color: #414141;">fast_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             CALENDAR VIEW (Split: Calendar Sidebar + Todo Table)
+             ========================================== -->
+        @if (activeView === 'calendar') {
+        <div class="dashboard-content" style="display: flex; gap: 16px; align-items: flex-start; margin-top: 10px;">
+
+          <!-- Left Calendar Sidebar -->
+          <aside class="calendar-sidebar"
+            style="width: 310px; flex-shrink: 0; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px; box-sizing: border-box;">
+            <div class="calendar-card">
+              <!-- Month Navigation -->
+              <div class="month-selector"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <button class="nav-arrow" (click)="prevCalendarMonth()" aria-label="Previous month"
+                  style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_left</mat-icon>
+                </button>
+                <strong style="font-size: 14px; color: #0f172a;">{{ currentCalendarMonthLabel }}</strong>
+                <button class="nav-arrow" (click)="nextCalendarMonth()" aria-label="Next month"
+                  style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_right</mat-icon>
+                </button>
+              </div>
+
+              <!-- 7-Column Calendar Grid (Sun - Sat) -->
+              <div class="calendar-grid"
+                style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; margin-bottom: 16px;">
+                @for (d of dayNames; track $index) {
+                <div class="weekday" style="font-size: 11.5px; color: #64748b; font-weight: 600; padding: 4px 0;">{{ d }}</div>
+                }
+
+                @for (day of calendarDays; track $index) {
+                <div class="day-cell" [class.faded]="!day.inCurrentMonth" [class.active]="day.isSelected"
+                  [class.today-cell]="day.isToday && !day.isSelected"
+                  (click)="selectCalendarDate(day)"
+                  style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 44px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease;">
+                  <span class="date-num" style="font-size: 13px; line-height: 1;">{{ day.dayNumber }}</span>
+                  @if (day.count > 0) {
+                  <span class="activity-count-num"
+                    [style.color]="day.isSelected ? '#ffffff' : (day.isBacklog ? '#dc2626' : '#2563eb')"
+                    style="display: block; font-size: 10.5px; font-weight: 700; line-height: 12px; margin-top: 2px;">
+                    {{ day.count }}
+                  </span>
+                  }
+                </div>
+                }
+              </div>
+
+            </div>
+          </aside>
+
+          <!-- Right Activity Table beside Calendar -->
+          <div class="app-table-container"
+            style="flex: 1; min-width: 0; overflow: hidden; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px;">
+
+            <!-- Table Container -->
+            <div #calendarTableContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+              <table class="table app-table" style="min-width: 1750px; white-space: nowrap;">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 80px; min-width: 80px;">Actions</th>
+                    <th class="text-center" style="width: 70px; min-width: 70px;">Timeline</th>
+                    <th class="text-center" style="width: 70px; min-width: 70px;">Done</th>
+                    <th class="text-center" style="width: 80px; min-width: 80px;">Approved</th>
+                    <th class="text-left" style="min-width: 160px;">Stage</th>
+                    <th class="text-left" style="min-width: 190px;">Deliverable</th>
+                    <th class="text-left" style="min-width: 190px;">Activity</th>
+                    <th class="text-left" style="min-width: 180px;">Task</th>
+                    <th class="text-left" style="min-width: 200px;">Subject</th>
+                    <th class="text-center" style="width: 80px; min-width: 80px;">Description</th>
+                    <th class="text-left" style="min-width: 140px;">Assigned To</th>
+                    <th class="text-center" style="min-width: 120px;">Date Created</th>
+                    <th class="text-center" style="min-width: 120px;">Due Date</th>
+                    <th class="text-left" style="min-width: 130px;">Department</th>
+                    <th class="text-center" style="width: 110px; min-width: 110px;">Updated</th>
+                    <th class="text-center" style="width: 130px; min-width: 130px;">Update By</th>
+                    <th class="text-center" style="width: 80px; min-width: 80px;">History</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @for (row of calendarPaginatedTodos; track row.id) {
+                  <tr [class.row-done]="row.done">
+                    <!-- Actions -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <div class="table-actions" style="justify-content: center; gap: 4px;">
+                        <button type="button" class="table-action-button edit" matTooltip="Edit Todo" aria-label="Edit todo"
+                          (click)="onEditTodo(row)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" class="table-action-button delete" matTooltip="Delete Todo" aria-label="Delete todo"
+                          (click)="onDeleteTodo(row)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+
+                    <!-- Timeline -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <button type="button" class="timeline-trigger-btn" (click)="openTimelineModal(row)"
+                        matTooltip="View Timeline" aria-label="View Timeline">
+                        <mat-icon>calendar_today</mat-icon>
+                      </button>
+                    </td>
+
+                    <!-- Done Checkbox -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <mat-checkbox [(ngModel)]="row.done" (change)="toggleDone(row)" color="primary"></mat-checkbox>
+                    </td>
+
+                    <!-- Approved Checkbox -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <mat-checkbox [(ngModel)]="row.approved" (change)="toggleApproved(row)" color="primary"></mat-checkbox>
+                    </td>
+
+                    <!-- Stage -->
+                    <td class="text-left font-weight-500" style="vertical-align: middle; color: #1e293b;">
+                      {{ row.stage || row.Stage || '—' }}
+                    </td>
+
+                    <!-- Deliverable -->
+                    <td class="text-left" style="vertical-align: middle; color: #334155;">
+                      {{ row.deliverable || row.Deliverable || '—' }}
+                    </td>
+
+                    <!-- Activity -->
+                    <td class="text-left" style="vertical-align: middle; color: #334155;">
+                      {{ row.activity || row.Activity || '—' }}
+                    </td>
+
+                    <!-- Task (Red when Backlog/Overdue) -->
+                    <td class="text-left font-weight-500" style="vertical-align: middle;"
+                      [style.color]="(isBacklogTodo(row) || isTaskOverdue(row)) ? '#dc2626' : '#1e293b'">
+                      {{ row.task || row.taskName || row.Task || '—' }}
+                    </td>
+
+                    <!-- Subject (Red when Backlog/Overdue) -->
+                    <td class="text-left font-weight-500" style="vertical-align: middle;"
+                      [style.color]="(isBacklogTodo(row) || isTaskOverdue(row)) ? '#dc2626' : '#1e293b'">
+                      {{ row.subject || row.Subject || '—' }}
+                    </td>
+
+                    <!-- Description -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      @if (row.description || row.Description) {
+                      <mat-icon [matTooltip]="row.description || row.Description" matTooltipPosition="above"
+                        style="font-size: 20px; width: 20px; height: 20px; color: #2563eb; cursor: pointer; vertical-align: middle;">
+                        info
+                      </mat-icon>
+                      } @else {
+                      <span style="color: #94a3b8;">—</span>
+                      }
+                    </td>
+
+                    <!-- Assigned To -->
+                    <td class="text-left" style="vertical-align: middle;">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">person</mat-icon>
+                        <span>{{ row.assignedTo || row.responsibility || row.Responsibility || '—' }}</span>
+                      </div>
+                    </td>
+
+                    <!-- Date Created -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      {{ (row.dateCreated || row.CreatedDate) ? ((row.dateCreated || row.CreatedDate) | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- Due Date -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      {{ (row.dueDate || row.DueDate) ? ((row.dueDate || row.DueDate) | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- Department -->
+                    <td class="text-left" style="vertical-align: middle;">
+                      {{ row.department || row.Department || '—' }}
+                    </td>
+
+                    <!-- Updated -->
+                    <td class="text-center" style="white-space: nowrap; vertical-align: middle;">
+                      {{ (row.updatedDate || row.dateCreated || row.CreatedDate) ? ((row.updatedDate || row.dateCreated || row.CreatedDate) | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- Update By -->
+                    <td class="text-center" style="white-space: nowrap; vertical-align: middle;">
+                      {{ row.updatedBy || row.assignedTo || row.responsibility || row.Responsibility || '—' }}
+                    </td>
+
+                    <!-- History -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <a href="javascript:void(0)" class="history-number-link" (click)="openHistory(row)" matTooltip="View Record History">
+                        {{ row.historyCount || getHistoryCount($index) }}
+                      </a>
+                    </td>
+                  </tr>
+                  } @empty {
+                  <tr>
+                    <td colspan="17" class="empty-table text-center">No records found</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Calendar Paginator -->
+            <mat-paginator [length]="calendarFilteredTodos.length" [pageSize]="calendarPageSize"
+              [pageIndex]="calendarPageIndex" [pageSizeOptions]="[5, 10, 20, 50]"
+              (page)="handleCalendarPage($event)" showFirstLastButtons>
+            </mat-paginator>
+
+          </div>
+
+        </div>
+        }
+
+        <!-- ==========================================
+             TABLE / GRID VIEW (17 Columns from ProjectTodoComponent)
+             ========================================== -->
+        @if (activeView === 'table') {
+        <div #tableContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+          <table class="table app-table" style="min-width: 1750px; white-space: nowrap;">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 80px; min-width: 80px;">Actions</th>
+                <th class="text-center" style="width: 70px; min-width: 70px;">Timeline</th>
+                <th class="text-center" style="width: 70px; min-width: 70px;">Done</th>
+                <th class="text-center" style="width: 80px; min-width: 80px;">Approved</th>
+                <th class="text-left" style="min-width: 160px;">Stage</th>
+                <th class="text-left" style="min-width: 190px;">Deliverable</th>
+                <th class="text-left" style="min-width: 190px;">Activity</th>
+                <th class="text-left" style="min-width: 180px;">Task</th>
+                <th class="text-left" style="min-width: 200px;">Subject</th>
+                <th class="text-center" style="width: 80px; min-width: 80px;">Description</th>
+                <th class="text-left" style="min-width: 140px;">Assigned To</th>
+                <th class="text-center" style="min-width: 120px;">Date Created</th>
+                <th class="text-center" style="min-width: 120px;">Due Date</th>
+                <th class="text-left" style="min-width: 130px;">Department</th>
+                <th class="text-center" style="width: 110px; min-width: 110px;">Updated</th>
+                <th class="text-center" style="width: 130px; min-width: 130px;">Update By</th>
+                <th class="text-center" style="width: 80px; min-width: 80px;">History</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of paginatedData; track row.id) {
+              <tr [class.row-done]="row.done">
+                <!-- 1. Actions -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <div class="table-actions" style="justify-content: center; gap: 4px;">
+                    <button type="button" class="table-action-button edit" matTooltip="Edit Todo" aria-label="Edit todo"
+                      (click)="onEditTodo(row)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button type="button" class="table-action-button delete" matTooltip="Delete Todo" aria-label="Delete todo"
+                      (click)="onDeleteTodo(row)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
+
+                <!-- 2. Timeline -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <button type="button" class="timeline-trigger-btn" (click)="openTimelineModal(row)"
+                    matTooltip="View Timeline" aria-label="View Timeline">
+                    <mat-icon>calendar_today</mat-icon>
+                  </button>
+                </td>
+
+                <!-- 3. Done Checkbox -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox [(ngModel)]="row.done" (change)="toggleDone(row)" color="primary"></mat-checkbox>
+                </td>
+
+                <!-- 4. Approved Checkbox -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox [(ngModel)]="row.approved" (change)="toggleApproved(row)" color="primary"></mat-checkbox>
+                </td>
+
+                <!-- 5. Stage -->
+                <td class="text-left font-weight-500" style="vertical-align: middle; color: #1e293b;">
+                  {{ row.stage || row.Stage || '—' }}
+                </td>
+
+                <!-- 6. Deliverable -->
+                <td class="text-left" style="vertical-align: middle; color: #334155;">
+                  {{ row.deliverable || row.Deliverable || '—' }}
+                </td>
+
+                <!-- 7. Activity -->
+                <td class="text-left" style="vertical-align: middle; color: #334155;">
+                  {{ row.activity || row.Activity || '—' }}
+                </td>
+
+                <!-- 8. Task -->
+                <td class="text-left font-weight-500" style="vertical-align: middle;"
+                  [style.color]="isTaskOverdue(row) ? '#dc2626' : '#1e293b'">
+                  {{ row.task || row.taskName || row.Task || '—' }}
+                </td>
+
+                <!-- 9. Subject -->
+                <td class="text-left font-weight-500" style="vertical-align: middle;"
+                  [style.color]="isTaskOverdue(row) ? '#dc2626' : '#1e293b'">
+                  {{ row.subject || row.Subject || '—' }}
+                </td>
+
+                <!-- 10. Description -->
+                <td class="text-center" style="vertical-align: middle;">
+                  @if (row.description || row.Description) {
+                  <mat-icon [matTooltip]="row.description || row.Description" matTooltipPosition="above"
+                    style="font-size: 20px; width: 20px; height: 20px; color: #2563eb; cursor: pointer; vertical-align: middle;">
+                    info
+                  </mat-icon>
+                  } @else {
+                  <span style="color: #94a3b8;">—</span>
+                  }
+                </td>
+
+                <!-- 11. Assigned To -->
+                <td class="text-left" style="vertical-align: middle;">
+                  <div style="display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+                    <mat-icon
+                      style="font-size: 16px; width: 16px; height: 16px; line-height: 16px; color: #64748b;">person</mat-icon>
+                    <span>{{ row.assignedTo || row.responsibility || row.Responsibility || row.role || '—' }}</span>
+                  </div>
+                </td>
+
+                <!-- 12. Date Created -->
+                <td class="text-center" style="vertical-align: middle;">
+                  {{ (row.dateCreated || row.CreatedDate) ? ((row.dateCreated || row.CreatedDate) | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- 13. Due Date -->
+                <td class="text-center" style="vertical-align: middle;">
+                  {{ (row.dueDate || row.DueDate) ? ((row.dueDate || row.DueDate) | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- 14. Department -->
+                <td class="text-left" style="vertical-align: middle;">
+                  {{ row.department || row.Department || '—' }}
+                </td>
+
+                <!-- 15. Updated -->
+                <td class="text-center" style="white-space: nowrap; vertical-align: middle;">
+                  {{ (row.updatedDate || row.dateCreated || row.CreatedDate) ? ((row.updatedDate || row.dateCreated || row.CreatedDate) | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- 16. Update By -->
+                <td class="text-center" style="white-space: nowrap; vertical-align: middle;">
+                  {{ row.updatedBy || row.assignedTo || row.responsibility || row.Responsibility || '—' }}
+                </td>
+
+                <!-- 17. History -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <a href="javascript:void(0)" class="history-number-link" (click)="openHistory(row)" matTooltip="View Record History">
+                    {{ row.historyCount || getHistoryCount($index) }}
+                  </a>
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="17" class="empty-table text-center">No records found</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <mat-paginator [length]="totalSize" [pageSize]="pageSize" [pageIndex]="currentPage"
+          [pageSizeOptions]="[5, 10, 20, 50, 100]" (page)="handlePage($event)" showFirstLastButtons>
+        </mat-paginator>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     TIMELINE POP-UP MODAL
+     ========================================== -->
+@if (showTimelineModal && selectedTimelineTask) {
+<div class="bl-modal-overlay" (click)="closeTimelineModal()" (wheel)="$event.stopPropagation()">
+  <div class="timeline-popup-card" (click)="$event.stopPropagation()" (wheel)="$event.stopPropagation()">
+
+    <div class="timeline-popup-header">
+      <div class="timeline-popup-title-wrap">
+        <div class="timeline-icon-box">
+          <mat-icon style="color: #2563eb; font-size: 22px; width: 22px; height: 22px;">calendar_today</mat-icon>
+        </div>
+        <h3 class="timeline-popup-title">
+          Timeline &mdash; {{ selectedTimelineTask.subject || selectedTimelineTask.Subject || selectedTimelineTask.projectName || selectedTimelineTask.ProjectName }}
+        </h3>
+      </div>
+      <button class="timeline-close-btn" (click)="closeTimelineModal()" type="button">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="timeline-dates-container">
+      <div class="timeline-accent-bar"></div>
+      <div class="timeline-grid-content">
+        <div class="timeline-grid-row">
+          <div class="timeline-date-col">
+            <div class="timeline-date-label">Due Date</div>
+            <div class="timeline-date-value">{{ (selectedTimelineTask.dueDate || selectedTimelineTask.DueDate) ? ((selectedTimelineTask.dueDate || selectedTimelineTask.DueDate) |
+              date:'dd-MMM-yyyy') : '—' }}</div>
+          </div>
+          <div class="timeline-date-col">
+            <div class="timeline-date-label">Completion Date</div>
+            <div class="timeline-date-value">{{ (selectedTimelineTask.completionDate || selectedTimelineTask.CompletionDate) ?
+              ((selectedTimelineTask.completionDate || selectedTimelineTask.CompletionDate) | date:'dd-MMM-yyyy') : '—' }}</div>
+          </div>
+          <div class="timeline-date-col timeline-date-col--last">
+            <div class="timeline-date-label">Status</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.done ? 'Completed' : (selectedTimelineTask.Status || (selectedTimelineTask.IsActive ? 'Active' : 'Pending')) }}</div>
+          </div>
+        </div>
+        <div class="timeline-row-divider"></div>
+        <div class="timeline-grid-row">
+          <div class="timeline-date-col">
+            <div class="timeline-date-label">Responsibility</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.assignedTo || selectedTimelineTask.responsibility || selectedTimelineTask.Responsibility || '—' }}</div>
+          </div>
+          <div class="timeline-date-col timeline-date-col--last">
+            <div class="timeline-date-label">Project Name</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.projectName || selectedTimelineTask.ProjectName || '—' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-desc-box">
+      <div class="timeline-desc-header">
+        <mat-icon style="font-size: 18px; width: 18px; height: 18px; color: #2563eb;">description</mat-icon>
+        <span>Comments & Details</span>
+      </div>
+      <div class="timeline-desc-content">
+        {{ selectedTimelineTask.description || selectedTimelineTask.Description || selectedTimelineTask.Comments || 'No comments available for this todo item.' }}
+      </div>
+    </div>
+
+  </div>
+</div>
+}

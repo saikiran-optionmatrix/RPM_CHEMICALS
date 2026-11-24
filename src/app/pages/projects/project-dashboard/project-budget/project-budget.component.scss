@@ -1,0 +1,150 @@
+.analytics-page {
+  width: 100%;
+  padding: 10px 25px 80px 25px;
+}
+
+.analytics-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 24px;
+
+  h1 {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 36px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 520px) {
+  .analytics-header h1 {
+    font-size: 22px;
+  }
+  .back-btn span {
+    display: none;
+  }
+  .back-btn {
+    padding: 0 10px;
+  }
+}
+
+.budget-page-container {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: #333333;
+}
+
+// --- Summary Stats Grid ---
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 15px;
+  margin-bottom: 24px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-card {
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid transparent;
+
+    .label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    &.blue {
+      background-color: #ebf3ff;
+      color: #2e5da3;
+      border-color: #d6e6ff;
+      .label { color: #385590; }
+    }
+
+    &.green {
+      background-color: #ebf9f1;
+      color: #329663;
+      border-color: #d1f0df;
+      .label { color: #225c45; }
+    }
+
+    &.orange {
+      background-color: #fff4e5;
+      color: #c2781d;
+      border-color: #ffe8cc;
+      .label { color: #c2781d; }
+    }
+
+    &.purple {
+      background-color: #f6f0ff;
+      color: #8e5bd6;
+      border-color: #ecd9ff;
+      .label { color: #8e5bd6; }
+    }
+
+    &.red {
+      background-color: #fff0f0;
+      color: #d64545;
+      border-color: #ffd6d6;
+      .label { color: #d64545; }
+    }
+
+    &.cyan {
+      background-color: #e6fcf5;
+      color: #208d8d;
+      border-color: #c3fae8;
+      .label { color: #208d8d; }
+    }
+  }
+}
+
+.usage-warning {
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+}
+
+.font-bold {
+  font-weight: 600;
+}
+
+// Floating rewind & forward buttons matching ProjectOutsourcing / SourcingChecklist
+.mine {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+  background-color: #dfdfdf !important;
+  color: #414141 !important;
+  z-index: 9999 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 50% !important;
+  --mdc-fab-container-shape: 50%;
+  --mat-fab-container-shape: 50%;
+
+  mat-icon {
+    color: #414141 !important;
+  }
+}

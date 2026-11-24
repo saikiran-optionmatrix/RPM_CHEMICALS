@@ -1,0 +1,96 @@
+<div class="dashboard-page">
+  <!-- Header Title Section -->
+  <div class="dashboard-header">
+    <div class="kicker-tag">CHEMICAL MANUFACTURING · STAGE-GATE RPM</div>
+    <h1 class="page-title">Dashboard</h1>
+    <div class="subtitle">Portfolio of 10 projects across 12 stages and 5 gates · Snapshot 18-Nov-2026 (weekly review)</div>
+  </div>
+
+  <!-- Navigation Pills -->
+  <div class="subnav-pills-row">
+    <a class="nav-pill-btn" routerLink="./portfolio" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <mat-icon class="pill-icon">pie_chart</mat-icon>
+      <span>Portfolio</span>
+    </a>
+    <a class="nav-pill-btn" routerLink="./stages" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <mat-icon class="pill-icon">alt_route</mat-icon>
+      <span>Stage-Gate Pipeline</span>
+    </a>
+    <a class="nav-pill-btn" routerLink="./timeline" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <mat-icon class="pill-icon">calendar_today</mat-icon>
+      <span>Timeline</span>
+    </a>
+    <a class="nav-pill-btn" routerLink="./variance" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <mat-icon class="pill-icon">account_balance_wallet</mat-icon>
+      <span>Budget & Variance</span>
+    </a>
+    <a class="nav-pill-btn" routerLink="./buffer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <mat-icon class="pill-icon">speed</mat-icon>
+      <span>Buffer & Risk</span>
+    </a>
+    <a class="nav-pill-btn" routerLink="./delay-reasons" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <mat-icon class="pill-icon">warning_amber</mat-icon>
+      <span>Delay Reasons</span>
+    </a>
+    <a class="nav-pill-btn" routerLink="./backlog" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <mat-icon class="pill-icon">format_list_bulleted</mat-icon>
+      <span>Backlog</span>
+    </a>
+    <a class="nav-pill-btn" routerLink="./safety-regulatory" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <mat-icon class="pill-icon">verified_user</mat-icon>
+      <span>Safety & Regulatory</span>
+    </a>
+  </div>
+
+  <!-- Filter Card -->
+  <div class="filter-card">
+    <div class="filter-grid">
+      <div class="filter-group">
+        <label class="filter-label">DIVISION</label>
+        <select class="filter-select" [(ngModel)]="selectedDivision">
+          <option value="All divisions">All divisions</option>
+          <option value="Specialty Chemicals">Specialty Chemicals</option>
+          <option value="Polymers & Resins">Polymers & Resins</option>
+          <option value="Agrochemicals">Agrochemicals</option>
+          <option value="Industrial & Fine Chemicals">Industrial & Fine Chemicals</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">LOCATION</label>
+        <select class="filter-select" [(ngModel)]="selectedLocation">
+          <option value="All sites">All sites</option>
+          <option value="Dahej, Gujarat">Dahej, Gujarat</option>
+          <option value="Taloja, Maharashtra">Taloja, Maharashtra</option>
+          <option value="Ankleshwar, Gujarat">Ankleshwar, Gujarat</option>
+          <option value="Panoli, Gujarat">Panoli, Gujarat</option>
+          <option value="Vizag, Andhra Pradesh">Vizag, Andhra Pradesh</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">EXECUTION HEALTH</label>
+        <select class="filter-select" [(ngModel)]="selectedHealth">
+          <option value="All">All</option>
+          <option value="On track">On track</option>
+          <option value="Watch">Watch</option>
+          <option value="At risk">At risk</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">CURRENCY</label>
+        <select class="filter-select" [(ngModel)]="selectedCurrency">
+          <option value="USD ($)">USD ($)</option>
+          <option value="INR (₹)">INR (₹)</option>
+          <option value="EUR (€)">EUR (€)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Outlet -->
+  <div class="dashboard-tab-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

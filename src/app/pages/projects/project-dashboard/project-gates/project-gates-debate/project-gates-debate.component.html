@@ -1,0 +1,223 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+  <header class="analytics-header">
+    <h1>{{ projectName }}</h1>
+    <button type="button" class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon><span>Back</span>
+    </button>
+  </header>
+
+  <div class="debate-page-container">
+    <div class="app-table-container" style="padding: 0; width: 100%;">
+      <!-- Sub-header with Gate Title and Info -->
+      <div class="debate-sub-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+        <div class="title-wrap">
+          <h2 style="font-size: 18px; font-weight: 600; color: #1e293b; margin: 0;">
+            Gate Debate: {{ gateName }} ({{ gateCode }})
+          </h2>
+        </div>
+
+        <!-- Review Date on top of table (like normal text) -->
+        <div style="display: flex; align-items: center; gap: 6px; font-size: 15px; color: #1e293b;">
+          <span style="font-weight: 600;">Review Date :</span>
+          <span (click)="openReviewDateDialog()" style="cursor: pointer;" matTooltip="Click to edit Review Date">
+            {{ reviewDate ? (reviewDate | date:'dd-MMM-yyyy') : 'Not Set' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Main Debate Table -->
+      <div class="table-responsive" style="overflow-x: auto;">
+        <table class="table app-table debate-table">
+          <thead>
+            <tr>
+              <th class="text-left" style="min-width: 170px;">Role</th>
+              <th class="text-left" style="min-width: 170px;">Name</th>
+              <th class="text-center" style="width: 100px; min-width: 90px;">Activities</th>
+              <th class="text-center" style="width: 100px; min-width: 90px;">Checklist</th>
+              <th class="text-center" style="width: 70px; min-width: 65px;">Go</th>
+              <th class="text-center" style="width: 120px; min-width: 110px;">Conditional Go</th>
+              <th class="text-center" style="width: 70px; min-width: 65px;">Hold</th>
+              <th class="text-center" style="width: 70px; min-width: 65px;">Kill</th>
+              <th class="text-center" style="width: 75px; min-width: 70px;">Rework</th>
+              <th class="text-center" style="min-width: 200px;">Redirect</th>
+              <th class="text-center" style="width: 95px; min-width: 90px;">Messages</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of debateList; track row.id) {
+              <tr [class.selected-row]="selectedRecord?.id === row.id">
+                <!-- 1. Role -->
+                <td>
+                  <span>{{ row.role }}</span>
+                </td>
+
+                <!-- 2. Name -->
+                <td>
+                  <span>{{ row.name }}</span>
+                </td>
+
+                <!-- 3. Activities: number clicking to open DebateActivitiesComponent -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <a (click)="openActivities(row)" class="activities-count-link"
+                    [matTooltip]="'Click to view activities for ' + row.role">
+                    <span style="cursor: pointer;">{{ row.activitiesCount || '5/12' }}</span>
+                  </a>
+                </td>
+
+                <!-- 4. Checklist: fractional number clicking to open ChecklistPopComponent -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <a (click)="openChecklist(row)" class="activities-count-link"
+                    [matTooltip]="'Click to view checklist for ' + row.role">
+                    <span style="cursor: pointer;">{{ getChecklistCount(row) }}</span>
+                  </a>
+                </td>
+
+                <!-- 4. Go (black checkbox) -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox class="black-checkbox" [checked]="row.decision === 'Go'"
+                    (change)="onDecisionChange(row, 'Go')" matTooltip="Vote Go">
+                  </mat-checkbox>
+                </td>
+
+                <!-- 5. Conditional Go (black checkbox) - opens Review Date popup -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox class="black-checkbox" [checked]="row.decision === 'Conditional Go'"
+                    (click)="$event.preventDefault(); onDecisionClick(row, 'Conditional Go')" matTooltip="Vote Conditional Go">
+                  </mat-checkbox>
+                </td>
+
+                <!-- 6. Hold (black checkbox) - opens Review Date popup -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox class="black-checkbox" [checked]="row.decision === 'Hold'"
+                    (click)="$event.preventDefault(); onDecisionClick(row, 'Hold')" matTooltip="Vote Hold">
+                  </mat-checkbox>
+                </td>
+
+                <!-- 7. Kill (black checkbox) -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox class="black-checkbox" [checked]="row.decision === 'Kill'"
+                    (change)="onDecisionChange(row, 'Kill')" matTooltip="Vote Kill">
+                  </mat-checkbox>
+                </td>
+
+                <!-- 8. Rework (black checkbox) - opens Review Date popup -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox class="black-checkbox" [checked]="row.decision === 'Rework'"
+                    (click)="$event.preventDefault(); onDecisionClick(row, 'Rework')" matTooltip="Vote Rework">
+                  </mat-checkbox>
+                </td>
+
+                <!-- 9. Redirect Checkbox & Dropdown matching ProjectGatesComponent -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <div class="redirect-cell-wrap">
+                    <mat-checkbox class="black-checkbox" [checked]="row.decision === 'Redirect'"
+                      (change)="onDecisionChange(row, 'Redirect')" matTooltip="Vote Redirect">
+                    </mat-checkbox>
+                    <div class="redirect-dropdown-wrap">
+                      <mat-select [(ngModel)]="row.redirectToStage"
+                        [disabled]="row.decision !== 'Redirect'" placeholder="Redirect to gate"
+                        class="form-control redirect-stage-select">
+                        @for (opt of redirectGateOptions; track opt) {
+                        <mat-option [value]="opt">
+                          {{ opt }}
+                        </mat-option>
+                        }
+                      </mat-select>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- 10. Messages: number clicking to show messages below table -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <a (click)="selectRecordForMessages(row)" class="messages-count-link"
+                    [class.active-msg-link]="selectedRecord?.id === row.id"
+                    [matTooltip]="'Click to view messages for ' + row.name">
+                    <mat-icon class="msg-icon">chat</mat-icon>
+                    <span>{{ row.messagesCount }}</span>
+                  </a>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="11" class="text-center" style="padding: 24px; color: #64748b;">
+                  No debate records found.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Messages Section Below the Existing Table -->
+      @if (selectedRecord) {
+        <div id="debate-messages-section" class="debate-messages-section" style="margin-top: 36px;">
+          <!-- Messages Header -->
+          <div class="messages-section-header">
+            <div class="messages-header-left">
+              <div class="messages-icon-wrap">
+                <mat-icon>forum</mat-icon>
+              </div>
+              <div class="messages-title-group">
+                <h3 class="messages-section-title">
+                  Messages &mdash; {{ selectedRecord.role }}
+                </h3>
+                <span class="messages-subtitle">
+                  {{ selectedRecord.name }} &bull; {{ currentMessages.length }} messages
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Input Field & Send Button -->
+          <div class="message-input-bar">
+            <input
+              type="text"
+              class="form-control message-input"
+              [(ngModel)]="newMessageText"
+              (keyup.enter)="sendMessage()"
+              placeholder="Type message for {{ selectedRecord.role }} ({{ selectedRecord.name }})..."
+            />
+            <button
+              type="button"
+              class="app-btn app-btn-primary send-msg-btn"
+              (click)="sendMessage()"
+              [disabled]="!newMessageText.trim()">
+              <mat-icon>send</mat-icon>
+              <span>Send</span>
+            </button>
+          </div>
+
+          <!-- Messages in List Format with Timestamp at Right End -->
+          <div class="messages-list-container">
+            @for (msg of currentMessages; track msg.id) {
+              <div class="message-list-item" [class.self-message]="msg.isSelf">
+                <div class="message-avatar">
+                  <mat-icon>account_circle</mat-icon>
+                </div>
+                <div class="message-body">
+                  <div class="message-meta">
+                    <strong class="sender-name">{{ msg.senderName }}</strong>
+                    <span class="sender-role">({{ msg.senderRole }})</span>
+                  </div>
+                  <div class="message-text">
+                    {{ msg.text }}
+                  </div>
+                </div>
+                <!-- Timestamp at the right end of the message -->
+                <div class="message-timestamp">
+                  <mat-icon class="time-icon">schedule</mat-icon>
+                  <span>{{ msg.timestamp }}</span>
+                </div>
+              </div>
+            } @empty {
+              <div class="no-messages-box">
+                <mat-icon style="color: #94a3b8; font-size: 32px; width: 32px; height: 32px;">chat_bubble_outline</mat-icon>
+                <span>No messages found for {{ selectedRecord.name }}. Send the first message using the box above.</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

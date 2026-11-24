@@ -1,0 +1,412 @@
+<section class="view-panel">
+  @if (!back.observed) {
+  <div class="page-heading"
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div>
+      <h1 style="margin: 0; font-size: 24px; font-weight: 500; color: #1e293b;">{{ productName }}</h1>
+      <div class="subtitle" style="font-size: 13px; color: #64748b; margin-top: 2px;">{{ projectCode }} &bull; Material
+        List</div>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="back-btn" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon><span>Back</span>
+      </button>
+    </div>
+  </div>
+  }
+
+  @if (!isDirectCategoryMapped) {
+  <div class="mapping-note">
+    No direct Material List category is mapped to &ldquo;{{ selectedCostItem?.activity }}&rdquo; in the source workbook.
+    The complete material list is shown for reference.
+  </div>
+  }
+
+  <!-- Top Controls Bar: Checkboxes on left, Category Dropdown & Actions on right -->
+  <div class="material-controls-bar">
+    <div class="phase-checkboxes">
+      <mat-checkbox color="primary" [checked]="activeCostTab === 'total'"
+        (click)="$event.preventDefault(); selectCostPhase('total')">
+        Total Cost
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" [checked]="activeCostTab === 'dev'"
+        (click)="$event.preventDefault(); selectCostPhase('dev')">
+        Development Cost
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" [checked]="activeCostTab === 'scaleup'"
+        (click)="$event.preventDefault(); selectCostPhase('scaleup')">
+        Scale-up Cost
+      </mat-checkbox>
+
+      <mat-checkbox color="primary" [checked]="activeCostTab === 'pivotal'"
+        (click)="$event.preventDefault(); selectCostPhase('pivotal')">
+        Pivotal Cost
+      </mat-checkbox>
+    </div>
+
+    <div class="header-actions">
+      <!-- Category Dropdown moved to left of Add Material -->
+      <select class="category-select" [(ngModel)]="activeCategory" (change)="onFilterChange()"
+        title="Filter by Material Group">
+        <option value="ALL">All Categories</option>
+        @for (cat of materialCategories; track cat) {
+        <option [value]="cat">{{ cat }}</option>
+        }
+      </select>
+
+      <!-- Columns Button (Image 2 style) -->
+      <button type="button" class="app-btn app-btn-black" (click)="toggleColumns()">
+        <mat-icon>view_column</mat-icon>
+        <span>Columns</span>
+      </button>
+
+
+      <!-- Add Material Button -->
+      <button type="button" class="app-btn app-btn-primary" (click)="openAddMaterialDialog()">
+        <mat-icon>add</mat-icon><span>Add Material</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scroll Buttons (Floating Bottom Right matching Feasibility screen) -->
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;" (click)="scrollLeft()"
+    matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 40px; z-index: 9999;" (click)="scrollRight()"
+    matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>
+
+  <!-- TAB 1: TOTAL COST (ALL COLUMNS) -->
+  @if (activeCostTab === 'total') {
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #scrollContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center col-fixed-1">Actions</th>
+            <!-- Common Columns (Fixed) -->
+            <th class="text-left col-fixed-2">Category</th>
+            <th class="text-left col-fixed-3">Material Code</th>
+            <th class="text-left col-fixed-4">Description</th>
+            <th class="text-left" style="width: 95px;">Purchase UOM</th>
+            <th class="text-right" style="width: 120px;">Purchase Price</th>
+            <th class="text-right" style="width: 110px;">Purchased Qty</th>
+            <th class="text-right" style="width: 140px;">Total Purchase Cost</th>
+
+            <!-- Development Cost Columns -->
+            <th class="text-right" style="width: 100px;">Total Cycles</th>
+            <th class="text-right" style="width: 130px;">Input Qty per cycle</th>
+            <th class="text-left" style="width: 90px;">Input UOM</th>
+            <th class="text-right" style="width: 130px;">Conversion Factor</th>
+            <th class="text-right" style="width: 120px;">Dev Batch Size</th>
+            <th class="text-right" style="width: 130px;">Cost per Cycle</th>
+            <th class="text-right" style="width: 140px;">Dev Total Cost</th>
+
+            <!-- Scale-up Columns -->
+            <th class="text-right" style="width: 140px;">Scale-up Batch Size</th>
+            <th class="text-right" style="width: 130px;">Scale-up Cost</th>
+
+            <!-- Pivotal Costs Columns -->
+            <th class="text-right" style="width: 130px;">Pivotal Batch Qty</th>
+            <th class="text-right" style="width: 110px;">Number of Batches</th>
+            <th class="text-right" style="width: 115px;">Pivotal Qty</th>
+            <th class="text-right" style="width: 130px;">Pivotal Cost</th>
+
+            <!-- Total Cost Columns -->
+            <th class="text-right" style="width: 120px;">Total Qty</th>
+            <th class="text-right" style="width: 150px;">Total Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of pagedMaterials; track item.id) {
+          <tr>
+            <!-- Fixed Columns -->
+            <td class="text-center actions-cell col-fixed-1">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit Material"
+                  aria-label="Edit material" (click)="openEditMaterial(item)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete Material"
+                  aria-label="Delete material" (click)="deleteMaterial(item)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+
+            <td class="text-left col-fixed-2">
+              <span class="col-cat-text" [title]="item.category">{{ item.category }}</span>
+            </td>
+            <td class="text-left col-fixed-3">{{ item.materialCode }}</td>
+            <td class="text-left font-weight-500 col-fixed-4">
+              <span class="col-desc-text" [title]="item.description">{{ item.description }}</span>
+            </td>
+            <td class="text-left">{{ item.purchaseUom }}</td>
+            <td class="text-right">{{ formatCurrency(item.purchasePrice) }}</td>
+            <td class="text-right">{{ formatNumber(item.purchasedQty) }}</td>
+            <td class="text-right font-weight-500">{{ formatCurrency(item.totalPurchaseCost) }}</td>
+
+            <!-- Development -->
+            <td class="text-right">{{ item.totalCycles || '—' }}</td>
+            <td class="text-right">{{ formatNumber(item.inputQtyPerCycle) }}</td>
+            <td class="text-left">{{ item.inputUom }}</td>
+            <td class="text-right">{{ formatNumber(item.conversionFactor, 0) }}</td>
+            <td class="text-right">{{ formatNumber(item.devBatchSize, 0) }}</td>
+            <td class="text-right">{{ formatCurrency(item.costPerCycle) }}</td>
+            <td class="text-right font-weight-500">{{ formatCurrency(item.devTotalCost) }}</td>
+
+            <!-- Scale-up -->
+            <td class="text-right">{{ formatNumber(item.scaleUpBatchSize, 0) }}</td>
+            <td class="text-right font-weight-500">{{ formatCurrency(item.scaleUpCost) }}</td>
+
+            <!-- Pivotal -->
+            <td class="text-right">{{ formatNumber(item.pivotalBatchQty, 0) }}</td>
+            <td class="text-right">{{ item.numberOfBatches }}</td>
+            <td class="text-right">{{ formatNumber(item.pivotalQty, 0) }}</td>
+            <td class="text-right font-weight-500">{{ formatCurrency(item.pivotalCost) }}</td>
+
+            <!-- Total -->
+            <td class="text-right">{{ formatNumber(item.totalQty, 0) }}</td>
+            <td class="text-right font-weight-bold" style="color: #1e3a8a;">{{ formatCurrency(item.totalCost) }}</td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="23" class="empty-table">No material records found</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Standard Mat Paginator -->
+    <mat-paginator [length]="filteredMaterials.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions" [showFirstLastButtons]="true" (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+  }
+
+  <!-- TAB 2: DEVELOPMENT COST TAB -->
+  @if (activeCostTab === 'dev') {
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #scrollContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center col-fixed-1">Actions</th>
+            <!-- Common Columns (Fixed) -->
+            <th class="text-left col-fixed-2">Category</th>
+            <th class="text-left col-fixed-3">Material Code</th>
+            <th class="text-left col-fixed-4">Description</th>
+            <th class="text-left" style="width: 95px;">Purchase UOM</th>
+            <th class="text-right" style="width: 120px;">Purchase Price</th>
+            <th class="text-right" style="width: 110px;">Purchased Qty</th>
+            <th class="text-right" style="width: 140px;">Total Purchase Cost</th>
+
+            <!-- Development Cost Columns -->
+            <th class="text-right" style="width: 100px;">Total Cycles</th>
+            <th class="text-right" style="width: 130px;">Input Qty per cycle</th>
+            <th class="text-left" style="width: 90px;">Input UOM</th>
+            <th class="text-right" style="width: 130px;">Conversion Factor</th>
+            <th class="text-right" style="width: 120px;">Dev Batch Size</th>
+            <th class="text-right" style="width: 130px;">Cost per Cycle</th>
+            <th class="text-right" style="width: 150px;">Total Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of pagedMaterials; track item.id) {
+          <tr>
+            <td class="text-center actions-cell col-fixed-1">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit Material"
+                  aria-label="Edit material" (click)="openEditMaterial(item)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete Material"
+                  aria-label="Delete material" (click)="deleteMaterial(item)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+            <td class="text-left col-fixed-2">
+              <span class="col-cat-text" [title]="item.category">{{ item.category }}</span>
+            </td>
+            <td class="text-left col-fixed-3">{{ item.materialCode }}</td>
+            <td class="text-left font-weight-500 col-fixed-4">
+              <span class="col-desc-text" [title]="item.description">{{ item.description }}</span>
+            </td>
+            <td class="text-left">{{ item.purchaseUom }}</td>
+            <td class="text-right">{{ formatCurrency(item.purchasePrice) }}</td>
+            <td class="text-right">{{ formatNumber(item.purchasedQty) }}</td>
+            <td class="text-right font-weight-500">{{ formatCurrency(item.totalPurchaseCost) }}</td>
+            <td class="text-right">{{ item.totalCycles || '—' }}</td>
+            <td class="text-right">{{ formatNumber(item.inputQtyPerCycle) }}</td>
+            <td class="text-left">{{ item.inputUom }}</td>
+            <td class="text-right">{{ formatNumber(item.conversionFactor, 0) }}</td>
+            <td class="text-right">{{ formatNumber(item.devBatchSize, 0) }}</td>
+            <td class="text-right">{{ formatCurrency(item.costPerCycle) }}</td>
+            <td class="text-right font-weight-bold" style="color: #1e3a8a;">{{ formatCurrency(item.devTotalCost) }}</td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="15" class="empty-table">No material records found</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <mat-paginator [length]="filteredMaterials.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions" [showFirstLastButtons]="true" (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+  }
+
+  <!-- TAB 3: SCALE-UP COST TAB -->
+  @if (activeCostTab === 'scaleup') {
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #scrollContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center col-fixed-1">Actions</th>
+            <!-- Common Columns (Fixed) -->
+            <th class="text-left col-fixed-2">Category</th>
+            <th class="text-left col-fixed-3">Material Code</th>
+            <th class="text-left col-fixed-4">Description</th>
+            <th class="text-left" style="width: 95px;">Purchase UOM</th>
+            <th class="text-right" style="width: 120px;">Purchase Price</th>
+            <th class="text-right" style="width: 110px;">Purchased Qty</th>
+            <th class="text-right" style="width: 140px;">Total Purchase Cost</th>
+
+            <!-- Scale-up Columns -->
+            <th class="text-right" style="width: 130px;">Input Qty per cycle</th>
+            <th class="text-left" style="width: 90px;">Input UOM</th>
+            <th class="text-right" style="width: 130px;">Conversion Factor</th>
+            <th class="text-right" style="width: 140px;">Scale-up Batch Size</th>
+            <th class="text-right" style="width: 150px;">Cost per Cycle</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of pagedMaterials; track item.id) {
+          <tr>
+            <td class="text-center actions-cell col-fixed-1">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit Material"
+                  aria-label="Edit material" (click)="openEditMaterial(item)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete Material"
+                  aria-label="Delete material" (click)="deleteMaterial(item)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+            <td class="text-left col-fixed-2">
+              <span class="col-cat-text" [title]="item.category">{{ item.category }}</span>
+            </td>
+            <td class="text-left col-fixed-3">{{ item.materialCode }}</td>
+            <td class="text-left font-weight-500 col-fixed-4">
+              <span class="col-desc-text" [title]="item.description">{{ item.description }}</span>
+            </td>
+            <td class="text-left">{{ item.purchaseUom }}</td>
+            <td class="text-right">{{ formatCurrency(item.purchasePrice) }}</td>
+            <td class="text-right">{{ formatNumber(item.purchasedQty) }}</td>
+            <td class="text-right font-weight-500">{{ formatCurrency(item.totalPurchaseCost) }}</td>
+            <td class="text-right">{{ formatNumber(item.inputQtyPerCycle) }}</td>
+            <td class="text-left">{{ item.inputUom }}</td>
+            <td class="text-right">{{ formatNumber(item.conversionFactor, 0) }}</td>
+            <td class="text-right">{{ formatNumber(item.scaleUpBatchSize, 0) }}</td>
+            <td class="text-right font-weight-bold" style="color: #1e3a8a;">{{ formatCurrency(item.scaleUpCost) }}</td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="13" class="empty-table">No material records found</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <mat-paginator [length]="filteredMaterials.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions" [showFirstLastButtons]="true" (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+  }
+
+  <!-- TAB 4: PIVOTAL COST TAB -->
+  @if (activeCostTab === 'pivotal') {
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #scrollContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center col-fixed-1">Actions</th>
+            <!-- Common Columns (Fixed) -->
+            <th class="text-left col-fixed-2">Category</th>
+            <th class="text-left col-fixed-3">Material Code</th>
+            <th class="text-left col-fixed-4">Description</th>
+            <th class="text-left" style="width: 95px;">Purchase UOM</th>
+            <th class="text-right" style="width: 120px;">Purchase Price</th>
+            <th class="text-right" style="width: 110px;">Purchased Qty</th>
+            <th class="text-right" style="width: 140px;">Total Purchase Cost</th>
+
+            <!-- Pivotal Costs Columns -->
+            <th class="text-right" style="width: 130px;">Input Qty per cycle</th>
+            <th class="text-left" style="width: 90px;">Input UOM</th>
+            <th class="text-right" style="width: 130px;">Conversion Factor</th>
+            <th class="text-right" style="width: 130px;">Pivotal Batch Qty</th>
+            <th class="text-right" style="width: 110px;">Number of Batches</th>
+            <th class="text-right" style="width: 115px;">Pivotal Qty</th>
+            <th class="text-right" style="width: 150px;">Pivotal Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of pagedMaterials; track item.id) {
+          <tr>
+            <td class="text-center actions-cell col-fixed-1">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit Material"
+                  aria-label="Edit material" (click)="openEditMaterial(item)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete Material"
+                  aria-label="Delete material" (click)="deleteMaterial(item)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+            <td class="text-left col-fixed-2">
+              <span class="col-cat-text" [title]="item.category">{{ item.category }}</span>
+            </td>
+            <td class="text-left col-fixed-3">{{ item.materialCode }}</td>
+            <td class="text-left font-weight-500 col-fixed-4">
+              <span class="col-desc-text" [title]="item.description">{{ item.description }}</span>
+            </td>
+            <td class="text-left">{{ item.purchaseUom }}</td>
+            <td class="text-right">{{ formatCurrency(item.purchasePrice) }}</td>
+            <td class="text-right">{{ formatNumber(item.purchasedQty) }}</td>
+            <td class="text-right font-weight-500">{{ formatCurrency(item.totalPurchaseCost) }}</td>
+            <td class="text-right">{{ formatNumber(item.inputQtyPerCycle) }}</td>
+            <td class="text-left">{{ item.inputUom }}</td>
+            <td class="text-right">{{ formatNumber(item.conversionFactor, 0) }}</td>
+            <td class="text-right">{{ formatNumber(item.pivotalBatchQty, 0) }}</td>
+            <td class="text-right">{{ item.numberOfBatches }}</td>
+            <td class="text-right">{{ formatNumber(item.pivotalQty, 0) }}</td>
+            <td class="text-right font-weight-bold" style="color: #1e3a8a;">{{ formatCurrency(item.pivotalCost) }}</td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="15" class="empty-table">No material records found</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <mat-paginator [length]="filteredMaterials.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions" [showFirstLastButtons]="true" (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+  }
+</section>

@@ -1,0 +1,326 @@
+<div class="rld-tab-screen">
+
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+
+    <!-- Top Action Bar (Matching ttd-master) -->
+    <div class="app-page-actions mb-3">
+      <button type="button" class="app-btn app-btn-primary" (click)="openAllocationDialog()">
+        <mat-icon>add_task</mat-icon>
+        <span>Request Allocation</span>
+      </button>
+    </div>
+
+    <div class="rld-info-banner mb-3">
+      <mat-icon>hub</mat-icon>
+      <div>
+        Batches are managed centrally in <strong>Monitor &rsaquo; RLD &rsaquo; Batch register</strong> because one approved reference product can support multiple projects.
+        This view displays the lots eligible for this project's stock pool(s), active project reservations, and physical stock movements.
+        Reservations are verified across all projects to ensure no double-allocation occurs.
+      </div>
+    </div>
+
+  <!-- Section 1: Lots Available in Pool -->
+  <div class="section-header-row mb-2 mt-3">
+    <h3 class="inner-section-heading">Lots available in this project's stock pool(s)</h3>
+  </div>
+
+  <div class="app-table-container mb-4" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 100px;">Actions</th>
+            <th class="text-center" style="width: 100px;">Lot ID</th>
+            <th class="text-left" style="min-width: 140px;">Stock Pool</th>
+            <th class="text-left" style="min-width: 140px;">Batch No.</th>
+            <th class="text-center" style="min-width: 110px;">Expiry Date</th>
+            <th class="text-center" style="min-width: 110px;">Physical</th>
+            <th class="text-center" style="min-width: 150px;">Reserved (All Projects)</th>
+            <th class="text-center" style="min-width: 130px;">Usable Unreserved</th>
+            <th class="text-center" style="min-width: 150px;">Lot Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (l of availableLots; track l.id) {
+          <tr [class.highlight-row]="l.ready !== 'Ready' || l.expFlag">
+            <td class="text-center">
+              <button type="button" class="app-btn app-btn-default btn-xs" (click)="openQaDialog(l)" matTooltip="Update Receipt Checks & QA Disposition">
+                <mat-icon style="font-size: 16px; width: 16px; height: 16px;">verified</mat-icon>
+                <span>Receipt / QA</span>
+              </button>
+            </td>
+            <td class="text-center font-weight-bold">{{ l.id }}</td>
+            <td class="text-left"><span class="code-badge">{{ l.pool }}</span></td>
+            <td class="text-left">{{ l.bn }}</td>
+            <td class="text-center">{{ rldService.formatDate(l.exp) }}</td>
+            <td class="text-center">{{ l.physical }}</td>
+            <td class="text-center">{{ l.reserved }}</td>
+            <td class="text-center font-weight-bold">{{ l.usable }}</td>
+            <td class="text-center">
+              <span class="pill" [class.ok]="l.ready === 'Ready'" [class.warn]="l.ready.includes('checks')" [class.bad]="l.ready.includes('expired') || l.ready.includes('quarantine')">
+                {{ l.ready }}
+              </span>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="9" class="empty-table">No lots currently registered in this project's stock pool(s).</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 2: This Project's Allocations -->
+  <div class="section-header-row mb-2 mt-4">
+    <h3 class="inner-section-heading">This project's allocations</h3>
+  </div>
+
+  <div class="app-table-container mb-4" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="min-width: 100px;">Allocation ID</th>
+            <th class="text-center" style="min-width: 80px;">Req ID</th>
+            <th class="text-left" style="min-width: 220px;">WBS Activity</th>
+            <th class="text-left" style="min-width: 140px;">Lot / Batch</th>
+            <th class="text-center" style="min-width: 80px;">Quantity</th>
+            <th class="text-center" style="min-width: 90px;">Status</th>
+            <th class="text-left" style="min-width: 140px;">Requested By</th>
+            <th class="text-left" style="min-width: 140px;">Allocated By</th>
+            <th class="text-center" style="min-width: 90px;">Comparator Approved</th>
+            <th class="text-center" style="min-width: 90px;">Same Pool</th>
+            <th class="text-center" style="min-width: 90px;">Lot Ready</th>
+            <th class="text-center" style="min-width: 90px;">Expiry Fit</th>
+            <th class="text-center" style="min-width: 110px;">Cumulative on Lot</th>
+            <th class="text-center" style="min-width: 100px;">Lot Capacity</th>
+            <th class="text-left" style="min-width: 160px;">Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (a of projectAllocations; track a.id) {
+          <tr [class.blocked-row]="a.res.startsWith('BLOCKED')">
+            <td class="text-center font-weight-bold">{{ a.id }}</td>
+            <td class="text-center">{{ a.req }}</td>
+            <td class="text-left"><strong>{{ a.r.wbs }}</strong> {{ a.r.act }}</td>
+            <td class="text-left">
+              <div>{{ a.lot }}</div>
+              <div class="sub-text">{{ a.l?.bn }}</div>
+            </td>
+            <td class="text-center font-weight-bold">{{ a.q }}</td>
+            <td class="text-center">
+              <span class="pill" [class.ok]="a.st === 'Issued'" [class.warn]="a.st === 'Reserved'">
+                {{ a.st }}
+              </span>
+            </td>
+            <td class="text-left">
+              <div>{{ a.by }}</div>
+              <div class="sub-text">{{ rldService.formatDate(a.d) }}</div>
+            </td>
+            <td class="text-left">
+              @if (a.res === 'OK') {
+              <div>{{ a.allocBy }}</div>
+              <div class="sub-text">{{ rldService.formatDate(a.d) }}</div>
+              } @else {
+              <span class="sub-text">Blocked by system</span>
+              }
+            </td>
+            <td class="text-center">
+              <mat-icon [class.ico-ok]="a.compOk" [class.ico-bad]="!a.compOk">{{ a.compOk ? 'check_circle' : 'cancel' }}</mat-icon>
+            </td>
+            <td class="text-center">
+              <mat-icon [class.ico-ok]="a.poolOk" [class.ico-bad]="!a.poolOk">{{ a.poolOk ? 'check_circle' : 'cancel' }}</mat-icon>
+            </td>
+            <td class="text-center">
+              <mat-icon [class.ico-ok]="a.lotOk" [class.ico-bad]="!a.lotOk">{{ a.lotOk ? 'check_circle' : 'cancel' }}</mat-icon>
+            </td>
+            <td class="text-center">
+              <mat-icon [class.ico-ok]="a.expOk" [class.ico-bad]="!a.expOk">{{ a.expOk ? 'check_circle' : 'cancel' }}</mat-icon>
+            </td>
+            <td class="text-center">{{ a.cum ?? '–' }}</td>
+            <td class="text-center">{{ a.l?.cap }}</td>
+            <td class="text-left">
+              <span class="pill" [class.ok]="a.res === 'OK'" [class.bad]="a.res.startsWith('BLOCKED')">
+                {{ a.res }}
+              </span>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="15" class="empty-table">No allocations made for this project yet.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 3: Custody Trail -->
+  <div class="section-header-row mb-2 mt-4">
+    <div class="section-title">
+      <mat-icon>badge</mat-icon>
+      <span>Custody trail · who handled the reference product</span>
+    </div>
+  </div>
+
+  <div class="rld-info-banner mb-3">
+    <mat-icon>person_search</mat-icon>
+    <div>
+      For every allocation: who <strong>received</strong> the stock into store, who <strong>released</strong> it (QA), who <strong>raised the request</strong> for use, who <strong>allocated</strong> it, who <strong>issued</strong> it, and who <strong>received it for use</strong> in the lab.
+    </div>
+  </div>
+
+  <div class="app-table-container mb-4" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="min-width: 140px;">Allocation</th>
+            <th class="text-left" style="min-width: 220px;">WBS Activity</th>
+            <th class="text-left" style="min-width: 160px;">1. Received into Store by</th>
+            <th class="text-left" style="min-width: 160px;">2. QA Released by</th>
+            <th class="text-left" style="min-width: 150px;">3. Request Raised by</th>
+            <th class="text-left" style="min-width: 150px;">4. Allocated by</th>
+            <th class="text-left" style="min-width: 150px;">5. Issued by</th>
+            <th class="text-left" style="min-width: 150px;">6. Received for Use by</th>
+            <th class="text-left" style="min-width: 140px;">Used by</th>
+            <th class="text-left" style="min-width: 180px;">Returned by &rarr; Received back by</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (a of projectAllocations; track a.id) {
+          <tr>
+            <td class="text-center">
+              <strong>{{ a.id }}</strong>
+              <div class="sub-text">{{ a.req }} &bull; {{ a.q }} {{ a.l?.unit }}</div>
+            </td>
+            <td class="text-left">
+              <strong>{{ a.r.wbs }}</strong> {{ a.r.act }}
+            </td>
+            <td class="text-left">
+              <div>{{ a.l?.rcvBy }}</div>
+              <div class="sub-text">{{ a.l?.grn }} · {{ rldService.formatDate(a.l?.rcvOn || '') }}</div>
+            </td>
+            <td class="text-left">
+              @if (a.l?.qa === 'Accepted') {
+              <div>{{ a.l?.qaBy }}</div>
+              <div class="sub-text">{{ rldService.formatDate(a.l?.qaOn || '') }}</div>
+              } @else {
+              <span class="pill warn">{{ a.l?.qa }}</span>
+              }
+            </td>
+            <td class="text-left">
+              <div>{{ a.by }}</div>
+              <div class="sub-text">{{ rldService.formatDate(a.d) }}</div>
+            </td>
+            <td class="text-left">
+              @if (a.res === 'OK') {
+              <div>{{ a.allocBy }}</div>
+              <div class="sub-text">{{ rldService.formatDate(a.d) }}</div>
+              } @else {
+              <span class="sub-text">Blocked by system</span>
+              }
+            </td>
+            <td class="text-left">
+              @for (iss of getTransactionsForAllocation(a, 'Issue'); track iss.id) {
+              <div>{{ iss.from }} ({{ iss.q }} {{ a.l?.unit }})</div>
+              <div class="sub-text">{{ rldService.formatDate(iss.d) }}</div>
+              } @empty {
+              <span class="sub-text">–</span>
+              }
+            </td>
+            <td class="text-left">
+              @for (iss of getTransactionsForAllocation(a, 'Issue'); track iss.id) {
+              <div>{{ iss.to }}</div>
+              <div class="sub-text">{{ iss.doc }}</div>
+              } @empty {
+              <span class="sub-text">–</span>
+              }
+            </td>
+            <td class="text-left">
+              @for (c of getTransactionsForAllocation(a, 'Consumption'); track c.id) {
+              <div>{{ c.from }} ({{ c.q }} {{ a.l?.unit }})</div>
+              <div class="sub-text">{{ c.doc }} · {{ rldService.formatDate(c.d) }}</div>
+              } @empty {
+              <span class="sub-text">–</span>
+              }
+            </td>
+            <td class="text-left">
+              @for (ret of getTransactionsForAllocation(a, 'Return'); track ret.id) {
+              <div>{{ ret.from }} &rarr; {{ ret.to }} ({{ ret.q }})</div>
+              <div class="sub-text">{{ ret.doc }} · {{ rldService.formatDate(ret.d) }}</div>
+              } @empty {
+              <span class="sub-text">–</span>
+              }
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="10" class="empty-table">No custody trail records available.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 4: Movements Table -->
+  <div class="section-header-row mb-2 mt-4">
+    <h3 class="inner-section-heading">Issues, returns &amp; consumption movements</h3>
+  </div>
+
+  <div class="app-table-container mb-3" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 90px;">Txn ID</th>
+            <th class="text-center" style="min-width: 110px;">Date</th>
+            <th class="text-center" style="min-width: 110px;">Type</th>
+            <th class="text-center" style="min-width: 90px;">Lot ID</th>
+            <th class="text-center" style="min-width: 90px;">Req ID</th>
+            <th class="text-center" style="min-width: 80px;">Quantity</th>
+            <th class="text-left" style="min-width: 160px;">Handed Over / Done By</th>
+            <th class="text-left" style="min-width: 150px;">Received By</th>
+            <th class="text-left" style="min-width: 130px;">Doc Ref</th>
+            <th class="text-left" style="min-width: 180px;">Control Check</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of projectTransactions; track t.id) {
+          <tr [class.blocked-row]="t.chk !== 'OK'">
+            <td class="text-center font-weight-bold">{{ t.id }}</td>
+            <td class="text-center">{{ rldService.formatDate(t.d) }}</td>
+            <td class="text-center">
+              <span class="pill" [class.ok]="t.t === 'Receipt'" [class.warn]="t.t === 'Issue'" [class.bad]="t.t === 'Write-off'">
+                {{ t.t }}
+              </span>
+            </td>
+            <td class="text-center">{{ t.lot }}</td>
+            <td class="text-center">{{ t.req || '–' }}</td>
+            <td class="text-center font-weight-bold">{{ t.q }}</td>
+            <td class="text-left">{{ t.from }}</td>
+            <td class="text-left">{{ t.to || '–' }}</td>
+            <td class="text-left">{{ t.doc }}</td>
+            <td class="text-left">
+              <span class="pill" [class.ok]="t.chk === 'OK'" [class.bad]="t.chk !== 'OK'">
+                {{ t.chk }}
+              </span>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="10" class="empty-table">No movement transactions recorded for this project yet.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  </div>
+
+</div>
+

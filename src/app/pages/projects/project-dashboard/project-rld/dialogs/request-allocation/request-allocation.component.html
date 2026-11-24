@@ -1,0 +1,117 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Request Stock Allocation</h1>
+  <button type="button" class="close-btn" (click)="close()" aria-label="Close dialog">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content class="dialog-body">
+  <form [formGroup]="form" (ngSubmit)="reserve()">
+
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <label class="form-label">Requirement *</label>
+        <select class="form-select back" formControlName="reqId">
+          @for (r of requirements; track r.id) {
+          <option [value]="r.id">
+            {{ r.id }} · {{ r.act }} (Shortfall: {{ r.short }} {{ r.unit }})
+          </option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Available Lot in Pool ({{ selectedReq?.pool || '–' }}) *</label>
+        <select class="form-select back" formControlName="lotId">
+          @for (l of filteredLots; track l.id) {
+          <option [value]="l.id">
+            {{ l.id }} · Batch: {{ l.bn }} · Exp: {{ rldService.formatDate(l.exp) }} · Usable: {{ l.usable }}
+          </option>
+          } @empty {
+          <option value="">No lots available in this pool</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Quantity to Reserve *</label>
+        <input class="form-control back" type="number" formControlName="quantity" min="1">
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Requested By *</label>
+        <select class="form-select back" formControlName="requestedBy">
+          @for (user of requesters; track user) {
+          <option [value]="user">{{ user }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Live Compliance Validation Box -->
+    @if (selectedLot && selectedReq) {
+    <div class="validation-card">
+      <div class="validation-title">
+        <mat-icon>verified</mat-icon>
+        <span>System Eligibility Check</span>
+      </div>
+
+      <table class="table check-table mb-0">
+        <tbody>
+          <tr>
+            <td style="width: 25%;"><strong>Comparator Approved:</strong></td>
+            <td style="width: 25%;">
+              @if (selectedReq.compSt === 'Approved') {
+              <span class="badge-status ok"><mat-icon>check_circle</mat-icon> Approved</span>
+              } @else {
+              <span class="badge-status bad"><mat-icon>cancel</mat-icon> {{ selectedReq.compSt }}</span>
+              }
+            </td>
+            <td style="width: 25%;"><strong>Lot Ready for Use:</strong></td>
+            <td style="width: 25%;">
+              @if (selectedLot.ready === 'Ready') {
+              <span class="badge-status ok"><mat-icon>check_circle</mat-icon> Ready</span>
+              } @else {
+              <span class="badge-status bad"><mat-icon>warning</mat-icon> {{ selectedLot.ready }}</span>
+              }
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Min Expiry Needed:</strong></td>
+            <td>{{ rldService.formatDate(selectedReq.minExp) }}</td>
+            <td><strong>Lot Expiry Date:</strong></td>
+            <td>
+              {{ rldService.formatDate(selectedLot.exp) }}
+              @if (selectedLot.exp >= selectedReq.minExp) {
+              <span class="badge-status ok ms-2"><mat-icon>check_circle</mat-icon> Fit</span>
+              } @else {
+              <span class="badge-status bad ms-2"><mat-icon>cancel</mat-icon> Unfit</span>
+              }
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Physical Stock:</strong></td>
+            <td>{{ selectedLot.physical }} {{ selectedLot.unit }}</td>
+            <td><strong>Usable Unreserved:</strong></td>
+            <td><strong>{{ selectedLot.usable }} {{ selectedLot.unit }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="validation-note">
+        * System validates cross-project reservations on this lot upon saving.
+      </div>
+    </div>
+    }
+
+    <div class="dialog-actions-footer">
+      <button type="button" class="app-btn app-btn-default" (click)="close()">
+        <mat-icon>cancel</mat-icon> Cancel
+      </button>
+      <button type="submit" class="app-btn app-btn-primary" [disabled]="!selectedLot">
+        <mat-icon>bookmark_added</mat-icon> Reserve Stock
+      </button>
+    </div>
+
+  </form>
+</div>
+

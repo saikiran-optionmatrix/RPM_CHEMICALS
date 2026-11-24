@@ -1,0 +1,199 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ existingDependency ? 'Edit Dependency · ' + existingDependency.id : 'Add Dependency' }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <p class="dialog-subnote">Predecessor must be complete before the successor milestone (&sect;9).</p>
+
+    @if (validationError) {
+      <div class="validation-alert" role="alert">{{ validationError }}</div>
+    }
+
+    <form [formGroup]="depForm" (ngSubmit)="save()">
+      <div class="row">
+        <!-- Predecessor (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Predecessor :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <mat-select class="form-control back" formControlName="predecessorKey"
+                placeholder="Select Predecessor" style="height: 35px; line-height: 23px;">
+                @for (opt of predecessorOptions; track opt.value) {
+                  <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['predecessorKey'].touched) && f['predecessorKey'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- External Predecessor Description (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="control-label" [class.add-member-label]="isExternalSelected" style="margin-top: 5px;">
+                External Predecessor :
+              </label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <input class="form-control name back" type="text"
+                placeholder="External item description (if external)"
+                formControlName="externalPredecessor" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Left Column -->
+        <div class="col-sm-6">
+          <!-- External Forecast -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">External Forecast :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="externalForecast" style="height: 35px;">
+              <small class="field-hint">Study predecessors use their milestone forecast</small>
+            </div>
+          </div>
+
+          <!-- Dependency Type -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Dependency Type :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="type"
+                style="height: 35px; line-height: 23px;">
+                @for (tp of typeOptions; track tp) {
+                  <mat-option [value]="tp">{{ tp }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['type'].touched) && f['type'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Dependency Owner -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Dependency Owner :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="owner"
+                placeholder="Select Owner" style="height: 35px; line-height: 23px;">
+                @for (person of ownerOptions; track person) {
+                  <mat-option [value]="person">{{ person }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['owner'].touched) && f['owner'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+          <!-- Successor Milestone -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">
+                Successor ({{ targetSuccessorStudy?.studyId }}) :
+              </label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="successorMilestone"
+                placeholder="Select Milestone" style="height: 35px; line-height: 23px;">
+                @for (msName of successorMilestones; track msName) {
+                  <mat-option [value]="msName">{{ msName }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['successorMilestone'].touched) && f['successorMilestone'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Required-by Date -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Required-by Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="requiredBy" style="height: 35px;">
+              @if ((isSubmitting || f['requiredBy'].touched) && f['requiredBy'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Status :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="status"
+                style="height: 35px; line-height: 23px;">
+                @for (st of statusOptions; track st.value) {
+                  <mat-option [value]="st.value">{{ st.label }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Impact if Late (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Impact if Late :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <textarea class="form-control back" rows="3" formControlName="impact"
+                placeholder="Describe downstream study or submission impact if prerequisite is late"
+                style="resize: vertical; height: auto !important; padding-top: 6px; padding-bottom: 6px;"></textarea>
+              @if ((isSubmitting || f['impact'].touched) && f['impact'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Evidence / Source (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="control-label" style="margin-top: 5px;">Evidence / Source :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <input class="form-control name back" type="text"
+                placeholder="Requirement or document reference"
+                formControlName="evidence" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+          <mat-icon>cancel</mat-icon> <span>Close</span>
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> <span>Save</span>
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>
+

@@ -1,0 +1,113 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+    <header class="analytics-header">
+        <div class="project-master-line">
+            <h1 class="project-master-name">{{ projectName }}</h1>
+            <span class="project-master-meta">{{ projectCode }} · Per project master</span>
+        </div>
+
+        <button type="button" class="back-btn" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon><span>Back</span>
+        </button>
+    </header>
+
+    <div class="container-fluid" style="padding: 0;">
+        <div class="row">
+            <div class="col-12">
+                <div class="app-table-container" style="padding: 0; width: 100%;">
+
+                    <div class="studies-toolbar">
+                        <span class="studies-count">
+                            {{ studies.length }} {{ studies.length === 1 ? 'study' : 'studies' }} linked to this project
+                        </span>
+
+                        <button type="button" class="app-btn app-btn-primary" (click)="addInVivoStudies()">
+                            <mat-icon>add</mat-icon>
+                            <span>Add Study</span>
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table app-table in-vivo-table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left col-study-id">Study ID</th>
+                                    <th class="text-left col-study">Study</th>
+                                    <th class="text-left col-category">Category / subtype</th>
+                                    <th class="text-left col-markets">Target market(s)</th>
+                                    <th class="text-left col-owner">Study owner</th>
+                                    <th class="text-left col-lifecycle">Lifecycle</th>
+                                    <th class="text-left col-milestone">Next milestone</th>
+                                    <th class="text-left col-forecast">Forecast</th>
+                                    <th class="text-right col-variance">Variance</th>
+                                    <th class="text-left col-rag">RAG &amp; reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (item of paginatedStudies; track item.studyId) {
+                                <tr>
+                                    <td>
+                                        <a class="study-id-link" (click)="openStudyDetails(item)" matTooltip="View Study Details">
+                                            {{ item.studyId }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="cell-primary">{{ item.study }}</div>
+                                        @if (item.studyCode) {
+                                        <div class="cell-secondary">{{ item.studyCode }}</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="cell-primary">{{ item.category }}</div>
+                                        @if (item.subtype) {
+                                        <div class="cell-secondary">{{ item.subtype }}</div>
+                                        }
+                                    </td>
+                                    <td>{{ item.targetMarkets }}</td>
+                                    <td>{{ item.studyOwner }}</td>
+                                    <td>
+                                        <span class="lifecycle-pill" [ngClass]="getLifecycleClass(item.lifecycle)">
+                                            {{ item.lifecycle }}
+                                        </span>
+                                        <div class="lifecycle-track"
+                                            [attr.aria-label]="item.lifecycleStepsCompleted + ' of 6 steps completed'">
+                                            @for (step of lifecycleSteps; track step) {
+                                            <span class="lifecycle-segment"
+                                                [class.filled]="step <= item.lifecycleStepsCompleted"></span>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>{{ item.nextMilestone }}</td>
+                                    <td class="text-nowrap">{{ item.forecast }}</td>
+                                    <td class="text-right text-nowrap">
+                                        <span class="variance-value" [ngClass]="getVarianceClass(item.variance)">
+                                            {{ item.variance }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="rag-pill" [ngClass]="getRagClass(item.ragStatus)">
+                                            <span class="rag-dot"></span>
+                                            <span>{{ item.ragStatus }}</span>
+                                        </span>
+                                        @if (item.ragReason) {
+                                        <div class="rag-reason">{{ item.ragReason }}</div>
+                                        }
+                                    </td>
+                                </tr>
+                                } @empty {
+                                <tr>
+                                    <td colspan="10" class="empty-table">No in-vivo studies found for this project</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <mat-paginator [length]="studies.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+                        [pageSizeOptions]="[5, 10, 20, 50]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+                    </mat-paginator>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

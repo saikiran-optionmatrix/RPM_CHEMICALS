@@ -1,0 +1,207 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+  <!-- Header -->
+  <header class="analytics-header">
+    <div>
+      <h1>{{ projectName }}</h1>
+      <div class="page-subtitle">
+        Change Control / Add Amendment
+      </div>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon><span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Card / Wrapper -->
+  <div class="ammendment-form-container">
+    <div class="fields-grid">
+
+      <!-- CCF NO. (Readonly Field) -->
+      <div class="form-field-group">
+        <label class="add-member-label control-label">CCF NO. :</label>
+        <input type="text" class="form-control back" [(ngModel)]="ccfNo" readonly style="cursor: not-allowed;">
+      </div>
+
+      <!-- Amendment Date -->
+      <div class="form-field-group">
+        <label class="add-member-label control-label">Amendment Date :</label>
+        <input type="date" class="form-control back" [(ngModel)]="amendmentDate">
+      </div>
+
+      <!-- Doc Title (Double Height) -->
+      <div class="form-field-group">
+        <label class="add-member-label control-label">Doc Title :</label>
+        <textarea class="form-control back" rows="2" [(ngModel)]="docTitle" placeholder="Enter Document Title..." style="min-height: 68px; resize: vertical;"></textarea>
+      </div>
+
+      <!-- Doc No. -->
+      <div class="form-field-group">
+        <label class="add-member-label control-label">Doc No. :</label>
+        <input type="text" class="form-control back" [(ngModel)]="docNo" placeholder="Enter Document Number">
+      </div>
+
+      <!-- Description of Existing Procedure (Full Width, 3 lines default height) -->
+      <div class="form-field-group full-width">
+        <label class="add-member-label control-label">Description of Existing Procedure :</label>
+        <textarea class="form-control back" rows="3" [(ngModel)]="descriptionExisting" placeholder="Enter Description of Existing Procedure..." style="min-height: 80px; resize: vertical;"></textarea>
+      </div>
+
+      <!-- Description of Proposed Change (Full Width, 3 lines default height) -->
+      <div class="form-field-group full-width">
+        <label class="add-member-label control-label">Description of Proposed Change :</label>
+        <textarea class="form-control back" rows="3" [(ngModel)]="descriptionProposed" placeholder="Enter Description of Proposed Change..." style="min-height: 80px; resize: vertical;"></textarea>
+      </div>
+
+      <!-- Justification for the Proposed Change (Full Width, 3 lines default height) -->
+      <div class="form-field-group full-width">
+        <label class="add-member-label control-label">Justification for the Proposed Change :</label>
+        <textarea class="form-control back" rows="3" [(ngModel)]="justificationProposed" placeholder="Enter Justification for the Proposed Change..." style="min-height: 80px; resize: vertical;"></textarea>
+      </div>
+
+      <!-- Workflow Table (3 rows: Initiated By, Approved By, Approved By with different section) -->
+      <div class="form-field-group full-width" style="margin-top: 14px; margin-bottom: 20px;">
+        <label class="section-table-title">Workflow Approvals</label>
+        <div class="app-table-container" style="padding: 0; width: 100%;">
+          <div class="table-responsive">
+            <table class="table app-table">
+              <thead>
+                <tr>
+                  <th class="text-left" style="width: 170px;">Workflow</th>
+                  <th class="text-left" style="min-width: 190px;">Department</th>
+                  <th class="text-left" style="min-width: 170px;">Section</th>
+                  <th class="text-left" style="min-width: 190px;">Responsibility</th>
+                  <th class="text-center" style="width: 90px;">Signed</th>
+                  <th class="text-center" style="width: 145px;">Signed date</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of workflowRows; track $index) {
+                  <tr>
+                    <td class="text-left font-medium" style="color: #0f172a; font-size: 13.5px; vertical-align: middle;">
+                      {{ row.workflow }}
+                    </td>
+                    <td>
+                      <select class="form-control back" [(ngModel)]="row.department">
+                        <option value="">Select Department</option>
+                        @for (dept of departments; track dept) {
+                          <option [value]="dept">{{ dept }}</option>
+                        }
+                      </select>
+                    </td>
+                    <td>
+                      <select class="form-control back" [(ngModel)]="row.section">
+                        <option value="">Select Section</option>
+                        @for (sec of sections; track sec) {
+                          <option [value]="sec">{{ sec }}</option>
+                        }
+                      </select>
+                    </td>
+                    <td>
+                      <select class="form-control back" [(ngModel)]="row.responsibility">
+                        <option value="">Select Responsibility</option>
+                        @for (u of users; track u) {
+                          <option [value]="u">{{ u }}</option>
+                        }
+                      </select>
+                    </td>
+                    <td class="text-center" style="vertical-align: middle;">
+                      <mat-checkbox [(ngModel)]="row.signed" color="primary"></mat-checkbox>
+                    </td>
+                    <td class="text-center" style="vertical-align: middle;">
+                      <input type="date" class="form-control" [(ngModel)]="row.signedDate" style="height: 36px;">
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Remarks Grid with Add Row button -->
+      <div class="form-field-group full-width" style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <label class="section-table-title" style="margin: 0;">Department Remarks</label>
+          <button type="button" class="app-btn app-btn-primary" (click)="addRemarksRow()" style="height: 34px; padding: 0 14px;">
+            <mat-icon style="font-size: 18px; width: 18px; height: 18px;">add</mat-icon>
+            <span>Add Record</span>
+          </button>
+        </div>
+
+        <div class="app-table-container" style="padding: 0; width: 100%;">
+          <div class="table-responsive">
+            <table class="table app-table">
+              <thead>
+                <tr>
+                  <th class="text-center" style="width: 70px;">S.No</th>
+                  <th class="text-left" style="width: 250px;">Department</th>
+                  <th class="text-left">Enter Remarks</th>
+                  <th class="text-center" style="width: 90px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (remarksRows.length === 0) {
+                  <tr>
+                    <td colspan="4" class="text-center" style="padding: 24px; color: #94a3b8;">
+                      No remarks added yet. Click "Add Record" to add department remarks.
+                    </td>
+                  </tr>
+                }
+                @for (row of remarksRows; track row.id; let idx = $index) {
+                  <tr>
+                    <td class="text-center font-medium" style="vertical-align: middle;">
+                      {{ idx + 1 }}
+                    </td>
+                    <td style="vertical-align: middle;">
+                      <select class="form-control" [(ngModel)]="row.department">
+                        <option value="">Select Department</option>
+                        @for (dept of departments; track dept) {
+                          <option [value]="dept">{{ dept }}</option>
+                        }
+                      </select>
+                    </td>
+                    <td style="vertical-align: middle;">
+                      <input type="text" class="form-control" [(ngModel)]="row.remarks" placeholder="Enter remarks...">
+                    </td>
+                    <td class="text-center" style="vertical-align: middle;">
+                      <div class="table-actions">
+                        <button type="button" class="table-action-button delete" matTooltip="Delete" aria-label="Delete remark" (click)="deleteRemarksRow(idx)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amendment Comments (2 lines height, full width) -->
+      <div class="form-field-group full-width" style="margin-bottom: 24px;">
+        <label class="add-member-label control-label">Amendment Comments :</label>
+        <textarea class="form-control" rows="2" [(ngModel)]="amendmentComments" placeholder="Enter amendment comments..." style="min-height: 58px; resize: vertical;"></textarea>
+      </div>
+
+    </div> <!-- end fields-grid -->
+
+  </div> <!-- end ammendment-form-container -->
+
+  <!-- Sticky Bottom Footer (Reference from ChangeControlDashboardComponent) -->
+  <footer class="sticky-footer ppif-sticky-footer">
+    <div class="save-state" [class.dirty]="isDirty" [class.saved]="!isDirty">
+    </div>
+    <div class="footer-actions">
+      <button class="app-btn app-btn-default app-btn-discard" type="button" (click)="discardChanges()">
+        <mat-icon>cancel</mat-icon> Discard Changes
+      </button>
+      <button class="app-btn app-btn-primary" type="button" (click)="save()">
+        <mat-icon>save</mat-icon> Save
+      </button>
+    </div>
+  </footer>
+
+</div>

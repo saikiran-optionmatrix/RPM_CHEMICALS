@@ -1,0 +1,107 @@
+<div class="inner-screen-page" style="padding: 10px 25px 80px 25px">
+  <!-- Top Header Area -->
+  <header class="inner-header"
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div class="header-left">
+      <div class="title-meta">
+        <h2 class="inner-title" style="margin: 0; font-size: 20px; font-weight: 600; color: #1e293b;">
+          {{ itemName ? itemName : 'Material' }} {{ materialCode ? ('(' + materialCode + ')') : '' }} - History
+        </h2>
+        <div class="activity-subtitle"
+          style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; margin-top: 6px;">
+          <span class="badge-tag"
+            style="background-color: #e2e8f0; color: #334155; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 12px;">
+            Code: {{ materialCode }}
+          </span>
+          @if (itemCategory) {
+          <span class="badge-tag"
+            style="background-color: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-weight: 500; font-size: 12px;">
+            {{ itemCategory }}
+          </span>
+          }
+          @if (itemType) {
+          <span class="badge-tag"
+            style="background-color: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px; font-weight: 500; font-size: 12px;">
+            {{ itemType }}
+          </span>
+          }
+          @if (stockAvailable) {
+          <span class="badge-tag"
+            style="background-color: #ecfdf5; color: #047857; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 12px;">
+            Stock: {{ stockAvailable }}
+          </span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Table Container -->
+  <div class="app-table-container" style="padding: 0 !important; width: 100%;">
+    <div class="table-responsive" style="max-height: 560px; overflow-x: auto; overflow-y: auto;">
+      <table class="table app-table" style="width: 100%;">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 140px;">Material Code</th>
+            <th class="text-left" style="min-width: 240px;">Material Name</th>
+            <th class="text-center" style="width: 180px;">Material Group</th>
+            <th class="text-center" style="width: 180px;">Material Type</th>
+            <th class="text-center" style="width: 150px;">Stock Available</th>
+            <th class="text-center" style="width: 150px;">Last Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of paginatedRecords; track row.id) {
+          <tr>
+            <!-- Material Code -->
+            <td class="text-center font-weight-medium" style="vertical-align: middle;">
+              {{ row.materialCode }}
+            </td>
+
+            <!-- Material Name -->
+            <td class="text-left" style="vertical-align: middle;">
+              <span style="font-weight: 500; color: #1e293b;">{{ row.itemName }}</span>
+            </td>
+
+            <!-- Material Group -->
+            <td class="text-center" style="vertical-align: middle;">
+              {{ row.itemCategory }}
+            </td>
+
+            <!-- Material Type -->
+            <td class="text-center" style="vertical-align: middle;">
+              {{ row.itemType }}
+            </td>
+
+            <!-- Stock Available -->
+            <td class="text-center font-weight-bold" style="vertical-align: middle; color: #047857;">
+              {{ row.stockAvailable }}
+            </td>
+
+            <!-- Last Updated -->
+            <td class="text-center" style="vertical-align: middle;">
+              {{ row.lastUpdated }}
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="6" class="empty-table text-center p-3">No history records found</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator [length]="records.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+    </mat-paginator>
+  </div>
+</div>

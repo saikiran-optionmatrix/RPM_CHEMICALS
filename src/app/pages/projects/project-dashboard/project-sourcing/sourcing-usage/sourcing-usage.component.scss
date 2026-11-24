@@ -1,0 +1,65 @@
+:host {
+  display: block;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: #333333;
+}
+
+.analytics-page {
+  width: 100%;
+}
+
+ 
+
+/* ==================== Top Reference Panel (Names & Values Side by Side) ==================== */
+.reference-panel {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 4px 0;
+  box-shadow: none;
+
+  .reference-grid {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+
+    .ref-item {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 6px;
+
+      .ref-label {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #1e293b;
+        margin: 0;
+        white-space: nowrap;
+      }
+
+      .ref-value {
+        font-size: 13.5px;
+        color: #1e293b;
+        font-weight: 400;
+        word-break: break-word;
+
+        &.font-weight-600 {
+          font-weight: 600;
+          color: #0f172a;
+        }
+      }
+    }
+  }
+}
+
+/* ==================== Table Styling ==================== */
+// Inherited directly from AssetsComponent / global _tables.scss:
+// .app-table-container, .table-responsive, .table.app-table, .table-actions, .table-action-button, .empty-table
+.app-table-container {
+  width: 100%;
+}
+
+.font-weight-500 {
+  font-weight: 500;
+}

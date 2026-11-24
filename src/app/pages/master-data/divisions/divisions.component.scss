@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+.app-table-container {
+  width: 70%;
+}
+
+.stage-gates-link {
+  color: #2563eb !important;
+  font-weight: 500;
+  text-decoration: none !important;
+  cursor: pointer;
+  display: inline-block;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:visited {
+    text-decoration: none !important;
+    color: #1d4ed8 !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .app-table-container {
+    width: 100%;
+  }
+}

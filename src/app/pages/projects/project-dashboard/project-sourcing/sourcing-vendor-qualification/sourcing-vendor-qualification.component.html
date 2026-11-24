@@ -1,0 +1,127 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+
+  <!-- Top Action Row: Reference Panel & Back Button (Matching SourcingUsageComponent) -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap: 12px;">
+    <!-- Top Reference Area: Item Code, Item Category, Item Name, Item Type (Side by Side) -->
+    <div class="reference-panel">
+      <div class="reference-grid">
+        <div class="ref-item">
+          <label class="ref-label">Item Code :</label>
+          <span class="ref-value">{{ itemCode }}</span>
+        </div>
+        <div class="ref-item">
+          <label class="ref-label">Item Category :</label>
+          <span class="ref-value">{{ itemCategory }}</span>
+        </div>
+        <div class="ref-item">
+          <label class="ref-label">Item Name :</label>
+          <span class="ref-value font-weight-600">{{ itemName }}</span>
+        </div>
+        <div class="ref-item">
+          <label class="ref-label">Item Type :</label>
+          <span class="ref-value">{{ itemType }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Action Buttons -->
+    <div class="d-flex align-items-center" style="gap: 10px;">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Choose Vendor Dropdown followed by Go Button -->
+  <div class="vendor-bar mb-3">
+    <div class="vendor-bar-left">
+      <label class="vendor-label control-label">Choose Vendor :</label>
+      <div class="vendor-dropdown-wrapper">
+        <mat-select class="form-control back" [(value)]="selectedVendor" placeholder="Choose Vendor"
+          style="height: 38px; line-height: 24px;">
+          @for (vendor of vendorOptions; track vendor) {
+            <mat-option [value]="vendor">{{ vendor }}</mat-option>
+          }
+        </mat-select>
+      </div>
+      <button type="button" class="app-btn app-btn-primary go-btn" (click)="onGo()">
+        <span>Go</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Checkpoint Table with Table Classes from AssetsComponent -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive" style="overflow-x: auto;">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 80px; min-width: 80px;">Done</th>
+            <th class="text-left" style="min-width: 320px;">Vendor Checkpoint</th>
+            <th class="text-center" style="min-width: 180px;">Dimension</th>
+            <th class="text-center" style="width: 95px; min-width: 95px;">Upload</th>
+            <th class="text-center" style="width: 95px; min-width: 95px;">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of checkpoints; track row.id) {
+          <tr>
+            <!-- Done (mat-checkbox) -->
+            <td class="text-center">
+              <mat-checkbox
+                [(ngModel)]="row.done"
+                (change)="onDoneChange(row)"
+                [attr.aria-label]="row.checkpoint"
+                color="primary">
+              </mat-checkbox>
+            </td>
+
+            <!-- Vendor Checkpoint -->
+            <td class="text-left">
+              {{ row.checkpoint }}
+            </td>
+
+            <!-- Dimension -->
+            <td class="text-center">
+              {{ row.dimension }}
+            </td>
+
+            <!-- Upload (Number of documents) -->
+            <td class="text-center">
+              <a href="javascript:void(0)"
+                (click)="openUploadModal()"
+                class="app-route-link"
+                matTooltip="Click to view / upload documents">
+                {{ row.upload }}
+              </a>
+            </td>
+
+            <!-- Remarks (Mat info icon, hover tooltip, click popup) -->
+            <td class="text-center">
+              <div class="table-actions">
+                <button
+                  type="button"
+                  class="table-action-button view"
+                  (click)="openRemarksModal(row)"
+                  [matTooltip]="row.remarks || 'Click to view / add remarks'"
+                  matTooltipPosition="above"
+                  aria-label="View or edit remarks">
+                  <mat-icon>info</mat-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="5" class="empty-table text-center">
+              No records found
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,833 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+
+        <!-- ==========================================
+             PAGE ACTIONS & TOGGLES
+             ========================================== -->
+        <!-- ==========================================
+             PAGE ACTIONS & TOGGLES
+             ========================================== -->
+        <div class="app-page-actions"
+          style="justify-content: flex-end; flex-wrap: wrap; gap: 12px; align-items: center;">
+
+          <!-- 1. Exclude Completed Checkbox (Furthest Left of the group) -->
+          <mat-checkbox [(ngModel)]="excludeCompleted" (change)="onExcludeCompletedChange()" color="primary"
+            style="margin-right: 8px;">
+            Exclude Completed
+          </mat-checkbox>
+
+
+          <mat-checkbox [(ngModel)]="isOverdueOnly" (change)="onOverdueChange()" color="primary"
+            style="margin-right: 8px;">
+           Overdue
+          </mat-checkbox>
+
+           <mat-checkbox  color="primary"
+            style="margin-right: 8px;">
+           Materials Ready
+          </mat-checkbox>
+
+          <!-- 2. View Toggles: Calendar View (hours-scheduling style), Weekly View (weekly board), Table View -->
+          <div class="view-toggle" style="background: #f1f5f9; border-radius: 6px; padding: 4px; display: inline-flex; gap: 4px;">
+            <button type="button" class="app-btn" [class.app-btn-filter]="activeView === 'calendar'"
+              [class.app-btn-default]="activeView !== 'calendar'" (click)="setActiveView('calendar')">
+              <mat-icon>calendar_month</mat-icon>
+              <span>Calendar View</span>
+            </button>
+            <button type="button" class="app-btn" [class.app-btn-filter]="activeView === 'weekly'"
+              [class.app-btn-default]="activeView !== 'weekly'" (click)="setActiveView('weekly')">
+              <mat-icon>view_week</mat-icon>
+              <span>Weekly View</span>
+            </button>
+            <button type="button" class="app-btn" [class.app-btn-filter]="activeView === 'table'"
+              [class.app-btn-default]="activeView !== 'table'" (click)="setActiveView('table')">
+              <mat-icon>view_column</mat-icon>
+              <span>Table View</span>
+            </button>
+          </div>
+
+          <!-- 3. Grid Columns -->
+          <button type="button" class="app-btn app-btn-default">
+            <mat-icon>grid_on</mat-icon>
+            <span>Grid Columns</span>
+          </button>
+
+          <!-- 4. Filter -->
+          <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()" [class.active]="showFilter">
+            <mat-icon>filter_list</mat-icon>
+            <span>Filter</span>
+          </button>
+
+
+
+        </div>
+
+        <!-- ==========================================
+             FILTER PANEL (Global Component Standard)
+             ========================================== -->
+        @if (showFilter) {
+        <mat-card class="app-filter-panel" style="margin-bottom: 20px;">
+          <mat-card-content>
+            <form [formGroup]="filterForm" class="app-filter-grid">
+
+              <div class="app-filter-fields">
+                <div class="app-filter-field">
+                  <label for="activityKeyword">Keyword:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="activityKeyword" formControlName="Keyword" placeholder="Search by keyword">
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="activityProjectName">Project Name:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="activityProjectName" formControlName="ProjectName" placeholder="Search project">
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="activityDateType">Date Type:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="activityDateType" formControlName="DateType" placeholder="Select Date Type">
+                      <mat-option value="PlanStart">Plan Start</mat-option>
+                      <mat-option value="PlanEnd">Plan End</mat-option>
+                      <mat-option value="ActualStart">Actual Start</mat-option>
+                      <mat-option value="ActualEnd">Actual End</mat-option>
+                      <mat-option value="ETA">ETA</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="activityFromDate">From Date:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="activityFromDate" type="date" formControlName="FromDate">
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="activityToDate">To Date:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="activityToDate" type="date" formControlName="ToDate">
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="activityStatus">Status:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="activityStatus" formControlName="Status" placeholder="Select Status">
+                      <mat-option value="Pending">Pending</mat-option>
+                      <mat-option value="In Progress">In Progress</mat-option>
+                      <mat-option value="Hold">Hold</mat-option>
+                      <mat-option value="Completed">Completed</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="activityPriority">Priority:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="activityPriority" formControlName="Priority" placeholder="Select Priority">
+                      <mat-option value="Critical">Critical</mat-option>
+                      <mat-option value="High">High</mat-option>
+                      <mat-option value="Medium">Medium</mat-option>
+                      <mat-option value="Low">Low</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="activityComplexity">Complexity:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="activityComplexity" formControlName="Complexity" placeholder="Select Complexity">
+                      <mat-option value="Very High">Very High</mat-option>
+                      <mat-option value="High">High</mat-option>
+                      <mat-option value="Medium">Medium</mat-option>
+                      <mat-option value="Low">Low</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="app-filter-actions">
+                <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                  <mat-icon>search</mat-icon>
+                  <span>Search</span>
+                </button>
+                <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                  <mat-icon>settings_backup_restore</mat-icon>
+                  <span>Clear</span>
+                </button>
+              </div>
+
+              <div class="app-filter-toggle">
+                <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                  <mat-icon>keyboard_double_arrow_up</mat-icon>
+                </button>
+              </div>
+
+            </form>
+          </mat-card-content>
+        </mat-card>
+        }
+
+        <!-- Scroll Buttons -->
+        <div class="d-flex justify-content-end mb-2" style="gap: 10px;">
+          <div class="d-flex justify-content-end mb-2">
+            <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+              (click)="activeView === 'calendar' ? scrollCalendarLeft() : scrollLeft()">
+              <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+            </button>
+            <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;"
+              (click)="activeView === 'calendar' ? scrollCalendarRight() : scrollRight()">
+              <mat-icon style="color: #414141;">fast_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             TABLE VIEW
+             ========================================== -->
+        @if (activeView === 'table') {
+        <div #tableContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+          <table class="table app-table" style="min-width: 2480px;">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 70px;">Action</th>
+                <th class="text-center" style="width: 70px !important;">Done</th>
+                <th class="text-center" style="width: 70px !important;">Approved</th>
+                <th class="text-center" style="width: 70px !important;">Materials Ready</th>
+                <th class="text-center" style="width: 70px !important;">Acceptance</th>
+                <th class="text-center" style="width: 70px !important;">Timeline</th>
+                <th class="text-left" style="white-space: nowrap; min-width: 220px;">Activity Name</th>
+                <th class="text-center" style="white-space: nowrap; min-width: 130px;">Activity Code</th>
+                <th class="text-center" style="white-space: nowrap; min-width: 130px;">Department</th>
+                <th class="text-center" style="white-space: nowrap; min-width: 100px;">Slack</th>
+                <th class="text-center" style="white-space: nowrap; min-width: 160px;">Section</th>
+                <th class="text-center" style="width: 100px; white-space: nowrap;">Predecessors</th>
+                <th class="text-center" style="width: 75px; white-space: nowrap;">Tasks</th>
+                <th class="text-center" style="width: 95px; white-space: nowrap;">Requirements</th>
+                <th class="text-left" style="white-space: nowrap; min-width: 200px;">Delay Reason</th>
+                <th class="text-center" style="white-space: nowrap;">Stage</th>
+                <th class="text-center" style="white-space: nowrap;">Deliverable</th>
+                <th class="text-center" style="white-space: nowrap;">Activity Lead</th>
+                <th class="text-center" style="width: 80px; white-space: nowrap;">Documents</th>
+                <th class="text-center" style="width: 110px; min-width: 110px; white-space: nowrap;">Updated</th>
+                <th class="text-center" style="width: 130px; min-width: 130px; white-space: nowrap;">Updated By</th>
+                <!-- <th class="text-center" style="width: 80px; white-space: nowrap;">History</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of allProjects; track item.ProjectCode || item.TaskName; let idx = $index) {
+              <tr>
+                <!-- 1. Action -->
+                <td class="text-center">
+                  <div class="table-actions">
+                    <button type="button" class="table-action-button edit" matTooltip="Edit Task"
+                      (click)="openEditDialog(item)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button type="button" class="table-action-button delete" matTooltip="Delete Task"
+                      (click)="deleteConfirmation(item)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
+
+                <!-- 2. Done Checkbox -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox color="primary" [(ngModel)]="item.done" (change)="item.Done = item.done"></mat-checkbox>
+                </td>
+
+                <!-- 3. Approved Checkbox -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox color="primary" [(ngModel)]="item.approved" (change)="item.Approved = item.approved"></mat-checkbox>
+                </td>
+
+                <!-- 4. Materials Ready Checkbox (Readonly) -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox color="primary" [checked]="isFullKit(item)" [disabled]="true"
+                    class="readonly-fullkit-checkbox" style="pointer-events: none;"
+                    [matTooltip]="isFullKit(item) ? 'Materials Ready Complete (100% requirements met)' : 'Materials Ready Pending'">
+                  </mat-checkbox>
+                </td>
+
+                <!-- 5. Acceptance Fractional Number Link -->
+                <td class="text-center font-weight-bold" style="vertical-align: middle;">
+                  <a class="wbs-link" (click)="openAcceptancePop(item)" matTooltip="View Acceptance"
+                    style="cursor: pointer; color: #2563eb; font-weight: 600; text-decoration: underline;">
+                    {{ item.acceptance || item.Acceptance || '3/5' }}
+                  </a>
+                </td>
+
+                <!-- 6. Timeline -->
+                <td class="text-center">
+                  <button type="button" class="timeline-trigger-btn" matTooltip="View Timeline"
+                    (click)="openTimelineModal(item)">
+                    <mat-icon>calendar_today</mat-icon>
+                  </button>
+                </td>
+
+                <!-- 7. Activity Name -->
+                <td class="text-left font-weight-bold"
+                  [style.color]="isBacklogActivity(item) ? '#dc2626' : null">
+                  {{ item.TaskName }}
+                </td>
+
+                <!-- 8. Activity Code -->
+                <td class="text-center font-weight-500" style="white-space: nowrap;">
+                  {{ item.activityCode || item.taskCode || ('ACT-' + (idx + 1)) }}
+                </td>
+
+                <!-- 9. Department -->
+                <td class="text-center" style="white-space: nowrap;">
+                  {{ item.department || item.Department || 'R&D' }}
+                </td>
+
+                <!-- 10. Slack -->
+                <td class="text-center" style="white-space: nowrap;">
+                  {{ item.slack || '—' }}
+                </td>
+
+                <!-- 11. Section -->
+                <td class="text-center" style="white-space: nowrap;">
+                  {{ item.section || item.Section || 'Formulation Development' }}
+                </td>
+
+                <!-- 12. Predecessors -->
+                <td class="text-center font-weight-bold">
+                  <a class="wbs-link" (click)="openPredecessor(item)" [matTooltip]="'View & assign predecessors for ' + item.TaskName"
+                    style="cursor: pointer; color: #2563eb; font-weight: 600; text-decoration: underline;">
+                    {{ item.predecessors ?? item.predecessor ?? '1' }}
+                  </a>
+                </td>
+
+                <!-- 13. Tasks -->
+                <td class="text-center font-weight-bold">
+                  <a class="wbs-link"   [matTooltip]="'View & assign tasks for ' + item.TaskName">
+                    {{ item.Tasks ?? item.tasks ?? '—' }}
+                  </a>
+                </td>
+
+                <!-- 14. Requirements -->
+                <td class="text-center font-weight-bold">
+                  <a class="wbs-link"   [matTooltip]="'View & assign requirements for ' + item.TaskName">
+                    {{ item.Requirements ?? item.requirements ?? item.activities ?? '—' }}
+                  </a>
+                </td>
+
+                <!-- 15. Delay Reason -->
+                <td class="text-left" style="min-width: 200px !important;">
+                  <mat-select [(ngModel)]="item.delayReason" class="form-control" placeholder="Select Delay Reason"
+                    style="height: 34px; line-height: 22px; font-size: 13px; min-width: 180px;">
+                    @for (reason of delayReasonOptions; track reason) {
+                    <mat-option [value]="reason">{{ reason }}</mat-option>
+                    }
+                  </mat-select>
+                </td>
+
+                <!-- 16. Stage -->
+                <td class="text-center" style="white-space: nowrap;">
+                  <span>{{ item.Stage || item.stage || 'S1' }}</span>
+                </td>
+
+                <!-- 17. Deliverable -->
+                <td class="text-center" style="white-space: nowrap;">
+                  <span>{{ item.Deliverable || item.Module || '—' }}</span>
+                </td>
+
+                <!-- 18. Activity Lead -->
+                <td class="text-center">
+                  <span class="user-avatar" [matTooltip]="item.Responsibility">
+                    {{ getInitials(item.Responsibility) }}
+                  </span>
+                </td>
+
+                <!-- 19. Documents -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <a href="javascript:void(0)" class="history-number-link" (click)="openDocuments()" matTooltip="View Documents">
+                    {{ item.documentsCount || getDocumentsCount(idx) }}
+                  </a>
+                </td>
+
+                <!-- 20. Updated -->
+                <td class="text-center" style="white-space: nowrap;">
+                  {{ item.updatedDate ? (item.updatedDate | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- 21. Updated By -->
+                <td class="text-center" style="white-space: nowrap;">
+                  {{ item.updatedBy || '—' }}
+                </td>
+
+                <!-- 22. History -->
+                <!-- <td class="text-center" style="vertical-align: middle;">
+                  <a href="javascript:void(0)" class="history-number-link" (click)="openHistory(item)" matTooltip="View Record History">
+                    {{ item.historyCount || getHistoryCount(idx) }}
+                  </a>
+                </td> -->
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="22" class="empty-table text-center">No records found matching criteria</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <mat-paginator [length]="totalSize" [pageSize]="pageSize" [pageIndex]="currentPage"
+          [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="handlePage($event)" showFirstLastButtons>
+        </mat-paginator>
+        }
+
+        <!-- ==========================================
+             WEEKLY BOARD VIEW
+             ========================================== -->
+        @if (activeView === 'weekly') {
+        <div class="weekly-toolbar d-flex justify-content-between align-items-center mb-3" style="margin-top: 10px;">
+          <div>
+            <button type="button" class="app-btn app-btn-default week-btn" [matMenuTriggerFor]="weekMenu">
+              <mat-icon>calendar_today</mat-icon>
+              <span>{{ selectedWeekLabel }}</span>
+              <mat-icon class="arrow-down-icon">arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #weekMenu="matMenu" class="app-week-menu">
+              @for (w of weekOptions; track w.value) {
+              <button mat-menu-item (click)="selectWeek(w.value)" [class.active-week-option]="selectedCalendarWeek === w.value">
+                <mat-icon [style.visibility]="selectedCalendarWeek === w.value ? 'visible' : 'hidden'" style="color: #2563eb; font-size: 18px; width: 18px; height: 18px;">check</mat-icon>
+                <span [style.font-weight]="selectedCalendarWeek === w.value ? '600' : '400'">{{ w.label }}</span>
+              </button>
+              }
+            </mat-menu>
+          </div>
+
+          <div>
+            <button type="button" class="app-btn app-btn-default" (click)="toggleWeekend()">
+              <mat-icon>{{ showWeekend ? 'view_week' : 'weekend' }}</mat-icon>
+              <span>{{ showWeekend ? 'Hide Weekend' : 'Show Weekend' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="calendar-container" style="width: 100%; overflow-x: auto;">
+          <!-- Added 'app-table' class to inherit your global styling -->
+          <table class="table app-table" style="width: 100%; table-layout: fixed; min-width: 800px;">
+            <thead>
+              <tr>
+                <th class="text-center">Monday</th>
+                <th class="text-center">Tuesday</th>
+                <th class="text-center">Wednesday</th>
+                <th class="text-center">Thursday</th>
+                <th class="text-center">Friday</th>
+                @if (showWeekend) {
+                <!-- Optional: You can add an opacity or slightly darker class here if you want weekends to stand out, otherwise it perfectly matches the rest -->
+                <th class="text-center" style="opacity: 0.9;">Saturday</th>
+                <th class="text-center" style="opacity: 0.9;">Sunday</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                @for (day of displayDays; track day) {
+                <td class="calendar-day-column"
+                  style="vertical-align: top; padding: 10px; background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                  <div class="day-card-container" style="display: flex; flex-direction: column; gap: 10px;">
+                    @for (card of calendarCards; track card.taskName) {
+                    @if (card.dayPlacement === day) {
+                    <div [style.background-color]="card.color"
+                      [style.border-left-color]="card.borderColor || '#3b82f6'"
+                      style="border-radius: 6px; padding: 8px 10px; font-size: 12px; border-left: 4px solid; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+                      <div
+                        style="font-weight: 600; color: #0f172a; margin-bottom: 4px; white-space: normal; word-break: break-word;">
+                        {{ card.pInitials }} — {{ card.taskName }}
+                      </div>
+                      <div style="color: #475569; font-size: 11px; white-space: normal;">{{ card.projectName }}</div>
+                      <div
+                        style="color: #334155; margin-top: 6px; display: flex; align-items: center; gap: 4px; font-weight: 500;">
+                        <mat-icon style="font-size: 14px; width: 14px; height: 14px;">person</mat-icon>
+                        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ card.user }}</span>
+                      </div>
+                      <div style="margin-top: 6px;">
+                        <span
+                          [style.background]="card.status === 'Overdue' ? 'rgba(239, 68, 68, 0.15)' : (card.status === 'Completed' ? 'rgba(34, 197, 94, 0.15)' : 'rgba(59, 130, 246, 0.15)')"
+                          [style.color]="card.status === 'Overdue' ? '#b91c1c' : (card.status === 'Completed' ? '#15803d' : '#1d4ed8')"
+                          style="font-size: 10px; font-weight: 700; border-radius: 4px; padding: 2px 7px; display: inline-block;">
+                          {{ card.status }}
+                        </span>
+                      </div>
+                    </div>
+                    }
+                    }
+                  </div>
+                </td>
+                }
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        }
+
+
+        <!-- ==========================================
+             CALENDAR VIEW (hours-scheduling style)
+             Left side: Calendar with activity counts (Red < 10th, Blue >= 10th)
+             Right side: Table with all 21 columns
+             ========================================== -->
+        @if (activeView === 'calendar') {
+        <div class="dashboard-content" style="display: flex; gap: 16px; align-items: flex-start; margin-top: 10px;">
+
+          <!-- Left Calendar Sidebar -->
+          <aside class="calendar-sidebar"
+            style="width: 310px; flex-shrink: 0; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px; box-sizing: border-box;">
+            <div class="calendar-card">
+              <!-- Month Navigation -->
+              <div class="month-selector"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <button class="nav-arrow" (click)="prevCalendarMonth()" aria-label="Previous month"
+                  style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_left</mat-icon>
+                </button>
+                <strong style="font-size: 14px; color: #0f172a;">{{ currentCalendarMonthLabel }}</strong>
+                <button class="nav-arrow" (click)="nextCalendarMonth()" aria-label="Next month"
+                  style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_right</mat-icon>
+                </button>
+              </div>
+
+              <!-- 7-Column Calendar Grid (Sun - Sat) -->
+              <div class="calendar-grid"
+                style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; margin-bottom: 16px;">
+                @for (d of dayNames; track $index) {
+                <div class="weekday" style="font-size: 11.5px; color: #64748b; font-weight: 600; padding: 4px 0;">{{ d }}</div>
+                }
+
+                @for (day of calendarDays; track $index) {
+                <div class="day-cell" [class.faded]="!day.inCurrentMonth" [class.active]="day.isSelected"
+                  [class.today-cell]="day.isToday && !day.isSelected"
+                  (click)="selectCalendarDate(day)"
+                  style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 44px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease;">
+                  <span class="date-num" style="font-size: 13px; line-height: 1;">{{ day.dayNumber }}</span>
+                  @if (day.count > 0) {
+                  <span class="activity-count-num"
+                    [style.color]="day.isSelected ? '#ffffff' : (day.isBacklog ? '#dc2626' : '#2563eb')"
+                    style="display: block; font-size: 10.5px; font-weight: 700; line-height: 12px; margin-top: 2px;">
+                    {{ day.count }}
+                  </span>
+                  }
+                </div>
+                }
+              </div>
+
+
+
+            </div>
+          </aside>
+
+          <!-- Right Activity Table beside Calendar -->
+          <div class="app-table-container"
+            style="flex: 1; min-width: 0; overflow: hidden; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px;">
+
+
+
+            <!-- Table Container with 21 Columns -->
+            <div #calendarTableContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+              <table class="table app-table" style="min-width: 2480px;">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 70px;">Action</th>
+                    <th class="text-center" style="width: 70px !important;">Done</th>
+                    <th class="text-center" style="width: 70px !important;">Approved</th>
+                    <th class="text-center" style="width: 70px !important;">Materials Ready</th>
+                    <th class="text-center" style="width: 70px !important;">Acceptance</th>
+                    <th class="text-center" style="width: 70px !important;">Timeline</th>
+                    <th class="text-left" style="white-space: nowrap; min-width: 220px;">Activity Name</th>
+                    <th class="text-center" style="white-space: nowrap; min-width: 130px;">Activity Code</th>
+                    <th class="text-center" style="white-space: nowrap; min-width: 130px;">Department</th>
+                    <th class="text-center" style="white-space: nowrap; min-width: 100px;">Slack</th>
+                    <th class="text-center" style="white-space: nowrap; min-width: 160px;">Section</th>
+                    <th class="text-center" style="width: 100px; white-space: nowrap;">Predecessors</th>
+                    <th class="text-center" style="width: 75px; white-space: nowrap;">Tasks</th>
+                    <th class="text-center" style="width: 95px; white-space: nowrap;">Requirements</th>
+                    <th class="text-left" style="white-space: nowrap; min-width: 200px;">Delay Reason</th>
+                    <th class="text-center" style="white-space: nowrap;">Stage</th>
+                    <th class="text-center" style="white-space: nowrap;">Deliverable</th>
+                    <th class="text-center" style="white-space: nowrap;">Activity Lead</th>
+                    <th class="text-center" style="width: 80px; white-space: nowrap;">Documents</th>
+                    <th class="text-center" style="width: 110px; min-width: 110px; white-space: nowrap;">Updated</th>
+                    <th class="text-center" style="width: 130px; min-width: 130px; white-space: nowrap;">Updated By</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of calendarPaginatedActivities; track item.id || item.ProjectCode || item.TaskName; let idx = $index) {
+                  <tr>
+                    <!-- 1. Action -->
+                    <td class="text-center">
+                      <div class="table-actions">
+                        <button type="button" class="table-action-button edit" matTooltip="Edit Task"
+                          (click)="openEditDialog(item)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" class="table-action-button delete" matTooltip="Delete Task"
+                          (click)="deleteConfirmation(item)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+
+                    <!-- 2. Done Checkbox -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <mat-checkbox color="primary" [(ngModel)]="item.done" (change)="item.Done = item.done"></mat-checkbox>
+                    </td>
+
+                    <!-- 3. Approved Checkbox -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <mat-checkbox color="primary" [(ngModel)]="item.approved" (change)="item.Approved = item.approved"></mat-checkbox>
+                    </td>
+
+                    <!-- 4. Materials Ready Checkbox (Readonly) -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <mat-checkbox color="primary" [checked]="isFullKit(item)" [disabled]="true"
+                        class="readonly-fullkit-checkbox" style="pointer-events: none;"
+                        [matTooltip]="isFullKit(item) ? 'Materials Ready Complete (100% requirements met)' : 'Materials Ready Pending'">
+                      </mat-checkbox>
+                    </td>
+
+                    <!-- 5. Acceptance Fractional Number Link -->
+                    <td class="text-center font-weight-bold" style="vertical-align: middle;">
+                      <a class="wbs-link" (click)="openAcceptancePop(item)" matTooltip="View Acceptance"
+                        style="cursor: pointer; color: #2563eb; font-weight: 600; text-decoration: underline;">
+                        {{ item.acceptance || item.Acceptance || '3/5' }}
+                      </a>
+                    </td>
+
+                    <!-- 6. Timeline -->
+                    <td class="text-center">
+                      <button type="button" class="timeline-trigger-btn" matTooltip="View Timeline"
+                        (click)="openTimelineModal(item)">
+                        <mat-icon>calendar_today</mat-icon>
+                      </button>
+                    </td>
+
+                    <!-- 7. Activity Name -->
+                    <td class="text-left font-weight-bold"
+                      [style.color]="isBacklogActivity(item) ? '#dc2626' : null">
+                      {{ item.TaskName }}
+                    </td>
+
+                    <!-- 8. Activity Code -->
+                    <td class="text-center font-weight-500" style="white-space: nowrap;">
+                      {{ item.activityCode || item.taskCode || ('ACT-' + (idx + 1)) }}
+                    </td>
+
+                    <!-- 9. Department -->
+                    <td class="text-center" style="white-space: nowrap;">
+                      {{ item.department || item.Department || 'R&D' }}
+                    </td>
+
+                    <!-- 10. Slack -->
+                    <td class="text-center" style="white-space: nowrap;">
+                      {{ item.slack || '—' }}
+                    </td>
+
+                    <!-- 11. Section -->
+                    <td class="text-center" style="white-space: nowrap;">
+                      {{ item.section || item.Section || 'Formulation Development' }}
+                    </td>
+
+                    <!-- 12. Predecessors -->
+                    <td class="text-center font-weight-bold">
+                      <a class="wbs-link" (click)="openPredecessor(item)" [matTooltip]="'View & assign predecessors for ' + item.TaskName"
+                        style="cursor: pointer; color: #2563eb; font-weight: 600; text-decoration: underline;">
+                        {{ item.predecessors ?? item.predecessor ?? '1' }}
+                      </a>
+                    </td>
+
+                    <!-- 13. Tasks -->
+                    <td class="text-center font-weight-bold">
+                      <a class="wbs-link" [matTooltip]="'View & assign tasks for ' + item.TaskName">
+                        {{ item.Tasks ?? item.tasks ?? '—' }}
+                      </a>
+                    </td>
+
+                    <!-- 14. Requirements -->
+                    <td class="text-center font-weight-bold">
+                      <a class="wbs-link" [matTooltip]="'View & assign requirements for ' + item.TaskName">
+                        {{ item.Requirements ?? item.requirements ?? item.activities ?? '—' }}
+                      </a>
+                    </td>
+
+                    <!-- 15. Delay Reason -->
+                    <td class="text-left" style="min-width: 200px !important;">
+                      <mat-select [(ngModel)]="item.delayReason" class="form-control" placeholder="Select Delay Reason"
+                        style="height: 34px; line-height: 22px; font-size: 13px; min-width: 180px;">
+                        @for (reason of delayReasonOptions; track reason) {
+                        <mat-option [value]="reason">{{ reason }}</mat-option>
+                        }
+                      </mat-select>
+                    </td>
+
+                    <!-- 16. Stage -->
+                    <td class="text-center" style="white-space: nowrap;">
+                      <span>{{ item.Stage || item.stage || 'S1' }}</span>
+                    </td>
+
+                    <!-- 17. Deliverable -->
+                    <td class="text-center" style="white-space: nowrap;">
+                      <span>{{ item.Deliverable || item.Module || '—' }}</span>
+                    </td>
+
+                    <!-- 18. Activity Lead -->
+                    <td class="text-center">
+                      <span class="user-avatar" [matTooltip]="item.Responsibility">
+                        {{ getInitials(item.Responsibility) }}
+                      </span>
+                    </td>
+
+                    <!-- 19. Documents -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <a href="javascript:void(0)" class="history-number-link" (click)="openDocuments()" matTooltip="View Documents">
+                        {{ item.documentsCount || getDocumentsCount(idx) }}
+                      </a>
+                    </td>
+
+                    <!-- 20. Updated -->
+                    <td class="text-center" style="white-space: nowrap;">
+                      {{ item.updatedDate ? (item.updatedDate | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- 21. Updated By -->
+                    <td class="text-center" style="white-space: nowrap;">
+                      {{ item.updatedBy || '—' }}
+                    </td>
+                  </tr>
+                  } @empty {
+                  <tr>
+                    <td colspan="21" class="empty-table text-center" style="padding: 30px; color: #64748b;">
+                      No activities found for the selected date or month.
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Calendar Table Paginator -->
+            <mat-paginator [length]="calendarFilteredActivities.length" [pageSize]="calendarPageSize"
+              [pageIndex]="calendarPageIndex" [pageSizeOptions]="[5, 10, 25, 50]"
+              (page)="handleCalendarPage($event)" showFirstLastButtons>
+            </mat-paginator>
+
+          </div>
+
+        </div>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     TIMELINE POP-UP MODAL
+     ========================================== -->
+@if (showTimelineModal && selectedTimelineTask) {
+<div class="bl-modal-overlay" (click)="closeTimelineModal()" (wheel)="$event.stopPropagation()">
+  <div class="timeline-popup-card" (click)="$event.stopPropagation()" (wheel)="$event.stopPropagation()">
+
+    <!-- Header Row -->
+    <div class="timeline-popup-header">
+      <div class="timeline-popup-title-wrap">
+        <div class="timeline-icon-box">
+          <mat-icon style="color: #2563eb; font-size: 22px; width: 22px; height: 22px;">calendar_today</mat-icon>
+        </div>
+        <h3 class="timeline-popup-title">
+          Timeline &mdash; {{ selectedTimelineTask.TaskName || selectedTimelineTask.ProjectName }}
+        </h3>
+      </div>
+      <button class="timeline-close-btn" (click)="closeTimelineModal()" type="button">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Dates Grid -->
+    <div class="timeline-dates-container">
+      <div class="timeline-accent-bar"></div>
+
+      <div class="timeline-grid-content">
+        <!-- Row 1 -->
+        <div class="timeline-grid-row">
+          <div class="timeline-date-col">
+            <div class="timeline-date-label">Plan Start Date</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.PlanStart ? (selectedTimelineTask.PlanStart |
+              date:'dd-MMM-yyyy') : '—' }}</div>
+          </div>
+          <div class="timeline-date-col">
+            <div class="timeline-date-label">Plan End Date</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.PlanEnd ? (selectedTimelineTask.PlanEnd |
+              date:'dd-MMM-yyyy') : '—' }}</div>
+          </div>
+          <div class="timeline-date-col timeline-date-col--last">
+            <div class="timeline-date-label">Actual Start Date</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.ActualStart ? (selectedTimelineTask.ActualStart |
+              date:'dd-MMM-yyyy') : '—' }}</div>
+          </div>
+        </div>
+
+        <div class="timeline-row-divider"></div>
+
+        <!-- Row 2 -->
+        <div class="timeline-grid-row">
+          <div class="timeline-date-col">
+            <div class="timeline-date-label">Actual End Date</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.ActualEnd ? (selectedTimelineTask.ActualEnd |
+              date:'dd-MMM-yyyy') : '—' }}</div>
+          </div>
+          <div class="timeline-date-col">
+            <div class="timeline-date-label">ETA</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.ETA ? (selectedTimelineTask.ETA |
+              date:'dd-MMM-yyyy') : '—' }}</div>
+          </div>
+          <div class="timeline-date-col timeline-date-col--last">
+            <div class="timeline-date-label">Duration</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.Duration || '—' }}</div>
+          </div>
+        </div>
+
+        <div class="timeline-row-divider"></div>
+
+        <!-- Row 3 -->
+        <div class="timeline-grid-row">
+          <div class="timeline-date-col">
+            <div class="timeline-date-label">Hours (Effort)</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.Effort ? (selectedTimelineTask.Effort + ' hrs') :
+              '—' }}</div>
+          </div>
+          <div class="timeline-date-col">
+            <div class="timeline-date-label">Task Type</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.TaskType || '—' }}</div>
+          </div>
+          <div class="timeline-date-col timeline-date-col--last">
+            <div class="timeline-date-label">Responsibility</div>
+            <div class="timeline-date-value">{{ selectedTimelineTask.Responsibility || '—' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description Box -->
+    <div class="timeline-desc-box">
+      <div class="timeline-desc-header">
+        <mat-icon style="font-size: 18px; width: 18px; height: 18px; color: #2563eb;">description</mat-icon>
+        <span>Description</span>
+      </div>
+      <div class="timeline-desc-content">
+        {{ selectedTimelineTask.Description || 'No description available for this task.' }}
+      </div>
+    </div>
+
+  </div>
+</div>
+}

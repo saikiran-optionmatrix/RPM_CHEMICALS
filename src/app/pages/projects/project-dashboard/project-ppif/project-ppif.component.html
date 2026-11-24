@@ -1,0 +1,394 @@
+<div class="ppif-container">
+  <main class="main">
+    <div class="page-heading">
+      <div>
+        <h1>{{ formData.product || 'Acrylic Emulsion Binder 50% Solids' }}</h1>
+        <div class="subtitle">{{ formData.ppifCode || '2026/CHM/001' }}</div>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="back-btn" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon><span>Back</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 1: Product Overview -->
+    <section class="form-section">
+      <div class="section-title">Product Overview</div>
+      <div class="inline-row">
+        <div class="row-label">Dosage Form</div>
+        <div class="row-control">
+          <input [(ngModel)]="formData.dosageForm" (ngModelChange)="onFieldChange()">
+        </div>
+      </div>
+      <div class="inline-row">
+        <div class="row-label">Category</div>
+        <div class="row-control">
+          <input [(ngModel)]="formData.category" (ngModelChange)="onFieldChange()">
+        </div>
+      </div>
+      <div class="inline-row">
+        <div class="row-label">Indication</div>
+        <div class="row-control">
+          <textarea [(ngModel)]="formData.indication" (ngModelChange)="onFieldChange()"></textarea>
+        </div>
+      </div>
+
+      <!-- Product Banner Header & Stability Guidelines from Official PPIF Format -->
+      <div class="product-banner-header">
+        <input class="product-banner-input" [(ngModel)]="formData.product" (ngModelChange)="onFieldChange()"
+          placeholder="Enter Product Name">
+      </div>
+      <div class="note product-stability-note">
+        <textarea class="stability-note-textarea" [(ngModel)]="formData.stabilityNote" (ngModelChange)="onFieldChange()"
+          rows="3" placeholder="Enter stability and market note..."></textarea>
+      </div>
+    </section>
+
+    <!-- Section 2: Markets & Status -->
+    <section class="form-section">
+      <div class="section-title">Markets &amp; Status</div>
+      <div class="paired">
+        <div class="inline-row">
+          <div class="row-label">Potential Countries/Markets</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.potentialCountries" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Status</div>
+          <div class="row-control">
+            <select [(ngModel)]="formData.marketStatus" (ngModelChange)="onFieldChange()">
+              <option>Not yet Approved</option>
+              <option>In Review</option>
+              <option>Approved</option>
+              <option>On Hold</option>
+            </select>
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Market Selection Remarks</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.marketSelectionRemarks" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Issue Date</div>
+          <div class="row-control">
+            <input type="date" [(ngModel)]="formData.marketIssueDate" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Formulation: Innovator Product Details -->
+    <section class="form-section">
+      <div class="section-title">Formulation: Innovator Product Details</div>
+      <div class="paired">
+        <div class="inline-row">
+          <div class="row-label">Innovator</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.innovator" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Innovator Trade Dress Details</div>
+          <div class="row-control">
+            <textarea [(ngModel)]="formData.innovatorTradeDress" (ngModelChange)="onFieldChange()"></textarea>
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Brand Name</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.innovatorBrandName" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">RLD/BE Strength</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.rldStrength" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Dosage Form</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.innovatorDosageForm" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Approved Salt/Polymorphic Form</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.innovatorApprovedSalt" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Dosage Strengths</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.innovatorDosageStrengths" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Remarks</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.innovatorRemarks" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Approval Date</div>
+          <div class="row-control">
+            <input type="date" [(ngModel)]="formData.innovatorApprovalDate" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Dosage Packing</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.innovatorDosagePacking" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Proposed Product Details -->
+    <section class="form-section">
+      <div class="section-title">Proposed Product Details</div>
+      <div class="paired">
+        <div class="inline-row">
+          <div class="row-label">Dosage Strengths</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.proposedDosageStrengths" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Bio Cost</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.bioCost" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Dosage Packing</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.proposedDosagePacking" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Innovator Sample Cost</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.innovatorSampleCost" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Proposed Product Remarks</div>
+          <div class="row-control">
+            <input placeholder="Enter remarks" [(ngModel)]="formData.proposedProductRemarks"
+              (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Total Project Cost</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.totalProjectCost" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: IP / Exclusivity Details & API Details -->
+    <section class="form-section">
+      <div class="section-title">IP / Exclusivity Details &amp; API Details</div>
+      <div class="paired">
+        <div class="inline-row">
+          <div class="row-label">NCE / Data Exclusivity</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.nceExclusivity" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Timeline for Availability</div>
+          <div class="row-control">
+            <input type="date" [(ngModel)]="formData.timelineAvailability" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">PED Exclusivity</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.pedExclusivity" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">BCS Class Type</div>
+          <div class="row-control">
+            <select [(ngModel)]="formData.bcsClass" (ngModelChange)="onFieldChange()">
+              <option>Class IV</option>
+              <option>Class I</option>
+              <option>Class II</option>
+              <option>Class III</option>
+              <option>To be decided</option>
+            </select>
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Any Other Exclusivity</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.otherExclusivity" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">No. of DMFs filed / CEP Holders</div>
+          <div class="row-control">
+            <input type="number" min="0" [(ngModel)]="formData.dmfHolders" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Product / MOT Patent Expiry</div>
+          <div class="row-control">
+            <textarea [(ngModel)]="formData.patentExpiry" (ngModelChange)="onFieldChange()"></textarea>
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Proposed Salt/Polymorphic Form</div>
+          <div class="row-control">
+            <input placeholder="Enter proposed salt/polymorphic form" [(ngModel)]="formData.proposedSalt"
+              (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Filing Type Proposed</div>
+          <div class="row-control">
+            <select [(ngModel)]="formData.filingType" (ngModelChange)="onFieldChange()">
+              <option>P-III</option>
+              <option>P-IV</option>
+              <option>P-II</option>
+              <option>Non-infringing</option>
+            </select>
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Details of API Source</div>
+          <div class="row-control">
+            <textarea [(ngModel)]="formData.apiSource" (ngModelChange)="onFieldChange()"></textarea>
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Earliest ANDA / Dossier Filing Date</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.earliestDossierDate" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">API Cost</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.apiCost" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Filing & Development -->
+    <section class="form-section">
+      <div class="section-title">Filing &amp; Development</div>
+      <div class="paired">
+        <div class="inline-row">
+          <div class="row-label">Earliest Launch Date</div>
+          <div class="row-control">
+            <input [(ngModel)]="formData.earliestLaunchDate" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row">
+          <div class="row-label">Remarks</div>
+          <div class="row-control">
+            <input placeholder="Enter remarks" [(ngModel)]="formData.filingRemarks" (ngModelChange)="onFieldChange()">
+          </div>
+        </div>
+        <div class="inline-row" style="grid-column: 1 / -1;">
+          <div class="row-label">Key Points to Be Considered / Tracked During Development</div>
+          <div class="row-control">
+            <textarea placeholder="Add key development considerations, risks, dependencies, or items to track"
+              [(ngModel)]="formData.keyDevelopmentPoints" (ngModelChange)="onFieldChange()"></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Review & Approval -->
+    <section class="form-section">
+      <div class="section-title">Review &amp; Approval</div>
+      <div class="app-table-container" style="padding: 0; width: 100%;">
+        <div class="table-responsive">
+          <table class="table app-table approval-table">
+            <thead>
+              <tr>
+                <th style="width: 140px; text-align: left;">Role / Stage</th>
+                <th style="text-align: center;">Prepared By (FD)</th>
+                <th style="text-align: center;">Reviewed By (RA/IPR)</th>
+                <th style="text-align: center;">Reviewed By (PPIC-RM)/BD</th>
+                <th style="text-align: center;">Reviewed By (PPIC-PM)/BD</th>
+                <th style="text-align: center;">Approved By (MD)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="row-header-cell">Sign / ID</td>
+                <td><input class="form-control" [(ngModel)]="formData.signFd" (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" placeholder="Reviewer" [(ngModel)]="formData.signRa"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" placeholder="Reviewer" [(ngModel)]="formData.signRm"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" placeholder="Reviewer" [(ngModel)]="formData.signPm"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" placeholder="Approver" [(ngModel)]="formData.signMd"
+                    (ngModelChange)="onFieldChange()"></td>
+              </tr>
+              <tr>
+                <td class="row-header-cell">Date</td>
+                <td><input class="form-control" type="date" [(ngModel)]="formData.dateFd"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" type="date" [(ngModel)]="formData.dateRa"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" type="date" [(ngModel)]="formData.dateRm"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" type="date" [(ngModel)]="formData.datePm"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" type="date" [(ngModel)]="formData.dateMd"
+                    (ngModelChange)="onFieldChange()"></td>
+              </tr>
+              <tr>
+                <td class="row-header-cell">Name</td>
+                <td><input class="form-control" [(ngModel)]="formData.nameFd" (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" placeholder="Name" [(ngModel)]="formData.nameRa"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" placeholder="Name" [(ngModel)]="formData.nameRm"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" placeholder="Name" [(ngModel)]="formData.namePm"
+                    (ngModelChange)="onFieldChange()"></td>
+                <td><input class="form-control" placeholder="Name" [(ngModel)]="formData.nameMd"
+                    (ngModelChange)="onFieldChange()"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="note">This is system generated, hence does not require signature. &nbsp; | &nbsp; Format No:
+        JERD/FDG001-F01-00 &nbsp; | &nbsp; Not for circulation</div>
+    </section>
+
+  </main>
+
+  <!-- Sticky Bottom Footer -->
+  <footer class="sticky-footer ppif-sticky-footer">
+    <div class="save-state" [class.dirty]="isDirty" [class.saved]="!isDirty">
+      <span class="state-dot"></span>
+      <span class="state-text">{{ isDirty ? 'Unsaved changes' : 'All changes saved' }}</span>
+    </div>
+    <div class="footer-actions">
+      <button class="app-btn app-btn-default app-btn-discard" type="button" (click)="discardChanges()">
+        <mat-icon>cancel</mat-icon> Discard Changes
+      </button>
+      <button class="app-btn app-btn-primary" type="button" (click)="save()">
+        <mat-icon>save</mat-icon> Save
+      </button>
+      <button class="app-btn app-btn-primary" type="button" (click)="downloadPdf()">
+        <mat-icon>download</mat-icon> Download Signed PDF
+      </button>
+    </div>
+  </footer>
+</div>

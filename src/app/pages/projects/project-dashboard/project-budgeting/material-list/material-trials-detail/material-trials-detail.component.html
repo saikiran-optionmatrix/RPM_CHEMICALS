@@ -1,0 +1,123 @@
+<div class="inner-trial-screen">
+
+  <!-- Header Bar with Back Button at Top-Right Corner (as in img3) -->
+  <div class="trial-header-bar d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <h2 class="trial-screen-title m-0">Development Trials Breakdown (Trials 1 – {{ trialRows.length }})</h2>
+      <p class="trial-screen-sub text-muted m-0">Full per-cycle input quantities and trial costs across all development trials</p>
+    </div>
+
+    <!-- Right-corner controls: Material selector, Add Trial & Back Button -->
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <div class="material-select-wrapper d-flex align-items-center gap-2">
+        <label class="form-label mb-0 font-weight-bold" style="font-size: 13px; color: #475569; white-space: nowrap;">Material:</label>
+        <select class="form-control form-control-sm material-dropdown" [(ngModel)]="selectedMaterialCode"
+          (ngModelChange)="selectTrialMaterial($event)">
+          @for (m of itemsWithCalc; track m.item.code) {
+          <option [ngValue]="m.item.code">{{ m.item.d }} ({{ m.item.code }})</option>
+          }
+        </select>
+      </div>
+
+      <!-- Add Trial Button -->
+      <button type="button" class="app-btn app-btn-primary" (click)="openAddTrialDialog()">
+        <mat-icon>add</mat-icon>
+        <span>Add Trial</span>
+      </button>
+
+      <!-- Back Button at far right corner -->
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back to Material List</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Focused Material Info Banner -->
+  @if (selectedMaterialItem) {
+  <div class="selected-material-card d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+    <div class="d-flex align-items-center gap-4 flex-wrap">
+      <div>
+        <span class="label">Material:</span>
+        <strong class="val">{{ selectedMaterialItem.d }}</strong>
+        <span class="badge-code ml-2">({{ selectedMaterialItem.code }})</span>
+      </div>
+      <div>
+        <span class="label">Category:</span>
+        <span class="val">{{ selectedMaterialItem.cat }}</span>
+      </div>
+      <div>
+        <span class="label">Price:</span>
+        <span class="val">₹ {{ formatDec(selectedMaterialItem.price) }} / {{ selectedMaterialItem.uom }}</span>
+      </div>
+      <div>
+        <span class="label">Dev Batch Size:</span>
+        <span class="val">{{ format(selectedMaterialItem.dbs) }}</span>
+      </div>
+      <div>
+        <span class="label">Total Dev Cost:</span>
+        <strong class="val text-primary">₹ {{ format(selectedMaterialCalc?.AI) }}</strong>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Single Vertical Table: Actions, Cycle, Input quantity, Cost, Total -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table single-trial-table">
+        <thead>
+          <tr>
+            <th style="width: 80px; min-width: 80px;" class="text-center">Actions</th>
+            <th style="min-width: 140px;">Cycle</th>
+            <th class="text-right" style="min-width: 180px;">Input quantity</th>
+            <th class="text-right" style="min-width: 180px;">Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of trialRows; track row.cycleIndex) {
+          <tr>
+            <!-- Actions: Edit & Delete for this trial -->
+            <td class="text-center">
+              <div class="table-actions" style="justify-content: center;">
+                <button type="button" class="table-action-button edit" matTooltip="Edit {{ row.cycleLabel }}"
+                  aria-label="Edit Trial" (click)="openEditTrialDialog(row)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete {{ row.cycleLabel }}"
+                  aria-label="Delete Trial" (click)="deleteTrial(row)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+
+            <!-- Cycle (Plain text without background color / badge as requested in img2) -->
+            <td class="font-weight-medium">
+              {{ row.cycleLabel }}
+            </td>
+
+            <!-- Input quantity -->
+            <td class="text-right">
+              {{ formatDec(row.inputQty) }}
+            </td>
+
+            <!-- Cost -->
+            <td class="text-right font-weight-medium">
+              {{ format(row.cost) }}
+            </td>
+          </tr>
+          }
+
+          <!-- Total Row: Total Input quantity and Total Cost -->
+          <tr class="table-total-row">
+            <td></td>
+            <td class="font-weight-bold">Total</td>
+            <td class="text-right font-weight-bold">{{ formatDec(totalTrialInputQty) }}</td>
+            <td class="text-right highlight-col font-weight-bold">{{ format(totalTrialCost) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

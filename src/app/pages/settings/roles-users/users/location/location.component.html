@@ -1,0 +1,148 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    Location
+  </h1>
+</div>
+
+<div mat-dialog-content class="location-dialog-content">
+  <!-- Top Filter Toolbar (Keyword, State, City, Search, Clear) -->
+  <div class="location-filter-row">
+    <!-- Keyword -->
+    <div class="filter-field keyword-field">
+      <label for="locationKeyword">Keyword:</label>
+      <mat-form-field appearance="outline" class="app-filter-control">
+        <input matInput id="locationKeyword" class="bg-white" [(ngModel)]="keyword" placeholder="Enter Keyword">
+      </mat-form-field>
+    </div>
+
+    <!-- State Dropdown -->
+    <div class="filter-field">
+      <label for="locationState">State:</label>
+      <mat-form-field appearance="outline" class="app-filter-control">
+        <mat-select id="locationState" [(ngModel)]="selectedState" placeholder="Select State">
+          <mat-option value="">All States</mat-option>
+          @for (state of states; track state) {
+            <mat-option [value]="state">{{ state }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- City Dropdown -->
+    <div class="filter-field">
+      <label for="locationCity">City:</label>
+      <mat-form-field appearance="outline" class="app-filter-control">
+        <mat-select id="locationCity" [(ngModel)]="selectedCity" placeholder="Select City">
+          <mat-option value="">All Cities</mat-option>
+          @for (city of cities; track city) {
+            <mat-option [value]="city">{{ city }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Actions (Search & Clear) beside inputs -->
+    <div class="filter-actions">
+      <button type="button" class="app-btn app-btn-primary" (click)="onSearch()" title="Search">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button type="button" class="app-btn app-btn-default" (click)="onClear()" title="Clear">
+        <mat-icon>settings_backup_restore</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="row tables-row">
+
+    <!-- Left Column Table -->
+    <div class="col-sm-6 table-col">
+      <div class="app-table-container">
+        <div class="table-responsive">
+          <table class="table app-table">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 70px; min-width: 70px;">
+                  <mat-checkbox [checked]="isAllLeftSelected()" (change)="toggleAllLeft($event.checked)" color="primary"></mat-checkbox>
+                </th>
+                <th>Location Name</th>
+                <th class="text-center" style="width: 140px; min-width: 140px;">Location Code</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of paginatedLeftColumn; track item.locationCode) {
+                <tr [class.row-selected]="item.selected">
+                  <td class="text-center">
+                    <mat-checkbox [(ngModel)]="item.selected" color="primary"></mat-checkbox>
+                  </td>
+                  <td>{{ item.locationName }}</td>
+                  <td class="text-center font-weight-500" style="color: #2563eb;">{{ item.locationCode }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- <mat-paginator
+          [length]="leftColumn.length"
+          [pageIndex]="leftPageIndex"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[5]"
+          [hidePageSize]="true"
+          [showFirstLastButtons]="true"
+          (page)="handleLeftPage($event)">
+        </mat-paginator> -->
+      </div>
+    </div>
+
+    <!-- Right Column Table -->
+    <div class="col-sm-6 table-col">
+      <div class="app-table-container">
+        <div class="table-responsive">
+          <table class="table app-table">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 70px; min-width: 70px;">
+                  <mat-checkbox [checked]="isAllRightSelected()" (change)="toggleAllRight($event.checked)" color="primary"></mat-checkbox>
+                </th>
+                <th>Location Name</th>
+                <th class="text-center" style="width: 140px; min-width: 140px;">Location Code</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of paginatedRightColumn; track item.locationCode) {
+                <tr [class.row-selected]="item.selected">
+                  <td class="text-center">
+                    <mat-checkbox [(ngModel)]="item.selected" color="primary"></mat-checkbox>
+                  </td>
+                  <td>{{ item.locationName }}</td>
+                  <td class="text-center font-weight-500" style="color: #2563eb;">{{ item.locationCode }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <mat-paginator
+          [length]="rightColumn.length"
+          [pageIndex]="rightPageIndex"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[5]"
+          [hidePageSize]="true"
+          [showFirstLastButtons]="true"
+          (page)="handleRightPage($event)">
+        </mat-paginator>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Action Buttons Footer -->
+<mat-dialog-actions align="end" class="location-dialog-actions">
+  <button type="button" class="app-btn app-btn-default" (click)="close()" style="background-color: lightgray; color: red;">
+    <mat-icon>cancel</mat-icon> Close
+  </button>
+  <button type="button" class="app-btn app-btn-primary" (click)="save()">
+    <mat-icon>save</mat-icon> Save
+  </button>
+</mat-dialog-actions>

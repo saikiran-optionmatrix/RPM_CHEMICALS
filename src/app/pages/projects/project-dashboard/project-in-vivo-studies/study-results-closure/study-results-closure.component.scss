@@ -1,0 +1,154 @@
+:host {
+  display: block;
+}
+
+.results-container {
+  display: grid;
+  gap: 14px;
+}
+
+.results-banner {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-left: 4px solid #1485cc;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  color: #1f2937;
+}
+
+.banner-icon {
+  color: #1485cc;
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.results-card {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 16px 18px;
+}
+
+.results-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+
+  h3 {
+    margin: 0;
+    color: #111827;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+  }
+}
+
+.results-table-container {
+  padding: 0;
+  width: 100%;
+}
+
+.results-table {
+  width: 100%;
+
+  thead th {
+    padding: 8px 10px !important;
+    font-size: 12.5px !important;
+  }
+
+  tbody td {
+    padding: 8px 10px !important;
+    font-size: 12.5px !important;
+    vertical-align: middle !important;
+    line-height: 1.4;
+  }
+
+  .col-num {
+    width: 44px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .col-item {
+    min-width: 210px;
+  }
+
+  .col-status {
+    min-width: 220px;
+  }
+
+  .item-cell {
+    font-weight: 500;
+    color: #111827;
+  }
+
+  .how-cell {
+    color: #64748b;
+    font-size: 12px !important;
+  }
+}
+
+.status-cell {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status-meta {
+  color: #475569;
+  font-size: 12px;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+
+  &.t-green {
+    background-color: #ebf9f1;
+    color: #2e7d32;
+    border: 1px solid #d1f0df;
+  }
+
+  &.t-blue {
+    background-color: #ebf3ff;
+    color: #1d4ed8;
+    border: 1px solid #d6e6ff;
+  }
+
+  &.t-orange {
+    background-color: #fff4e5;
+    color: #c2781d;
+    border: 1px solid #ffe8cc;
+  }
+
+  &.t-red {
+    background-color: #fff0f0;
+    color: #c62828;
+    border: 1px solid #ffd6d6;
+  }
+
+  &.t-grey {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+  }
+}
+
+.results-footnote {
+  margin: 12px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.45;
+}

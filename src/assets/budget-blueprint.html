@@ -1,0 +1,1942 @@
+<title>Pragati Budget Blueprint</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<style>
+  /* Layout: replica of the Pragati app shell (dark toolbar, nav row, content left, project menu right). Single light theme, matching Pragati. */
+  :root {
+    --toolbar: #212121;
+    --toolbar-fg: #ffffff;
+    --page: #ffffff;
+    --content: #fafafa;
+    --text: #212529;
+    --title: #111111;
+    --muted: #666666;
+    --line: #d1d5db;
+    --th: #3f3f3f;
+    --th-line: #6b7280;
+    --blue: #1485cc;
+    --blue-active: #1976d2;
+    --blue-active-bg: #dfefff;
+    --backlog: #ff0000;
+    --grey-btn: #828282;
+    --k-blue-bg: #ebf3ff;
+    --k-blue-bd: #d6e6ff;
+    --k-blue: #2e5da3;
+    --k-green-bg: #ebf9f1;
+    --k-green-bd: #d1f0df;
+    --k-green: #329663;
+    --k-orange-bg: #fff4e5;
+    --k-orange-bd: #ffe8cc;
+    --k-orange: #c2781d;
+    --k-purple-bg: #f6f0ff;
+    --k-purple-bd: #ecd9ff;
+    --k-purple: #8e5bd6;
+    --k-red-bg: #fff0f0;
+    --k-red-bd: #ffd6d6;
+    --k-red: #d64545;
+    --k-teal-bg: #e6fcf5;
+    --k-teal-bd: #c3fae8;
+    --k-teal: #208d8d;
+    --new-bg: #fff8db;
+    --new: #a06a00;
+    --f: Roboto, "Helvetica Neue", Arial, sans-serif;
+    color-scheme: light;
+  }
+
+  * {
+    box-sizing: border-box
+  }
+
+  body {
+    background: var(--page);
+    color: var(--text);
+    font-family: var(--f);
+    font-size: 14px;
+    line-height: 1.45
+  }
+
+  .mi {
+    overflow: hidden;
+    max-width: 1.2em;
+    font-family: "Material Icons";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: middle;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    -webkit-font-smoothing: antialiased
+  }
+
+  button {
+    font-family: var(--f)
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--blue-active);
+    outline-offset: 2px
+  }
+
+  /* toolbar */
+  .toolbar {
+    background: var(--toolbar);
+    color: var(--toolbar-fg);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px))
+  }
+
+  .tb-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px
+  }
+
+  .logo {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    padding-left: 22px
+  }
+
+  .tb-icons {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden
+  }
+
+  .tb-icons .mi {
+    font-size: 24px
+  }
+
+  .bell {
+    position: relative
+  }
+
+  .bell b {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #e53935;
+    color: #fff;
+    font-size: 10px;
+    border-radius: 50%;
+    width: 17px;
+    height: 17px;
+    display: grid;
+    place-items: center
+  }
+
+  .tb-nav {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    margin-top: 8px
+  }
+
+  .tb-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15.5px;
+    font-weight: 500;
+    padding: 11px 14px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    white-space: nowrap;
+    cursor: pointer;
+    border-bottom: 3px solid transparent
+  }
+
+  .tb-nav a .mi {
+    font-size: 18px
+  }
+
+  .tb-nav a.on {
+    background: #3a3a3a;
+    border-bottom-color: #fff
+  }
+
+  .tb-nav .backlog {
+    background: var(--backlog);
+    font-weight: 700;
+    border-radius: 3px;
+    margin: 4px 0 4px 8px;
+    padding: 9px 12px
+  }
+
+  /* shell */
+  .shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 230px;
+    min-height: 600px
+  }
+
+  .content {
+    background: var(--content);
+    padding: 22px max(16px, env(safe-area-inset-left, 0px)) 40px max(24px, env(safe-area-inset-left, 0px));
+    min-width: 0;
+    display: grid;
+    gap: 16px;
+    align-content: start
+  }
+
+  .ptitle h1 {
+    font-size: 29px;
+    font-weight: 600;
+    color: var(--title);
+    margin: 0
+  }
+
+  .ptitle p {
+    color: var(--muted);
+    margin: 4px 0 0
+  }
+
+  .projrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap
+  }
+
+  .projrow h2 {
+    font-size: 26px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, .87);
+    margin: 0;
+    min-width: 0
+  }
+
+  .btn {
+    border: 0;
+    border-radius: 4px;
+    padding: 0 16px;
+    height: 36px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: #fff
+  }
+
+  .btn.grey {
+    background: var(--grey-btn)
+  }
+
+  .btn.blue {
+    background: var(--blue);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .15)
+  }
+
+  .btn.light {
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--line)
+  }
+
+  .side {
+    background: #fff;
+    border-left: 1px solid #eee;
+    padding: 14px 10px calc(20px + env(safe-area-inset-bottom, 0px));
+    padding-right: max(10px, env(safe-area-inset-right, 0px))
+  }
+
+  .side .ham {
+    padding: 6px 10px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #222;
+    display: block;
+    margin-bottom: 6px
+  }
+
+  .ham:hover {
+    background: #f1f1f1
+  }
+
+  .side .ham .mi {
+    font-size: 26px
+  }
+
+  .side .upd {
+    width: 100%;
+    justify-content: center;
+    font-size: 13px;
+    height: 38px;
+    margin-bottom: 8px
+  }
+
+  .side nav {
+    display: grid;
+    gap: 2px
+  }
+
+  .side nav a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 17px;
+    color: #222;
+    padding: 10px 10px 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer
+  }
+
+  .side nav a:hover {
+    background: #f3f6fa
+  }
+
+  .side nav a.on {
+    background: var(--blue-active-bg);
+    color: var(--blue-active);
+    font-weight: 700
+  }
+
+  .side nav a.dim {
+    color: #9aa0a6;
+    cursor: default
+  }
+
+  .side nav a.dim:hover {
+    background: none
+  }
+
+  .newpill {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    background: var(--new-bg);
+    color: var(--new);
+    border: 1px solid #f1d98a;
+    border-radius: 3px;
+    padding: 1px 5px
+  }
+
+  .side .sep {
+    font-size: 11px;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: #888;
+    padding: 14px 15px 4px
+  }
+
+  /* banner */
+  .banner {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13.5px
+  }
+
+  .banner .mi {
+    color: var(--blue)
+  }
+
+  .banner b {
+    color: var(--title)
+  }
+
+  /* kpis */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px
+  }
+
+  .kpi {
+    border-radius: 10px;
+    padding: 15px;
+    display: grid;
+    gap: 6px;
+    border: .8px solid
+  }
+
+  .kpi .l {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase
+  }
+
+  .kpi .v {
+    font-size: 15px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums
+  }
+
+  .kpi.blue {
+    background: var(--k-blue-bg);
+    border-color: var(--k-blue-bd);
+    color: var(--k-blue)
+  }
+
+  .kpi.green {
+    background: var(--k-green-bg);
+    border-color: var(--k-green-bd);
+    color: var(--k-green)
+  }
+
+  .kpi.orange {
+    background: var(--k-orange-bg);
+    border-color: var(--k-orange-bd);
+    color: var(--k-orange)
+  }
+
+  .kpi.purple {
+    background: var(--k-purple-bg);
+    border-color: var(--k-purple-bd);
+    color: var(--k-purple)
+  }
+
+  .kpi.red {
+    background: var(--k-red-bg);
+    border-color: var(--k-red-bd);
+    color: var(--k-red)
+  }
+
+  .kpi.teal {
+    background: var(--k-teal-bg);
+    border-color: var(--k-teal-bd);
+    color: var(--k-teal)
+  }
+
+  /* tables */
+  .tbox {
+    overflow-x: auto;
+    background: #fff;
+    border: .8px solid var(--line)
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+    color: #334155
+  }
+
+  th,
+  td {
+    padding: 9px 12px;
+    border: .8px solid var(--line);
+    text-align: left;
+    vertical-align: middle
+  }
+
+  th {
+    background: var(--th);
+    color: #fff;
+    font-weight: 600;
+    border-color: var(--th-line);
+    white-space: nowrap
+  }
+
+  td {
+    color: var(--text);
+    background: #fff
+  }
+
+  td.n,
+  th.n {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap
+  }
+
+  th.c {
+    text-align: center
+  }
+
+  th.new,
+  td.new {
+    background: var(--new-bg)
+  }
+
+  th.new {
+    color: #3d2a00;
+    border-color: #e8cf7a
+  }
+
+  th .newpill {
+    margin-left: 6px
+  }
+
+  tr.gate td {
+    background: #eef1f5;
+    font-weight: 600;
+    cursor: pointer
+  }
+
+  tr.gate .mi {
+    font-size: 18px;
+    transition: transform .15s
+  }
+
+  tr.gate.closed .mi {
+    transform: rotate(-90deg)
+  }
+
+  tr.total td {
+    background: #f1f3f6;
+    font-weight: 700
+  }
+
+  .code {
+    color: #6b7280;
+    font-size: 12.5px
+  }
+
+  .sub {
+    font-size: 12px;
+    color: #6b7280
+  }
+
+  a.cell {
+    color: var(--blue-active);
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 1px dashed currentColor
+  }
+
+  a.cell:hover {
+    color: #0d5aa7
+  }
+
+  .zero {
+    color: #9ca3af
+  }
+
+  .blank {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--k-orange);
+    background: var(--k-orange-bg);
+    border: 1px solid var(--k-orange-bd);
+    border-radius: 4px;
+    padding: 2px 7px
+  }
+
+  .over {
+    color: var(--k-red);
+    font-weight: 500
+  }
+
+  .under {
+    color: var(--k-green);
+    font-weight: 500
+  }
+
+  .bkt {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    margin-right: 6px
+  }
+
+  .bkt.man {
+    background: #2e5da3
+  }
+
+  .bkt.mat {
+    background: #329663
+  }
+
+  .bkt.res {
+    background: #c2781d
+  }
+
+  .legend {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: #555;
+    align-items: center
+  }
+
+  .filterchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue-active-bg);
+    color: var(--blue-active);
+    border-radius: 16px;
+    padding: 4px 6px 4px 12px;
+    font-size: 13px;
+    font-weight: 500
+  }
+
+  .filterchip button {
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    display: grid
+  }
+
+  .filterchip button .mi {
+    font-size: 18px
+  }
+
+  .tools {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap
+  }
+
+  .del {
+    color: #d64545
+  }
+
+  /* dialog (mat-dialog style) */
+  .scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .32);
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))
+  }
+
+  .dialog {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2), 0 24px 38px 3px rgba(0, 0, 0, .14);
+    width: min(860px, 100%);
+    max-height: 100%;
+    display: flex;
+    flex-direction: column
+  }
+
+  .dlg-h {
+    padding: 18px 22px 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+    border-bottom: 1px solid #eee
+  }
+
+  .dlg-h h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--title)
+  }
+
+  .dlg-h .sub {
+    margin-top: 3px
+  }
+
+  .dlg-b {
+    padding: 16px 22px;
+    overflow: auto;
+    display: grid;
+    gap: 12px
+  }
+
+  .dlg-f {
+    padding: 10px 22px 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    flex-wrap: wrap
+  }
+
+  .iconbtn {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: #555;
+    padding: 4px;
+    border-radius: 50%
+  }
+
+  .iconbtn:hover {
+    background: #f1f1f1
+  }
+
+  .srcnote {
+    background: #f6f8fb;
+    border: 1px solid #e3e8ef;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    display: grid;
+    gap: 3px
+  }
+
+  .formula {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    color: #555
+  }
+
+  .dlg-b input {
+    width: 86px;
+    font: inherit;
+    text-align: right;
+    padding: 4px 6px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums
+  }
+
+  /* notes */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px
+  }
+
+  .card {
+    background: #fff;
+    border: .8px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    min-width: 0
+  }
+
+  .card h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--title);
+    display: flex;
+    gap: 8px;
+    align-items: center
+  }
+
+  .card h3 .mi {
+    color: var(--blue)
+  }
+
+  .card p,
+  .card li {
+    font-size: 13.5px;
+    color: #444
+  }
+
+  .card ul,
+  .card ol {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 5px
+  }
+
+  .sectiontitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--title);
+    margin: 6px 0 0
+  }
+
+  .gatecard {
+    background: #fff;
+    border: .8px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    display: grid;
+    gap: 12px
+  }
+
+  .gatecard h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--title)
+  }
+
+  .pill {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: var(--k-orange-bg);
+    color: var(--k-orange);
+    border: 1px solid var(--k-orange-bd)
+  }
+
+  /* budget tab: inner tabs, WBS tree, detail sheet */
+  .itabs {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 6px 6px 0 0
+  }
+
+  .itab {
+    border: 0;
+    background: none;
+    padding: 13px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    margin-bottom: -1px
+  }
+
+  .itab:hover {
+    background: #f5f8fc
+  }
+
+  .itab.on {
+    color: var(--blue-active);
+    border-bottom-color: var(--blue-active)
+  }
+
+  .ipanel {
+    display: grid;
+    gap: 14px
+  }
+
+  .fld {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: #fff;
+    padding: 0 10px;
+    min-width: 0;
+    flex: 1 1 240px;
+    max-width: 360px
+  }
+
+  .fld .mi {
+    color: #888;
+    font-size: 19px
+  }
+
+  .fld input {
+    border: 0;
+    outline: 0;
+    font: inherit;
+    width: 100%;
+    min-width: 0;
+    background: none
+  }
+
+  .sel {
+    height: 36px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: #fff;
+    font: inherit;
+    padding: 0 8px;
+    max-width: 100%
+  }
+
+  .btn.sm {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 13px
+  }
+
+  table.wbs td {
+    padding: 7px 10px
+  }
+
+  table.wbs .resp {
+    font-size: 12.5px;
+    color: #555;
+    white-space: nowrap
+  }
+
+  .wid {
+    font-size: 12.5px;
+    color: #4b5563;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums
+  }
+
+  .tn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0
+  }
+
+  .chev {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border-radius: 4px;
+    color: #374151;
+    flex: none
+  }
+
+  .chev:hover {
+    background: rgba(0, 0, 0, .06)
+  }
+
+  .chev .mi {
+    font-size: 20px
+  }
+
+  .chev-sp {
+    width: 24px;
+    flex: none
+  }
+
+  .chev .mi {
+    max-width: none;
+    width: 24px
+  }
+
+  .nm.tg {
+    cursor: pointer
+  }
+
+  .nm.tg:hover {
+    color: var(--blue-active)
+  }
+
+  tr.lv0 td {
+    background: #e9eef5;
+    font-weight: 700;
+    color: #111
+  }
+
+  tr.lv1 td {
+    background: #f3f6f9;
+    font-weight: 600
+  }
+
+  tr.lv2 td {
+    background: #fafbfc;
+    font-weight: 500
+  }
+
+  tr.lv3 td {
+    background: #fff
+  }
+
+  tr.hl td {
+    background: #fff3c4 !important
+  }
+
+  a.cell.tot {
+    font-weight: 700
+  }
+
+  .aname {
+    max-width: 260px
+  }
+
+  .stabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap
+  }
+
+  .stab {
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 16px;
+    padding: 6px 8px 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center
+  }
+
+  .stab .cnt {
+    background: #eef1f5;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums
+  }
+
+  .stab.on {
+    background: var(--blue-active);
+    border-color: var(--blue-active);
+    color: #fff
+  }
+
+  .stab.on .cnt {
+    background: rgba(255, 255, 255, .25)
+  }
+
+  .stab.empty {
+    color: #9ca3af
+  }
+
+  .qin {
+    width: 84px;
+    font: inherit;
+    text-align: right;
+    padding: 3px 6px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+    background: #fffdf3
+  }
+
+  .bchip {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap
+  }
+
+  .bchip.man {
+    background: var(--k-blue-bg);
+    color: var(--k-blue)
+  }
+
+  .bchip.mat {
+    background: var(--k-green-bg);
+    color: var(--k-green)
+  }
+
+  .bchip.res {
+    background: var(--k-orange-bg);
+    color: var(--k-orange)
+  }
+
+  a.wlink {
+    color: var(--blue-active);
+    cursor: pointer;
+    text-decoration: none;
+    border-bottom: 1px dashed currentColor
+  }
+
+  .bar {
+    height: 6px;
+    background: #eef1f5;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 3px
+  }
+
+  .bar i {
+    display: block;
+    height: 100%;
+    background: var(--k-green)
+  }
+
+  .spill {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 12px;
+    white-space: nowrap
+  }
+
+  .spill.k-green {
+    background: var(--k-green-bg);
+    color: var(--k-green)
+  }
+
+  .spill.k-blue {
+    background: var(--k-blue-bg);
+    color: var(--k-blue)
+  }
+
+  .spill.k-grey {
+    background: #f1f3f5;
+    color: #6b7280
+  }
+
+  @media (max-width:900px) {
+    .shell {
+      grid-template-columns: 1fr
+    }
+
+    .side {
+      border-left: 0;
+      border-top: 1px solid #eee;
+      order: -1;
+      padding-left: max(10px, env(safe-area-inset-left, 0px))
+    }
+
+    .side nav {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))
+    }
+
+    .side .ham {
+      display: none
+    }
+
+    .kpis {
+      grid-template-columns: repeat(2, minmax(0, 1fr))
+    }
+
+    .logo {
+      padding-left: 0;
+      font-size: 26px
+    }
+  }
+
+  @media (max-width:480px) {
+    .kpis {
+      grid-template-columns: 1fr
+    }
+
+    .tb-icons {
+      gap: 14px
+    }
+  }
+
+  @media (prefers-reduced-motion:reduce) {
+    * {
+      transition: none !important
+    }
+  }
+
+  /* live-site table look */
+  .tcard {
+    background: #fff;
+    border: .8px solid #e5e7eb;
+    display: grid
+  }
+
+  .tcard-h {
+    display: flex;
+    justify-content: flex-end;
+    padding: 14px
+  }
+
+  table.live th {
+    text-align: center;
+    padding: 12px 14px
+  }
+
+  table.live td {
+    padding: 12px 14px;
+    color: #212529
+  }
+
+  table.live td.c {
+    text-align: center
+  }
+
+  .act-e {
+    color: #1976d2;
+    font-size: 20px
+  }
+
+  .act-d {
+    color: #e53935;
+    font-size: 20px;
+    margin-left: 10px
+  }
+
+  .mcb {
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #444;
+    border-radius: 2px;
+    vertical-align: middle
+  }
+
+  .mcb.on {
+    background: #212121;
+    border-color: #212121;
+    color: #fff
+  }
+
+  .mcb.on .mi {
+    font-size: 15px;
+    font-weight: 700
+  }
+
+  .mcb.dis {
+    border-color: #bdbdbd
+  }
+
+  .mcb.dis.on {
+    background: #bdbdbd;
+    border-color: #bdbdbd
+  }
+
+  .calbtn {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid #e0e0e0;
+    color: #1976d2
+  }
+
+  .calbtn .mi {
+    font-size: 20px
+  }
+
+  a.lk {
+    color: #0284c7;
+    text-decoration: underline;
+    font-weight: 600;
+    cursor: pointer
+  }
+
+  a.lk2 {
+    color: #2563eb;
+    text-decoration: underline;
+    cursor: pointer
+  }
+
+  a.lk3 {
+    color: #0d6efd;
+    text-decoration: underline;
+    cursor: pointer
+  }
+
+  .red,
+  a.lk2.red {
+    color: #dc2626
+  }
+
+  .gc-on {
+    color: #2563eb
+  }
+
+  .gc-off {
+    color: #64748b
+  }
+
+  .redir {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    white-space: nowrap
+  }
+
+  .av {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #e3ecfa;
+    color: #2e5da3;
+    font-size: 12px;
+    font-weight: 600
+  }
+
+  .dr {
+    white-space: nowrap
+  }
+
+  .pager {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    font-size: 12.5px;
+    color: #555;
+    flex-wrap: wrap
+  }
+
+  .pp {
+    display: inline-flex;
+    align-items: center;
+    border-bottom: 1px solid #999;
+    padding: 0 2px
+  }
+
+  .mi.dim {
+    color: #bbb
+  }
+
+  /* budget sheets */
+  table.xl th {
+    white-space: nowrap
+  }
+
+  table.xl td {
+    white-space: nowrap
+  }
+
+  table.xl tr.sub td {
+    background: #f6f8fb;
+    font-weight: 600
+  }
+
+  tr.gap td {
+    height: 12px;
+    padding: 0;
+    background: #fff
+  }
+
+  tr.agr td {
+    color: #6b7280;
+    background: #fbfbfb
+  }
+
+  .drill {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    background: #fff8db;
+    border: 1px solid #f1d98a;
+    border-radius: 6px;
+    padding: 8px 12px;
+    flex-wrap: wrap
+  }
+
+  .drill>.mi {
+    color: #a06a00
+  }
+
+  .drill>div:first-of-type {
+    flex: 1;
+    min-width: 220px
+  }
+
+  a.jl {
+    color: var(--blue-active);
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: underline
+  }
+
+  .tpl {
+    font-size: 10.5px;
+    font-weight: 700;
+    background: #e8f1ff;
+    color: #2e5da3;
+    border: 1px solid #c9dcff;
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-left: 4px
+  }
+
+  .exm {
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b7280;
+    background: #f1f3f5;
+    border-radius: 10px;
+    padding: 2px 9px;
+    vertical-align: middle;
+    margin-left: 6px
+  }
+
+  .formgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    background: #fff;
+    border: .8px solid var(--line);
+    border-radius: 6px;
+    padding: 12px
+  }
+
+  .formgrid>div {
+    display: grid;
+    gap: 2px
+  }
+
+  .formgrid .lab {
+    font-size: 12px;
+    color: #6b7280
+  }
+
+  .itab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px
+  }
+
+  /* fixes: collapsible menu, wide tables scroll inside, long names wrap */
+  .shell {
+    transition: grid-template-columns .15s
+  }
+
+  .shell.collapsed {
+    grid-template-columns: minmax(0, 1fr) 58px
+  }
+
+  .shell.collapsed .side {
+    padding-left: 6px;
+    padding-right: 6px
+  }
+
+  .shell.collapsed .side .upd,
+  .shell.collapsed #sidenav {
+    display: none
+  }
+
+  .content,
+  .ipanel {
+    grid-template-columns: minmax(0, 1fr)
+  }
+
+  .content>*,
+  .ipanel>* {
+    min-width: 0
+  }
+
+  .tbox {
+    max-width: 100%
+  }
+
+  table.xl td.aname,
+  table.wbs td .tn .nm,
+  table.xl td.wrap {
+    white-space: normal;
+    min-width: 220px;
+    max-width: 340px
+  }
+
+  table.live td {
+    white-space: nowrap
+  }
+
+  table.live td.wrapc {
+    white-space: normal
+  }
+
+  @media (max-width:900px) {
+    .shell.collapsed {
+      grid-template-columns: 1fr
+    }
+
+    .shell.collapsed .side {
+      padding: 8px
+    }
+  }
+</style>
+
+<header class="toolbar">
+  <div class="tb-top">
+    <div class="logo">PRAGATI</div>
+    <div class="tb-icons" aria-hidden="true"><span class="mi">settings</span><span class="mi">auto_awesome</span><span
+        class="bell"><span class="mi">notifications</span><b>5</b></span><span class="mi">fullscreen</span><span
+        class="mi">account_circle</span></div>
+  </div>
+  <nav class="tb-nav" aria-label="Main">
+    <a><span class="mi">dashboard</span>Dashboard</a>
+    <a class="on"><span class="mi">business_center</span>Projects</a>
+    <a><span class="mi">layers</span>Stages</a>
+    <a><span class="mi">door_front</span>Gates</a>
+    <a><span class="mi">view_list</span>Master Data</a>
+    <a><span class="mi">groups</span>Monitor</a>
+    <a><span class="mi">access_time</span>Hours</a>
+    <a><span class="mi">groups</span>Resources</a>
+    <a class="backlog">Backlog - 078</a>
+  </nav>
+</header>
+<div class="shell">
+  <main class="content" id="content"></main>
+  <aside class="side" aria-label="Project menu">
+    <button class="ham" id="hamb" type="button" aria-label="Collapse project menu" aria-expanded="true"><span
+        class="mi">menu</span></button>
+    <button class="btn blue upd" type="button"><span class="mi" style="font-size:18px">edit</span>Update Project
+      Info</button>
+    <nav id="sidenav">
+      <a class="dim">Analytics</a><a class="dim">Overview</a><a class="dim">Feasibility</a><a class="dim">Setup</a><a
+        class="dim">Team</a><a class="dim">Stages</a>
+      <a data-view="gates">Gates</a><a class="dim">TTD</a>
+      <a data-view="budget">Budget</a>
+      <a class="dim">Scrum</a>
+      <a data-view="activities">Activities</a><a class="dim">Scheduling</a><a class="dim">To do</a>
+      <a data-view="sourcing">Sourcing</a>
+      <a class="dim">Resources</a><a class="dim">Issues</a><a class="dim">Timesheet</a><a class="dim">Documents</a><a
+        class="dim">Notes</a>
+    </nav>
+  </aside>
+</div>
+<script type="application/json"
+  id="bdata">{"rows":[{"id":"G1","lvl":"Gate","name":"GATE 1: Business case and molecule selection","resp":"","F":0,"G":0,"gate":"G1"},{"id":"1","lvl":"Stage","name":"Stage 1 (S1): Business Case","resp":"","F":0,"G":0,"gate":"G1"},{"id":"1.1","lvl":"Deliverable","name":"Business case preparation","resp":"","F":0,"G":0,"gate":"G1"},{"id":"1.1.1","lvl":"Activity","name":"Molecule Selection & Indication Mapping","resp":"PMO/Managemnet","F":40000.0,"G":42000.0,"gate":"G1"},{"id":"1.1.2","lvl":"Activity","name":"Country & Regulatory Scope Identification","resp":"PMO/Managemnet/RA","F":40000.0,"G":35000.0,"gate":"G1"},{"id":"1.1.3","lvl":"Activity","name":"Preliminary COGs and CAPEX Estimation","resp":"PMO/Managemnet","F":40000.0,"G":38000.0,"gate":"G1"},{"id":"1.1.4","lvl":"Activity","name":"Market sizing and forecast analysis","resp":"PMO/Managemnet","F":40000.0,"G":38000.0,"gate":"G1"},{"id":"1.1.5","lvl":"Activity","name":"NPV & Commercial Attractiveness Model","resp":"PMO/Managemnet","F":40000.0,"G":43000.0,"gate":"G1"},{"id":"1.2","lvl":"Deliverable","name":"Market sizing and commercial modeling","resp":"","F":0,"G":0,"gate":"G1"},{"id":"1.2.1","lvl":"Activity","name":"Market Sizing & Forecast Analysis","resp":"PMO/Managemnet/Finace","F":60000.0,"G":64000.0,"gate":"G1"},{"id":"1.2.2","lvl":"Activity","name":"NPV & Commercial Attractiveness Model","resp":"PMO/Managemnet/Finace","F":40000.0,"G":45000.0,"gate":"G1"},{"id":"1.3","lvl":"Deliverable","name":"Business case approval","resp":"","F":0,"G":0,"gate":"G1"},{"id":"1.3.1","lvl":"Activity","name":"Steering Committee Sign-off","resp":"Steering Committee","F":15000.0,"G":14000.0,"gate":"G1"},{"id":"G2","lvl":"Gate","name":"GATE 2: Design and project initiation","resp":"","F":0,"G":0,"gate":"G2"},{"id":"2","lvl":"Stage","name":"Stage 2 (S2): Project Initiation","resp":"","F":0,"G":0,"gate":"G2"},{"id":"2.1","lvl":"Deliverable","name":"Project costing sheet preparation and selection of project/product","resp":"","F":0,"G":0,"gate":"G2"},{"id":"2.1.1","lvl":"Activity","name":"Analytical costing, External CRO costing like Filter validation costing, Extractable & Leachable study costing, any additional test costing etc","resp":"R&D","F":20000.0,"G":20000.0,"gate":"G2"},{"id":"2.1.2","lvl":"Activity","name":"Licensing costing","resp":"RA","F":20000.0,"G":18000.0,"gate":"G2"},{"id":"2.1.3","lvl":"Activity","name":"RM, PM, Consumables & RLD costing","resp":"Procurment","F":20000.0,"G":19000.0,"gate":"G2"},{"id":"2.1.4","lvl":"Activity","name":"CT/BE Costing","resp":"Clinical","F":20000.0,"G":20000.0,"gate":"G2"},{"id":"2.2","lvl":"Deliverable","name":"Literature search and MER","resp":"","F":0,"G":0,"gate":"G2"},{"id":"2.2.1","lvl":"Activity","name":"Scan of IP landscape","resp":"FR&D","F":150000.0,"G":133000.0,"gate":"G2"},{"id":"2.2.2","lvl":"Activity","name":"MER availability","resp":"FR&D","F":50000.0,"G":47000.0,"gate":"G2"},{"id":"2.2.3","lvl":"Activity","name":"Preparation of IPR strategy","resp":"FR&D","F":75000.0,"G":79000.0,"gate":"G2"},{"id":"2.3","lvl":"Deliverable","name":"PPDS finalization","resp":"","F":0,"G":0,"gate":"G2"},{"id":"2.3.1","lvl":"Activity","name":"Pre Product Development Strategy (PPDS) finalization","resp":"R&D","F":30000.0,"G":31000.0,"gate":"G2"},{"id":"2.3.2","lvl":"Activity","name":"Approve country regulatory/BE strategy and QTPP/CQA assessment","resp":"RA / R&D / Clinical / Management","F":50000.0,"G":48000.0,"gate":"G2"},{"id":"2.4","lvl":"Deliverable","name":"Test license /NOC","resp":"RA will submit","F":0,"G":0,"gate":"G2"},{"id":"2.4.1","lvl":"Activity","name":"Manufacturing Formula & Process","resp":"R&D","F":30000.0,"G":28000.0,"gate":"G2"},{"id":"2.4.2","lvl":"Activity","name":"Label claim approval","resp":"R&D","F":30000.0,"G":31000.0,"gate":"G2"},{"id":"2.4.3","lvl":"Activity","name":"FP specifications, & STP","resp":"R&D","F":30000.0,"G":33000.0,"gate":"G2"},{"id":"2.4.4","lvl":"Activity","name":"Application processing & Other administrative Documents (API Manufacturing License, MSDS, API UTB & CT-15)","resp":"R&D","F":50000.0,"G":44000.0,"gate":"G2"},{"id":"2.5","lvl":"Deliverable","name":"RLD import license Form 11 for development studies","resp":"RA will submit","F":0,"G":0,"gate":"G2"},{"id":"2.5.1","lvl":"Activity","name":"RLD utilization break-up","resp":"R&D","F":25000.0,"G":27000.0,"gate":"G2"},{"id":"2.5.2","lvl":"Activity","name":"RMP MA holder selection & COO Finalization","resp":"R&D","F":25000.0,"G":27000.0,"gate":"G2"},{"id":"2.5.3","lvl":"Activity","name":"ITL for RLD processing & approval","resp":"R&D","F":40000.0,"G":39000.0,"gate":"G2"},{"id":"2.6","lvl":"Deliverable","name":"API import license Form 11","resp":"RA will submit","F":0,"G":0,"gate":"G2"},{"id":"2.6.1","lvl":"Activity","name":"API utilization break-up","resp":"Procurment / R&D","F":25000.0,"G":23000.0,"gate":"G2"},{"id":"2.6.2","lvl":"Activity","name":"API vendor finalization","resp":"Procurment / R&D","F":25000.0,"G":28000.0,"gate":"G2"},{"id":"2.6.3","lvl":"Activity","name":"ITL for API processing & approval","resp":"Procurment / R&D","F":40000.0,"G":39000.0,"gate":"G2"},{"id":"2.7","lvl":"Deliverable","name":"Form 29 manufacturing permission/manufacturing license","resp":"RA will submit","F":0,"G":0,"gate":"G2"},{"id":"2.7.1","lvl":"Activity","name":"Manufacturing Formula & Process","resp":"R&D","F":35000.0,"G":32000.0,"gate":"G2"},{"id":"2.7.2","lvl":"Activity","name":"FP specifications, STP & Stability data","resp":"R&D","F":35000.0,"G":32000.0,"gate":"G2"},{"id":"2.7.3","lvl":"Activity","name":"Application processing & Other administrative Documents","resp":"R&D","F":75000.0,"G":83000.0,"gate":"G2"},{"id":"2.8","lvl":"Deliverable","name":"CT-14/CT-11 permission to manufacture the batch for BE purpose","resp":"RA will submit","F":0,"G":0,"gate":"G2"},{"id":"2.8.1","lvl":"Activity","name":"Batch size confirmation ; API & Formulation reconciliation","resp":"Clinical / R&D","F":30000.0,"G":31000.0,"gate":"G2"},{"id":"2.8.2","lvl":"Activity","name":"Application processing & Other administrative Documents","resp":"Clinical / R&D","F":50000.0,"G":55000.0,"gate":"G2"},{"id":"2.9","lvl":"Deliverable","name":"New product information to be sent to plant","resp":"","F":0,"G":0,"gate":"G2"},{"id":"2.9.1","lvl":"Activity","name":"New product information to be sent to plant","resp":"R&D / PMO","F":5000.0,"G":5000.0,"gate":"G2"},{"id":"G3","lvl":"Gate","name":"GATE 3: Prototype development","resp":"","F":0,"G":0,"gate":"G3"},{"id":"3","lvl":"Stage","name":"Stage 3 (S3): Development Procurement","resp":"","F":0,"G":0,"gate":"G3"},{"id":"3.1","lvl":"Deliverable","name":"Procurement - Developmental studies","resp":"","F":0,"G":0,"gate":"G3"},{"id":"3.1.1","lvl":"Activity","name":"API Procurement for Developmental studies","resp":"R&D / Procurment","F":600000.0,"G":615000.0,"gate":"G3"},{"id":"3.1.2","lvl":"Activity","name":"RLD Procurement for Developmental studies","resp":"R&D / Procurment","F":1200000.0,"G":1371000.0,"gate":"G3"},{"id":"3.1.3","lvl":"Activity","name":"Excipients procurement for Developmental studies","resp":"R&D / Procurment","F":150000.0,"G":147000.0,"gate":"G3"},{"id":"3.1.4","lvl":"Activity","name":"Miscellaneous items like filters etc (if any) procurement for development studies","resp":"R&D / Procurment","F":75000.0,"G":77000.0,"gate":"G3"},{"id":"3.1.5","lvl":"Activity","name":"Packaging materials Procurement for Developmental studies","resp":"R&D / Procurment","F":60000.0,"G":66000.0,"gate":"G3"},{"id":"3.1.6","lvl":"Activity","name":"Analytical Requirements Procurement  for API method development/verification","resp":"R&D / Procurment","F":400000.0,"G":419000.0,"gate":"G3"},{"id":"3.1.7","lvl":"Activity","name":"Analytical Requirements Procurement  for Finished product method development","resp":"R&D / Procurment","F":300000.0,"G":334000.0,"gate":"G3"},{"id":"3.1.8","lvl":"Activity","name":"Evaluation of API COAs and finalisation of vendor","resp":"R&D / Procurment / QA","F":20000.0,"G":21000.0,"gate":"G3"},{"id":"3.1.9","lvl":"Activity","name":"Availability of API ODMF/CEP suitability","resp":"R&D / Procurment / RA","F":15000.0,"G":16000.0,"gate":"G3"},{"id":"3.1.10","lvl":"Activity","name":"Availability of API spec and MOA","resp":"R&D / Procurment","F":15000.0,"G":13000.0,"gate":"G3"},{"id":"4","lvl":"Stage","name":"Stage 4 (S4): POC Formulation","resp":"","F":0,"G":0,"gate":"G3"},{"id":"4.1","lvl":"Deliverable","name":"API characterization and IH coa release","resp":"","F":0,"G":0,"gate":"G3"},{"id":"4.1.1","lvl":"Activity","name":"API Analysis","resp":"ARD","F":60000.0,"G":56000.0,"gate":"G3"},{"id":"4.1.2","lvl":"Activity","name":"IH CoA Release","resp":"ARD","F":10000.0,"G":10000.0,"gate":"G3"},{"id":"4.1.3","lvl":"Activity","name":"3 lots of API verification","resp":"ARD","F":150000.0,"G":135000.0,"gate":"G3"},{"id":"4.1.4","lvl":"Activity","name":"API test methods and specifications Finalization","resp":"ARD","F":40000.0,"G":38000.0,"gate":"G3"},{"id":"4.2","lvl":"Deliverable","name":"RMP/RLD characterization (Physical and chemical)","resp":"","F":0,"G":0,"gate":"G3"},{"id":"4.2.1","lvl":"Activity","name":"RMP/RLD Physical Characterization","resp":"ARD","F":80000.0,"G":73000.0,"gate":"G3"},{"id":"4.2.2","lvl":"Activity","name":"RMP/RLD Chemical Characterization","resp":"ARD","F":80000.0,"G":76000.0,"gate":"G3"},{"id":"4.2.3","lvl":"Activity","name":"RMP/RLD Packing Characterization","resp":"ARD","F":80000.0,"G":84000.0,"gate":"G3"},{"id":"4.3","lvl":"Deliverable","name":"Tablet tooling & blister change part development & procurement","resp":"","F":0,"G":0,"gate":"G3"},{"id":"4.3.1","lvl":"Activity","name":"Tablet Tooling Procurement","resp":"R&D / Eng","F":300000.0,"G":294000.0,"gate":"G3"},{"id":"4.3.2","lvl":"Activity","name":"Blister change parts Procurement","resp":"R&D / Eng","F":400000.0,"G":392000.0,"gate":"G3"},{"id":"4.3.3","lvl":"Activity","name":"Capsule shell shade card & Art Work","resp":"R&D / Eng","F":50000.0,"G":47000.0,"gate":"G3"},{"id":"4.4","lvl":"Deliverable","name":"Formulation development","resp":"","F":0,"G":0,"gate":"G3"},{"id":"4.4.1","lvl":"Activity","name":"Pre-formulation studies - API Characterization including Solubility studies, RS, PSD, XRD etc - Drug-excipient","resp":"R&D","F":250000.0,"G":238000.0,"gate":"G3"},{"id":"4.4.2","lvl":"Activity","name":"Development of prototype formulation","resp":"R&D","F":300000.0,"G":340000.0,"gate":"G3"},{"id":"4.4.3","lvl":"Activity","name":"Stability loading of prototype formulation","resp":"R&D","F":150000.0,"G":158000.0,"gate":"G3"},{"id":"4.4.4","lvl":"Activity","name":"Dissolution mapping with innovator product","resp":"R&D","F":100000.0,"G":104000.0,"gate":"G3"},{"id":"4.4.5","lvl":"Activity","name":"Impact of particle size on dissolution","resp":"R&D","F":80000.0,"G":74000.0,"gate":"G3"},{"id":"4.4.6","lvl":"Activity","name":"Multimedia dissolution mapping with reference product","resp":"R&D","F":200000.0,"G":215000.0,"gate":"G3"},{"id":"4.4.7","lvl":"Activity","name":"Stability loading of final formulation","resp":"R&D","F":150000.0,"G":139000.0,"gate":"G3"},{"id":"4.4.8","lvl":"Activity","name":"Process optimization - Lyophilization/TS feasibility/Aseptic process/others","resp":"R&D","F":400000.0,"G":393000.0,"gate":"G3"},{"id":"4.4.9","lvl":"Activity","name":"Photo stability/ Thermal cycling/Temperature Excursion study/Preservative efficacy study/Antioxidant Efficacy study/","resp":"R&D","F":200000.0,"G":229000.0,"gate":"G3"},{"id":"4.4.10","lvl":"Activity","name":"Head space gas optimization study/gas sensitivity study","resp":"R&D","F":150000.0,"G":158000.0,"gate":"G3"},{"id":"4.4.11","lvl":"Activity","name":"Vmax study/Throughput studies","resp":"R&D","F":150000.0,"G":155000.0,"gate":"G3"},{"id":"4.4.12","lvl":"Activity","name":"Reverse Engineering of Reference Product (NDDS)","resp":"R&D","F":500000.0,"G":532000.0,"gate":"G3"},{"id":"4.4.13","lvl":"Activity","name":"POC for NDDS","resp":"R&D","F":1000000.0,"G":1108000.0,"gate":"G3"},{"id":"4.4.14","lvl":"Activity","name":"Hold Time and Compatibility Studies","resp":"R&D","F":100000.0,"G":109000.0,"gate":"G3"},{"id":"4.4.15","lvl":"Activity","name":"3M Lab scale stability data generation","resp":"R&D","F":250000.0,"G":235000.0,"gate":"G3"},{"id":"4.4.16","lvl":"Activity","name":"Filter Validation study","resp":"R&D","F":600000.0,"G":533000.0,"gate":"G3"},{"id":"4.4.17","lvl":"Activity","name":"Optimization/ pre validation of methods","resp":"R&D","F":200000.0,"G":193000.0,"gate":"G3"},{"id":"4.4.18","lvl":"Activity","name":"Method development reports","resp":"R&D","F":30000.0,"G":29000.0,"gate":"G3"},{"id":"4.4.19","lvl":"Activity","name":"Development Stability Analysis of 6M samples","resp":"R&D","F":350000.0,"G":328000.0,"gate":"G3"},{"id":"4.4.20","lvl":"Activity","name":"pH suitability studies","resp":"R&D","F":75000.0,"G":85000.0,"gate":"G3"},{"id":"4.4.21","lvl":"Activity","name":"Inuse stability study","resp":"R&D","F":150000.0,"G":167000.0,"gate":"G3"},{"id":"4.4.22","lvl":"Activity","name":"Alternative packing material evaluation","resp":"R&D","F":200000.0,"G":193000.0,"gate":"G3"},{"id":"4.5","lvl":"Deliverable","name":"Analytical method development","resp":"","F":0,"G":0,"gate":"G3"},{"id":"4.5.1","lvl":"Activity","name":"Prototype formulation shall be submitted for method development","resp":"FR&D","F":10000.0,"G":11000.0,"gate":"G3"},{"id":"4.5.2","lvl":"Activity","name":"Tentative Specification of FP","resp":"FR&D","F":25000.0,"G":25000.0,"gate":"G3"},{"id":"4.5.3","lvl":"Activity","name":"Tentative methods finalization","resp":"FR&D","F":250000.0,"G":282000.0,"gate":"G3"},{"id":"4.6","lvl":"Deliverable","name":"Formulation, process and packaging freeze","resp":"","F":0,"G":0,"gate":"G3"},{"id":"4.6.1","lvl":"Activity","name":"Approve formulation, process and packaging freeze","resp":"R&D / QA / Management","F":50000.0,"G":52000.0,"gate":"G3"},{"id":"G4","lvl":"Gate","name":"GATE 4: Scale-UP & Pilot BE","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5","lvl":"Stage","name":"Stage 5 (S5): Scale-Up & EB procurement","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5.1","lvl":"Deliverable","name":"Procurement submission batches","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5.1.1","lvl":"Activity","name":"BOM for RM","resp":"FR&D","F":20000.0,"G":20000.0,"gate":"G4"},{"id":"5.1.2","lvl":"Activity","name":"BOM for Consumables","resp":"R&D","F":20000.0,"G":19000.0,"gate":"G4"},{"id":"5.1.3","lvl":"Activity","name":"BOM for Miscellaneous (if any)","resp":"R&D","F":20000.0,"G":19000.0,"gate":"G4"},{"id":"5.1.4","lvl":"Activity","name":"RM, PM, Consumables, Miscellaneous procurement","resp":"Procurment","F":3000000.0,"G":3095000.0,"gate":"G4"},{"id":"5.1.5","lvl":"Activity","name":"Filters & Tubing Procurement","resp":"Procurment","F":300000.0,"G":285000.0,"gate":"G4"},{"id":"5.2","lvl":"Deliverable","name":"Release of RM & PM","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5.2.1","lvl":"Activity","name":"Release of RM and PM","resp":"ARD","F":100000.0,"G":104000.0,"gate":"G4"},{"id":"5.3","lvl":"Deliverable","name":"Scale-up","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5.3.1","lvl":"Activity","name":"Scale Up batch Execution","resp":"FR&D","F":1200000.0,"G":1347000.0,"gate":"G4"},{"id":"5.3.2","lvl":"Activity","name":"Scale Up batch analysis and Report","resp":"ARD","F":200000.0,"G":198000.0,"gate":"G4"},{"id":"5.3.3","lvl":"Activity","name":"Pilot Bio Formulation","resp":"FR&D","F":800000.0,"G":751000.0,"gate":"G4"},{"id":"5.4","lvl":"Deliverable","name":"Bioequivalence study requirements","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5.4.1","lvl":"Activity","name":"Pilot & Pivotal BE NOC documents submission","resp":"FR&D","F":30000.0,"G":34000.0,"gate":"G4"},{"id":"5.4.2","lvl":"Activity","name":"BE study Design & Protocol Finalization","resp":"Clinical / R&D","F":100000.0,"G":102000.0,"gate":"G4"},{"id":"5.4.3","lvl":"Activity","name":"BE NOC application filing & Approval","resp":"clinical","F":150000.0,"G":136000.0,"gate":"G4"},{"id":"5.4.4","lvl":"Activity","name":"RLD import license - Form 11","resp":"FR&D / Clinical","F":50000.0,"G":45000.0,"gate":"G4"},{"id":"5.4.5","lvl":"Activity","name":"Innovator product procurement for Pivotal BE studies","resp":"Procurment","F":1500000.0,"G":1364000.0,"gate":"G4"},{"id":"5.4.6","lvl":"Activity","name":"Confirm ethics, CRO and bioanalytical readiness","resp":"Clinical","F":100000.0,"G":104000.0,"gate":"G4"},{"id":"5.5","lvl":"Deliverable","name":"Pilot BE (Test & RMP IP's submission and study execution)","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5.5.1","lvl":"Activity","name":"Pilot BE (Test & RMP IP's submission and study execution)","resp":"FR&D / Clinical","F":4500000.0,"G":4722000.0,"gate":"G4"},{"id":"5.5.2","lvl":"Activity","name":"Review pilot results and approve progression or waiver","resp":"Clinical / R&D / Management","F":25000.0,"G":24000.0,"gate":"G4"},{"id":"5.6","lvl":"Deliverable","name":"QBD formulation optimization trials","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5.6.1","lvl":"Activity","name":"Optimization of Binder concentration","resp":"FR&D","F":150000.0,"G":164000.0,"gate":"G4"},{"id":"5.6.2","lvl":"Activity","name":"Optimization of Disintegrant concentration","resp":"FR&D","F":150000.0,"G":149000.0,"gate":"G4"},{"id":"5.6.3","lvl":"Activity","name":"Optimization of diluent concentration","resp":"FR&D","F":150000.0,"G":135000.0,"gate":"G4"},{"id":"5.6.4","lvl":"Activity","name":"Optimization of Glidant concentration","resp":"FR&D","F":150000.0,"G":147000.0,"gate":"G4"},{"id":"5.6.5","lvl":"Activity","name":"Optimization of Lubricant concentration","resp":"FR&D","F":150000.0,"G":172000.0,"gate":"G4"},{"id":"5.6.6","lvl":"Activity","name":"Optimization of Solubilizer concentration","resp":"FR&D","F":150000.0,"G":153000.0,"gate":"G4"},{"id":"5.6.7","lvl":"Activity","name":"Optimization of polymer concentration","resp":"FR&D","F":150000.0,"G":171000.0,"gate":"G4"},{"id":"5.6.8","lvl":"Activity","name":"Optimization of Antioxidant concentration","resp":"FR&D","F":150000.0,"G":167000.0,"gate":"G4"},{"id":"5.6.9","lvl":"Activity","name":"Optimization of preservative concentration","resp":"FR&D","F":150000.0,"G":132000.0,"gate":"G4"},{"id":"5.6.10","lvl":"Activity","name":"Sequence/Order of addition","resp":"FR&D","F":150000.0,"G":161000.0,"gate":"G4"},{"id":"5.6.11","lvl":"Activity","name":"Optimization of Terminal sterilization time","resp":"FR&D","F":250000.0,"G":266000.0,"gate":"G4"},{"id":"5.6.12","lvl":"Activity","name":"Optimization of Lyophilization cycle","resp":"FR&D","F":400000.0,"G":410000.0,"gate":"G4"},{"id":"5.6.13","lvl":"Activity","name":"pH Optimization/suitability study","resp":"FR&D","F":150000.0,"G":143000.0,"gate":"G4"},{"id":"5.7","lvl":"Deliverable","name":"QBD trials manufacturing process development","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5.7.1","lvl":"Activity","name":"Optimization of Homogenization cycle","resp":"FR&D","F":200000.0,"G":211000.0,"gate":"G4"},{"id":"5.7.2","lvl":"Activity","name":"Specific Filtration system including TFF","resp":"FR&D","F":300000.0,"G":273000.0,"gate":"G4"},{"id":"5.7.3","lvl":"Activity","name":"Specific activities / processes Optimization related to NDDS","resp":"FR&D","F":300000.0,"G":299000.0,"gate":"G4"},{"id":"5.7.4","lvl":"Activity","name":"Optimization of Fluid uptake","resp":"FR&D","F":200000.0,"G":201000.0,"gate":"G4"},{"id":"5.7.5","lvl":"Activity","name":"Optimization of Granulation parameters","resp":"FR&D","F":200000.0,"G":228000.0,"gate":"G4"},{"id":"5.7.6","lvl":"Activity","name":"Optimization of milling process","resp":"FR&D","F":200000.0,"G":223000.0,"gate":"G4"},{"id":"5.7.7","lvl":"Activity","name":"Optimization of Blending time","resp":"FR&D","F":200000.0,"G":190000.0,"gate":"G4"},{"id":"5.7.8","lvl":"Activity","name":"Optimization of Coating","resp":"FR&D","F":250000.0,"G":254000.0,"gate":"G4"},{"id":"5.8","lvl":"Deliverable","name":"Facility, equipment and process readiness","resp":"","F":0,"G":0,"gate":"G4"},{"id":"5.8.1","lvl":"Activity","name":"Confirm facility, equipment and process readiness","resp":"Operations / Engineering / QA","F":150000.0,"G":158000.0,"gate":"G4"},{"id":"G5","lvl":"Gate","name":"GATE 5: API, finished product validations and transfer","resp":"","F":0,"G":0,"gate":"G5"},{"id":"6","lvl":"Stage","name":"Stage 6 (S6): API Validation","resp":"","F":0,"G":0,"gate":"G5"},{"id":"6.1","lvl":"Deliverable","name":"Analytical method validation","resp":"","F":0,"G":0,"gate":"G5"},{"id":"6.1.1","lvl":"Activity","name":"API Analytical Method Validation","resp":"ARD","F":400000.0,"G":371000.0,"gate":"G5"},{"id":"6.2","lvl":"Deliverable","name":"Method transfer and cleaning validation","resp":"","F":0,"G":0,"gate":"G5"},{"id":"6.2.1","lvl":"Activity","name":"Method Transfer","resp":"ARD","F":150000.0,"G":169000.0,"gate":"G5"},{"id":"6.2.2","lvl":"Activity","name":"Cleaning Validation","resp":"ARD","F":200000.0,"G":223000.0,"gate":"G5"},{"id":"7","lvl":"Stage","name":"Stage 7 (S7): FP Validation","resp":"","F":0,"G":0,"gate":"G5"},{"id":"7.1","lvl":"Deliverable","name":"FP method validation, FP specifications and STP","resp":"","F":0,"G":0,"gate":"G5"},{"id":"7.1.1","lvl":"Activity","name":"Submission of FP samples for AMV","resp":"ARD","F":50000.0,"G":48000.0,"gate":"G5"},{"id":"7.1.2","lvl":"Activity","name":"FP Analytical Method Validation","resp":"ARD","F":500000.0,"G":526000.0,"gate":"G5"},{"id":"G6","lvl":"Gate","name":"GATE 6: TTD release and EB executions","resp":"","F":0,"G":0,"gate":"G6"},{"id":"8","lvl":"Stage","name":"Stage 8 (S8): TTD Submission","resp":"","F":0,"G":0,"gate":"G6"},{"id":"8.1","lvl":"Deliverable","name":"Technology transfer documents","resp":"","F":0,"G":0,"gate":"G6"},{"id":"8.1.1","lvl":"Activity","name":"Title Page","resp":"DQA","F":15000.0,"G":16000.0,"gate":"G6"},{"id":"8.1.2","lvl":"Activity","name":"Approval Page","resp":"DQA","F":15000.0,"G":14000.0,"gate":"G6"},{"id":"8.1.3","lvl":"Activity","name":"Table of contents","resp":"DQA","F":15000.0,"G":16000.0,"gate":"G6"},{"id":"8.1.4","lvl":"Activity","name":"Scope and Scheme","resp":"DQA","F":15000.0,"G":15000.0,"gate":"G6"},{"id":"8.1.5","lvl":"Activity","name":"Test license","resp":"DQA","F":15000.0,"G":16000.0,"gate":"G6"},{"id":"8.1.6","lvl":"Activity","name":"Procurement package","resp":"DQA","F":15000.0,"G":15000.0,"gate":"G6"},{"id":"8.1.7","lvl":"Activity","name":"Drug Substance Specifications and Standard Test Procedure","resp":"DQA","F":15000.0,"G":13000.0,"gate":"G6"},{"id":"8.1.8","lvl":"Activity","name":"Raw material Specifications and Standard Test Procedure","resp":"DQA","F":15000.0,"G":15000.0,"gate":"G6"},{"id":"8.1.9","lvl":"Activity","name":"Packaging material Specifications and Standard Test Procedure","resp":"DQA","F":15000.0,"G":13000.0,"gate":"G6"},{"id":"8.1.10","lvl":"Activity","name":"Finished product Specifications and Standard Test Procedures: In-process; Release and Shelf-life","resp":"DQA","F":40000.0,"G":45000.0,"gate":"G6"},{"id":"8.1.11","lvl":"Activity","name":"Master Formula Record","resp":"DQA","F":30000.0,"G":34000.0,"gate":"G6"},{"id":"8.1.12","lvl":"Activity","name":"Master Packaging Record","resp":"DQA","F":25000.0,"G":28000.0,"gate":"G6"},{"id":"8.1.13","lvl":"Activity","name":"Stability Plan.","resp":"DQA","F":15000.0,"G":14000.0,"gate":"G6"},{"id":"8.1.14","lvl":"Activity","name":"Photo stability Plan","resp":"DQA","F":15000.0,"G":13000.0,"gate":"G6"},{"id":"8.1.15","lvl":"Activity","name":"Routine stability study plan","resp":"DQA","F":15000.0,"G":17000.0,"gate":"G6"},{"id":"8.1.16","lvl":"Activity","name":"In-Use stability plan","resp":"DQA","F":15000.0,"G":17000.0,"gate":"G6"},{"id":"8.1.17","lvl":"Activity","name":"XRD-Stability study plan","resp":"DQA","F":15000.0,"G":14000.0,"gate":"G6"},{"id":"8.1.18","lvl":"Activity","name":"Deactivation Study Protocol (If applicable)","resp":"DQA","F":15000.0,"G":15000.0,"gate":"G6"},{"id":"8.1.19","lvl":"Activity","name":"Trade Dress Proposal Form [TDPF] (If applicable)","resp":"DQA","F":15000.0,"G":13000.0,"gate":"G6"},{"id":"8.1.20","lvl":"Activity","name":"Temperature Excursion","resp":"DQA","F":15000.0,"G":16000.0,"gate":"G6"},{"id":"8.1.21","lvl":"Activity","name":"Thermal Cycling Stability plan","resp":"DQA","F":15000.0,"G":16000.0,"gate":"G6"},{"id":"8.1.22","lvl":"Activity","name":"Miscellaneous Study protocol","resp":"DQA","F":15000.0,"G":14000.0,"gate":"G6"},{"id":"8.1.23","lvl":"Activity","name":"Reconstitution and Admixture study protocol","resp":"DQA","F":15000.0,"G":15000.0,"gate":"G6"},{"id":"8.1.24","lvl":"Activity","name":"Dissolution Protocol (if applicable)","resp":"DQA","F":15000.0,"G":15000.0,"gate":"G6"},{"id":"8.1.25","lvl":"Activity","name":"Filter validation study protocol and Report","resp":"DQA","F":100000.0,"G":95000.0,"gate":"G6"},{"id":"8.1.26","lvl":"Activity","name":"CPP &CQA","resp":"DQA","F":30000.0,"G":33000.0,"gate":"G6"},{"id":"8.1.27","lvl":"Activity","name":"Tool Drawings","resp":"DQA","F":20000.0,"G":20000.0,"gate":"G6"},{"id":"8.1.28","lvl":"Activity","name":"Packaging material development report (if applicable)","resp":"DQA","F":15000.0,"G":14000.0,"gate":"G6"},{"id":"8.1.29","lvl":"Activity","name":"Material Safety Data Sheet","resp":"DQA","F":15000.0,"G":15000.0,"gate":"G6"},{"id":"8.1.30","lvl":"Activity","name":"Consumables","resp":"DQA","F":15000.0,"G":16000.0,"gate":"G6"},{"id":"8.1.31","lvl":"Activity","name":"Change History","resp":"DQA","F":15000.0,"G":14000.0,"gate":"G6"},{"id":"8.2","lvl":"Deliverable","name":"Technology transfer acceptance","resp":"","F":0,"G":0,"gate":"G6"},{"id":"8.2.1","lvl":"Activity","name":"Obtain receiving-site acceptance of technology transfer","resp":"Operations / QA","F":25000.0,"G":26000.0,"gate":"G6"},{"id":"9","lvl":"Stage","name":"Stage 9 (S9): Exhibit Batches","resp":"","F":0,"G":0,"gate":"G6"},{"id":"9.1","lvl":"Deliverable","name":"Exhibit batch readiness and execution","resp":"","F":0,"G":0,"gate":"G6"},{"id":"9.1.1","lvl":"Activity","name":"Final Specifications preparation & Approval - Raw materials","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":39000.0,"gate":"G6"},{"id":"9.1.2","lvl":"Activity","name":"Final Specifications preparation & Approval - Packaging materials","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":46000.0,"gate":"G6"},{"id":"9.1.3","lvl":"Activity","name":"Final Specifications preparation & Approval - Finished product","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":42000.0,"gate":"G6"},{"id":"9.1.4","lvl":"Activity","name":"Routine stability protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":40000.0,"gate":"G6"},{"id":"9.1.5","lvl":"Activity","name":"In-Use Stability protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":41000.0,"gate":"G6"},{"id":"9.1.6","lvl":"Activity","name":"Photo stability protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":37000.0,"gate":"G6"},{"id":"9.1.7","lvl":"Activity","name":"Polymorphic stability protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":38000.0,"gate":"G6"},{"id":"9.1.8","lvl":"Activity","name":"Dissolution studies protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":39000.0,"gate":"G6"},{"id":"9.1.9","lvl":"Activity","name":"Sub division of tablets study protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":42000.0,"gate":"G6"},{"id":"9.1.10","lvl":"Activity","name":"Thermal cycling / Freeze thaw study protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":38000.0,"gate":"G6"},{"id":"9.1.11","lvl":"Activity","name":"Reconstitution and dilution studies protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":38000.0,"gate":"G6"},{"id":"9.1.12","lvl":"Activity","name":"Preparation & approval of Process validation Protocols","resp":"QC/QA/Operation/R&D/RA","F":60000.0,"G":54000.0,"gate":"G6"},{"id":"9.1.13","lvl":"Activity","name":"Preparation & approval of Hold time study Protocols","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":42000.0,"gate":"G6"},{"id":"9.1.14","lvl":"Activity","name":"Preparation & Approval of BMRs","resp":"QC/QA/Operation/R&D/RA","F":50000.0,"G":47000.0,"gate":"G6"},{"id":"9.1.15","lvl":"Activity","name":"Preparation & Approval of BPRs","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":45000.0,"gate":"G6"},{"id":"9.1.16","lvl":"Activity","name":"Process Order Creation as per BMR","resp":"QC/QA/Operation/R&D/RA","F":5000.0,"G":6000.0,"gate":"G6"},{"id":"9.1.17","lvl":"Activity","name":"Process Order Creation as per BPR","resp":"QC/QA/Operation/R&D/RA","F":5000.0,"G":4000.0,"gate":"G6"},{"id":"9.1.18","lvl":"Activity","name":"Exhibit batch Execution: 3 Batches","resp":"QC/QA/Operation/R&D/RA","F":5500000.0,"G":5193000.0,"gate":"G6"},{"id":"9.1.19","lvl":"Activity","name":"Exhibit batch Release: 3 Batches","resp":"QC/QA/Operation/R&D/RA","F":400000.0,"G":424000.0,"gate":"G6"},{"id":"9.1.20","lvl":"Activity","name":"Batch execution data posting as BMR","resp":"QC/QA/Operation/R&D/RA","F":5000.0,"G":5000.0,"gate":"G6"},{"id":"9.1.21","lvl":"Activity","name":"Alcohol dose dumping study protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":37000.0,"gate":"G6"},{"id":"9.1.22","lvl":"Activity","name":"Thermal excursion study protocol","resp":"QC/QA/Operation/R&D/RA","F":40000.0,"G":45000.0,"gate":"G6"},{"id":"9.2","lvl":"Deliverable","name":"Data generation on EB batches","resp":"","F":0,"G":0,"gate":"G6"},{"id":"9.2.1","lvl":"Activity","name":"Reconstitution and Dilution Studies execution on submission Batches","resp":"QC/QA","F":200000.0,"G":207000.0,"gate":"G6"},{"id":"9.2.2","lvl":"Activity","name":"Multimedia dissolution profile execution both test and reference products and Comparative dissolution Report","resp":"QC/QA","F":300000.0,"G":302000.0,"gate":"G6"},{"id":"9.2.3","lvl":"Activity","name":"pH Solubility Profile to support BCS biowaiver","resp":"QC/QA","F":150000.0,"G":164000.0,"gate":"G6"},{"id":"9.2.4","lvl":"Activity","name":"6M stability data availability - Accelerated, Long term, Intermediate","resp":"QC/QA","F":800000.0,"G":878000.0,"gate":"G6"},{"id":"9.2.5","lvl":"Activity","name":"In-use stability, photo stability, freeze-thaw study, Temperature excursions,Polymorphic stability etc.","resp":"QC/QA","F":400000.0,"G":373000.0,"gate":"G6"},{"id":"9.2.6","lvl":"Activity","name":"Alcohol dose dumping dissolution profile execution both test and reference products and Comparative dissolution Report","resp":"QC/QA","F":250000.0,"G":227000.0,"gate":"G6"},{"id":"9.2.7","lvl":"Activity","name":"Admixture study report","resp":"QC/QA","F":150000.0,"G":149000.0,"gate":"G6"},{"id":"9.2.8","lvl":"Activity","name":"NG tube study report","resp":"QC/QA","F":150000.0,"G":149000.0,"gate":"G6"},{"id":"9.2.9","lvl":"Activity","name":"In-use study report","resp":"QC/QA","F":50000.0,"G":50000.0,"gate":"G6"},{"id":"9.3","lvl":"Deliverable","name":"Exhibit batch stability","resp":"","F":0,"G":0,"gate":"G6"},{"id":"9.3.1","lvl":"Activity","name":"Load exhibit stability samples and record time zero","resp":"QC / QA","F":50000.0,"G":47000.0,"gate":"G6"},{"id":"9.3.2","lvl":"Activity","name":"Approve initial stability dataset for dossier drafting","resp":"QA / RA","F":20000.0,"G":21000.0,"gate":"G6"},{"id":"G7","lvl":"Gate","name":"GATE 7: Pivotal BE and dossier filing","resp":"","F":0,"G":0,"gate":"G7"},{"id":"10","lvl":"Stage","name":"Stage 10 (S10): Pivotal BE","resp":"","F":0,"G":0,"gate":"G7"},{"id":"10.1","lvl":"Deliverable","name":"Pivotal BE studies","resp":"","F":0,"G":0,"gate":"G7"},{"id":"10.1.1","lvl":"Activity","name":"RMP & Test product IP submission","resp":"Clinical / R&D","F":100000.0,"G":108000.0,"gate":"G7"},{"id":"10.1.2","lvl":"Activity","name":"Pivotal BE execution & Report Submission","resp":"Clinical","F":12000000.0,"G":12742000.0,"gate":"G7"},{"id":"11","lvl":"Stage","name":"Stage 11 (S11): Dossier Filing","resp":"","F":0,"G":0,"gate":"G7"},{"id":"11.1","lvl":"Deliverable","name":"Product development report","resp":"","F":0,"G":0,"gate":"G7"},{"id":"11.1.1","lvl":"Activity","name":"Product Development Report (PDR)","resp":"fR&D","F":200000.0,"G":229000.0,"gate":"G7"},{"id":"11.1.2","lvl":"Activity","name":"Risk assessment reports like Elemental Impurities, Nitrosamines, Residual Solvents etc.","resp":"R&D","F":300000.0,"G":272000.0,"gate":"G7"},{"id":"11.2","lvl":"Deliverable","name":"Dossier filing","resp":"","F":0,"G":0,"gate":"G7"},{"id":"11.2.1","lvl":"Activity","name":"Uploading of stability data of protocol bound batches in common folder","resp":"QA","F":20000.0,"G":20000.0,"gate":"G7"},{"id":"11.2.2","lvl":"Activity","name":"Draft dossier preparation with 3M stability data","resp":"RA","F":600000.0,"G":583000.0,"gate":"G7"},{"id":"11.2.3","lvl":"Activity","name":"Dossier submission strategy note","resp":"RA","F":40000.0,"G":45000.0,"gate":"G7"},{"id":"11.2.4","lvl":"Activity","name":"Approve final dossier evidence and country compliance","resp":"RA / QA","F":75000.0,"G":79000.0,"gate":"G7"},{"id":"11.2.5","lvl":"Activity","name":"Submit dossier and record acknowledgement","resp":"RA","F":100000.0,"G":100000.0,"gate":"G7"}],"rc":[{"fn":"P R&D","res":"Principal Sceintist","ac":250000,"tpl":1},{"fn":"P R&D","res":"Scientist","ac":175000,"tpl":1},{"fn":"P R&D","res":"Assoiates","ac":120000,"tpl":1},{"fn":"AR&D","res":"Principal Sceintist","ac":250000,"tpl":1},{"fn":"AR&D","res":"Scientist","ac":175000,"tpl":1},{"fn":"AR&D","res":"Assoiates","ac":120000,"tpl":1},{"fn":"PMO","res":"Project Manager","ac":220000,"tpl":0},{"fn":"PMO","res":"Project Executive","ac":110000,"tpl":0},{"fn":"Finance","res":"Finance Manager","ac":200000,"tpl":0},{"fn":"Finance","res":"Finance Analyst","ac":110000,"tpl":0},{"fn":"RA","res":"RA Manager","ac":220000,"tpl":0},{"fn":"RA","res":"RA Executive","ac":120000,"tpl":0},{"fn":"Clinical","res":"Clinical Manager","ac":230000,"tpl":0},{"fn":"Clinical","res":"Clinical Associate","ac":120000,"tpl":0},{"fn":"Procurement","res":"Purchase Manager","ac":180000,"tpl":0},{"fn":"Procurement","res":"Purchase Executive","ac":100000,"tpl":0},{"fn":"QA / QC","res":"QA Manager","ac":200000,"tpl":0},{"fn":"QA / QC","res":"QA Executive","ac":110000,"tpl":0},{"fn":"Operations","res":"Production Manager","ac":200000,"tpl":0},{"fn":"Operations","res":"Production Executive","ac":100000,"tpl":0},{"fn":"IP","res":"IP Manager","ac":220000,"tpl":0},{"fn":"IP","res":"IP Analyst","ac":120000,"tpl":0},{"fn":"Management","res":"Steering Committee","ac":400000,"tpl":0}],"hpm":118.99999999999999,"man":[{"w":"4.4.2","rc":0,"hc":1,"hpd":8,"occ":0.3125,"cyc":20,"acyc":22,"tpl":1},{"w":"4.4.2","rc":1,"hc":1,"hpd":8,"occ":0.625,"cyc":20,"acyc":20,"tpl":1},{"w":"4.4.2","rc":2,"hc":3,"hpd":8,"occ":0.75,"cyc":20,"acyc":19,"tpl":1},{"w":"4.5.3","rc":3,"hc":1,"hpd":8,"occ":0.4375,"cyc":20,"acyc":21,"tpl":1},{"w":"4.5.3","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":20,"acyc":23,"tpl":1},{"w":"4.5.3","rc":5,"hc":6,"hpd":8,"occ":0.875,"cyc":20,"acyc":18,"tpl":1},{"w":"1.1.1","rc":6,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"1.1.1","rc":7,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"1.1.2","rc":6,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"1.1.2","rc":7,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"1.1.3","rc":6,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"1.1.3","rc":7,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"1.1.4","rc":6,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"1.1.4","rc":7,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"1.1.5","rc":6,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"1.1.5","rc":7,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"1.2.1","rc":8,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"1.2.1","rc":9,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"1.2.2","rc":8,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"1.2.2","rc":9,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"1.3.1","rc":22,"hc":1,"hpd":8,"occ":0.25,"cyc":1,"acyc":1,"tpl":0},{"w":"2.1.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.1.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"2.1.2","rc":10,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.1.2","rc":11,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"2.1.3","rc":14,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.1.3","rc":15,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"2.1.4","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.1.4","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"2.2.1","rc":20,"hc":1,"hpd":8,"occ":0.4,"cyc":5,"acyc":5,"tpl":0},{"w":"2.2.1","rc":21,"hc":1,"hpd":8,"occ":0.75,"cyc":10,"acyc":11,"tpl":0},{"w":"2.2.2","rc":20,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"2.2.2","rc":21,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"2.2.3","rc":20,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"2.2.3","rc":21,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":5,"tpl":0},{"w":"2.3.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.3.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"2.3.2","rc":6,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"2.3.2","rc":7,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"2.4.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.4.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"2.4.2","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.4.2","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"2.4.3","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.4.3","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"2.4.4","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"2.4.4","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"2.5.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.5.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"2.5.2","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.5.2","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"2.5.3","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.5.3","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"2.6.1","rc":14,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.6.1","rc":15,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"2.6.2","rc":14,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.6.2","rc":15,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"2.6.3","rc":14,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"2.6.3","rc":15,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"2.7.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.7.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"2.7.2","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.7.2","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"2.7.3","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"2.7.3","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"2.8.1","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.8.1","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"2.8.2","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"2.8.2","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"2.9.1","rc":6,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"2.9.1","rc":7,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"3.1.8","rc":14,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"3.1.8","rc":15,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"3.1.9","rc":14,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"3.1.9","rc":15,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"3.1.10","rc":14,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"3.1.10","rc":15,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"4.1.1","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.1.1","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"4.1.2","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.1.2","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"4.1.3","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"4.1.3","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"4.1.4","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.1.4","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"4.2.1","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.2.1","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"4.2.2","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.2.2","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"4.2.3","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.2.3","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"4.3.1","rc":18,"hc":1,"hpd":8,"occ":0.4,"cyc":7,"acyc":8,"tpl":0},{"w":"4.3.1","rc":19,"hc":1,"hpd":8,"occ":0.75,"cyc":14,"acyc":16,"tpl":0},{"w":"4.3.2","rc":18,"hc":1,"hpd":8,"occ":0.4,"cyc":9,"acyc":10,"tpl":0},{"w":"4.3.2","rc":19,"hc":1,"hpd":8,"occ":0.75,"cyc":18,"acyc":18,"tpl":0},{"w":"4.3.3","rc":18,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.3.3","rc":19,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"4.4.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":5,"acyc":5,"tpl":0},{"w":"4.4.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":5,"tpl":0},{"w":"4.4.3","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"4.4.3","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"4.4.4","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"4.4.4","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"4.4.5","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.4.5","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"4.4.6","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"4.4.6","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":5,"tpl":0},{"w":"4.4.7","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"4.4.7","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":3,"tpl":0},{"w":"4.4.8","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":7,"acyc":7,"tpl":0},{"w":"4.4.8","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":10,"acyc":9,"tpl":0},{"w":"4.4.9","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"4.4.9","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":5,"tpl":0},{"w":"4.4.10","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"4.4.10","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"4.4.11","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"4.4.11","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"4.4.12","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":9,"acyc":9,"tpl":0},{"w":"4.4.12","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":13,"acyc":14,"tpl":0},{"w":"4.4.13","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":18,"acyc":18,"tpl":0},{"w":"4.4.13","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":26,"acyc":23,"tpl":0},{"w":"4.4.14","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"4.4.14","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"4.4.15","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":5,"acyc":4,"tpl":0},{"w":"4.4.15","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":6,"tpl":0},{"w":"4.4.16","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":11,"acyc":11,"tpl":0},{"w":"4.4.16","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":15,"acyc":13,"tpl":0},{"w":"4.4.17","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"4.4.17","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":4,"tpl":0},{"w":"4.4.18","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.4.18","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"4.4.19","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":6,"acyc":5,"tpl":0},{"w":"4.4.19","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":9,"acyc":10,"tpl":0},{"w":"4.4.20","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.4.20","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"4.4.21","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"4.4.21","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"4.4.22","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"4.4.22","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":5,"tpl":0},{"w":"4.5.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.5.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"4.5.2","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.5.2","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"4.6.1","rc":6,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"4.6.1","rc":7,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"5.1.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"5.1.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"5.1.2","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"5.1.2","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"5.1.3","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"5.1.3","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"5.2.1","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":2,"tpl":0},{"w":"5.2.1","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":3,"tpl":0},{"w":"5.3.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":7,"acyc":6,"tpl":0},{"w":"5.3.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":11,"acyc":0,"tpl":0},{"w":"5.3.2","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"5.3.2","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":0,"tpl":0},{"w":"5.3.3","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":15,"acyc":15,"tpl":0},{"w":"5.3.3","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":21,"acyc":19,"tpl":0},{"w":"5.4.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"5.4.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":1,"tpl":0},{"w":"5.4.2","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"5.4.2","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"5.4.3","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"5.4.3","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":6,"tpl":0},{"w":"5.4.4","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"5.4.4","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":2,"tpl":0},{"w":"5.4.6","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"5.4.6","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"5.5.1","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":31,"acyc":33,"tpl":0},{"w":"5.5.1","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":58,"acyc":57,"tpl":0},{"w":"5.5.2","rc":6,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":1,"tpl":0},{"w":"5.5.2","rc":7,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"5.6.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"5.6.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"5.6.2","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"5.6.2","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"5.6.3","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"5.6.3","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"5.6.4","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"5.6.4","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"5.6.5","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"5.6.5","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"5.6.6","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"5.6.6","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"5.6.7","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"5.6.7","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"5.6.8","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"5.6.8","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":4,"tpl":0},{"w":"5.6.9","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"5.6.9","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"5.6.10","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"5.6.10","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"5.6.11","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":5,"acyc":5,"tpl":0},{"w":"5.6.11","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":5,"tpl":0},{"w":"5.6.12","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":7,"acyc":0,"tpl":0},{"w":"5.6.12","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":10,"acyc":10,"tpl":0},{"w":"5.6.13","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"5.6.13","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"5.7.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"5.7.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":0,"tpl":0},{"w":"5.7.2","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":5,"acyc":0,"tpl":0},{"w":"5.7.2","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":8,"acyc":0,"tpl":0},{"w":"5.7.3","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":5,"acyc":5,"tpl":0},{"w":"5.7.3","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":8,"acyc":0,"tpl":0},{"w":"5.7.4","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"5.7.4","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":0,"tpl":0},{"w":"5.7.5","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"5.7.5","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":0,"tpl":0},{"w":"5.7.6","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"5.7.6","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":0,"tpl":0},{"w":"5.7.7","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":4,"tpl":0},{"w":"5.7.7","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":0,"tpl":0},{"w":"5.7.8","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":5,"acyc":0,"tpl":0},{"w":"5.7.8","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":0,"tpl":0},{"w":"5.8.1","rc":18,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":3,"tpl":0},{"w":"5.8.1","rc":19,"hc":1,"hpd":8,"occ":0.75,"cyc":7,"acyc":8,"tpl":0},{"w":"6.1.1","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":7,"acyc":0,"tpl":0},{"w":"6.1.1","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":10,"acyc":0,"tpl":0},{"w":"6.2.1","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"6.2.1","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"6.2.2","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":0,"tpl":0},{"w":"6.2.2","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":0,"tpl":0},{"w":"7.1.1","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"7.1.1","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"7.1.2","rc":3,"hc":1,"hpd":8,"occ":0.4,"cyc":9,"acyc":0,"tpl":0},{"w":"7.1.2","rc":4,"hc":1,"hpd":8,"occ":0.75,"cyc":13,"acyc":0,"tpl":0},{"w":"8.1.1","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.1","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.2","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.2","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.3","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.3","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.4","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.4","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.5","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.5","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.6","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.6","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.7","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.7","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.8","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.8","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.9","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.9","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.10","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"8.1.10","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"8.1.11","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.11","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":0,"tpl":0},{"w":"8.1.12","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.12","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":0,"tpl":0},{"w":"8.1.13","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.13","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.14","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.14","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.15","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.15","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.16","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.16","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.17","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.17","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.18","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.18","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.19","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.19","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.20","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.20","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.21","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.21","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.22","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.22","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.23","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.23","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.24","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.24","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.25","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":0,"tpl":0},{"w":"8.1.25","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":7,"acyc":0,"tpl":0},{"w":"8.1.26","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.26","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":0,"tpl":0},{"w":"8.1.27","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.27","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.28","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.28","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.29","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.29","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.30","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.30","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.31","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.1.31","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"8.2.1","rc":18,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"8.2.1","rc":19,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.1","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.1","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.2","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.2","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.3","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.3","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.4","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.4","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.5","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.5","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.6","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.6","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.7","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.7","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.8","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.8","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.9","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.9","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.10","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.10","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.11","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.11","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.12","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.12","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"9.1.13","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.13","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.14","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.14","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"9.1.15","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.15","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.16","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"9.1.16","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"9.1.17","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"9.1.17","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"9.1.18","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":43,"acyc":0,"tpl":0},{"w":"9.1.18","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":77,"acyc":0,"tpl":0},{"w":"9.1.19","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":16,"acyc":0,"tpl":0},{"w":"9.1.19","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":28,"acyc":0,"tpl":0},{"w":"9.1.20","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"9.1.20","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"9.1.21","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.21","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.1.22","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.1.22","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"9.2.1","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":5,"acyc":0,"tpl":0},{"w":"9.2.1","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":8,"acyc":0,"tpl":0},{"w":"9.2.2","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":7,"acyc":0,"tpl":0},{"w":"9.2.2","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":12,"acyc":0,"tpl":0},{"w":"9.2.3","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"9.2.3","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":0,"tpl":0},{"w":"9.2.4","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":18,"acyc":0,"tpl":0},{"w":"9.2.4","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":33,"acyc":0,"tpl":0},{"w":"9.2.5","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":9,"acyc":0,"tpl":0},{"w":"9.2.5","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":16,"acyc":0,"tpl":0},{"w":"9.2.6","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":6,"acyc":0,"tpl":0},{"w":"9.2.6","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":10,"acyc":0,"tpl":0},{"w":"9.2.7","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"9.2.7","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":0,"tpl":0},{"w":"9.2.8","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"9.2.8","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":0,"tpl":0},{"w":"9.2.9","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"9.2.9","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":2,"acyc":0,"tpl":0},{"w":"9.3.1","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":2,"acyc":0,"tpl":0},{"w":"9.3.1","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":4,"acyc":0,"tpl":0},{"w":"9.3.2","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"9.3.2","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"10.1.1","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"10.1.1","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":0,"tpl":0},{"w":"10.1.2","rc":12,"hc":1,"hpd":8,"occ":0.4,"cyc":81,"acyc":0,"tpl":0},{"w":"10.1.2","rc":13,"hc":1,"hpd":8,"occ":0.75,"cyc":155,"acyc":0,"tpl":0},{"w":"11.1.1","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":6,"acyc":0,"tpl":0},{"w":"11.1.1","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":9,"acyc":0,"tpl":0},{"w":"11.1.2","rc":0,"hc":1,"hpd":8,"occ":0.4,"cyc":9,"acyc":0,"tpl":0},{"w":"11.1.2","rc":1,"hc":1,"hpd":8,"occ":0.75,"cyc":13,"acyc":0,"tpl":0},{"w":"11.2.1","rc":16,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"11.2.1","rc":17,"hc":1,"hpd":8,"occ":0.75,"cyc":1,"acyc":0,"tpl":0},{"w":"11.2.2","rc":10,"hc":1,"hpd":8,"occ":0.4,"cyc":21,"acyc":0,"tpl":0},{"w":"11.2.2","rc":11,"hc":1,"hpd":8,"occ":0.75,"cyc":39,"acyc":0,"tpl":0},{"w":"11.2.3","rc":10,"hc":1,"hpd":8,"occ":0.4,"cyc":1,"acyc":0,"tpl":0},{"w":"11.2.3","rc":11,"hc":1,"hpd":8,"occ":0.75,"cyc":3,"acyc":0,"tpl":0},{"w":"11.2.4","rc":10,"hc":1,"hpd":8,"occ":0.4,"cyc":3,"acyc":0,"tpl":0},{"w":"11.2.4","rc":11,"hc":1,"hpd":8,"occ":0.75,"cyc":5,"acyc":0,"tpl":0},{"w":"11.2.5","rc":10,"hc":1,"hpd":8,"occ":0.4,"cyc":4,"acyc":0,"tpl":0},{"w":"11.2.5","rc":11,"hc":1,"hpd":8,"occ":0.75,"cyc":6,"acyc":0,"tpl":0}],"ml":[{"cat":"API","code":10000435,"d":"Amphotericin B","uom":"Kg","price":2755000,"pq":0.5,"cyc":20,"inq":62.5,"inu":"mg","cf":1000000,"dbs":200,"inq2":62.5,"inq3":62.5,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.1","wsu":"5.1.4"},{"cat":"Excepient","code":10100277,"d":"Hydrogenated soy phosphatidylcholine","uom":"Kg","price":89460,"pq":2,"cyc":20,"inq":234.3,"inu":"mg","cf":1000000,"dbs":200,"inq2":234.3,"inq3":234.3,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Excepient","code":10100278,"d":"Distearoyl phosphatidyl glycerol sodium","uom":"Kg","price":703800,"pq":2,"cyc":20,"inq":92.4,"inu":"mg","cf":1000000,"dbs":200,"inq2":92.4,"inq3":92.4,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Excepient","code":10100495,"d":"Cholesterol","uom":"Kg","price":612000,"pq":3,"cyc":20,"inq":56.16,"inu":"mg","cf":1000000,"dbs":200,"inq2":56.16,"inq3":56.16,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Excepient","code":10100519,"d":"DL-alpha-tocopherol*","uom":"Kg","price":51520,"pq":4,"cyc":20,"inq":0.832,"inu":"mg","cf":1000000,"dbs":200,"inq2":0.832,"inq3":0.832,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Excepient","code":10100501,"d":"Sucrose","uom":"Kg","price":15005,"pq":5,"cyc":20,"inq":900,"inu":"mg","cf":1000000,"dbs":200,"inq2":900,"inq3":900,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Excepient","code":10100282,"d":"Disodium succinate hexahydrate","uom":"Kg","price":145843,"pq":1,"cyc":20,"inq":27,"inu":"mg","cf":1000000,"dbs":200,"inq2":27,"inq3":27,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Excepient","code":10100496,"d":"Methanol","uom":"Ltr","price":5000,"pq":50,"cyc":20,"inq":2.5,"inu":"ml","cf":1000,"dbs":200,"inq2":2.5,"inq3":2.5,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Excepient","code":10100038,"d":"sodium hydroxide","uom":"Kg","price":5331.2,"pq":10,"cyc":20,"inq":0.16,"inu":"KG","cf":1,"dbs":200,"inq2":0.16,"inq3":0.16,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Excepient","code":10100487,"d":"Chloroform","uom":"Ltr","price":2031.05,"pq":10,"cyc":20,"inq":2.5,"inu":"ml","cf":1000,"dbs":200,"inq2":2.5,"inq3":2.5,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Excepient","code":10100496,"d":"Hydrochloric acid","uom":"Ltr","price":5000,"pq":10,"cyc":20,"inq":0.14,"inu":"Ltr","cf":1000,"dbs":200,"inq2":0.14,"inq3":0.14,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":0,"wdev":"3.1.3","wsu":"5.1.4"},{"cat":"Primary packing","code":10200696,"d":"25 ml, 20 mm clear tubular type 1, flat bottom glass vial","uom":"No.","price":7,"pq":100,"cyc":20,"inq":1,"inu":"NOS","cf":1,"dbs":200,"inq2":1,"inq3":1,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":1,"wdev":"3.1.5","wsu":"5.1.4"},{"cat":"Primary packing","code":10200485,"d":"20 mm double slotted grey bromobutyl RTU rubber stopper","uom":"No.","price":10.3,"pq":100,"cyc":20,"inq":1,"inu":"NOS","cf":1,"dbs":200,"inq2":1,"inq3":1,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":1,"wdev":"3.1.5","wsu":"5.1.4"},{"cat":"Secondary Packing","code":10201019,"d":"20 mm sky blue aluminium flipoff seal","uom":"No.","price":0.51,"pq":10,"cyc":20,"inq":1,"inu":"NOS","cf":1,"dbs":200,"inq2":1,"inq3":1,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":1,"wdev":"3.1.5","wsu":"5.1.4"},{"cat":"Tertiary Packing","code":10503876,"d":"Versapor membrane 5\u00b5, 25 mm sterile (Code: 6094184)","uom":"No.","price":185,"pq":1,"cyc":null,"inq":1,"inu":"NOS","cf":1,"dbs":200,"inq2":1,"inq3":1,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":1,"wdev":"3.1.5","wsu":"5.1.4"},{"cat":"Tertiary Packing","code":10302760,"d":"Amphotericin B liposomal- Insert","uom":"No.","price":2.88,"pq":1,"cyc":null,"inq":1,"inu":"NOS","cf":1,"dbs":200,"inq2":1,"inq3":1,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":1,"wdev":"3.1.5","wsu":"5.1.4"},{"cat":"Tertiary Packing","code":10302759,"d":"Amphotericin B liposomal 50mg- Printed carton","uom":"No.","price":2.88,"pq":1,"cyc":null,"inq":1,"inu":"NOS","cf":27,"dbs":200,"inq2":1,"inq3":1,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":1,"wdev":"3.1.5","wsu":"5.1.4"},{"cat":"Tertiary Packing","code":10400191,"d":"E-flute Inner carton (285x285x95 mm (ID))","uom":"No.","price":27,"pq":1,"cyc":null,"inq":1,"inu":"NOS","cf":27,"dbs":200,"inq2":1,"inq3":1,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":1,"wdev":"3.1.5","wsu":"5.1.4"},{"cat":"Tertiary Packing","code":10400193,"d":"7 ply Outer shipper (580x290x225 mm (ID))","uom":"No.","price":94,"pq":1,"cyc":null,"inq":1,"inu":"NOS","cf":100,"dbs":200,"inq2":1,"inq3":1,"sbs":2000,"ebs":2000,"flat":0,"firstAlt":1,"wdev":"3.1.5","wsu":"5.1.4"},{"cat":"Consumables","code":10706435,"d":"Imapure platinum cured silicone tubing \u2013 5 mm ID X 11mm ODCatalogue Number: 901-128-60","uom":"Mtrs","price":294,"pq":10,"cyc":null,"inq":30,"inu":"Mtrs","cf":200,"dbs":200,"inq2":30,"inq3":30,"sbs":2000,"ebs":2000,"flat":1,"firstAlt":0,"wdev":"3.1.4","wsu":"5.1.5"},{"cat":"Consumables","code":10706658,"d":"Imapure platinum cured silicone tubing- 8mm ID X14 mm OD Catalogue number: 901-142-60","uom":"Mtrs","price":495,"pq":10,"cyc":null,"inq":15,"inu":"Mtrs","cf":200,"dbs":200,"inq2":15,"inq3":15,"sbs":2000,"ebs":2000,"flat":1,"firstAlt":0,"wdev":"3.1.4","wsu":"5.1.5"},{"cat":"Consumables","code":10707594,"d":"Imapure platinum cured silicone tubing- 12mm ID X 18 mm OD Catalogue number: 901-152-60","uom":"Mtrs","price":552.5,"pq":10,"cyc":null,"inq":2.5,"inu":"Mtrs","cf":200,"dbs":200,"inq2":2.5,"inq3":2.5,"sbs":2000,"ebs":2000,"flat":1,"firstAlt":0,"wdev":"3.1.4","wsu":"5.1.5"},{"cat":"Filters","code":10709248,"d":"mdi AseptiCap Nano PES Membrane Capsule Filter (Type: LKN) - SIze: 30\"","uom":"No's","price":104500,"pq":2,"cyc":null,"inq":2,"inu":"NOS","cf":200,"dbs":200,"inq2":2,"inq3":2,"sbs":2000,"ebs":2000,"flat":1,"firstAlt":0,"wdev":"3.1.4","wsu":"5.1.5"},{"cat":"Filters","code":10710326,"d":"mdi AseptiCap Nano PES Membrane Capsule Filter (Type: LKN) - SIze: 20\"","uom":"No's","price":87400,"pq":1,"cyc":25,"inq":1,"inu":"NOS","cf":200,"dbs":200,"inq2":1,"inq3":1,"sbs":2000,"ebs":2000,"flat":1,"firstAlt":0,"wdev":"3.1.4","wsu":"5.1.5"}],"cap":[{"sl":1,"d":"homogenizer machine","no":1,"ven":"IKA","usd":5997.06806282723,"fx":95.5,"asset":1710000317,"w":"4.4.8"},{"sl":2,"d":"High pressure homogenizer machine","no":1,"ven":"Avastin Canada","usd":334561.627539267,"fx":95.5,"asset":1730000475,"w":"4.4.8"},{"sl":3,"d":"Rotavapor 50 ltrs","no":1,"ven":"Adithya ","usd":25942.4083769634,"fx":95.5,"asset":1710000694,"w":"4.4.8"},{"sl":4,"d":"150 ltrs Bio Spec Tank","no":1,"ven":"Bio Spek","usd":44740.0209424084,"fx":95.5,"asset":1710000710,"w":"4.4.8"},{"sl":5,"d":"100 ltrs Filter Connection tank","no":1,"ven":"Bio Spek","usd":35636.3979057592,"fx":95.5,"asset":1710000710,"w":"4.4.8"},{"sl":6,"d":"PH Meter","no":1,"ven":"Thermo","usd":759.916230366492,"fx":95.5,"asset":1720015826,"w":"4.4.20"},{"sl":7,"d":"ESP4- Dissolution operation","no":1,"ven":"sotax","usd":131098.12565445,"fx":95.5,"asset":1730000324,"w":"4.4.6"},{"sl":8,"d":"Consumables ","no":null,"ven":null,"usd":null,"fx":95.5,"asset":null,"w":null}]}</script>
+<script>
+  /* ===== shared helpers ===== */
+  const D = JSON.parse(document.getElementById("bdata").textContent);
+  const rs = n => n == null || n === "" ? "" : Math.round(n).toLocaleString("en-IN");
+  const rs2 = n => n == null || n === "" ? "" : (Math.abs(n) < 100 && n % 1 ? n.toLocaleString("en-IN", { maximumFractionDigits: 2 }) : Math.round(n).toLocaleString("en-IN"));
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const varTd = (p, a) => { const v = a - p; return `<td class="n ${v > 0 ? "over" : v < 0 ? "under" : ""}">${v === 0 ? "–" : (v > 0 ? "+" : "−") + rs(Math.abs(v))}</td>` };
+  const ck = (on, dis) => `<span class="mcb${on ? " on" : ""}${dis ? " dis" : ""}" aria-hidden="true">${on ? '<span class="mi">check</span>' : ""}</span>`;
+  const actBtns = `<span class="mi act-e">edit_square</span> <span class="mi act-d">delete</span>`;
+  function head(title, sub, proj, extra) {
+    return `<div class="ptitle"><h1>${title}</h1><p>${sub}</p></div>
+  <div class="projrow"><h2>${proj}</h2><div class="tools">${extra || ""}<button class="btn grey" type="button"><span class="mi" style="font-size:18px">arrow_back</span>Back</button></div></div>`;
+  }
+  const LIVE = "Abiraterone Acetate Film Coated";
+
+  /* ===== WBS structure ===== */
+  const NODE = {}, ANC = {}, KIDS = {}, GATE_IDS = [];
+  (() => {
+    let g, s, d; D.rows.forEach(r => {
+      NODE[r.id] = r;
+      if (r.lvl === "Gate") { g = r.id; s = d = null; KIDS[g] = []; GATE_IDS.push(g); }
+      else if (r.lvl === "Stage") { s = r.id; d = null; KIDS[s] = []; KIDS[g].push(s); }
+      else if (r.lvl === "Deliverable") { d = r.id; KIDS[d] = []; KIDS[s].push(d); }
+      else { KIDS[d].push(r.id); ANC[r.id] = [g, s, d, r.id]; }
+    });
+  })();
+  const under = (w, n) => !!(n && ANC[w] && ANC[w].includes(n));
+
+  /* ===== the 6 sheets: data + Excel formulas ===== */
+  // Material List (template rows; formulas as in Excel)
+  function mlCalc(m) {
+    const t1 = m.firstAlt ? (m.inq * m.price * m.dbs) / m.cf : (m.price / m.cf) * m.inq * m.dbs; const tn = (m.price * m.inq2 / m.cf) * m.dbs;
+    const trials = [t1, ...Array(19).fill(tn)]; const AI = trials.reduce((a, b) => a + b, 0);
+    const AL = m.flat ? m.inq3 * m.price : (m.price * m.inq3 / m.cf) * m.sbs; const AN = m.ebs * 3; const AO = m.flat ? m.price * m.inq3 * 3 : (m.price * m.inq3 / m.cf) * AN;
+    return { H: m.pq * m.price, trials, AI, AL, AN, AO };
+  }
+  // Capex
+  const capH = c => c.usd == null ? null : c.usd * c.fx;
+  // RLD (template rows)
+  const RLD = {
+    rows: [
+      { k: "h", b: "RLD - R&D & QC ( JODAS COST )" },
+      { k: "b", b: "Batch A", c: 352, d: "USD", e: 475, g: 96.5, w: "3.1.2" },
+      { k: "b", b: "Batch B", c: 535, d: "USD", e: 475, g: 96.5, w: "3.1.2" },
+      { k: "b", b: "Batch C", c: 510, d: "USD", e: 377, g: 96.5, w: "3.1.2" },
+      { k: "fr", b: "Freight ", f: 2000, g: 96.5, w: "3.1.2" },
+      { k: "du", b: "Customs Duty (7.5%+ 10% on 7.5%", g: 96.5, w: "3.1.2" },
+      { k: "gap" },
+      { k: "t1", b: "R&D and QC = Total " },
+      { k: "gap" },
+      { k: "be", b: "BA- BE study", c: 480, d: "USD", e: 377, g: 96.5 },
+      { k: "bf", b: "Freight charges", f: 600, h: 83.5 },
+      { k: "bd", b: "Customs Duty (7.5%+ 10% on 7.5%" },
+      { k: "bt", b: "Total", g: 96.5, w: "5.4.5" },
+      { k: "gap" },
+      { k: "gt", b: "Total" },
+      { k: "gap" },
+      { k: "ag", b: "Agreement Value for Amphotericin B by MRJ to JODAS", h: 650000 },
+      { k: "ag", b: "35% of Ist Mile Stone ", e: 0.35, hf: "m35" },
+      { k: "ag", b: "Batch A Qty", c: "Qty", e: 352, hf: "FA" },
+      { k: "ag", b: "Batch B Qty", e: 535, hf: "FB" },
+      { k: "ag", b: "Batch C ty", e: 510, hf: "FC" },
+      { k: "ag", b: "Total ", ef: "sumE", hf: "sumH" },
+      { k: "ag", b: "Net Cost to Jodas ", hf: "net" },
+      { k: "ag", b: "", h: 370000 }]
+  };
+  function rldCalc() {
+    const R = RLD.rows, o = {}; const F = r => r.c * r.e;
+    const FA = F(R[1]), FB = F(R[2]), FC = F(R[3]), F7 = 2000, F8 = (FA + FB + FC) * 0.10;
+    o.F = [0, FA, FB, FC, F7, F8]; o.H = [null, FA * 96.5, FB * 96.5, FC * 96.5, F7 * 96.5, F8 * 96.5]; o.F10 = FA + FB + FC + F7 + F8; o.H10 = o.H.slice(1).reduce((a, b) => a + b, 0);
+    o.F12 = 480 * 377; o.F13 = 600; o.F14 = o.F12 * 0.075 * 1.1; o.F15 = o.F12 + o.F13 + o.F14; o.H15 = 96.5 * o.F15; o.C17 = 352 + 535 + 510 + 480; o.F17 = o.F15 + o.F10;
+    o.H20 = 650000 * 0.35; o.E24 = 352 + 535 + 510; o.H24 = FA + FB + FC + F7 + F8; o.H25 = o.H24 - o.H20; o.FA = FA; o.FB = FB; o.FC = FC; return o;
+  }
+  // Analytical cost (template rows)
+  const ANA = {
+    qc: [{ sl: 1, d: "Chemicals / Glass ware other ", i: 600000, w: "3.1.6" }, { sl: 2, d: "Other consumables ", i: 150000, w: "3.1.7" }],
+    cols: [
+      { sl: 1, t: "Assay", d: "Pheomenex Inert Clone 5µm  ODS(3) 100 Å,150 x 4.6 mm ", e: "H21108676", f: "Amphotericin-B EPCRS", g: 25288, h: 3, span: 1 },
+      { sl: 2, t: "Related Substances", d: "YMC Pack Pro C18, 150 x 4.6 mm, 3 μm ", e: "109ZB10369", f: "Amphotericin-B EPCRS", g: 40095, h: 3, span: 2 },
+      { cont: 1, f: "Nystatin EPCRS", g: null, h: 3 },
+      { sl: 3, t: "Lipid Assay", d: "Xterra MS C18, 250x4.6mm, 5µm ", e: "186000494", f: "Cholestrol,HSPC, DSPG", g: 61324, h: 3, span: 1 },
+      { sl: 4, t: "Lipid Related Substances", d: "Xterra MS C18, 250x4.6mm, 5µm ", e: "186000494", f: "Lysophosphadtilycholine", g: 61324, h: 3, span: 2 },
+      { cont: 1, f: "Lysophosphadtilyglycerol ", g: null, h: 3 },
+      { sl: 5, t: "Alpha tocopherol", d: "Inertsil ODS 3V,150 x 4.6 mm,5µm ", e: "1B5182461", f: "Alphatocopherol standard", g: 32784, h: 3, span: 1 },
+      { sl: 6, t: "Sugar", d: "MCI GEL, 300 x 7.8 mm, 9 µm ", e: "MCL-0-010-07", f: "Dextrose", g: 114475, h: 3, span: 1 },
+      { sl: 7, t: "Free Drug(Entrappy)", d: "YMC- Pack PRO 150.4.6mm, ", e: "109ZB10369", f: "Amphotericin-B EPCRS", g: 30016, h: 3, span: 1 },
+      { sl: "", t: "", d: "3µm  & PD 10 Column", e: "", f: "", g: 40095, h: 3, span: 1 },
+      { sl: 8, t: "Dissolution", d: "Pheomenex Inert Clone 5µm  ODS(3) 100 Å,150 x 4.6 mm &", e: "H21108676", f: "Amphotericin-B EPCRS", g: 25288, h: 3, span: 2 },
+      { cont: 1, d2: "Flot-A-lyzer- 300KD make: Specturm", f: "", g: 16201, h: 3 }],
+    colW: "3.1.7", third: Array.from({ length: 8 }, (_, i) => ({ sl: i + 1 })), thirdW: "7.1.2",
+    batches: [["Developmemnt stage", 25], ["Scale up", 1], ["EB", 3]], colTime: 10, colReq: 3
+  };
+  // Manpower: rate card + allocation lines
+  const RATE = r => r.ac / D.hpm;
+  const manCost = (m, k) => RATE(D.rc[m.rc]) * m.hc * m.hpd * m.occ * (k === "A" ? m.acyc : m.cyc);
+
+  /* ===== roll-up lines (every cost mapped to a WBS activity) ===== */
+  const BLANK = new Set(["2.2.1", "2.4.4", "2.5.3", "2.6.3", "2.7.3", "2.8.2", "4.3.1", "4.3.2", "4.4.16", "5.3.1", "5.4.2", "5.4.3", "5.4.4", "5.4.6", "5.5.1", "5.8.1", "6.1.1", "7.1.2", "8.1.25", "9.1.18", "9.2.4", "10.1.2", "11.1.2", "11.2.5"].map(x => x + "|res"));
+  let LINES = [];
+  function buildLines() {
+    const L = [];
+    D.man.forEach((m, i) => L.push({ w: m.w, b: "man", s: "man", ref: i, P: manCost(m, "P"), A: manCost(m, "A") }));
+    D.ml.forEach((m, i) => {
+      const c = mlCalc(m);
+      L.push({ w: m.wdev, b: "mat", s: "ml", ref: i, P: c.AI, A: m.cat === "API" ? 750000 : 0 });
+      L.push({ w: m.wsu, b: "mat", s: "ml", ref: i, P: c.AL + c.AO, A: 0 });
+    });
+    const R = rldCalc();[1, 2, 3, 4, 5].forEach(i => L.push({ w: "3.1.2", b: "mat", s: "rld", ref: i, P: R.H[i], A: 0 }));
+    L.push({ w: "5.4.5", b: "mat", s: "rld", ref: 12, P: R.H15, A: 0 });
+    ANA.qc.forEach((q, i) => L.push({ w: q.w, b: "mat", s: "ana", ref: "q" + i, P: q.i, A: 0 }));
+    ANA.cols.forEach((c, i) => { if (c.g) L.push({ w: ANA.colW, b: "mat", s: "ana", ref: "c" + i, P: c.g * c.h, A: 0 }); });
+    D.cap.forEach((c, i) => { const h = capH(c); if (h && c.w) L.push({ w: c.w, b: "res", s: "cap", ref: i, P: h, A: 0 }); });
+    LINES = L;
+  }
+  buildLines();
+  function agg() {
+    const A = {}; D.rows.forEach(r => A[r.id] = { manP: 0, manA: 0, matP: 0, matA: 0, resP: 0, resA: 0, n: { man: 0, mat: 0, res: 0 } });
+    LINES.forEach(l => { ANC[l.w].forEach(id => { A[id][l.b + "P"] += l.P; A[id][l.b + "A"] += l.A; }); A[l.w].n[l.b]++; }); return A;
+  }
+
+  /* ===== Budget tab ===== */
+  const SCREENS = [["wbs", "WBS Summary"], ["main", "Main Cost Sheet"], ["ml", "Material List"], ["cap", "Capex"], ["man", "Manpower"], ["rld", "RLD"], ["ana", "Analytical cost"]];
+  const SNAME = Object.fromEntries(SCREENS);
+  const BKT = { man: "Man", mat: "Material", res: "Resource" };
+  const BS = { tab: "wbs", open: new Set(["G1", "G3", "3", "3.1"]), q: "", gate: "all", f: { n: null, b: null }, hl: null, mq: "", mfn: "all", trials: true };
+  const sid = id => "r-" + id.replace(/\./g, "_");
+  function kpiHtml() {
+    const t = { manP: 0, manA: 0, matP: 0, matA: 0, resP: 0, resA: 0 }; LINES.forEach(l => { t[l.b + "P"] += l.P; t[l.b + "A"] += l.A; });
+    const P = t.manP + t.matP + t.resP, A = t.manA + t.matA + t.resA;
+    return `<div class="kpi blue"><span class="l">Budget</span><span class="v">Rs. ${rs(P)}</span></div>
+  <div class="kpi green"><span class="l">Actual</span><span class="v">Rs. ${rs(A)}</span></div>
+  <div class="kpi orange"><span class="l">Completion (spend)</span><span class="v">${P ? Math.round(A / P * 100) : 0}%</span></div>
+  <div class="kpi purple"><span class="l">Man / Material / Resource</span><span class="v">${rs(t.manP)} / ${rs(t.matP)} / ${rs(t.resP)}</span></div>
+  <div class="kpi red"><span class="l">Not estimated</span><span class="v">${BLANK.size} activities</span></div>
+  <div class="kpi teal"><span class="l">Baseline</span><span class="v">v1 · frozen at G2</span></div>`;
+  }
+  function vBudget() {
+    return head("Budget", "Monitor project costs and budget allocation.", "Amphotericin B Liposome 50 mg <span class='exm'>budget template example</span>") + `
+  <div class="kpis" id="bkpis">${kpiHtml()}</div>
+  <div class="itabs" role="tablist">${SCREENS.map(([k, t], i) => `<button class="itab${BS.tab === k ? " on" : ""}" role="tab" aria-selected="${BS.tab === k}" data-itab="${k}">${i === 0 ? '<span class="mi" style="font-size:18px">account_tree</span>' : '<span class="mi" style="font-size:18px">grid_on</span>'}${t}</button>`).join("")}</div>
+  ${BS.tab !== "wbs" && BS.f.n ? drillBar() : ""}
+  <div class="ipanel">${{ wbs: wbsPanel, main: mainPanel, ml: mlPanel, cap: capPanel, man: manPanel, rld: rldPanel, ana: anaPanel }[BS.tab]()}</div>`;
+  }
+  function sheetsFor(n, b) { const s = []; LINES.forEach(l => { if (under(l.w, n) && (!b || l.b === b) && !s.includes(l.s)) s.push(l.s); }); return ["man", "ml", "rld", "ana", "cap"].filter(x => s.includes(x)); }
+  function drillBar() {
+    const n = BS.f.n, b = BS.f.b, others = sheetsFor(n, b).filter(s => s !== BS.tab);
+    return `<div class="drill"><span class="mi">filter_alt</span><div><b>${NODE[n].lvl} ${n} · ${esc(NODE[n].name)}${b ? " · " + BKT[b] : ""}</b>
+    <span class="sub"> — rows that roll up to it are highlighted.</span>${others.length ? ` Also in: ${others.map(s => `<a class="jl" role="button" tabindex="0" data-itab="${s}">${SNAME[s]}</a>`).join(" · ")}` : ""}</div>
+    <div class="tools"><button class="btn light sm" type="button" data-act="back"><span class="mi" style="font-size:16px">arrow_back</span>WBS Summary</button><button class="iconbtn" type="button" data-act="clear" aria-label="Clear filter"><span class="mi">close</span></button></div></div>`;
+  }
+  const wcell = w => w ? `<a class="wlink" role="button" tabindex="0" data-w="${w}" title="Show ${w} in WBS Summary">${w}</a>` : `<span class="zero">—</span>`;
+  const hl = w => BS.f.n && under(w, BS.f.n) ? " hl" : "";
+
+  /* --- WBS Summary --- */
+  function wbsPanel() {
+    return `
+  <div class="banner"><span class="mi">account_tree</span><div><b>WBS Summary is the master.</b> Each activity's Man, Material and Resource value is the sum of the costs mapped to it in the six sheets. 0 means the bucket does not apply. <span class="blank">Estimate</span> means a cost is expected but none of the six sheets carries it yet. Click any blue value to open the sheet behind it.</div></div>
+  <div class="tools">
+    <label class="fld"><span class="mi">search</span><input id="wq" type="search" placeholder="Search WBS ID, activity, responsible" value="${esc(BS.q)}" aria-label="Search WBS"></label>
+    <select id="wg" class="sel" aria-label="Gate">${["all", ...GATE_IDS].map(g => `<option value="${g}"${BS.gate === g ? " selected" : ""}>${g === "all" ? "All gates" : esc(NODE[g].name)}</option>`).join("")}</select>
+    <button class="btn light" type="button" data-act="expand"><span class="mi" style="font-size:18px">unfold_more</span>Expand all</button>
+    <button class="btn light" type="button" data-act="collapse"><span class="mi" style="font-size:18px">unfold_less</span>Collapse all</button>
+  </div>
+  <div class="tbox"><table class="wbs" aria-label="WBS budget summary">
+    <thead><tr><th rowspan="2">WBS ID</th><th rowspan="2" style="min-width:330px">Gate / Stage / Deliverable / Activity</th><th rowspan="2">Responsible</th>
+      <th class="c" colspan="2">Man</th><th class="c" colspan="2">Material</th><th class="c" colspan="2">Resource</th><th class="c" colspan="3">Total</th></tr>
+      <tr><th class="n">Plan</th><th class="n">Actual</th><th class="n">Plan</th><th class="n">Actual</th><th class="n">Plan</th><th class="n">Actual</th><th class="n">Plan</th><th class="n">Actual</th><th class="n">Variance</th></tr></thead>
+    <tbody id="wbody">${wbsBody()}</tbody></table></div>`;
+  }
+  function wbsRow(r, AG) {
+    const a = AG[r.id], L = { Gate: 0, Stage: 1, Deliverable: 2, Activity: 3 }[r.lvl], act = r.lvl === "Activity", op = BS.open.has(r.id);
+    const chev = act ? `<span class="chev-sp"></span>` : `<button class="chev" type="button" data-tg="${r.id}" aria-expanded="${op}" aria-label="${op ? "Collapse" : "Expand"} ${esc(r.name)}"><span class="mi">${op ? "expand_more" : "chevron_right"}</span></button>`;
+    const cell = (b, k) => {
+      if (act) { if (!a.n[b] && BLANK.has(r.id + "|" + b)) return k === "P" ? `<td class="n"><span class="blank">Estimate</span></td>` : `<td class="n"></td>`; if (!a.n[b]) return `<td class="n zero">0</td>`; }
+      const v = a[b + k]; if (v === 0 && !(act && a.n[b])) return `<td class="n zero">0</td>`;
+      return `<td class="n"><a class="cell" role="button" tabindex="0" data-n="${r.id}" data-b="${b}" title="Open ${BKT[b]} sheet for ${r.id}">${rs(v)}</a></td>`;
+    };
+    const P = a.manP + a.matP + a.resP, A = a.manA + a.matA + a.resA;
+    return `<tr class="lv${L}${BS.hl === r.id ? " hl" : ""}" id="${sid(r.id)}"><td class="wid">${r.id}</td>
+    <td><div class="tn" style="padding-left:${L * 18}px">${chev}<span class="nm${act ? "" : " tg"}"${act ? "" : ` data-tg="${r.id}" role="button" tabindex="0"`}>${esc(r.name)}</span></div></td><td class="resp">${esc(r.resp || "")}</td>
+    ${cell("man", "P")}${cell("man", "A")}${cell("mat", "P")}${cell("mat", "A")}${cell("res", "P")}${cell("res", "A")}
+    <td class="n">${P ? `<a class="cell tot" role="button" tabindex="0" data-n="${r.id}" data-b="">${rs(P)}</a>` : '<span class="zero">0</span>'}</td><td class="n">${rs(A)}</td>${varTd(P, A)}</tr>`;
+  }
+  function wbsBody() {
+    const AG = agg(), q = BS.q.trim().toLowerCase(); let h = "";
+    const match = id => { const r = NODE[id]; return (r.id + " " + r.name + " " + (r.resp || "")).toLowerCase().includes(q); };
+    const has = id => NODE[id].lvl === "Activity" ? match(id) : (match(id) || KIDS[id].some(has));
+    const walk = id => { if (q && !has(id)) return; h += wbsRow(NODE[id], AG); if (NODE[id].lvl === "Activity") return; if (q || BS.open.has(id)) KIDS[id].forEach(walk); };
+    const gs = BS.gate === "all" ? GATE_IDS : [BS.gate]; gs.forEach(walk);
+    if (!h) return `<tr><td colspan="12">No activities match “${esc(BS.q)}”.</td></tr>`;
+    const t = { manP: 0, manA: 0, matP: 0, matA: 0, resP: 0, resA: 0 }; gs.forEach(g => Object.keys(t).forEach(k => t[k] += AG[g][k]));
+    const P = t.manP + t.matP + t.resP, A = t.manA + t.matA + t.resA;
+    return h + `<tr class="total"><td></td><td>${BS.gate === "all" ? "Project total" : esc(NODE[BS.gate].name) + " total"}</td><td></td><td class="n">${rs(t.manP)}</td><td class="n">${rs(t.manA)}</td><td class="n">${rs(t.matP)}</td><td class="n">${rs(t.matA)}</td><td class="n">${rs(t.resP)}</td><td class="n">${rs(t.resA)}</td><td class="n">${rs(P)}</td><td class="n">${rs(A)}</td>${varTd(P, A)}</tr>`;
+  }
+
+  /* --- Main Cost Sheet --- */
+  function mainPanel() {
+    const byCat = {}; D.ml.forEach(m => { byCat[m.cat] = (byCat[m.cat] || 0) + mlCalc(m).AI; });
+    const R = rldCalc(), I8 = ANA.qc.reduce((a, q) => a + q.i, 0), I27 = ANA.cols.reduce((a, c) => a + (c.g ? c.g * c.h : 0), 0), J48 = 0;
+    const mat = [[1, "API", "3.1.1"], [2, "Excepient", "3.1.3"], [3, "Primary packing", "3.1.5"], [4, "Secondary Packing", "3.1.5"], [5, "Tertiary Packing", "3.1.5"], [3, "Consumables", "3.1.4"], ["", "Filters", "3.1.4"]];
+    const A13 = mat.reduce((a, m) => a + (byCat[m[1]] || 0), 0), B21 = I8 + I27 + J48;
+    const row = (sl, act, plan, actual, w, cls) => `<tr class="${cls || ""}${w && BS.f.n && w.split(", ").some(x => under(x, BS.f.n)) ? " hl" : ""}"><td>${sl}</td><td>${act}</td><td class="n">${plan === null ? "" : rs(plan)}</td><td class="n">${actual ? rs(actual) : ""}</td><td class="n">${actual && plan ? ((actual / plan - 1) * 100).toFixed(1) + "%" : ""}</td><td class="new">${w ? w.split(", ").map(wcell).join(", ") : '<span class="zero">—</span>'}</td></tr>`;
+    return `<div class="banner"><span class="mi">summarize</span><div><b>Main Cost Sheet</b> — as in the Excel. Plan is calculated from the other sheets (Material List development total, RLD, Analytical cost). The added column shows which WBS activities each line feeds.</div></div>
+  <div class="formgrid"><div><span class="lab">Product ( Molecule )</span><span>Amphotericin B Liposome</span></div><div><span class="lab">Product Strength</span><span>50 mg</span></div><div><span class="lab">Targeted Market/Region</span><span>—</span></div><div><span class="lab">Project Owner</span><span>—</span></div><div><span class="lab">Project Manager</span><span>—</span></div></div>
+  <div class="tbox"><table class="xl"><thead><tr><th>Sl No</th><th>Actvity</th><th class="n">Plan</th><th class="n">Actual</th><th class="n">Varince</th><th class="new">Feeds WBS <span class="newpill">NEW</span></th></tr></thead><tbody>
+  ${mat.map(m => row(m[0], m[1], byCat[m[1]] || 0, m[1] === "API" ? 750000 : 0, m[2] + ", 5.1." + (["Consumables", "Filters"].includes(m[1]) ? "5" : "4"))).join("")}
+  ${row("A", "<b>Total Material Cost</b>", A13, 750000, "", "sub")}
+  ${row(4, "RLD Cost ", R.H10, 0, "3.1.2")}
+  ${row(5, "CT / BE cost ", 0, 0, "")}
+  ${row(6, "Standarads / Columns / Lab Chemicals", I8, 0, "3.1.6, 3.1.7")}
+  ${row(7, "Testing / Analysis ", I27, 0, "3.1.7")}
+  ${row(8, "Testing / Analysis  with 3rd party", J48, 0, "7.1.2")}
+  ${row(9, "Overhead( Depreciation,R&M and other Expenditure)", null, 0, "")}
+  ${row(10, "Capex Interest ", null, 0, "")}
+  ${row("B", "<b>Other Cost </b>", B21, 0, "", "sub")}
+  <tr class="total"><td></td><td>Cost A + B</td><td class="n">${rs(A13 + B21)}</td><td></td><td></td><td class="new"></td></tr>
+  </tbody></table></div>
+  <p class="sub">Variance = Actual ÷ Plan − 1, as in the Excel. Plan uses the development-trial total (column AI) of the Material List; scale-up and EB material roll up to 5.1.4 / 5.1.5 in the WBS.</p>`;
+  }
+
+  /* --- Material List --- */
+  function mlPanel() {
+    const C = D.ml.map(mlCalc); const tot = k => C.reduce((a, c) => a + c[k], 0); const tTr = i => C.reduce((a, c) => a + c.trials[i], 0);
+    const T = BS.trials ? Array.from({ length: 20 }, (_, i) => i) : [];
+    return `<div class="banner"><span class="mi">inventory_2</span><div><b>Material List</b> — as in the Excel, with the same formulas. The two added columns map each row to its WBS activities: development trials to 3.1.x, scale-up and exhibit batches to 5.1.4 / 5.1.5.</div></div>
+  <div class="tools"><button class="btn light" type="button" data-act="trials"><span class="mi" style="font-size:18px">${BS.trials ? "visibility_off" : "visibility"}</span>${BS.trials ? "Hide" : "Show"} trial 1–20 columns</button></div>
+  <div class="tbox"><table class="xl"><thead><tr>
+    <th class="new">WBS (Dev) <span class="newpill">NEW</span></th><th class="new">WBS (Scale-up / EB) <span class="newpill">NEW</span></th>
+    <th>Category</th><th>Mtl code</th><th style="min-width:220px">Description</th><th>Uom</th><th class="n">Price</th><th class="n">Purchased Qty</th><th class="n">Total Cost</th><th class="n">No of Cycles Planned</th><th class="n">Input Qty per Cycle</th><th>In put Qty UOM</th><th class="n">CF</th><th class="n">Developments batch size</th><th class="n">Input Qty per Cycle</th>
+    ${T.map(i => `<th class="n">Cost per trial-${i + 1}</th>`).join("")}
+    <th class="n">Total Development cost for 20 trials</th><th class="n">Input Qty per Cycle</th><th class="n">ScaleUP Batch size</th><th class="n">ScaleUP Batch Input Materis</th><th class="n">EB Size</th><th class="n">3 EB Input Qty</th><th class="n">3 EB Batches Cost</th></tr></thead><tbody>
+  ${D.ml.map((m, i) => {
+      const c = C[i]; return `<tr class="${hl(m.wdev).trim() || hl(m.wsu).trim() ? "hl" : ""}"><td class="new">${wcell(m.wdev)}</td><td class="new">${wcell(m.wsu)}</td>
+    <td>${esc(m.cat)}</td><td>${m.code}</td><td class="wrap">${esc(m.d)}</td><td>${esc(m.uom)}</td><td class="n">${rs2(m.price)}</td><td class="n">${rs2(m.pq)}</td><td class="n">${rs2(c.H)}</td><td class="n">${m.cyc ?? ""}</td><td class="n">${rs2(m.inq)}</td><td>${esc(m.inu)}</td><td class="n">${rs(m.cf)}</td><td class="n">${rs(m.dbs)}</td><td class="n">${rs2(m.inq2)}</td>
+    ${T.map(t => `<td class="n">${rs(c.trials[t])}</td>`).join("")}<td class="n"><b>${rs(c.AI)}</b></td><td class="n">${rs2(m.inq3)}</td><td class="n">${rs(m.sbs)}</td><td class="n">${rs(c.AL)}</td><td class="n">${rs(m.ebs)}</td><td class="n">${rs(c.AN)}</td><td class="n"><b>${rs(c.AO)}</b></td></tr>`;
+    }).join("")}
+  <tr class="total"><td class="new"></td><td class="new"></td><td>Total</td><td colspan="12"></td>${T.map(i => `<td class="n">${rs(tTr(i))}</td>`).join("")}<td class="n">${rs(tot("AI"))}</td><td></td><td></td><td class="n">${rs(tot("AL"))}</td><td></td><td></td><td class="n">${rs(tot("AO"))}</td></tr>
+  </tbody></table></div>`;
+  }
+
+  /* --- Capex --- */
+  function capPanel() {
+    const tF = D.cap.reduce((a, c) => a + (c.usd || 0), 0), tH = D.cap.reduce((a, c) => a + (capH(c) || 0), 0);
+    return `<div class="banner"><span class="mi">precision_manufacturing</span><div><b>Capex</b> — as in the Excel. Each equipment line is mapped to the WBS activity it is bought for and rolls up as Resource.</div></div>
+  <div class="tbox"><table class="xl"><thead><tr><th class="new">WBS ID <span class="newpill">NEW</span></th><th></th><th>Equipment</th><th class="n">No's</th><th></th><th class="n">IN USD</th><th class="n"></th><th class="n"></th><th></th></tr></thead><tbody>
+  ${D.cap.map(c => `<tr class="${c.w && hl(c.w) ? "hl" : ""}"><td class="new">${wcell(c.w)}</td><td>${c.sl ?? ""}</td><td>${esc(c.d)}</td><td class="n">${c.no ?? ""}</td><td>${esc(c.ven ?? "")}</td><td class="n">${c.usd != null ? rs2(c.usd) : ""}</td><td class="n">${c.fx ?? ""}</td><td class="n">${capH(c) != null ? rs(capH(c)) : ""}</td><td>${c.asset ?? ""}</td></tr>`).join("")}
+  <tr><td class="new"></td><td></td><td>No of columns</td><td colspan="6"></td></tr>
+  <tr class="total"><td class="new"></td><td></td><td>Total</td><td></td><td></td><td class="n">${rs2(tF)}</td><td></td><td class="n">${rs(tH)}</td><td></td></tr>
+  </tbody></table></div>
+  <p class="sub">Columns as in the sheet: equipment, quantity, vendor, price in USD, exchange rate, INR value (USD × rate), asset / PO code.</p>`;
+  }
+
+  /* --- Manpower (summary of all manpower cost) --- */
+  function manPanel() {
+    const used = {}; D.man.forEach(m => { const k = m.rc; used[k] = used[k] || { n: 0, P: 0, A: 0, h: 0, ha: 0, acts: new Set() }; const u = used[k]; u.n++; u.P += manCost(m, "P"); u.A += manCost(m, "A"); u.h += m.hc * m.hpd * m.occ * m.cyc; u.ha += m.hc * m.hpd * m.occ * m.acyc; u.acts.add(m.w); });
+    const fns = [...new Set(D.rc.map(r => r.fn))];
+    const byFn = fns.map(fn => { const ids = D.rc.map((r, i) => r.fn === fn ? i : -1).filter(i => i >= 0); const s = { fn, P: 0, A: 0, h: 0, ha: 0, acts: new Set() }; ids.forEach(i => { const u = used[i]; if (u) { s.P += u.P; s.A += u.A; s.h += u.h; s.ha += u.ha; u.acts.forEach(a => s.acts.add(a)); } }); return s; });
+    const totP = byFn.reduce((a, b) => a + b.P, 0), totA = byFn.reduce((a, b) => a + b.A, 0), totH = byFn.reduce((a, b) => a + b.h, 0);
+    return `<div class="banner"><span class="mi">groups</span><div><b>Manpower</b> — built on the Excel's method (annual cost → hours per month → rate per hour; cost = rate × head count × hours per day × occupancy × cycles) and extended to summarise all manpower cost across the WBS. Rows marked <span class="tpl">Template</span> are the six rows from the Excel.</div></div>
+  <div class="sectiontitle">Manpower cost by function</div>
+  <div class="tbox"><table class="xl"><thead><tr><th>Function</th><th class="n">Activities</th><th class="n">Planned hours</th><th class="n">Manpower cost (plan)</th><th class="n">Booked hours</th><th class="n">Manpower cost (actual)</th><th style="min-width:160px">Share of manpower cost</th></tr></thead><tbody>
+  ${byFn.map(s => `<tr><td><a class="jl" role="button" tabindex="0" data-mfn="${esc(s.fn)}">${esc(s.fn)}</a></td><td class="n">${s.acts.size}</td><td class="n">${rs(s.h)}</td><td class="n"><b>${rs(s.P)}</b></td><td class="n">${rs(s.ha)}</td><td class="n">${rs(s.A)}</td><td><div class="bar"><i style="width:${totP ? s.P / totP * 100 : 0}%"></i></div><span class="sub">${totP ? (s.P / totP * 100).toFixed(1) : 0}%</span></td></tr>`).join("")}
+  <tr class="total"><td>Total</td><td class="n">${new Set(D.man.map(m => m.w)).size}</td><td class="n">${rs(totH)}</td><td class="n">${rs(totP)}</td><td class="n"></td><td class="n">${rs(totA)}</td><td></td></tr></tbody></table></div>
+  <div class="sectiontitle">Rate card</div>
+  <div class="tbox"><table class="xl"><thead><tr><th>Function</th><th>Resources</th><th class="n">Annual Cost</th><th class="n">Hours per month</th><th class="n">Rate per hour</th><th class="n">Lines</th></tr></thead><tbody>
+  ${D.rc.map((r, i) => `<tr><td>${esc(r.fn)}</td><td>${esc(r.res)} ${r.tpl ? '<span class="tpl">Template</span>' : ""}</td><td class="n">${rs(r.ac)}</td><td class="n">${rs(D.hpm)}</td><td class="n">${rs(RATE(r))}</td><td class="n">${used[i]?.n || 0}</td></tr>`).join("")}
+  </tbody></table></div>
+  <p class="sub">Hours per month = (365 − 53 − 27 − 10 − 10 − 10) × 8 ÷ 12 × 0.7 = ${rs(D.hpm)}, as in the Excel. Rows other than Template are example rates for the other functions.</p>
+  <div class="sectiontitle">Manpower allocation by WBS activity</div>
+  <div class="tools"><label class="fld"><span class="mi">search</span><input id="mq" type="search" placeholder="Search WBS ID, activity, resource" value="${esc(BS.mq)}" aria-label="Search manpower lines"></label>
+    <select id="mfn" class="sel" aria-label="Function"><option value="all">All functions</option>${fns.map(f => `<option${BS.mfn === f ? " selected" : ""}>${esc(f)}</option>`).join("")}</select></div>
+  <div id="mbody">${manAlloc()}</div>`;
+  }
+  function manAlloc() {
+    const q = BS.mq.trim().toLowerCase();
+    const rows = D.man.map((m, i) => ({ m, i })).filter(({ m }) => { const r = D.rc[m.rc]; return (BS.mfn === "all" || r.fn === BS.mfn) && (!BS.f.n || under(m.w, BS.f.n)) && (!q || (m.w + " " + NODE[m.w].name + " " + r.res + " " + r.fn).toLowerCase().includes(q)); });
+    const tP = rows.reduce((a, { m }) => a + manCost(m, "P"), 0), tA = rows.reduce((a, { m }) => a + manCost(m, "A"), 0);
+    return `<div class="tbox"><table class="xl"><thead><tr><th>WBS ID</th><th>Activity</th><th>Function</th><th>Resources</th><th class="n">Rate per hour</th><th class="n">Head count</th><th class="n">NO of Hours per day</th><th class="n">Occupancy</th><th class="n">No of Cycles</th><th class="n">Manpower cost</th><th class="n">Cycles booked</th><th class="n">Actual cost</th></tr></thead><tbody>
+  ${rows.length ? rows.map(({ m }) => { const r = D.rc[m.rc]; return `<tr class="${hl(m.w).trim()}"><td class="wid">${wcell(m.w)}</td><td class="aname">${esc(NODE[m.w].name)}</td><td>${esc(r.fn)}</td><td>${esc(r.res)} ${m.tpl ? '<span class="tpl">Template</span>' : ""}</td><td class="n">${rs(RATE(r))}</td><td class="n">${m.hc}</td><td class="n">${m.hpd}</td><td class="n">${(m.occ * 100).toFixed(1)}%</td><td class="n">${m.cyc}</td><td class="n"><b>${rs(manCost(m, "P"))}</b></td><td class="n">${m.acyc}</td><td class="n">${rs(manCost(m, "A"))}</td></tr>`; }).join("") : `<tr><td colspan="12">No manpower lines for this filter.</td></tr>`}
+  <tr class="total"><td colspan="9">${rows.length} line${rows.length === 1 ? "" : "s"}</td><td class="n">${rs(tP)}</td><td></td><td class="n">${rs(tA)}</td></tr></tbody></table></div>`;
+  }
+
+  /* --- RLD --- */
+  function rldPanel() {
+    const R = rldCalc(), O = RLD.rows; let bi = 0;
+    const tr = (w, cells, cls) => `<tr class="${cls || ""}${w && hl(w) ? " hl" : ""}"><td class="new">${w ? wcell(w) : ""}</td>${cells.map(c => `<td${typeof c === "number" ? ' class="n"' : ""}>${typeof c === "number" ? rs2(c) : (c ?? "")}</td>`).join("")}</tr>`;
+    const body = O.map(r => {
+      switch (r.k) {
+        case "h": return tr(null, [r.b, "", "", "", R.F[0] || 0, "", ""]);
+        case "b": bi++; return tr(r.w, [r.b, r.c, r.d, r.e, R.F[bi], r.g, R.H[bi]]);
+        case "fr": return tr(r.w, [r.b, "", "", "", R.F[4], r.g, R.H[4]]);
+        case "du": return tr(r.w, [r.b, "", "", "", R.F[5], r.g, R.H[5]]);
+        case "gap": return `<tr class="gap"><td class="new"></td><td colspan="7"></td></tr>`;
+        case "t1": return tr(null, [`<b>${r.b}</b>`, "", "", "", R.F10, "", R.H10], "sub");
+        case "be": return tr("5.4.5", [r.b, r.c, r.d, r.e, R.F12, r.g, ""]);
+        case "bf": return tr("5.4.5", [r.b, "", "", "", R.F13, "", r.h]);
+        case "bd": return tr("5.4.5", [r.b, "", "", "", R.F14, "", ""]);
+        case "bt": return tr("5.4.5", [`<b>${r.b}</b>`, "", "", "", R.F15, r.g, R.H15], "sub");
+        case "gt": return tr(null, [`<b>${r.b}</b>`, R.C17, "", "", R.F17, "", ""], "total");
+        case "ag": {
+          const hv = r.h != null ? r.h : { m35: R.H20, FA: R.FA, FB: R.FB, FC: R.FC, sumH: R.H24, net: R.H25 }[r.hf]; const ev = r.ef === "sumE" ? R.E24 : r.e;
+          return `<tr class="agr"><td class="new"><span class="zero" title="Commercial agreement — not a development cost">n/a</span></td><td>${esc(r.b)}</td><td>${r.c ?? ""}</td><td></td><td class="n">${ev != null ? rs2(ev) : ""}</td><td></td><td></td><td class="n">${hv != null ? rs2(hv) : ""}</td></tr>`;
+        }
+      }
+    }).join("");
+    return `<div class="banner"><span class="mi">local_shipping</span><div><b>RLD</b> — as in the Excel. R&amp;D and QC reference product (batches, freight, duty) maps to 3.1.2; BA-BE study packs map to 5.4.5. The agreement block at the bottom is commercial and does not roll up.</div></div>
+  <div class="tbox"><table class="xl"><thead><tr><th class="new">WBS ID <span class="newpill">NEW</span></th><th>Product</th><th class="n">NO of Packs</th><th>Cur</th><th class="n">Cost ( FOB )</th><th class="n">USD</th><th class="n">Exchange Rate in INR</th><th class="n">Cost in INR</th></tr></thead><tbody>${body}</tbody></table></div>`;
+  }
+
+  /* --- Analytical cost --- */
+  function anaPanel() {
+    const I8 = ANA.qc.reduce((a, q) => a + q.i, 0); const G24 = ANA.cols.reduce((a, c) => a + (c.g || 0), 0), I24 = ANA.cols.reduce((a, c) => a + (c.g ? c.g * c.h : 0), 0);
+    const colRows = ANA.cols.map(c => {
+      const w = ANA.colW, cls = hl(w).trim();
+      if (c.cont) return `<tr class="${cls}">${c.d2 !== undefined ? `<td>${esc(c.d2)}</td>` : ""}<td>${esc(c.f)}</td><td class="n">${c.g ? rs(c.g) : ""}</td><td class="n">${c.h}</td><td class="n">${rs(c.g ? c.g * c.h : 0)}</td></tr>`;
+      const sp = c.span > 1 ? ` rowspan="${c.span}"` : "";
+      const merged = c.sl === 2 || c.sl === 4; // B,C,D,E merged; D merged only for 2,4; dissolution merges B,C,E
+      return `<tr class="${cls}"><td class="new"${sp}>${wcell(w)}</td><td${sp}>${c.sl}</td><td${sp}>${esc(c.t)}</td><td${c.sl === 8 ? "" : sp}>${esc(c.d)}</td><td${sp}>${esc(c.e)}</td><td>${esc(c.f)}</td><td class="n">${c.g ? rs(c.g) : ""}</td><td class="n">${c.h}</td><td class="n">${rs(c.g ? c.g * c.h : 0)}</td></tr>`;
+    }).join("");
+    return `<div class="banner"><span class="mi">biotech</span><div><b>Analytical cost</b> — as in the Excel. Chemicals, glassware and consumables map to 3.1.6 / 3.1.7; HPLC columns and standards map to 3.1.7 (Material). Third-party testing maps to 7.1.2 (Resource) and is empty in the template, so 7.1.2 shows Estimate in the WBS.</div></div>
+  <div class="sectiontitle">QC cost</div>
+  <div class="tbox"><table class="xl"><thead><tr><th class="new">WBS ID <span class="newpill">NEW</span></th><th>S.No</th><th>TEST</th><th>Column Description</th><th>Lot No(or) Part No</th><th>Standard Details</th><th class="n">Cost per Column</th><th class="n">No of columns required</th><th class="n">Total cost</th></tr></thead><tbody>
+  ${ANA.qc.map(q => `<tr class="${hl(q.w).trim()}"><td class="new">${wcell(q.w)}</td><td>${q.sl}</td><td></td><td>${esc(q.d)}</td><td></td><td></td><td></td><td></td><td class="n">${rs(q.i)}</td></tr>`).join("")}
+  <tr class="total"><td class="new"></td><td>3</td><td></td><td>Total</td><td colspan="4"></td><td class="n">${rs(I8)}</td></tr></tbody></table></div>
+  <div class="sectiontitle">Analytical cost</div>
+  <div class="tbox"><table class="xl"><thead><tr><th class="new">WBS ID <span class="newpill">NEW</span></th><th>S.No</th><th>TEST</th><th>Column Description</th><th>Lot No(or) Part No</th><th>Standard Details</th><th class="n">Cost per Column</th><th class="n">No of columns required</th><th class="n">Total cost</th></tr></thead><tbody>
+  ${colRows}
+  <tr class="sub"><td class="new"></td><td colspan="4"></td><td>sum product</td><td class="n">${rs(G24)}</td><td></td><td class="n">${rs(I24)}</td></tr>
+  <tr class="total"><td class="new"></td><td>11</td><td></td><td>Total</td><td colspan="4"></td><td class="n">${rs(I24)}</td></tr></tbody></table></div>
+  <div class="sectiontitle">Analytical cost / out side ( 3rd party)</div>
+  <div class="tbox"><table class="xl"><thead><tr><th class="new">WBS ID <span class="newpill">NEW</span></th><th>S.No</th><th>TEST</th><th>Activity Description</th><th>vendor Name</th><th>vendor GMP status</th><th class="n">No of Tests</th><th class="n">time required for each test</th><th class="n">Cost per test</th><th class="n">Total cost</th><th>Remarks</th></tr></thead><tbody>
+  ${ANA.third.map(t => `<tr><td class="new">${wcell(ANA.thirdW)}</td><td>${t.sl}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="n">0</td><td></td></tr>`).join("")}
+  <tr class="total"><td class="new"></td><td colspan="8">Total Cost</td><td class="n">0</td><td></td></tr></tbody></table></div>
+  <div class="sectiontitle">Batches and column usage</div>
+  <div class="tbox" style="max-width:420px"><table class="xl"><tbody>
+  ${ANA.batches.map(b => `<tr><td>${b[0]}</td><td class="n">${b[1]}</td></tr>`).join("")}
+  <tr class="sub"><td>Total No of Batchess</td><td class="n">${ANA.batches.reduce((a, b) => a + b[1], 0)}</td></tr>
+  <tr><td>Each column alaysis time</td><td class="n">${ANA.colTime}</td></tr><tr><td>No of columns required</td><td class="n">${ANA.colReq}</td></tr></tbody></table></div>`;
+  }
+
+  /* --- Budget events --- */
+  function budgetAfter() { const el = document.querySelector(BS.tab === "wbs" && BS.hl ? "#" + sid(BS.hl) : (BS.tab !== "wbs" && BS.f.n ? ".ipanel tr.hl" : null)); if (el) el.scrollIntoView({ block: "center" }); }
+  function drill(n, b) { const sh = sheetsFor(n, b || null); BS.f = { n, b: b || null }; BS.hl = null; BS.mq = ""; BS.mfn = "all"; BS.tab = sh[0] || "wbs"; render(); }
+  function toWbs(w) { BS.tab = "wbs"; BS.q = ""; BS.gate = "all"; (ANC[w] || [w]).slice(0, -1).forEach(id => BS.open.add(id)); BS.hl = w; render(); }
+  function budgetClick(e) {
+    const t = e.target; let x;
+    if (x = t.closest("[data-itab]")) { BS.tab = x.dataset.itab; if (BS.tab === "wbs") BS.f = { n: null, b: null }; BS.hl = null; render(); return; }
+    if (x = t.closest("button.chev,.nm.tg")) { const id = x.dataset.tg; BS.open.has(id) ? BS.open.delete(id) : BS.open.add(id); document.getElementById("wbody").innerHTML = wbsBody(); return; }
+    if (x = t.closest("a.cell")) { drill(x.dataset.n, x.dataset.b); return; }
+    if (x = t.closest("a.wlink")) { toWbs(x.dataset.w); return; }
+    if (x = t.closest("[data-mfn]")) { BS.mfn = x.dataset.mfn; render(); document.getElementById("mfn")?.scrollIntoView({ block: "center" }); return; }
+    if (x = t.closest("[data-act]")) {
+      const a = x.dataset.act;
+      if (a === "expand") { D.rows.forEach(r => { if (r.lvl !== "Activity") BS.open.add(r.id); }); document.getElementById("wbody").innerHTML = wbsBody(); }
+      if (a === "collapse") { BS.open.clear(); document.getElementById("wbody").innerHTML = wbsBody(); }
+      if (a === "trials") { BS.trials = !BS.trials; render(); }
+      if (a === "clear") { BS.f = { n: null, b: null }; render(); }
+      if (a === "back") { const n = BS.f.n; BS.tab = "wbs"; BS.hl = n; if (n) (ANC[n] || []).slice(0, -1).forEach(id => BS.open.add(id)); if (n && NODE[n].lvl !== "Activity") BS.open.add(n); BS.f = { n: null, b: null }; render(); }
+    }
+  }
+  function budgetInput(e) {
+    const t = e.target;
+    if (t.id === "wq") { BS.q = t.value; document.getElementById("wbody").innerHTML = wbsBody(); }
+    else if (t.id === "wg") { BS.gate = t.value; document.getElementById("wbody").innerHTML = wbsBody(); }
+    else if (t.id === "mq") { BS.mq = t.value; document.getElementById("mbody").innerHTML = manAlloc(); }
+    else if (t.id === "mfn") { BS.mfn = t.value; document.getElementById("mbody").innerHTML = manAlloc(); }
+  }
+
+  /* ===== Gates (as on the live site) ===== */
+  const GATES_LIVE = [["Gate 1", "8/8", "6/7", "5/6", "3/5", 1, "Scope and business case approved", 3, "15-Feb-2026", "Dr. Sarah Jenkins", 5],
+  ["Gate 2", "10/10", "5/6", "5/6", "2/5", 1, "Project initiation and kick-off charter established", 2, "30-Jun-2026", "John Doe", 2],
+  ["Gate 3", "10/10", "4/6", "4/6", "4/5", 0, "Formulation POC completion & prototype stability review", 4, "15-Sep-2026", "Priya Sharma", 3],
+  ["Gate 4", "10/10", "3/6", "3/6", "3/5", 0, "Scale-up execution & pilot bioequivalence assessment", 1, "30-Nov-2026", "Michael Chang", 4],
+  ["Gate 5", "6/6", "2/5", "2/6", "5/5", 0, "API & finished product method validation and tech transfer", 5, "31-Dec-2026", "Alex Rivera", 5],
+  ["Gate 6", "0/10", "0/5", "0/6", "5/5", 0, "Technical transfer dossier release & exhibit batches execution", 2, "31-Jan-2027", "Dr. Sarah Jenkins", 1],
+  ["Gate 7", "0/9", "0/5", "0/6", "5/5", 0, "Pivotal BE studies completion & regulatory dossier filing approval", 3, "31-Mar-2027", "John Doe", 6]];
+  function vGates() {
+    return head("Gates", "Track project reviews and decision gates.", LIVE) + `
+  <div class="tcard"><div class="tcard-h"><button class="btn blue" type="button"><span class="mi" style="font-size:18px">open_in_new</span>Feasibility Report</button></div>
+  <div class="tbox"><table class="live"><thead><tr>${["Actions", "Gate Code", "Checklist", "Activities", "Debate", "Workflow", "Timeline", "Go", "Conditional Go", "Hold", "Kill", "Rework", "Redirect", "Remarks", "Documents", "Updated", "Updated By", "History"].map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>
+  ${GATES_LIVE.map(g => `<tr><td class="c">${actBtns}</td><td class="c"><b class="${g[5] ? "gc-on" : "gc-off"}">${g[0]}</b></td>${[1, 2, 3, 4].map(i => `<td class="c"><a class="lk">${g[i]}</a></td>`).join("")}
+    <td class="c"><span class="calbtn"><span class="mi">calendar_today</span></span></td><td class="c">${ck(g[5])}</td><td class="c">${ck(0)}</td><td class="c">${ck(0)}</td><td class="c">${ck(0)}</td><td class="c">${ck(0)}</td>
+    <td><span class="redir">${ck(0)} Redirect to gate</span></td><td>${g[6]}</td><td class="c"><a class="lk2">${g[7]}</a></td><td>${g[8]}</td><td>${g[9]}</td><td class="c"><a class="lk2">${g[10]}</a></td></tr>`).join("")}
+  </tbody></table></div>${pager(10, 7)}</div>`;
+  }
+  const pager = (per, n) => `<div class="pager">Items per page: <span class="pp">${per} <span class="mi">arrow_drop_down</span></span> 1 – ${n} of ${n} <span class="mi dim">first_page</span><span class="mi dim">chevron_left</span><span class="mi dim">chevron_right</span><span class="mi dim">last_page</span></div>`;
+
+  /* ===== Activities (as on the live site) ===== */
+  const ACT_LIVE = [[1, 1, 1, "5/5", "Molecule Selection & Indication Mapping", "ACT-001", "R&D", "15 days", "Formulation Development", 1, "5/5", "6/6", "Raw Material Shortage", "S1", "Business case preparation", "OB", 4, "15-Feb-2026", "Olivia Brown", 3],
+  [0, 1, 1, "5/5", "Country & Regulatory Scope Identification", "ACT-002", "RA", "14 days", "Regulatory Affairs", 2, "4/5", "7/7", "Regulatory Approval Pending", "S1", "Business case preparation", "GO", 1, "01-Mar-2026", "Grace O'Connor", 5],
+  [0, 0, 0, "3/5", "Preliminary COGs and CAPEX Estimation", "ACT-003", "Finance", "5 days", "Costing & Budgeting", 3, "3/5", "4/7", "Vendor Dispatch Delay", "S1", "Business case preparation", "AS", 3, "12-Mar-2026", "Aarav Shah", 3],
+  [0, 0, 1, "5/5", "Market sizing and forecast analysis", "ACT-004", "Commercial", "-", "Market Research", 1, "2/5", "7/7", "Raw Material Shortage", "S1", "Business case preparation", "DR", 5, "05-Apr-2026", "Diego Ruiz", 2],
+  [0, 0, 0, "1/5", "NPV & Commercial Attractiveness Model", "ACT-005", "Finance", "10 days", "Financial Modeling", 2, "1/5", "2/8", "Regulatory Approval Pending", "S1", "Business case preparation", "AS", 2, "20-May-2026", "Aarav Shah", 1],
+  [0, 0, 0, "1/5", "Market Sizing & Forecast Analysis", "ACT-006", "Commercial", "7 days", "Market Research", 3, "1/5", "1/6", "Vendor Dispatch Delay", "S1", "Market sizing and commercial modeling", "DR", 4, "15-Feb-2026", "Diego Ruiz", 6],
+  [0, 0, 0, "0/5", "NPV & Commercial Attractiveness Model", "ACT-007", "Finance", "3 days", "Financial Modeling", 1, "1/5", "1/7", "Raw Material Shortage", "S1", "Market sizing and commercial modeling", "AS", 1, "01-Mar-2026", "Aarav Shah", 8],
+  [0, 0, 1, "5/5", "Steering Committee Sign-off", "ACT-008", "Governance", "-", "Steering Committee", 2, "0/5", "4/4", "Regulatory Approval Pending", "S1", "Business case approval", "OB", 3, "12-Mar-2026", "Olivia Brown", 3],
+  [0, 0, 0, "0/5", "Analytical costing, External CRO costing", "ACT-009", "ARD", "12 days", "Analytical Development", 3, "0/5", "0/6", "Vendor Dispatch Delay", "S2", "Project costing sheet preparation and selection of project/product", "OB", 2, "05-Apr-2026", "Olivia Brown", 5],
+  [0, 0, 0, "0/5", "Licensing costing", "ACT-010", "RA", "8 days", "Regulatory Affairs", 1, "0/5", "0/6", "Raw Material Shortage", "S2", "Project costing sheet preparation and selection of project/product", "GO", 5, "20-May-2026", "Grace O'Connor", 2]];
+  function vActivities() {
+    return head("Activities", "Track project activities and assigned tasks.", LIVE) + `
+  <div class="tcard"><div class="tbox"><table class="live"><thead><tr>${["Action", "Done", "Approved", "Full Kit", "Acceptance", "Timeline", "Activity Name", "Activity Code", "Department", "Slack", "Section", "Predecessors", "Tasks", "Requirements", "Delay Reason", "Stage", "Deliverable", "Activity Lead", "Documents", "Updated", "Updated By", "History"].map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>
+  ${ACT_LIVE.map(a => `<tr><td class="c">${actBtns}</td><td class="c">${ck(a[0])}</td><td class="c">${ck(a[1])}</td><td class="c">${ck(a[2], 1)}</td><td class="c"><a class="lk">${a[3]}</a></td><td class="c"><span class="calbtn"><span class="mi">calendar_today</span></span></td>
+    <td>${esc(a[4])}</td><td class="c">${a[5]}</td><td class="c">${a[6]}</td><td class="c">${a[7]}</td><td class="c">${a[8]}</td><td class="c"><a class="lk">${a[9]}</a></td><td class="c"><a class="lk2">${a[10]}</a></td><td class="c"><a class="lk2">${a[11]}</a></td>
+    <td class="c"><span class="dr">${a[12]}</span></td><td class="c">${a[13]}</td><td>${esc(a[14])}</td><td class="c"><span class="av">${a[15]}</span></td><td class="c"><a class="lk2">${a[16]}</a></td><td class="c">${a[17]}</td><td>${esc(a[18])}</td><td class="c"><a class="lk2">${a[19]}</a></td></tr>`).join("")}
+  </tbody></table></div>${pager(10, 10)}</div>`;
+  }
+
+  /* ===== Sourcing (as on the live site) ===== */
+  const SRC_LIVE = [["CAT/RAW/01", "Raw Material", "Consumables", "API", 20, "0.22 Micron PES Filter Membranes", 3, "3/7", 590, 600, 500, 100, "Grams", 350, 500, "-"],
+  ["CAT/Raw/02", "Raw Material", "Microcrystalline Cellulose PH-102", "Raw Material", 50, "USP/NF Grade, In-house specs", 7, "5/7", 1200, 1500, 1100, 400, "Kg", 420, 1050, "50"],
+  ["CAT/Pac/03", "Packing Material", "Alu-Alu Cold Form Foil", "Packing Material", 10, "Alu 25mic/OPA 25mic/PVC 60mic", 5, "2/7", 800, 850, 700, 150, "Milli Grams", 1250, 700, "-"],
+  ["CAT/Con/04", "Consumables", "0.22 Micron PES Filter Membranes", "Consumables", 100, "Sterile 47mm Disc Filters", 3, "6/7", 300, 350, 280, 70, "Grams", 85, 260, "20"],
+  ["CAT/Oth/05", "Others", "Chromatography Reference Standards", "Others", 5, "Purity >= 99.5% HPLC certified", 6, "4/7", 15, 20, 12, 8, "Kg", 8500, 12, "-"],
+  ["CAT/API/06", "API", "Paracetamol IP Micropowder", "API", 40, "IP/BP Grade, 99.8% Assay", 4, "5/7", 650, 700, 600, 100, "Kg", 580, 540, "60"],
+  ["CAT/RAW/07", "Raw Material", "Lactose Monohydrate 200 Mesh", "Raw Material", 80, "Ph. Eur Grade, Particle D90 < 50um", 6, "6/7", 1800, 2000, 1500, 500, "Kg", 310, 1500, "-"],
+  ["CAT/RAW/08", "Raw Material", "Magnesium Stearate (Vegetable Grade)", "Raw Material", 15, "USP-NF / EP, Non-BSE certified", 5, "4/7", 250, 300, 240, 60, "Kg", 460, 215, "25"],
+  ["CAT/RAW/09", "Raw Material", "Povidone (PVP K-30)", "Raw Material", 25, "USP Grade, K-value 28-32", 7, "7/7", 450, 500, 400, 100, "Kg", 890, 400, "-"],
+  ["CAT/RAW/10", "Raw Material", "Croscarmellose Sodium", "Raw Material", 20, "USP/NF Grade, Superdisintegrant", 3, "3/7", 380, 420, 350, 70, "Kg", 640, 320, "30"],
+  ["CAT/PAC/11", "Packing Material", "Blister Aluminium Foil 20 Micron", "Packing Material", 12, "Hard tempered, Heat seal lacquer", 5, "5/7", 920, 1000, 850, 150, "Kg", 1450, 850, "-"],
+  ["CAT/PAC/12", "Packing Material", "PVC/PVDC 250/60 Blister Film", "Packing Material", 18, "High moisture barrier, Amber color", 4, "4/7", 1400, 1600, 1200, 400, "Kg", 980, 1120, "80"],
+  ["CAT/PAC/13", "Packing Material", "Printed Secondary Outer Cartons", "Packing Material", 50, "350 GSM Cyber Premium Board", 2, "6/7", 12000, 15000, 10000, 5000, "Units", 18, 10000, "-"],
+  ["CAT/CON/14", "Consumables", "HPLC Guard Cartridges C18 4.6x10mm", "Consumables", 10, "5um Particle Size, 100A pore", 4, "5/7", 50, 60, 45, 15, "Units", 3200, 38, "7"],
+  ["CAT/CON/15", "Consumables", "Nylon Syringe Filters 0.45 Micron", "Consumables", 200, "Non-sterile 25mm Diameter", 3, "4/7", 800, 1000, 750, 250, "Units", 45, 750, "-"],
+  ["CAT/CON/16", "Consumables", "TLC Silica Gel 60 F254 Plates", "Consumables", 15, "20x20cm Aluminium sheets", 5, "6/7", 80, 100, 70, 30, "Packs", 1850, 60, "10"],
+  ["CAT/OTH/17", "Others", "USP Working Standard Abiraterone", "Others", 2, "Purity 99.9%, Potency verified", 7, "7/7", 10, 12, 8, 4, "Grams", 14200, 8, "-"],
+  ["CAT/OTH/18", "Others", "Related Substances Impurity Standard A", "Others", 1, "COA certified, NMR & MS validated", 6, "4/7", 5, 6, 4, 2, "Grams", 22000, 3, "1"],
+  ["CAT/RAW/19", "Raw Material", "Colloidal Silicon Dioxide (Aerosil 200)", "Raw Material", 10, "High purity glidant, USP/NF", 5, "6/7", 180, 200, 160, 40, "Kg", 720, 160, "-"],
+  ["CAT/API/20", "API", "Metformin Hydrochloride Pure Grade", "API", 60, "EP/USP, Heavy metals < 10ppm", 6, "5/7", 1100, 1300, 950, 350, "Kg", 680, 890, "60"]];
+  function vSourcing() {
+    return head("Sourcing", "View project and Manage sourcing.", LIVE, `<button class="btn blue" type="button"><span class="mi" style="font-size:18px">add</span>Add Sourcing</button>`) + `
+  <div class="tcard"><div class="tbox"><table class="live"><thead><tr>${["Actions", "Serial", "Item Code", "Item Category", "Item Name", "Item Type", "Development Qty", "Specs", "DMF", "Vendor Qualification", "Projected EB Quantity", "Purchased Qty", "Issued Qty", "Stock Available", "Unit", "Unit Rate (Rs.)", "Usage", "Shortfall"].map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>
+  ${SRC_LIVE.map((s, i) => {
+      const short = s[15] !== "-"; return `<tr><td class="c">${actBtns}</td><td class="c">${i + 1}</td><td class="c">${s[0]}</td><td class="c">${s[1]}</td><td class="c">${esc(s[2])}</td><td class="c">${s[3]}</td><td class="c">${s[4]}</td><td class="c">${esc(s[5])}</td>
+    <td class="c"><a class="lk3">${s[6]}</a></td><td class="c"><a class="lk3">${s[7]}</a></td><td class="c">${s[8]}</td><td class="c">${s[9]}</td><td class="c">${s[10]}</td><td class="c">${s[11]}</td><td class="c">${s[12]}</td><td class="c">${s[13]}</td>
+    <td class="c"><a class="lk2${short ? " red" : ""}">${s[14]}</a></td><td class="c${short ? " red" : ""}">${s[15]}</td></tr>`;
+    }).join("")}
+  </tbody></table></div>${pager(20, 20)}</div>`;
+  }
+
+  const VIEWS = { budget: vBudget, gates: vGates, activities: vActivities, sourcing: vSourcing };
+  let view = "budget";
+  const content = document.getElementById("content");
+  function render() {
+    content.innerHTML = VIEWS[view]();
+    document.querySelectorAll("#sidenav a[data-view]").forEach(a => a.classList.toggle("on", a.dataset.view === view));
+    if (view === "budget") budgetAfter();
+  }
+  document.querySelectorAll("#sidenav a[data-view]").forEach(el => el.addEventListener("click", e => { e.preventDefault(); view = el.dataset.view; render(); window.scrollTo(0, 0); }));
+  content.addEventListener("click", e => { if (view === "budget") budgetClick(e); });
+  content.addEventListener("keydown", e => { if (view !== "budget" || (e.key !== "Enter" && e.key !== " ")) return; const x = e.target.closest('[role="button"]'); if (x) { e.preventDefault(); x.click(); } });
+  content.addEventListener("input", e => { if (view === "budget") budgetInput(e); });
+  document.getElementById("hamb").addEventListener("click", () => { const sh = document.querySelector(".shell"); const c = sh.classList.toggle("collapsed"); const b = document.getElementById("hamb"); b.setAttribute("aria-expanded", String(!c)); b.setAttribute("aria-label", (c ? "Expand" : "Collapse") + " project menu"); });
+  render();
+</script>

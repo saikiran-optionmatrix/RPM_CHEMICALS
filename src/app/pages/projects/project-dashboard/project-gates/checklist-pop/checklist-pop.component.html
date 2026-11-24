@@ -1,0 +1,114 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+  <header class="analytics-header">
+    <h1>{{ projectName }}</h1>
+    <button type="button" class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon><span>Back</span>
+    </button>
+  </header>
+
+  <div class="checklist-page-container">
+    <div class="app-table-container" style="padding: 0; width: 100%;">
+      <!-- Sub-header with Gate Title and Info -->
+      <div class="checklist-sub-header">
+        <div class="title-wrap">
+          <h2 style="font-size: 18px; font-weight: 600; color: #1e293b; margin: 0;">
+            Gate Checklist: {{ gateName }} ({{ gateCode }})
+            @if (role || memberName) {
+              <span style="font-size: 15px; font-weight: 500; color: #64748b; margin-left: 8px;">
+                &mdash; {{ role ? role : '' }}{{ (role && memberName) ? ' (' + memberName + ')' : memberName }}
+              </span>
+            }
+            @if (isReadonly) {
+              <span class="badge-readonly" style="font-size: 12px; margin-left: 8px;">Read Only</span>
+            }
+          </h2>
+        </div>
+      </div>
+
+      <!-- Add Item Row (if not readonly) -->
+      @if (!isReadonly) {
+        <div class="add-checklist-row">
+          <input type="text" class="form-control" [(ngModel)]="newChecklistText" (keyup.enter)="addChecklistItem()"
+            placeholder="Add new checklist requirement..." style="height: 38px; border-radius: 4px; max-width: 500px;" />
+          <button type="button" class="app-btn app-btn-primary" (click)="addChecklistItem()">
+            <mat-icon>add</mat-icon> Add
+          </button>
+        </div>
+      }
+
+      <!-- Checklist Table: Subject, Priority, Mandatory, Acceptance, Actions -->
+      <div class="table-responsive" style="overflow-x: auto;">
+        <table class="table app-table checklist-table">
+          <thead>
+            <tr>
+              <th class="text-left" style="min-width: 250px;">Subject</th>
+              <th class="text-center" style="width: 100px; min-width: 90px;">Priority</th>
+              <th class="text-center" style="width: 110px; min-width: 100px;">Mandatory</th>
+              <th class="text-center" style="width: 110px; min-width: 100px;">Acceptance</th>
+              @if (!isReadonly) {
+                <th class="text-center" style="width: 60px; min-width: 50px;">Actions</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of checklistItems; track item.id; let i = $index) {
+              <tr>
+                <!-- Subject -->
+                <td class="text-left font-weight-500 align-middle subject-cell">
+                  {{ item.subject || item.text }}
+                </td>
+
+                <!-- Priority (mat checkbox) -->
+                <td class="text-center align-middle">
+                  <mat-checkbox [(ngModel)]="item.priority" [disabled]="isReadonly" color="primary"></mat-checkbox>
+                </td>
+
+                <!-- Mandatory (mat checkbox) -->
+                <td class="text-center align-middle">
+                  <mat-checkbox [(ngModel)]="item.mandatory" [disabled]="isReadonly" color="primary"></mat-checkbox>
+                </td>
+
+                <!-- Acceptance (Fractional number ex: 5/7, 3/7) -->
+                <td class="text-center align-middle">
+                  <a class="wbs-link" (click)="openAcceptancePop(item)" matTooltip="View Acceptance"
+                    style="cursor: pointer; color: #2563eb; font-weight: 600; text-decoration: underline;">
+                    {{ item.acceptance || '5/7' }}
+                  </a>
+                </td>
+
+                <!-- Actions -->
+                @if (!isReadonly) {
+                  <td class="text-center align-middle">
+                    <button type="button" class="table-action-button delete" (click)="deleteChecklistItem(i)"
+                      matTooltip="Delete Item" style="background: none; border: none; cursor: pointer; color: #ef4444;">
+                      <mat-icon style="font-size: 18px; width: 18px; height: 18px;">delete</mat-icon>
+                    </button>
+                  </td>
+                }
+              </tr>
+            } @empty {
+              <tr>
+                <td [attr.colspan]="isReadonly ? 4 : 5" class="empty-table text-center" style="padding: 24px; color: #64748b;">
+                  No checklist items defined for this gate yet.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Bottom Actions: Cancel and Save -->
+      <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="goBack()">
+          <mat-icon>cancel</mat-icon> Cancel
+        </button>
+        @if (!isReadonly) {
+          <button type="button" class="app-btn app-btn-primary" (click)="onSave()">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        }
+      </div>
+
+    </div>
+  </div>
+</div>

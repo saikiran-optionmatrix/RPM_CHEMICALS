@@ -1,0 +1,73 @@
+:host {
+  display: block;
+}
+
+.docs-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.docs-lead {
+  color: #64748b;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.docs-table-container {
+  padding: 0;
+  width: 100%;
+}
+
+.docs-table {
+  width: 100%;
+
+  thead th {
+    padding: 8px 10px !important;
+    font-size: 12.5px !important;
+  }
+
+  tbody td {
+    padding: 8px 10px !important;
+    font-size: 12.5px !important;
+    vertical-align: middle !important;
+    line-height: 1.4;
+  }
+
+  .col-type {
+    min-width: 110px;
+  }
+
+  .col-ver {
+    min-width: 86px;
+  }
+
+  .col-date {
+    min-width: 104px;
+  }
+
+  .col-open {
+    width: 96px;
+  }
+
+  .ref-cell {
+    font-weight: 500;
+    color: #1f2937;
+  }
+
+  .empty-cell {
+    color: #64748b;
+    padding: 14px 10px !important;
+  }
+}
+
+.doc-open-btn {
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 10px !important;
+  font-size: 12px !important;
+  line-height: 26px !important;
+}

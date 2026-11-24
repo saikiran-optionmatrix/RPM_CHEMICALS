@@ -1,0 +1,92 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+
+        <!-- Top Action Buttons (Filter only, No Add button) -->
+        <div class="app-page-actions">
+          <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()">
+            <mat-icon>filter_list</mat-icon>
+            <span>Filter</span>
+          </button>
+        </div>
+
+        <!-- Filter Panel -->
+        @if (showFilter) {
+        <mat-card class="app-filter-panel">
+          <mat-card-content>
+            <div class="app-filter-grid">
+
+              <!-- Filter Fields: Keyword Search -->
+              <div class="app-filter-fields">
+                <div class="app-filter-field">
+                  <label for="groupKeyword">Keyword:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="groupKeyword" [(ngModel)]="keyword" placeholder="Search by group code or description">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Filter Actions -->
+              <div class="app-filter-actions">
+                <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                  <mat-icon>search</mat-icon>
+                  <span>Search</span>
+                </button>
+                <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                  <mat-icon>settings_backup_restore</mat-icon>
+                  <span>Clear</span>
+                </button>
+              </div>
+
+              <!-- Filter Toggle Button -->
+              <div class="app-filter-toggle">
+                <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                  <mat-icon>keyboard_double_arrow_up</mat-icon>
+                </button>
+              </div>
+
+            </div>
+          </mat-card-content>
+        </mat-card>
+        }
+
+        <!-- Material Groups Table: Material Group code, Material Group -->
+        <div class="table-responsive">
+          <table class="table app-table">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 180px;">Material Group Code</th>
+                <th class="text-center">Material Group</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of paginatedItems; track item.materialGroupCode) {
+              <tr>
+                <td class="text-center">{{ item.materialGroupCode }}</td>
+                <td class="text-center">{{ item.materialGroup }}</td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="2" class="empty-table">No records found</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginator -->
+        <mat-paginator
+          [length]="filteredItems.length"
+          [pageIndex]="pageIndex"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="true"
+          (page)="handlePage($event)">
+        </mat-paginator>
+
+      </div>
+    </div>
+  </div>
+</div>
+

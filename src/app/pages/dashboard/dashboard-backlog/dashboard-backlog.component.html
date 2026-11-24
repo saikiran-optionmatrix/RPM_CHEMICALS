@@ -1,0 +1,39 @@
+<div class="backlog-tab">
+  <div class="backlog-grid">
+    <!-- Left Card: Activities with Maximum Backlog -->
+    <div class="dash-card">
+      <div class="card-header">
+        <h3 class="card-title">ACTIVITIES WITH MAXIMUM BACKLOG</h3>
+        <p class="card-subtitle">Top 6 delayed activities across all active projects</p>
+      </div>
+
+      <div class="ranked-list">
+        <div class="ranked-item" *ngFor="let item of activities">
+          <div class="rank-badge">{{ item.rank }}</div>
+
+          <div class="activity-content">
+            <div class="act-title">{{ item.name }}</div>
+            <div class="act-stage">{{ item.stageText }}</div>
+            <div class="act-bar-track">
+              <div class="act-bar-fill" [style.width.%]="item.percentWidth" [ngClass]="'fill-' + item.barColor"></div>
+            </div>
+          </div>
+
+          <div class="act-count">{{ item.count }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Card: Backlog by Stage -->
+    <div class="dash-card">
+      <div class="card-header">
+        <h3 class="card-title">BACKLOG BY STAGE</h3>
+        <p class="card-subtitle">Open activities past planned finish</p>
+      </div>
+
+      <div class="chart-wrapper">
+        <div id="backlogByStageChartContainer"></div>
+      </div>
+    </div>
+  </div>
+</div>

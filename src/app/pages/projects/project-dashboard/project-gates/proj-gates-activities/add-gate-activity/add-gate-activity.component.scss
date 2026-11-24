@@ -1,0 +1,152 @@
+:host {
+  display: block;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.NewHeader {
+  background: #286ba5 !important;
+  border-bottom: 1px solid #cbd5e1;
+  padding: 14px 24px !important;
+  margin: -24px -24px 16px -24px !important;
+  text-align: center;
+  color: white;
+
+  h3 {
+    margin: 0 !important;
+    font-size: 20px !important;
+    font-weight: 500 !important;
+    color: white !important;
+  }
+}
+
+.modal-dialog-content {
+  padding: 0 24px !important;
+  overflow-x: hidden;
+  max-height: calc(85vh - 130px);
+}
+
+.modal-body-container {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-pills-col {
+  margin-bottom: 10px;
+  padding: 0;
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.fields-col {
+  padding-left: 24px;
+  padding-top: 8px;
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.form-row {
+  margin-bottom: 12px;
+  margin-left: 0;
+  margin-right: 0;
+  display: flex;
+  align-items: center;
+}
+
+.field-label-col {
+  padding-left: 0;
+}
+
+.field-input-col {
+  padding-right: 0;
+}
+
+.control-label, .add-member-label {
+  line-height: 35px;
+  margin: 0;
+  font-weight: 500;
+  font-size: 13.5px;
+  color: #334155;
+}
+
+.back {
+  background-color: #fefec4 !important;
+}
+
+.pills > .nav > li {
+  margin-top: 10px;
+  width: 100%;
+
+  a.nav-link {
+    width: 100% !important;
+    text-align: left;
+    display: block;
+    border-radius: 4px !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px !important;
+    background: #ffffff !important;
+    color: #475569 !important;
+    border: 1px solid #cbd5e1 !important;
+    cursor: pointer;
+  }
+
+  &.active a.nav-link {
+    background: #50636d !important;
+    color: #ffffff !important;
+    border-color: #50636d !important;
+  }
+}
+
+.dialog-actions-container {
+  margin-top: 15px;
+  padding: 12px 24px !important;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.2s ease;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &-default {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+
+    &:hover {
+      background: #e2e8f0;
+    }
+  }
+
+  &-primary {
+    background: #2563eb;
+    color: #ffffff;
+
+    &:hover {
+      background: #1d4ed8;
+    }
+  }
+}

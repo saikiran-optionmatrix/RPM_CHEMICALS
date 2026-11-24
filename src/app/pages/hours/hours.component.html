@@ -1,0 +1,23 @@
+<div fxLayout="column" fxLayoutGap="16px" style="overflow-x: hidden">
+
+  <div fxLayout="row wrap">
+    <div class="pills" style="width: 100%;">
+      <ul class="nav nav-pills" fxLayout="row" fxLayoutGap="16px"
+        style="list-style: none; padding: 0; margin: 0; margin-left: 32px; margin-top: 20px;">
+
+        <li routerLinkActive="active">
+          <a mat-raised-button routerLink="./scheduling">Scheduling</a>
+        </li>
+
+        <li routerLinkActive="active">
+          <a mat-raised-button routerLink="./timesheets">Timesheets</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <router-outlet></router-outlet>
+  </div>
+</div>

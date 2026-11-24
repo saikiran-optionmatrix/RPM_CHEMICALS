@@ -1,0 +1,243 @@
+:host {
+  display: block;
+}
+
+.manpower-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.budget-info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: #ebf3ff;
+  border: 1px solid #cce0ff;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #1e3a8a;
+  font-size: 13.5px;
+  line-height: 1.45;
+
+  .banner-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    color: #2563eb;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .banner-text {
+    flex: 1;
+
+    strong {
+      color: #1e293b;
+    }
+  }
+}
+
+.badge-template {
+  font-size: 10.5px;
+  font-weight: 700;
+  background: #e8f1ff;
+  color: #2e5da3;
+  border: 1px solid #c9dcff;
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+
+.tools-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .search-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: #fff;
+    padding: 0 10px;
+    min-width: 280px;
+    flex: 1 1 280px;
+    max-width: 380px;
+
+    mat-icon {
+      color: #64748b;
+      font-size: 20px;
+      height: 20px;
+      width: 20px;
+    }
+
+    input {
+      border: 0;
+      outline: 0;
+      font-size: 13px;
+      width: 100%;
+      background: transparent;
+      color: #1e293b;
+    }
+  }
+
+  .fn-selector {
+    .app-select {
+      height: 36px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      background: #fff;
+      padding: 0 12px;
+      font-size: 13px;
+      color: #1e293b;
+      cursor: pointer;
+      min-width: 180px;
+
+      &:focus {
+        outline: 2px solid #1976d2;
+      }
+    }
+  }
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.app-table {
+  width: 100%;
+  margin-bottom: 0;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  thead th {
+    background-color: #3f3f3f !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    border: 1px solid #6b7280;
+    padding: 9px 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 9px 12px;
+    border: 1px solid #d1d5db;
+    vertical-align: middle;
+    white-space: nowrap;
+    color: #212529;
+  }
+
+  tbody tr:hover td {
+    background-color: #f8fafc;
+  }
+
+  .row-highlight {
+    background-color: #fef9c3 !important;
+  }
+
+  .table-total-row {
+    background-color: #e2e8f0 !important;
+    font-weight: 700;
+
+    td {
+      font-size: 14px;
+      color: #0f172a;
+      border-top: 2px solid #94a3b8;
+      border-bottom: 2px solid #94a3b8;
+      background-color: #e2e8f0;
+    }
+  }
+
+  .filter-fn-link {
+    color: #1976d2;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+      color: #0d47a1;
+    }
+  }
+
+  .wbs-link {
+    color: #1976d2;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+      color: #0d47a1;
+    }
+  }
+
+  .wrap-cell {
+    white-space: normal !important;
+    min-width: 220px;
+    max-width: 320px;
+    line-height: 1.35;
+  }
+
+  .table-total-row {
+    background-color: #f1f5f9 !important;
+    border-top: 2px solid #cbd5e1;
+
+    td {
+      font-size: 13px;
+      color: #0f172a;
+    }
+  }
+}
+
+.progress-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .progress-bar-bg {
+    flex: 1;
+    height: 8px;
+    background-color: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: #3b82f6;
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+  }
+
+  .share-text {
+    font-size: 12px;
+    color: #64748b;
+    width: 42px;
+    text-align: right;
+  }
+}
+
+.footnote {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+  margin-bottom: 6px;
+}
+

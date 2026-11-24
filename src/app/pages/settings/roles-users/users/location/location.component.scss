@@ -1,0 +1,161 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 90vh;
+  box-sizing: border-box;
+}
+
+.location-dialog-content {
+ 
+}
+
+.location-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  width: 100%;
+
+  .filter-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 1 auto;
+    min-width: 0;
+
+    label {
+      margin: 0;
+      color: #343a40;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .app-filter-control {
+      margin: 0;
+      width: 100%;
+      min-width: 110px;
+    }
+
+    &.keyword-field {
+      flex: 1.2 1 auto;
+    }
+  }
+
+  .filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: 4px;
+
+    .app-btn {
+      min-width: 36px;
+      height: 36px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+:host ::ng-deep {
+  #locationKeyword,
+  .filter-field input,
+  .filter-field mat-select {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+  }
+}
+
+.tables-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+}
+
+.table-col {
+  flex: 0 0 50%;
+  max-width: 50%;
+  width: 50%;
+  box-sizing: border-box;
+}
+
+/* Scoped override of app-table-container padding for modal dialog */
+.app-table-container {
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.app-table-container .table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.app-table-container .app-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   Table Row Height:
+   To manually adjust the row height, change the vertical padding
+   (first value below). Matches JobCodeComponent height.
+   ========================================================= */
+.app-table thead th,
+.app-table tbody td {
+  padding: 4px 12px !important;
+  vertical-align: middle;
+}
+
+.text-center mat-checkbox {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  --mdc-checkbox-state-layer-size: 32px;
+}
+
+.app-table tbody tr.row-selected td {
+  // background-color: #e3effd;
+}
+
+.app-table tbody tr:hover td {
+  background-color: #f8fafc;
+}
+
+.app-table tbody tr.row-selected:hover td {
+  background-color: #d8e8fc;
+}
+
+.app-table-container mat-paginator {
+ 
+  border-top: none;
+  background-color: #ffffff;
+}
+
+.location-dialog-actions {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 24px 16px 24px !important;
+  margin: 0 !important;
+  border-top: 1px solid #e5e7eb;
+  background-color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .table-col {
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+}
+

@@ -1,0 +1,69 @@
+<div class="capex-container">
+  <!-- Banner -->
+  <div class="budget-info-banner">
+    <mat-icon class="banner-icon">precision_manufacturing</mat-icon>
+    <div class="banner-text">
+      <strong>Capex</strong> — as in the Excel. Each equipment line is mapped to the WBS activity it is bought for and rolls up as Resource.
+    </div>
+  </div>
+
+  <!-- Capex Table -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div class="table-responsive">
+      <table class="table app-table capex-table">
+        <thead>
+          <tr>
+            <th style="width: 110px;">WBS ID</th>
+            <th style="width: 60px;">Sl No</th>
+            <th>Equipment</th>
+            <th class="text-right" style="width: 90px;">No's</th>
+            <th style="width: 140px;">Vendor</th>
+            <th class="text-right" style="width: 130px;">IN USD</th>
+            <th class="text-right" style="width: 110px;">FX Rate</th>
+            <th class="text-right" style="width: 140px;">Cost in INR</th>
+            <th style="width: 130px;">Asset / PO Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of capexList; track row.item.sl || row.item.d) {
+            <tr [class.row-highlight]="row.isHighlighted">
+              <td>
+                @if (row.item.w) {
+                  <a class="wbs-link" role="button" tabindex="0" (click)="toWbs(row.item.w)">{{ row.item.w }}</a>
+                } @else {
+                  <span class="text-muted">—</span>
+                }
+              </td>
+              <td>{{ row.item.sl || '' }}</td>
+              <td class="font-weight-500">{{ row.item.d }}</td>
+              <td class="text-right">{{ row.item.no !== null ? row.item.no : '' }}</td>
+              <td>{{ row.item.ven || '' }}</td>
+              <td class="text-right">{{ row.item.usd != null ? formatDec(row.item.usd) : '' }}</td>
+              <td class="text-right">{{ row.item.fx }}</td>
+              <td class="text-right font-weight-500">{{ row.inrCost != null ? format(row.inrCost) : '' }}</td>
+              <td class="text-mono">{{ row.item.asset || '' }}</td>
+            </tr>
+          }
+
+          <!-- Total Row -->
+          <tr class="table-total-row">
+            <td></td>
+            <td></td>
+            <td class="font-weight-bold">Total</td>
+            <td></td>
+            <td></td>
+            <td class="text-right font-weight-bold">{{ formatDec(totalUsd) }}</td>
+            <td></td>
+            <td class="text-right font-weight-bold">{{ format(totalInr) }}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="footnote">
+    Columns as in the sheet: equipment, quantity, vendor, price in USD, exchange rate, INR value (USD × rate), asset / PO code.
+  </p>
+</div>
+

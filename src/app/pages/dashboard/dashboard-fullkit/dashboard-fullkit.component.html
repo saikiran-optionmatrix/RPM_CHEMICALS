@@ -1,0 +1,84 @@
+<div class="safety-tab">
+  <!-- Top 4 KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card" *ngFor="let kpi of kpis">
+      <div class="kpi-label">{{ kpi.label }}</div>
+      <div class="kpi-value" [ngClass]="kpi.colorClass">{{ kpi.value }}</div>
+      <div class="kpi-subtext" *ngIf="kpi.subtext">{{ kpi.subtext }}</div>
+    </div>
+  </div>
+
+  <!-- Bottom Grid: Readiness Table + Acceptance Criteria Checklist -->
+  <div class="bottom-grid">
+    <!-- Left Card: Regulatory & Process Safety Readiness -->
+    <div class="dash-card">
+      <div class="card-header flex-between">
+        <h3 class="card-title">REGULATORY & PROCESS SAFETY READINESS</h3>
+        <mat-icon class="header-icon">verified_user</mat-icon>
+      </div>
+
+      <div class="table-responsive">
+        <table class="readiness-table">
+          <thead>
+            <tr>
+              <th>PROJECT</th>
+              <th>PATHWAY</th>
+              <th>STATUS</th>
+              <th>HAZOP</th>
+              <th>PSM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of regulatoryItems">
+              <td class="proj-cell">{{ item.project }}</td>
+              <td class="pathway-cell">{{ item.pathway }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="{
+                  'badge-gray': item.status === 'Not started',
+                  'badge-amber': item.status === 'In prep',
+                  'badge-teal': item.status === 'Filed',
+                  'badge-green': item.status === 'Approved'
+                }">
+                  {{ item.status }}
+                </span>
+              </td>
+              <td class="progress-col">
+                <div class="bar-track">
+                  <div class="bar-fill" [style.width.%]="item.hazopPct"></div>
+                </div>
+              </td>
+              <td class="progress-col">
+                <div class="bar-track">
+                  <div class="bar-fill" [style.width.%]="item.psmPct"></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right Card: Gate Acceptance Criteria Checklist -->
+    <div class="dash-card">
+      <div class="card-header flex-between">
+        <h3 class="card-title">GATE ACCEPTANCE CRITERIA · CHECKLIST</h3>
+        <mat-icon class="header-icon">description</mat-icon>
+      </div>
+
+      <div class="criteria-list">
+        <div class="criteria-item" *ngFor="let c of criteriaItems">
+          <div class="criteria-status-icon">
+            <mat-icon *ngIf="c.status === 'passed'" class="icon-passed">check_circle_outline</mat-icon>
+            <mat-icon *ngIf="c.status === 'pending'" class="icon-pending">radio_button_unchecked</mat-icon>
+            <mat-icon *ngIf="c.status === 'failed'" class="icon-failed">highlight_off</mat-icon>
+          </div>
+
+          <div class="criteria-code">{{ c.code }}</div>
+          <div class="criteria-name">{{ c.name }}</div>
+
+          <div class="criteria-badge" *ngIf="c.isMandatory">MANDATORY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

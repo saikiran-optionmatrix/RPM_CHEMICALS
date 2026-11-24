@@ -1,0 +1,158 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>{{ isNew ? 'Add Approval' : 'Edit Approval' }}</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    @if (data) {
+      <p class="dialog-subnote">{{ data.studyId }} &middot; Regulatory and ethics approval item</p>
+    }
+
+    @if (validationError) {
+      <div class="validation-alert" role="alert">{{ validationError }}</div>
+    }
+
+    <form [formGroup]="approvalForm" (ngSubmit)="save()">
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-sm-6">
+          <!-- Approval Type -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Approval Type :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="e.g. Regulatory approval"
+                formControlName="type" style="height: 35px;">
+              @if ((isSubmitting || f['type'].touched) && f['type'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Applicability -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Applicability :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="applicability"
+                style="height: 35px; line-height: 23px;">
+                @for (app of applicabilityOptions; track app) {
+                  <mat-option [value]="app">{{ app }}</mat-option>
+                }
+              </mat-select>
+              <small class="field-hint">Regulatory lead / Head of Development only</small>
+            </div>
+          </div>
+
+          <!-- Submission Date -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Submission Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="submitted" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Conditions / Validity -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Conditions / Validity :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="Conditions or validity period"
+                formControlName="conditions" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Responsible Owner -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Responsible Owner :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="owner"
+                placeholder="Select Owner" style="height: 35px; line-height: 23px;">
+                <mat-option value="">&mdash;</mat-option>
+                @for (person of ownerOptions; track person) {
+                  <mat-option [value]="person">{{ person }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+          <!-- Authority / Committee -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Authority / Committee :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="e.g. National regulator / Ethics committee"
+                formControlName="authority" style="height: 35px;">
+              @if ((isSubmitting || f['authority'].touched) && f['authority'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Current Status -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Current Status :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="status"
+                style="height: 35px; line-height: 23px;">
+                @for (st of statusOptions; track st) {
+                  <mat-option [value]="st">{{ st }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Decision Date -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Decision Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="decisionDate" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Evidence Link -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Evidence Link :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="Document reference or repository link"
+                formControlName="evidence" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+          <mat-icon>cancel</mat-icon> <span>Close</span>
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> <span>Save</span>
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>
+

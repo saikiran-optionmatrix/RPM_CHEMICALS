@@ -1,0 +1,143 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+
+        <!-- Top Action Buttons -->
+        <div class="app-page-actions">
+          <button type="button" class="app-btn app-btn-default" (click)="downloadCSV()">
+            <mat-icon>download</mat-icon>
+            <span>Download CSV</span>
+          </button>
+
+          <button type="button" class="app-btn app-btn-default" (click)="downloadTemplate()">
+            <mat-icon>description</mat-icon>
+            <span>Download Template</span>
+          </button>
+
+          <button type="button" class="app-btn app-btn-default" (click)="onUploadCSV()">
+            <mat-icon>file_upload</mat-icon>
+            <span>Upload CSV</span>
+          </button>
+
+          <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()">
+            <mat-icon>filter_list</mat-icon>
+            <span>Filter</span>
+          </button>
+
+          <button type="button" class="app-btn app-btn-primary" (click)="onAdd()">
+            <mat-icon>add</mat-icon>
+            <span>Add Holiday</span>
+          </button>
+        </div>
+
+        <!-- Filter Panel -->
+        @if (showFilter) {
+        <mat-card class="app-filter-panel">
+          <mat-card-content>
+            <div class="app-filter-grid">
+
+              <div class="app-filter-fields">
+                <!-- Keyword Filter -->
+                <div class="app-filter-field">
+                  <label for="holidayKeyword">Keyword:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="holidayKeyword" [(ngModel)]="keyword" placeholder="Search Holidays">
+                  </mat-form-field>
+                </div>
+
+                <!-- Year Filter -->
+                <div class="app-filter-field">
+                  <label for="holidayYear">Year:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="holidayYear" [(ngModel)]="selectedYear" placeholder="All Years">
+                      <mat-option value="">All Years</mat-option>
+                      @for (yr of availableYears; track yr) {
+                        <mat-option [value]="yr">{{ yr }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Filter Actions -->
+              <div class="app-filter-actions">
+                <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                  <mat-icon>search</mat-icon>
+                  <span>Search</span>
+                </button>
+                <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                  <mat-icon>settings_backup_restore</mat-icon>
+                  <span>Clear</span>
+                </button>
+              </div>
+
+              <!-- Filter Toggle -->
+              <div class="app-filter-toggle">
+                <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                  <mat-icon>keyboard_double_arrow_up</mat-icon>
+                </button>
+              </div>
+
+            </div>
+          </mat-card-content>
+        </mat-card>
+        }
+
+        <!-- Holidays Table -->
+        <div class="table-responsive">
+          <table class="table app-table">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 110px;">Actions</th>
+                <th class="text-center" style="width: 160px;">Date</th>
+                <th style="padding-left: 20px;">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (holiday of paginatedHolidays; track holiday.id) {
+              <tr>
+                <!-- Actions -->
+                <td class="text-center">
+                  <div class="table-actions">
+                    <button type="button" class="table-action-button edit" matTooltip="Edit"
+                      aria-label="Edit holiday" (click)="onEdit(holiday)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button type="button" class="table-action-button delete" matTooltip="Delete"
+                      aria-label="Delete holiday" (click)="onDelete(holiday)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
+
+                <!-- Date -->
+                <td class="text-center" style="font-weight: 500;">
+                  {{ holiday.date | date: 'dd-MMM-yyyy' }}
+                </td>
+
+                <!-- Description -->
+                <td style="padding-left: 20px; font-weight: 500;">
+                  {{ holiday.description }}
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="3" class="empty-table text-center" style="padding: 24px; color: #64748b;">
+                  No holidays found
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginator -->
+        <mat-paginator [length]="filteredHolidays.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+        </mat-paginator>
+
+      </div>
+    </div>
+  </div>
+</div>

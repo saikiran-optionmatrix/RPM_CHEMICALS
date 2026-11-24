@@ -1,0 +1,37 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>{{ isEditMode ? 'Update Dosage Form' : 'Add Dosage Form' }}</h1>
+</div>
+
+<div mat-dialog-content>
+  <div class="col-sm-12 project-status-dialog-body">
+    <form [formGroup]="myGroup" (ngSubmit)="upsertProjectStatus()">
+      <div class="row project-status-field-row">
+        <div class="col-sm-3">
+          <label class="add-member-label control-label project-status-field-label"
+            >Dosage Form :</label
+          >
+        </div>
+        <div class="col-sm-9">
+          <input
+            class="form-control name back"
+            maxlength="50"
+            placeholder="Enter Dosage Form"
+            formControlName="ProjectStatus"
+            type="text"
+          />
+        </div>
+      </div>
+
+       <div style="margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> Close
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

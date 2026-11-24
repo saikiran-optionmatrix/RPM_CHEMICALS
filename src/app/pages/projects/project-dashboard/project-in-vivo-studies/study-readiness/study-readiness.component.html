@@ -1,0 +1,110 @@
+@if (study && readiness) {
+<div class="readiness-lead-note">
+  Readiness items are shown separately so the real cause of a delay is visible (&sect;8.3).
+</div>
+
+<div class="readiness-cards-grid">
+  @for (def of cardDefinitions; track def.key) {
+    @if (getCard(def.key); as card) {
+    <section class="readiness-card">
+      <div class="readiness-card-header">
+        <div class="card-title-group">
+          <h3 class="readiness-card-title">{{ def.title }}</h3>
+          <span class="status-pill" [ngClass]="getReadinessStatusClass(card.status)">
+            {{ card.status }}
+          </span>
+        </div>
+
+        <button type="button" class="table-action-button edit"
+          [attr.aria-label]="'Edit ' + def.title"
+          matTooltip="Update readiness item"
+          (click)="openEditReadinessCard(def.key, def.title)">
+          <i class="fa fa-edit"></i>
+        </button>
+      </div>
+
+      <div class="readiness-kv-list">
+        @for (field of card.fields; track field.label) {
+        <div class="kv-row">
+          <div class="kv-label">{{ field.label }}</div>
+          <div class="kv-value">{{ field.value || '—' }}</div>
+        </div>
+        }
+      </div>
+    </section>
+    }
+  }
+</div>
+
+<section class="approvals-card">
+  <div class="approvals-header">
+    <h3 class="approvals-title">Regulatory and ethics approvals</h3>
+    <button type="button" class="app-btn app-btn-primary" (click)="openEditApproval(-1)">
+      <mat-icon>add</mat-icon>
+      <span>Add approval</span>
+    </button>
+  </div>
+
+  <div class="app-table-container approvals-table-container">
+    <div class="table-responsive">
+      <table class="table app-table approvals-table">
+        <thead>
+          <tr>
+            <th class="text-center col-actions">Actions</th>
+            <th class="text-left">Approval type</th>
+            <th class="text-left">Authority / committee</th>
+            <th class="text-left">Applicability</th>
+            <th class="text-left">Submitted</th>
+            <th class="text-left">Status</th>
+            <th class="text-left">Decision date</th>
+            <th class="text-left">Conditions / validity</th>
+            <th class="text-left">Evidence</th>
+            <th class="text-left">Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (appr of readiness.approvals; track appr.type + '-' + $index; let i = $index) {
+          <tr>
+            <td class="text-center">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit"
+                  [attr.aria-label]="'Edit ' + appr.type"
+                  matTooltip="Edit approval"
+                  (click)="openEditApproval(i)">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </div>
+            </td>
+            <td>{{ appr.type }}</td>
+            <td>{{ appr.authority }}</td>
+            <td>
+              <span class="status-pill" [ngClass]="getApplicabilityClass(appr.applicability)">
+                {{ appr.applicability }}
+              </span>
+            </td>
+            <td class="text-nowrap">{{ appr.submitted || '—' }}</td>
+            <td>
+              <span class="status-pill" [ngClass]="getApprovalStatusClass(appr.status)">
+                {{ appr.status }}
+              </span>
+            </td>
+            <td class="text-nowrap">{{ appr.decisionDate || '—' }}</td>
+            <td>{{ appr.conditions || '—' }}</td>
+            <td class="cell-evidence">{{ appr.evidence || '—' }}</td>
+            <td class="text-nowrap">{{ appr.owner || '—' }}</td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="10" class="empty-cell">No approvals listed</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="approvals-footnote">
+    PRAGATI does not decide whether an approval is legally required. Applicability is confirmed by the Regulatory lead or Head of Development.
+  </div>
+</section>
+}

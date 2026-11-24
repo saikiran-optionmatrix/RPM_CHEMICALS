@@ -1,0 +1,195 @@
+<div class="dashboard-wrapper">
+
+  <!-- TOP FILTER BAR -->
+  <div class="top-filter-bar">
+    <div class="left-filters">
+      <div class="filter-group">
+        <label>Division</label>
+        <select [(ngModel)]="selectedDivision">
+          @for (div of divisions; track div) {
+            <option [value]="div">{{ div }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Dosage form</label>
+        <select [(ngModel)]="selectedDosageForm">
+          @for (df of dosageForms; track df) {
+            <option [value]="df">{{ df }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Project</label>
+        <select [(ngModel)]="selectedProject">
+          @for (p of projects; track p) {
+            <option [value]="p">{{ p }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="right-filters">
+      <div class="filter-group">
+        <label>Snapshot date</label>
+        <select [(ngModel)]="selectedSnapshotDate">
+          @for (sd of snapshotDates; track sd) {
+            <option [value]="sd">{{ sd }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <hr class="header-divider">
+
+  <!-- Top KPIs -->
+  <section class="grid-4-col mt-16">
+    <div class="kpi-card">
+      <h2>39</h2>
+      <h4>Activities running this week</h4>
+      <p class="text-muted">across 14 functions</p>
+    </div>
+    <div class="kpi-card">
+      <h2>FR&D</h2>
+      <h4>Busiest function</h4>
+      <p class="text-muted">118 activity-weeks in 16 weeks</p>
+    </div>
+    <div class="kpi-card">
+      <h2>49</h2>
+      <h4>Unconfirmed bookings</h4>
+      <p class="text-muted">resource requirements not yet verified</p>
+    </div>
+    <div class="kpi-card">
+      <h2 class="text-danger">8</h2>
+      <h4>Resources wanted by ≥ 2 projects</h4>
+      <p class="text-muted">priority call needed</p>
+    </div>
+  </section>
+
+  <!-- Heatmap -->
+  <section class="section-card mt-16">
+    <div class="heatmap-header">
+      <div class="header-left">
+        <h3 class="section-title">LOAD BY FUNCTION · NEXT 16 WEEKS</h3>
+        <p class="section-desc">Each cell = WBS activities the function is responsible for that run in that week, from the forecast dates. This is demand only: PRAGATI does not yet hold capacity per function, so a cell cannot say “over capacity”. Hover a cell for the split by project.</p>
+      </div>
+      <div class="heatmap-legend">
+        <span class="l-title">Activities running:</span>
+        <span class="l-item"><div class="box hm-0"></div> 0</span>
+        <span class="l-item"><div class="box hm-1"></div> 1–2</span>
+        <span class="l-item"><div class="box hm-3"></div> 3–4</span>
+        <span class="l-item"><div class="box hm-5"></div> 5–7</span>
+        <span class="l-item"><div class="box hm-8"></div> 8+</span>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="heatmap-table mt-16">
+        <thead>
+          <tr>
+            <th class="sticky-col">FUNCTION</th>
+            @for (week of weeks; track week) {
+              <th>{{ week }}</th>
+            }
+            <th class="peak-col">PEAK</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of heatmapData; track row.function) {
+            <tr>
+              <td class="sticky-col">{{ row.function }}</td>
+              @for (val of row.values; track $index) {
+                <td [ngClass]="getHeatmapColorClass(val)">
+                  {{ val || '' }}
+                </td>
+              }
+              <td class="peak-col"><strong>{{ row.peak }}</strong></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Bottom 2-Column Section -->
+  <section class="grid-2-col mt-16">
+
+    <!-- OPEN RESOURCE BOOKINGS -->
+    <div class="section-card flex-card">
+      <h3 class="section-title">OPEN RESOURCE BOOKINGS · WHERE PROJECTS COMPETE</h3>
+      <p class="section-desc">Unconfirmed resource-booking requirements, by resource. The bar is split by project priority, not by project, so it reads the same with 5 or 500 projects. Click a resource to see which projects need it, highest priority and earliest need first.</p>
+
+      <div class="legend-row-bookings mt-16">
+        <span><span class="square" style="background:#1e3a8a"></span> Critical</span>
+        <span><span class="square" style="background:#2563eb"></span> High</span>
+        <span><span class="square" style="background:#93c5fd"></span> Medium</span>
+        <span><span class="square" style="background:#dbeafe"></span> Low</span>
+      </div>
+
+      <div class="bookings-table-header">
+        <span class="col-resource">RESOURCE</span>
+        <span class="col-bar">OPEN BOOKINGS BY PRIORITY</span>
+        <span class="col-meta">BOOKINGS · PROJECTS · OVERDUE</span>
+      </div>
+
+      <div class="bookings-list">
+        @for (booking of openBookings; track booking.resource) {
+          <div class="booking-row">
+            <div class="b-label">
+              <span class="caret">&#9656;</span> {{ booking.resource }}
+            </div>
+            <div class="b-bar-area">
+              <div class="b-track">
+                @for (seg of booking.segments; track $index) {
+                  <div class="b-segment" [style.width.%]="getSegmentPercent(seg.value)" [style.background]="seg.color"></div>
+                }
+              </div>
+            </div>
+            <div class="b-val">
+              <strong>{{ booking.total }}</strong> &middot; 
+              <span>{{ booking.projects }} project{{ booking.projects > 1 ? 's' : '' }}</span> &middot; 
+              <span [ngClass]="booking.overdue > 0 ? 'overdue-bold' : 'text-slate'">
+                {{ booking.overdue }} overdue
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="bookings-footer mt-16">
+        15 more resources with open bookings
+      </div>
+    </div>
+
+    <!-- PEAK WEEKS -->
+    <div class="section-card">
+      <h3 class="section-title">PEAK WEEKS · FUNCTIONS WITH MOST PARALLEL WORK</h3>
+      <p class="section-desc">Where several projects need the same function in the same week. Add capacity per function in Resources to turn these into over/under-load.</p>
+
+      <table class="data-table mt-16">
+        <thead>
+          <tr>
+            <th style="width: 25%">FUNCTION</th>
+            <th style="width: 20%">PEAK WEEK</th>
+            <th style="width: 15%">ACTIVITIES</th>
+            <th style="width: 40%">PROJECTS AT THE PEAK</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (peak of peakWeeks; track peak.function) {
+            <tr>
+              <td><strong>{{ peak.function }}</strong></td>
+              <td>{{ peak.peakWeek }}</td>
+              <td><strong>{{ peak.activities }}</strong></td>
+              <td>{{ peak.projects }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+</div>

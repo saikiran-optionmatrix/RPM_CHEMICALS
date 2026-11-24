@@ -1,0 +1,13 @@
+<div class="reorder-confirmation-header">
+  <h1 mat-dialog-title>{{ title }}</h1>
+</div>
+
+<div mat-dialog-content class="reorder-confirmation-content">
+  <p>{{ message }}</p>
+</div>
+
+<div mat-dialog-actions class="reorder-confirmation-actions">
+  <button type="button" class="reorder-confirm-button" (click)="confirm()">{{ confirmText }}</button>
+  <button type="button" class="reorder-cancel-button" (click)="cancel()">{{ cancelText }}</button>
+</div>
+

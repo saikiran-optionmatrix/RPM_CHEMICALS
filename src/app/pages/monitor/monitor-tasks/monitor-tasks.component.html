@@ -1,0 +1,624 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+
+        <!-- ==========================================
+             PAGE ACTIONS & TOGGLES (from MonitorActivities)
+             ========================================== -->
+        <div class="app-page-actions"
+          style="justify-content: flex-end; flex-wrap: wrap; gap: 12px; align-items: center;">
+
+          <!-- 1. Exclude Completed Checkbox -->
+          <mat-checkbox [(ngModel)]="excludeCompleted" (change)="onExcludeCompletedChange()" color="primary"
+            style="margin-right: 8px;">
+            Exclude Completed
+          </mat-checkbox>
+
+          <!-- 2. Overdue Checkbox -->
+          <mat-checkbox [(ngModel)]="isOverdueOnly" (change)="onOverdueChange()" color="primary"
+            style="margin-right: 8px;">
+            Overdue
+          </mat-checkbox>
+
+         
+          <!-- View Toggles: Calendar View and Table View -->
+          <div class="view-toggle" style="background: #f1f5f9; border-radius: 6px; padding: 4px; display: inline-flex; gap: 4px;">
+            <button type="button" class="app-btn" [class.app-btn-filter]="activeView === 'calendar'"
+              [class.app-btn-default]="activeView !== 'calendar'" (click)="setActiveView('calendar')">
+              <mat-icon>calendar_month</mat-icon>
+              <span>Calendar View</span>
+            </button>
+            <button type="button" class="app-btn" [class.app-btn-filter]="activeView === 'table'"
+              [class.app-btn-default]="activeView !== 'table'" (click)="setActiveView('table')">
+              <mat-icon>view_column</mat-icon>
+              <span>Table View</span>
+            </button>
+          </div>
+
+          <!-- 4. Grid Columns Button -->
+          <button type="button" class="app-btn app-btn-default">
+            <mat-icon>grid_on</mat-icon>
+            <span>Grid Columns</span>
+          </button>
+
+          <!-- 5. Filter Button -->
+          <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()" [class.active]="showFilter">
+            <mat-icon>filter_list</mat-icon>
+            <span>Filter</span>
+          </button>
+
+        </div>
+
+        <!-- ==========================================
+             FILTER PANEL
+             ========================================== -->
+        @if (showFilter) {
+        <mat-card class="app-filter-panel" style="margin-bottom: 20px;">
+          <mat-card-content>
+            <form [formGroup]="filterForm" class="app-filter-grid">
+
+              <div class="app-filter-fields">
+                <div class="app-filter-field">
+                  <label for="taskKeyword">Keyword:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="taskKeyword" formControlName="Keyword" placeholder="Search keyword">
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="taskProjectCode">Project Code:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="taskProjectCode" formControlName="ProjectCode" placeholder="Search project code">
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="taskDepartment">Department:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="taskDepartment" formControlName="Department" placeholder="Select Department">
+                      <mat-option [value]="null">All Departments</mat-option>
+                      @for (dept of departmentOptions; track dept) {
+                      <mat-option [value]="dept">{{ dept }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="taskRole">Role:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="taskRole" formControlName="Role" placeholder="Select Role">
+                      <mat-option [value]="null">All Roles</mat-option>
+                      @for (r of roleOptions; track r) {
+                      <mat-option [value]="r">{{ r }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="taskFromDate">From Due Date:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="taskFromDate" type="date" formControlName="FromDate">
+                  </mat-form-field>
+                </div>
+
+                <div class="app-filter-field">
+                  <label for="taskToDate">To Due Date:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="taskToDate" type="date" formControlName="ToDate">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="app-filter-actions">
+                <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                  <mat-icon>search</mat-icon>
+                  <span>Search</span>
+                </button>
+                <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                  <mat-icon>settings_backup_restore</mat-icon>
+                  <span>Clear</span>
+                </button>
+              </div>
+
+              <div class="app-filter-toggle">
+                <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                  <mat-icon>keyboard_double_arrow_up</mat-icon>
+                </button>
+              </div>
+
+            </form>
+          </mat-card-content>
+        </mat-card>
+        }
+
+        <!-- Scroll Buttons -->
+        <div class="d-flex justify-content-end mb-2" style="gap: 10px;">
+          <div class="d-flex justify-content-end mb-2">
+            <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+              (click)="activeView === 'calendar' ? scrollCalendarLeft() : scrollLeft()">
+              <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+            </button>
+            <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="activeView === 'calendar' ? scrollCalendarRight() : scrollRight()">
+              <mat-icon style="color: #414141;">fast_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             TABLE VIEW (Requested Columns)
+             ========================================== -->
+        @if (activeView === 'table') {
+        <div #scrollContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+          <table class="table app-table" style="min-width: 2500px; width: 100%; white-space: nowrap;">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 90px; min-width: 90px;">Actions</th>
+                <th class="text-center" style="width: 75px; min-width: 75px;">Done</th>
+                <th class="text-center" style="width: 90px; min-width: 90px;">Approved</th>
+                <th class="text-left" style="min-width: 200px;">Activity</th>
+                <th class="text-left" style="min-width: 220px;">Task Name</th>
+                <th class="text-left" style="width: 110px; min-width: 110px;">Task Code</th>
+                <th class="text-left" style="min-width: 130px;">Reference</th>
+                <th class="text-center" style="width: 80px; min-width: 80px;">Todo</th>
+                <th class="text-center" style="width: 80px; min-width: 80px;">Issues</th>
+                <th class="text-center" style="width: 90px; min-width: 90px;">Resources</th>
+                <th class="text-center" style="width: 90px; min-width: 90px;">Documents</th>
+                <th class="text-left" style="width: 110px; min-width: 110px;">Job Code</th>
+                <th class="text-center" style="width: 120px; min-width: 120px;">Start Date</th>
+                <th class="text-center" style="width: 120px; min-width: 120px;">Due Date</th>
+                <th class="text-center" style="width: 130px; min-width: 130px;">Date Completed</th>
+                <th class="text-center" style="width: 130px; min-width: 130px;">Date Approved</th>
+                <th class="text-left" style="min-width: 160px;">Responsibility</th>
+                <th class="text-left" style="min-width: 140px;">Department</th>
+                <th class="text-left" style="min-width: 150px;">Section</th>
+                <th class="text-center" style="width: 100px; min-width: 100px;">Priority</th>
+                <th class="text-center" style="width: 110px; min-width: 110px;">Updated</th>
+                <th class="text-center" style="width: 130px; min-width: 130px;">Updated By</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of paginatedTasks; track item.id) {
+              <tr>
+                <!-- 1. Actions -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <div class="table-actions" style="justify-content: center; gap: 4px;">
+                    <button type="button" class="table-action-button edit" matTooltip="Edit Task" aria-label="Edit task" (click)="editTask(item)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button type="button" class="table-action-button delete" matTooltip="Delete Task" aria-label="Delete task" (click)="onDeleteTask(item)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
+
+                <!-- 2. Done -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox
+                    [checked]="item.done ?? item.Done"
+                    (click)="$event.preventDefault(); openDoneDialog(item)"
+                    color="primary">
+                  </mat-checkbox>
+                </td>
+
+                <!-- 3. Approved -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <mat-checkbox
+                    [checked]="item.approved ?? item.Approved"
+                    (change)="toggleApproved(item)"
+                    color="primary">
+                  </mat-checkbox>
+                </td>
+
+                <!-- Activity -->
+                <td class="text-left font-weight-500" style="vertical-align: middle; color: #475569;">
+                  {{ item.activityName || item.ActivityName || '—' }}
+                </td>
+
+                <!-- 4. Task Name -->
+                <td class="text-left font-weight-500" style="vertical-align: middle;" [style.color]="isBacklogTask(item) ? '#dc2626' : '#1e293b'">
+                  {{ item.taskName || item.TaskName || '—' }}
+                </td>
+
+                <!-- 5. Task Code -->
+                <td class="text-left" style="vertical-align: middle;">
+                  {{ item.taskCode || '—' }}
+                </td>
+
+                <!-- 6. Reference -->
+                <td class="text-left" style="vertical-align: middle;">
+                  {{ item.reference || '—' }}
+                </td>
+
+                <!-- 7. Todo -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <span>
+                    {{ item.todoCount || getTodoCount($index) }}
+                  </span>
+                </td>
+
+                <!-- 8. Issues -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <span >
+                    {{ item.issuesCount || getIssuesCount($index) }}
+                  </span>
+                </td>
+
+                <!-- 9. Resources -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <span >
+                    {{ item.resourcesCount || getResourcesCount($index) }}
+                  </span>
+                </td>
+
+                <!-- 10. Documents -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <span class="history-number-link">
+                    {{ item.documentsCount || getDocumentsCount($index) }}
+                  </span>
+                </td>
+
+                <!-- 11. Job Code -->
+                <td class="text-left font-weight-500" style="vertical-align: middle;">
+                  {{ item.jobCode || item.ProjectCode || '—' }}
+                </td>
+
+                <!-- 12. Start Date -->
+                <td class="text-center" style="vertical-align: middle;">
+                  {{ (item.startDate || item.StartDate) ? ((item.startDate || item.StartDate) | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- 13. Due Date -->
+                <td class="text-center font-weight-500" style="vertical-align: middle;" [style.color]="isDateExceeded(item) ? '#dc2626' : null">
+                  {{ (item.dueDate || item.DueDate) ? ((item.dueDate || item.DueDate) | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- 14. Date Completed -->
+                <td class="text-center font-weight-500" style="vertical-align: middle;" [style.color]="(item.completedDate || item.CompletedDate) ? '#16a34a' : '#94a3b8'">
+                  {{ (item.completedDate || item.CompletedDate) ? ((item.completedDate || item.CompletedDate) | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- 15. Date Approved -->
+                <td class="text-center font-weight-500" style="vertical-align: middle;" [style.color]="(item.approvedDate || item.ApprovedDate) ? '#2563eb' : '#94a3b8'">
+                  {{ (item.approvedDate || item.ApprovedDate) ? ((item.approvedDate || item.ApprovedDate) | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- 16. Responsibility -->
+                <td class="text-left font-weight-500" style="vertical-align: middle;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <mat-icon style="font-size: 16px; width: 16px; height: 16px;" [style.color]="isDateExceeded(item) ? '#dc2626' : '#64748b'">person</mat-icon>
+                    <span [style.color]="isDateExceeded(item) ? '#dc2626' : '#1e293b'">{{ item.responsibility || item.Role || '—' }}</span>
+                  </div>
+                </td>
+
+                <!-- 17. Department -->
+                <td class="text-left" style="vertical-align: middle;" [style.color]="isDateExceeded(item) ? '#dc2626' : '#334155'">
+                  {{ item.department || item.Department || '—' }}
+                </td>
+
+                <!-- 18. Section -->
+                <td class="text-left" style="vertical-align: middle;">
+                  {{ item.section || '—' }}
+                </td>
+
+                <!-- 19. Priority -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <span >
+                    {{ item.priority || 'Medium' }}
+                  </span>
+                </td>
+
+                <!-- 20. Updated -->
+                <td class="text-center">
+                  {{ item.updatedDate ? (item.updatedDate | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- 21. Updated By -->
+                <td class="text-center" >
+                  {{ item.updatedBy || '—' }}
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="22" class="empty-table text-center">No records found matching criteria</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ==========================================
+             PAGINATION
+             ========================================== -->
+        <mat-paginator [length]="totalSize" [pageSize]="pageSize" [pageIndex]="currentPage"
+          [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="handlePage($event)" showFirstLastButtons>
+        </mat-paginator>
+        }
+
+        <!-- ==========================================
+             CALENDAR VIEW (hours-scheduling style: left calendar, right table)
+             ========================================== -->
+        @if (activeView === 'calendar') {
+        <div class="dashboard-content" style="display: flex; gap: 16px; align-items: flex-start; margin-top: 10px;">
+
+          <!-- Left Calendar Sidebar -->
+          <aside class="calendar-sidebar"
+            style="width: 310px; flex-shrink: 0; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px; box-sizing: border-box;">
+            <div class="calendar-card">
+              <!-- Month Navigation -->
+              <div class="month-selector"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <button class="nav-arrow" (click)="prevCalendarMonth()" aria-label="Previous month"
+                  style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_left</mat-icon>
+                </button>
+                <strong style="font-size: 14px; color: #0f172a;">{{ currentCalendarMonthLabel }}</strong>
+                <button class="nav-arrow" (click)="nextCalendarMonth()" aria-label="Next month"
+                  style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_right</mat-icon>
+                </button>
+              </div>
+
+              <!-- 7-Column Calendar Grid (Sun - Sat) -->
+              <div class="calendar-grid"
+                style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; margin-bottom: 16px;">
+                @for (d of dayNames; track $index) {
+                <div class="weekday" style="font-size: 11.5px; color: #64748b; font-weight: 600; padding: 4px 0;">{{ d }}</div>
+                }
+
+                @for (day of calendarDays; track $index) {
+                <div class="day-cell" [class.faded]="!day.inCurrentMonth" [class.active]="day.isSelected"
+                  [class.today-cell]="day.isToday && !day.isSelected"
+                  (click)="selectCalendarDate(day)"
+                  style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 44px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease;">
+                  <span class="date-num" style="font-size: 13px; line-height: 1;">{{ day.dayNumber }}</span>
+                  @if (day.count > 0) {
+                  <span class="activity-count-num"
+                    [style.color]="day.isSelected ? '#ffffff' : (day.isBacklog ? '#dc2626' : '#2563eb')"
+                    style="display: block; font-size: 10.5px; font-weight: 700; line-height: 12px; margin-top: 2px;">
+                    {{ day.count }}
+                  </span>
+                  }
+                </div>
+                }
+              </div>
+
+            </div>
+          </aside>
+
+          <!-- Right Table beside Calendar -->
+          <div class="app-table-container"
+            style="flex: 1; min-width: 0; overflow: hidden; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px;">
+
+            <!-- Table Container with 22 Columns -->
+            <div #calendarTableContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+              <table class="table app-table" style="min-width: 2500px; width: 100%; white-space: nowrap;">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 90px; min-width: 90px;">Actions</th>
+                    <th class="text-center" style="width: 75px; min-width: 75px;">Done</th>
+                    <th class="text-center" style="width: 90px; min-width: 90px;">Approved</th>
+                    <th class="text-left" style="min-width: 200px;">Activity</th>
+                    <th class="text-left" style="min-width: 220px;">Task Name</th>
+                    <th class="text-left" style="width: 110px; min-width: 110px;">Task Code</th>
+                    <th class="text-left" style="min-width: 130px;">Reference</th>
+                    <th class="text-center" style="width: 80px; min-width: 80px;">Todo</th>
+                    <th class="text-center" style="width: 80px; min-width: 80px;">Issues</th>
+                    <th class="text-center" style="width: 90px; min-width: 90px;">Resources</th>
+                    <th class="text-center" style="width: 90px; min-width: 90px;">Documents</th>
+                    <th class="text-left" style="width: 110px; min-width: 110px;">Job Code</th>
+                    <th class="text-center" style="width: 120px; min-width: 120px;">Start Date</th>
+                    <th class="text-center" style="width: 120px; min-width: 120px;">Due Date</th>
+                    <th class="text-center" style="width: 130px; min-width: 130px;">Date Completed</th>
+                    <th class="text-center" style="width: 130px; min-width: 130px;">Date Approved</th>
+                    <th class="text-left" style="min-width: 160px;">Responsibility</th>
+                    <th class="text-left" style="min-width: 140px;">Department</th>
+                    <th class="text-left" style="min-width: 150px;">Section</th>
+                    <th class="text-center" style="width: 100px; min-width: 100px;">Priority</th>
+                    <th class="text-center" style="width: 110px; min-width: 110px;">Updated</th>
+                    <th class="text-center" style="width: 130px; min-width: 130px;">Updated By</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of calendarPaginatedTasks; track item.id) {
+                  <tr>
+                    <!-- 1. Actions -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <div class="table-actions" style="justify-content: center; gap: 4px;">
+                        <button type="button" class="table-action-button edit" matTooltip="Edit Task" aria-label="Edit task" (click)="editTask(item)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" class="table-action-button delete" matTooltip="Delete Task" aria-label="Delete task" (click)="onDeleteTask(item)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+
+                    <!-- 2. Done -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <mat-checkbox
+                        [checked]="item.done ?? item.Done"
+                        (click)="$event.preventDefault(); openDoneDialog(item)"
+                        color="primary">
+                      </mat-checkbox>
+                    </td>
+
+                    <!-- 3. Approved -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <mat-checkbox
+                        [checked]="item.approved ?? item.Approved"
+                        (change)="toggleApproved(item)"
+                        color="primary">
+                      </mat-checkbox>
+                    </td>
+
+                    <!-- Activity -->
+                    <td class="text-left font-weight-500" style="vertical-align: middle; color: #475569;">
+                      {{ item.activityName || item.ActivityName || '—' }}
+                    </td>
+
+                    <!-- 4. Task Name -->
+                    <td class="text-left font-weight-500" style="vertical-align: middle;" [style.color]="isBacklogTask(item) ? '#dc2626' : '#1e293b'">
+                      {{ item.taskName || item.TaskName || '—' }}
+                    </td>
+
+                    <!-- 5. Task Code -->
+                    <td class="text-left" style="vertical-align: middle;">
+                      {{ item.taskCode || '—' }}
+                    </td>
+
+                    <!-- 6. Reference -->
+                    <td class="text-left" style="vertical-align: middle;">
+                      {{ item.reference || '—' }}
+                    </td>
+
+                    <!-- 7. Todo -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <span>
+                        {{ item.todoCount || getTodoCount($index) }}
+                      </span>
+                    </td>
+
+                    <!-- 8. Issues -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <span>
+                        {{ item.issuesCount || getIssuesCount($index) }}
+                      </span>
+                    </td>
+
+                    <!-- 9. Resources -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <span>
+                        {{ item.resourcesCount || getResourcesCount($index) }}
+                      </span>
+                    </td>
+
+                    <!-- 10. Documents -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <span class="history-number-link">
+                        {{ item.documentsCount || getDocumentsCount($index) }}
+                      </span>
+                    </td>
+
+                    <!-- 11. Job Code -->
+                    <td class="text-left font-weight-500" style="vertical-align: middle;">
+                      {{ item.jobCode || item.ProjectCode || '—' }}
+                    </td>
+
+                    <!-- 12. Start Date -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      {{ (item.startDate || item.StartDate) ? ((item.startDate || item.StartDate) | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- 13. Due Date -->
+                    <td class="text-center font-weight-500" style="vertical-align: middle;" [style.color]="isBacklogTask(item) ? '#dc2626' : null">
+                      {{ (item.dueDate || item.DueDate) ? ((item.dueDate || item.DueDate) | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- 14. Date Completed -->
+                    <td class="text-center font-weight-500" style="vertical-align: middle;" [style.color]="(item.completedDate || item.CompletedDate) ? '#16a34a' : '#94a3b8'">
+                      {{ (item.completedDate || item.CompletedDate) ? ((item.completedDate || item.CompletedDate) | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- 15. Date Approved -->
+                    <td class="text-center font-weight-500" style="vertical-align: middle;" [style.color]="(item.approvedDate || item.ApprovedDate) ? '#2563eb' : '#94a3b8'">
+                      {{ (item.approvedDate || item.ApprovedDate) ? ((item.approvedDate || item.ApprovedDate) | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- 16. Responsibility -->
+                    <td class="text-left font-weight-500" style="vertical-align: middle;">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <mat-icon style="font-size: 16px; width: 16px; height: 16px;" [style.color]="isBacklogTask(item) ? '#dc2626' : '#64748b'">person</mat-icon>
+                        <span [style.color]="isBacklogTask(item) ? '#dc2626' : '#1e293b'">{{ item.responsibility || item.Role || '—' }}</span>
+                      </div>
+                    </td>
+
+                    <!-- 17. Department -->
+                    <td class="text-left" style="vertical-align: middle;" [style.color]="isBacklogTask(item) ? '#dc2626' : '#334155'">
+                      {{ item.department || item.Department || '—' }}
+                    </td>
+
+                    <!-- 18. Section -->
+                    <td class="text-left" style="vertical-align: middle;">
+                      {{ item.section || '—' }}
+                    </td>
+
+                    <!-- 19. Priority -->
+                    <td class="text-center" style="vertical-align: middle;">
+                      <span>
+                        {{ item.priority || 'Medium' }}
+                      </span>
+                    </td>
+
+                    <!-- 20. Updated -->
+                    <td class="text-center">
+                      {{ item.updatedDate ? (item.updatedDate | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- 21. Updated By -->
+                    <td class="text-center">
+                      {{ item.updatedBy || '—' }}
+                    </td>
+                  </tr>
+                  } @empty {
+                  <tr>
+                    <td colspan="22" class="empty-table text-center" style="padding: 30px; color: #64748b;">
+                      No tasks found matching criteria.
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Calendar Table Paginator -->
+            <mat-paginator [length]="calendarFilteredTasks.length" [pageSize]="calendarPageSize"
+              [pageIndex]="calendarPageIndex" [pageSizeOptions]="[5, 10, 25, 50, 100]"
+              (page)="handleCalendarPage($event)" showFirstLastButtons>
+            </mat-paginator>
+
+          </div>
+
+        </div>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASK COMPLETION DATE POPUP DIALOG ============ -->
+<ng-template #completionDialog>
+  <div class="NewHeader">
+    <h1 mat-dialog-title>
+      Task Completion Date
+    </h1>
+  </div>
+
+  <div mat-dialog-content style="padding: 20px 24px 10px 24px;">
+    <!-- Date Picker Input -->
+    <div style="margin-bottom: 16px;">
+      <label class="add-member-label control-label" style="font-weight: 600; font-size: 13px; color: #475569; display: block; margin-bottom: 6px;">
+        Completion Date :
+      </label>
+      <input
+        type="date"
+        class="form-control"
+        [(ngModel)]="selectedCompletionDate"
+        required
+        style="height: 38px; font-size: 14px; border: 1px solid #cbd5e1; border-radius: 4px; width: 100%; padding: 6px 12px;"
+      />
+    </div>
+  </div>
+
+  <div mat-dialog-actions style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding: 12px 24px 20px 24px; margin-bottom: 0;">
+    <button type="button" class="app-btn app-btn-default" (click)="closeCompletionDialog()">
+      <mat-icon>cancel</mat-icon> Close
+    </button>
+    <button type="button" class="app-btn app-btn-primary" (click)="saveCompletionDate()">
+      <mat-icon>save</mat-icon> Save
+    </button>
+  </div>
+</ng-template>

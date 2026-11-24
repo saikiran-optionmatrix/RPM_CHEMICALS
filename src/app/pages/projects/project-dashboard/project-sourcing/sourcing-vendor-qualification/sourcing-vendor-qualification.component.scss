@@ -1,0 +1,116 @@
+:host {
+  display: block;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: #333333;
+}
+
+.analytics-page {
+  width: 100%;
+}
+
+
+
+/* ==================== Top Reference Panel (Names & Values Side by Side) ==================== */
+.reference-panel {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 4px 0;
+  box-shadow: none;
+
+  .reference-grid {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+
+    .ref-item {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 6px;
+
+      .ref-label {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #1e293b;
+        margin: 0;
+        white-space: nowrap;
+      }
+
+      .ref-value {
+        font-size: 13.5px;
+        color: #1e293b;
+        font-weight: 400;
+        word-break: break-word;
+
+        &.font-weight-600 {
+          font-weight: 600;
+          color: #0f172a;
+        }
+      }
+    }
+  }
+}
+
+/* ==================== Vendor Bar ==================== */
+.vendor-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 4px 0 14px 0;
+  box-shadow: none;
+
+  .vendor-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex: 1;
+
+    .vendor-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .vendor-dropdown-wrapper {
+      min-width: 280px;
+      max-width: 380px;
+      width: 100%;
+
+      .vendor-dropdown {
+        height: 38px;
+        line-height: 24px;
+        background: #ffffff;
+      }
+    }
+
+    .go-btn {
+      height: 38px;
+      padding: 0 20px;
+      font-weight: 500;
+    }
+  }
+}
+
+/* ==================== Table Styling ==================== */
+// Table classes inherited from AssetsComponent / global _tables.scss:
+// .app-table-container, .table-responsive, .table.app-table, .table-actions, .table-action-button, .empty-table, .app-route-link
+.app-table-container {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .vendor-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

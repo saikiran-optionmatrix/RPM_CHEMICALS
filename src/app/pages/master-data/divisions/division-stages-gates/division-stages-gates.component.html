@@ -1,0 +1,116 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+
+        <!-- Top Header & Actions: Title on left, Back button on top right -->
+        <div class="app-page-actions" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+          <div class="header-titles">
+            <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin: 0;">
+              Division Stages &amp; Gates &mdash; {{ divisionName }}
+            </h2>
+            <div style="font-size: 13px; color: #64748b; margin-top: 4px;">
+              Division Code: <strong style="color: #0f172a;">{{ divisionCode }}</strong>
+              &bull; Allocated Gates: <strong style="color: #2563eb;">{{ stageGates }}</strong>
+            </div>
+          </div>
+
+          <!-- Back button moved to top right -->
+          <button type="button" class="back-btn" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back</span>
+          </button>
+        </div>
+
+        <!-- Table Responsive Wrapper -->
+        <div class="table-responsive">
+          <table class="table app-table">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 100px;">Sequence</th>
+                <th class="text-center" style="width: 120px;">Stage Code</th>
+                <th class="text-left" style="min-width: 240px;">Stage Name</th>
+                <th class="text-center" style="width: 180px;">Gate</th>
+                <th class="text-center" style="width: 190px;">Last Updated</th>
+                <th class="text-center" style="width: 180px;">Updated By</th>
+                <th class="text-center" style="width: 100px;">History</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of stageRows; track (row.sequence + '-' + row.selectedGate); let i = $index) {
+              <tr>
+                <!-- Sequence -->
+                <td class="text-center" style="vertical-align: middle; font-weight: 500;">
+                  {{ row.sequence }}
+                </td>
+
+                <!-- Stage Code -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <span class="stage-code-badge">{{ row.stageCode }}</span>
+                </td>
+
+                <!-- Stage Name -->
+                <td class="text-left" style="vertical-align: middle; font-weight: 500; color: #1e293b;">
+                  {{ row.stageName }}
+                </td>
+
+                <!-- Gate (Dropdown Selector) -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <select class="form-select gate-select"
+                          [(ngModel)]="row.selectedGate"
+                          (ngModelChange)="onGateChange(i, $event)">
+                    <option value="-">-</option>
+                    @for (gate of availableGateOptions; track gate) {
+                      <option [value]="gate" [disabled]="isGateBlocked(i, gate)">
+                        {{ gate }}{{ isGateBlocked(i, gate) ? ' (Blocked)' : '' }}
+                      </option>
+                    }
+                  </select>
+                </td>
+
+                <!-- Last Updated -->
+                <td class="text-center" style="vertical-align: middle; color: #64748b; font-size: 13px;">
+                  {{ row.lastUpdated }}
+                </td>
+
+                <!-- Updated By -->
+                <td class="text-center" style="vertical-align: middle; color: #334155; font-size: 13px;">
+                  {{ row.updatedBy }}
+                </td>
+
+                <!-- History -->
+                <td class="text-center" style="vertical-align: middle;">
+                  <a href="javascript:void(0)" class="history-number-link" (click)="openHistory(row)"
+                     matTooltip="View Stage Gate History">
+                    {{ row.historyCount }}
+                  </a>
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="7" class="empty-table text-center" style="padding: 24px; color: #64748b;">
+                  No stages found
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Buttons Below Table: Clear Gates and Save -->
+        <div class="table-bottom-actions"
+             style="margin-top: 24px; margin-bottom: 12px; display: flex; justify-content: flex-end; align-items: center; gap: 12px;">
+          <button type="button" class="app-btn app-btn-danger" (click)="onClearGates()">
+            <mat-icon>delete_sweep</mat-icon>
+            <span>Clear Gates</span>
+          </button>
+          <button type="button" class="app-btn app-btn-primary" (click)="onSave()">
+            <mat-icon>save</mat-icon>
+            <span>Save</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

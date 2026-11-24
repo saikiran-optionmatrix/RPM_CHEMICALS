@@ -1,0 +1,40 @@
+.sheet1-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  width: 100%;
+}
+
+.sheet-title-info {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* Table Enhancements (Clean & neutral, no custom color codes) */
+.app-table {
+  tbody tr td {
+    &.notes-cell {
+      line-height: 1.45;
+      max-width: 320px;
+      white-space: normal;
+      word-break: break-word;
+    }
+  }
+}
+
+/* Floating Scroll Buttons (.mine) */
+.mine {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+  background-color: #dfdfdf !important;
+  color: #414141 !important;
+  z-index: 9999 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+
+  mat-icon {
+    color: #414141 !important;
+  }
+}

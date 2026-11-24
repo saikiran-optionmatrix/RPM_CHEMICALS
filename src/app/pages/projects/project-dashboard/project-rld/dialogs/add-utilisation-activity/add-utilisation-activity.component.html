@@ -1,0 +1,103 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Utilisation Activity' : 'Add Utilisation Activity' }}
+  </h1>
+  <button type="button" class="close-btn" (click)="close()" aria-label="Close dialog">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content class="dialog-body">
+  <form [formGroup]="form" (ngSubmit)="save()">
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Reference Product / Comparator *</label>
+        <select class="form-select back" formControlName="c">
+          @for (c of comparators; track c.id) {
+          <option [value]="c.id">{{ c.id }} · {{ c.brand }} ({{ c.strength }})</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">WBS Activity Code *</label>
+        <select class="form-select back" formControlName="wbs">
+          @for (opt of wbsOptions; track opt.code) {
+          <option [value]="opt.code">{{ opt.code }} - {{ opt.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Category *</label>
+        <select class="form-select back" formControlName="cat">
+          @for (cat of categories; track cat) {
+          <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label class="form-label">Activity Description</label>
+        <input class="form-control" formControlName="act" placeholder="Activity name">
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Calculation Basis *</label>
+        <input class="form-control back" formControlName="basis" placeholder="e.g. 3 lots × 30 tablets">
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Base Quantity *</label>
+        <input class="form-control back" type="number" formControlName="base" min="1">
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Buffer %</label>
+        <input class="form-control" type="number" formControlName="buf" min="0" max="100" placeholder="0 - 100">
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Buffer Approved By</label>
+        <input class="form-control" formControlName="bufBy" placeholder="e.g. R&D Head">
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Required-Ready Date *</label>
+        <input class="form-control back" type="date" formControlName="need">
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Use Period (Months) *</label>
+        <input class="form-control back" type="number" formControlName="use" min="1">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Responsible Owner *</label>
+        <input class="form-control back" formControlName="owner" placeholder="e.g. ARD Lead / FR&D Lead">
+      </div>
+
+      <div class="col-md-5 mb-3">
+        <label class="form-label">Dependent Milestone (Gate) *</label>
+        <input class="form-control back" formControlName="gate" placeholder="e.g. G3 – Prototype development">
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Procurement Line ID</label>
+        <input class="form-control" formControlName="proc" placeholder="e.g. PR-01">
+      </div>
+    </div>
+
+    <div class="dialog-actions-footer">
+      <button type="button" class="app-btn app-btn-default" (click)="close()">
+        <mat-icon>cancel</mat-icon> Close
+      </button>
+      <button type="submit" class="app-btn app-btn-primary">
+        <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Save' }}
+      </button>
+    </div>
+
+  </form>
+</div>
+

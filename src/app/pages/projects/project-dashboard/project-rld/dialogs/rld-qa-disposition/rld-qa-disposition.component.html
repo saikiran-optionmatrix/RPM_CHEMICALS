@@ -1,0 +1,115 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Receipt Checks & QA Disposition · {{ lot.id }}</h1>
+  <button type="button" class="close-btn" (click)="close()" aria-label="Close dialog">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content class="dialog-body">
+  <form [formGroup]="form" (ngSubmit)="save()">
+
+    <!-- Lot Header Info -->
+    <div class="lot-summary-card">
+      <div class="row">
+        <div class="col-md-3">
+          <span class="summary-label">Reference Product</span>
+          <span class="summary-val">{{ lot.cmp.brand }}</span>
+        </div>
+        <div class="col-md-3">
+          <span class="summary-label">Batch No.</span>
+          <span class="summary-val">{{ lot.bn }}</span>
+        </div>
+        <div class="col-md-3">
+          <span class="summary-label">Expiry Date</span>
+          <span class="summary-val">{{ rldService.formatDate(lot.exp) }}</span>
+        </div>
+        <div class="col-md-3">
+          <span class="summary-label">Received On</span>
+          <span class="summary-val">{{ rldService.formatDate(lot.rd) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fieldset 1: Receipt Checks (Inventory Custodian) -->
+    <fieldset class="form-section">
+      <legend>Receipt Checks (Inventory Custodian)</legend>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">1. Pack & Seal Intact *</label>
+          <select class="form-select back" formControlName="ck0">
+            @for (opt of checkOptions; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">2. Temperature Log OK *</label>
+          <select class="form-select back" formControlName="ck1">
+            @for (opt of checkOptions; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">3. Invoice / CoA / Import Docs OK *</label>
+          <select class="form-select back" formControlName="ck2">
+            @for (opt of checkOptions; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">4. Matches Approved Comparator *</label>
+          <select class="form-select back" formControlName="ck3">
+            @for (opt of checkOptions; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Fieldset 2: QA Disposition (Quality) -->
+    <fieldset class="form-section">
+      <legend>QA Disposition (Quality)</legend>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Disposition *</label>
+          <select class="form-select back" formControlName="qa">
+            @for (d of dispositionOptions; track d) {
+            <option [value]="d">{{ d }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Released By *</label>
+          <select class="form-select back" formControlName="qaBy">
+            @for (user of qaOfficers; track user) {
+            <option [value]="user">{{ user }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">QA Release Reference *</label>
+          <input class="form-control" formControlName="qaRef" placeholder="e.g. QA-RLD-REL-0335">
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="note-box">
+      <mat-icon>info</mat-icon>
+      <span>Saving recalculates lot readiness, allocations, requirement status, and alerts across all linked projects.</span>
+    </div>
+
+    <div class="dialog-actions-footer">
+      <button type="button" class="app-btn app-btn-default" (click)="close()">
+        <mat-icon>cancel</mat-icon> Cancel
+      </button>
+      <button type="submit" class="app-btn app-btn-primary">
+        <mat-icon>check_circle</mat-icon> Save Disposition
+      </button>
+    </div>
+
+  </form>
+</div>
+

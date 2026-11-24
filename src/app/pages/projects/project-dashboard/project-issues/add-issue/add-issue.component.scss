@@ -1,0 +1,11 @@
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+mat-select.form-control {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}

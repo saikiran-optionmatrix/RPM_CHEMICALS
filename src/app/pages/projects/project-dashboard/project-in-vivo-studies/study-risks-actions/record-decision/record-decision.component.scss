@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+.dialog-subnote {
+  margin: 0 0 12px;
+  color: #475569;
+  font-size: 13px;
+}
+
+.decision-info-box {
+  margin-bottom: 14px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  background-color: #f6f8fb;
+  border: 1px solid #e3e8ef;
+  color: #1e293b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.validation-alert {
+  margin-bottom: 14px;
+  padding: 9px 12px;
+  border-radius: 4px;
+  background-color: #fff0f0;
+  border: 1px solid #ffd6d6;
+  color: #b71c1c;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .col-sm-2,
+  .col-sm-10 {
+    width: 100% !important;
+  }
+}
+

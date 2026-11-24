@@ -1,0 +1,300 @@
+<div class="pre-qual-container">
+  <!-- Left Sidebar: Material-source cases (Section Navigation) -->
+  <aside class="cases-sidebar">
+    <div class="cases-header">Material-source cases</div>
+    <div class="cases-list">
+      @for (sec of sections; track sec) {
+        <button
+          type="button"
+          class="case-item"
+          [class.active]="selectedSection === sec"
+          (click)="scrollToSection(sec)">
+          <div class="case-row-1">
+            <span class="case-name font-weight-bold">{{ sec }}</span>
+            <span class="case-score">{{ getSectionAssessedCount(sec) }} / {{ getSectionItemCount(sec) }}</span>
+          </div>
+          <div class="progress-track">
+            <div
+              class="progress-bar"
+              [style.width.%]="getSectionProgress(sec)"
+              [class.complete]="getSectionProgress(sec) === 100">
+            </div>
+          </div>
+        </button>
+      }
+    </div>
+  </aside>
+
+  <!-- Right Pane: Qualification Workflow -->
+  <main class="qual-content">
+    <!-- Case Title Header Card -->
+    <div class="case-banner">
+      <div class="banner-info">
+        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+          <h2 class="case-title">{{ selectedCase?.id }} / {{ selectedCase?.name }} / {{ selectedCase?.mfr }}</h2>
+          @if (planRows.length > 1) {
+            <select class="form-control" style="width: auto; max-width: 280px; height: 32px; font-size: 13px;" [(ngModel)]="selectedRm" (change)="selectCase(selectedRm)">
+              @for (c of planRows; track c.id) {
+                <option [value]="c.id">{{ c.id }} · {{ c.name }}</option>
+              }
+            </select>
+          }
+        </div>
+        <p class="case-desc">Vendor qualification for this material-source case: QA forms F10 and F02. Each form is either filled in PRAGATI or completed by uploading the filled PDF / other documents; QA then records the outcome.</p>
+      </div>
+
+      <div class="banner-chips">
+        <span class="status-chip" [class.chip-done]="getAssessedStats('F10').isDone">
+          F10: {{ getAssessedStats('F10').isDone ? 'Complete' : 'In progress' }}
+        </span>
+        <span class="status-chip" [class.chip-done]="getAssessedStats('F02').isDone">
+          F02: {{ getAssessedStats('F02').isDone ? 'Complete' : 'In progress' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Mode Selector Tabs (F10 vs F02) -->
+    <div class="mode-tabs">
+      <button type="button" class="mode-tab-btn" [class.active]="activeMode === 'F10'" (click)="setMode('F10')">
+        <span class="mode-title">Vendor self-assessment (F10)</span>
+        <span class="mode-sub">{{ getAssessedStats('F10').sub }}</span>
+      </button>
+
+      <button type="button" class="mode-tab-btn" [class.active]="activeMode === 'F02'" (click)="setMode('F02')">
+        <span class="mode-title">RM vendor audit checklist (F02)</span>
+        <span class="mode-sub">{{ getAssessedStats('F02').sub }}</span>
+      </button>
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-container">
+      <!-- Form Title Bar -->
+      <div class="form-title-bar">
+        <div class="title-details">
+          <h3>{{ getCurrentConfig().title }}</h3>
+          <span class="form-meta">Format No: {{ getCurrentConfig().code }} · {{ getCurrentConfig().who }} · QA form, as received</span>
+        </div>
+
+        <div class="form-actions">
+          <span class="assessed-badge">Assessed {{ getAssessedStats(activeMode).assessed }} / {{ getAssessedStats(activeMode).total }}</span>
+          @if (activeMode === 'F02') {
+            <button type="button" class="btn-toggle-sterile" [class.active]="isSterile()" (click)="toggleSterile()">
+              {{ isSterile() ? 'Sterile API vendor: Yes (items shown)' : 'Sterile API vendor: No (sterile items hidden)' }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Completion Method Segments -->
+      <div class="method-bar">
+        <span class="method-label">How is this form completed?</span>
+        <div class="segmented-control">
+          <button type="button" class="segment-btn" [class.active]="getCurrentMethod() === 'fill'" (click)="setMethod('fill')">
+            Fill in PRAGATI
+          </button>
+          <button type="button" class="segment-btn" [class.active]="getCurrentMethod() === 'upload'" (click)="setMethod('upload')">
+            Upload filled document
+          </button>
+        </div>
+      </div>
+
+      <!-- Upload Document Mode -->
+      @if (getCurrentMethod() === 'upload') {
+        <div class="upload-section">
+          <strong>Upload filled {{ getCurrentConfig().code }} and supporting documents</strong>
+
+          <label class="drop-zone" for="fileInput">
+            <mat-icon class="drop-icon">cloud_upload</mat-icon>
+            <span class="drop-title">Choose files to upload</span>
+            <span class="drop-sub">Signed / filled checklist (PDF, scanned copy) and supporting documents such as GMP certificate, licence, ISO certificate, DMF / CEP letter, audit report. PDF, Word, Excel, JPG, PNG.</span>
+          </label>
+          <input id="fileInput" type="file" multiple (change)="onFileUpload($event)" style="display: none;">
+
+          @if (getUploadedFiles().length > 0) {
+            <div class="app-table-container" style="padding: 0; width: 100%;">
+              <div class="table-responsive">
+                <table class="table app-table">
+                  <thead>
+                    <tr>
+                      <th class="text-left">Document</th>
+                      <th class="text-left" style="min-width: 200px;">Document type</th>
+                      <th class="text-end" style="width: 100px;">Size</th>
+                      <th class="text-center" style="width: 140px;">Uploaded</th>
+                      <th class="text-center" style="width: 100px;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (file of getUploadedFiles(); track file.name; let i = $index) {
+                      <tr>
+                        <td class="file-name-cell">
+                          <mat-icon class="file-icon">description</mat-icon>
+                          <span>{{ file.name }}</span>
+                        </td>
+                        <td>
+                          <select class="sel" [(ngModel)]="file.type">
+                            <option value="Filled checklist">Filled checklist</option>
+                            <option value="GMP / licence certificate">GMP / licence certificate</option>
+                            <option value="ISO / accreditation">ISO / accreditation</option>
+                            <option value="DMF / CEP / access letter">DMF / CEP / access letter</option>
+                            <option value="Audit report / CAPA">Audit report / CAPA</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        </td>
+                        <td class="text-end font-monospace">{{ file.sizeFormatted }}</td>
+                        <td class="text-center">{{ file.when }}</td>
+                        <td class="text-center">
+                          <button type="button" class="btn-remove-file" (click)="removeFile(i)">Remove</button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          } @else {
+            <div class="no-files-notice">
+              <mat-icon>info</mat-icon>
+              <span>No document uploaded yet. The form counts as complete once the filled checklist is uploaded and QA records the outcome below.</span>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Fill Online in PRAGATI Mode -->
+      @if (getCurrentMethod() === 'fill') {
+        <div class="fill-section">
+          <!-- General Information Box -->
+          <div class="general-info-card">
+            <strong>General information</strong>
+            <div class="gen-fields-grid">
+              @for (field of getCurrentConfig().gen; track field; let idx = $index) {
+                <div class="gen-field">
+                  <label>{{ field }}</label>
+                  <input type="text" class="sel" [value]="idx === 0 ? (selectedCase?.mfr || '') : (idx === 2 ? (selectedCase?.name || '') : '')" placeholder="Enter {{ field }}">
+                </div>
+              }
+            </div>
+            <span class="gen-note">Vendor and material are pre-filled from the Materials Plan (manufacturer / site and material name).</span>
+          </div>
+
+          <!-- Sectioned Questions Table -->
+          <div class="app-table-container" style="padding: 0; width: 100%;">
+            <div class="table-responsive">
+              <table class="table app-table">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 70px;">No.</th>
+                    <th class="text-left" style="min-width: 320px;">Description</th>
+                    <th class="text-left" style="min-width: 250px;">Observations</th>
+                    <th class="text-center" style="width: 200px;">Jodas QA assessment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (r of getFormRows(); track r.section + '-' + r.no) {
+                    @if (r.groupStart) {
+                      <tr class="grp-header-row" [id]="getSectionAnchorId(r.section)">
+                        <td colspan="4">
+                          <div class="d-flex align-items-center justify-content-between">
+                            <span>{{ r.section }}</span>
+                            <span class="text-muted" style="font-size: 12px; font-weight: normal; text-transform: none;">
+                              {{ getSectionAssessedCount(r.section) }} of {{ getSectionItemCount(r.section) }} assessed
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                    <tr>
+                      <td class="text-center font-weight-bold">{{ r.no }}</td>
+                      <td class="desc-cell">
+                        <span>{{ r.text }}</span>
+                        @if (r.sterile) {
+                          <span class="text-muted" style="font-size: 12px; margin-left: 6px;">(Sterile API)</span>
+                        }
+                      </td>
+                      <td>
+                        <input type="text" class="form-control" placeholder="Observation" [value]="getObservation(r.obsKey)" (input)="setObservation(r.obsKey, $any($event.target).value)">
+                      </td>
+                      <td>
+                        <select class="form-control" [value]="getAssessment(r.assessKey)" (change)="setAssessment(r.assessKey, $any($event.target).value)">
+                          <option value="">Select</option>
+                          <option value="Satisfactory">Satisfactory</option>
+                          <option value="Needs improvement">Needs improvement</option>
+                          <option value="Not satisfactory">Not satisfactory</option>
+                          <option value="Not applicable">Not applicable</option>
+                        </select>
+                      </td>
+                    </tr>
+                    @if (r.groupEnd) {
+                      <tr class="section-footer-row">
+                        <td colspan="4">
+                          <div class="d-flex justify-content-end align-items-center py-2 px-1 gap-3">
+                            @if (savedSectionFeedback === r.section) {
+                              <span class="text-success font-weight-bold d-inline-flex align-items-center gap-1">
+                                <mat-icon style="font-size: 18px; width: 18px; height: 18px;">check_circle</mat-icon>
+                                <span>{{ r.section }} saved successfully</span>
+                              </span>
+                            }
+                            <button type="button" class="app-btn app-btn-primary" (click)="saveSection(r.section)">
+                              <mat-icon>save</mat-icon>
+                              <span>Save</span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Attestation Statement -->
+          <div class="attestation-card">
+            <strong>Attestation</strong>
+            <span>{{ getCurrentConfig().attest }} attests to the accuracy of the above information: signature, date, printed name & title.</span>
+          </div>
+        </div>
+      }
+
+      <!-- Summary of Assessment & QA Outcome Card -->
+      <div class="summary-card">
+        <strong>{{ getCurrentConfig().summaryTitle }}</strong>
+
+        <div class="qa-outcome-group">
+          <label>QA outcome</label>
+          <select class="sel outcome-select" [value]="getOutcome()" (change)="setOutcome($any($event.target).value)">
+            <option value="">Select outcome</option>
+            <option value="Approved">Approved</option>
+            <option value="Approved with conditions">Approved with conditions</option>
+            <option value="Not approved">Not approved</option>
+          </select>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-field">
+            <label>Strengths</label>
+            <textarea class="sel" rows="3" placeholder="Enter key observations & strengths..."></textarea>
+          </div>
+
+          <div class="summary-field">
+            <label>Weaknesses / Deficiencies</label>
+            <textarea class="sel" rows="3" placeholder="Enter gaps or CAPAs required..."></textarea>
+          </div>
+
+          <div class="summary-field">
+            <label>Recommendations / Conditions</label>
+            <textarea class="sel" rows="3" placeholder="Enter conditions for qualification..."></textarea>
+          </div>
+        </div>
+
+        <div class="summary-footer">
+          <span class="verify-note">{{ getCurrentConfig().verify }}: Name · Signature · Date (Initiated by → Reviewed by workflow)</span>
+          <button type="button" class="app-btn app-btn-primary" (click)="submitForApproval()">
+            <mat-icon>verified</mat-icon>
+            <span>Submit for QA approval</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

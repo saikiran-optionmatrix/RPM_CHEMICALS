@@ -1,0 +1,128 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+
+        <!-- Top Action Buttons (Filter only, No Add button) -->
+        <div class="app-page-actions">
+          <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()">
+            <mat-icon>filter_list</mat-icon>
+            <span>Filter</span>
+          </button>
+        </div>
+
+        <!-- Filter Panel -->
+        @if (showFilter) {
+        <mat-card class="app-filter-panel">
+          <mat-card-content>
+            <div class="app-filter-grid">
+
+              <!-- Filter Fields: Keyword, Item Category, Item Type -->
+              <div class="app-filter-fields">
+                <!-- Keyword Search -->
+                <div class="app-filter-field">
+                  <label for="itemKeyword">Keyword:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="itemKeyword" [(ngModel)]="keyword" placeholder="Search by name or code">
+                  </mat-form-field>
+                </div>
+
+                <!-- Item Category (Dropdown) -->
+                <div class="app-filter-field">
+                  <label for="filterCategory">Material Group:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterCategory" [(ngModel)]="selectedCategory" placeholder="All Categories">
+                      <mat-option value="">All Groups</mat-option>
+                      @for (cat of categories; track cat) {
+                      <mat-option [value]="cat">{{ cat }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- Item Type (Dropdown) -->
+                <div class="app-filter-field">
+                  <label for="filterType">Material Type:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterType" [(ngModel)]="selectedType" placeholder="All Types">
+                      <mat-option value="">All Types</mat-option>
+                      @for (t of types; track t) {
+                      <mat-option [value]="t">{{ t }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Filter Actions -->
+              <div class="app-filter-actions">
+                <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                  <mat-icon>search</mat-icon>
+                  <span>Search</span>
+                </button>
+                <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                  <mat-icon>settings_backup_restore</mat-icon>
+                  <span>Clear</span>
+                </button>
+              </div>
+
+              <!-- Filter Toggle Button -->
+              <div class="app-filter-toggle">
+                <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                  <mat-icon>keyboard_double_arrow_up</mat-icon>
+                </button>
+              </div>
+
+            </div>
+          </mat-card-content>
+        </mat-card>
+        }
+
+        <!-- Items Table: Material Code, Material Name, Material Group, Material Type, Stock available, Last Updated, History -->
+        <div class="table-responsive">
+          <table class="table app-table">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 150px;">Material Code</th>
+                <th class="text-left" style="min-width: 250px;">Material Name</th>
+                <th class="text-center" style="width: 180px;">Material Group</th>
+                <th class="text-center" style="width: 180px;">Material Type</th>
+                <th class="text-center" style="width: 150px;">Stock available</th>
+                <th class="text-center" style="width: 140px;">Last Updated</th>
+                <th class="text-center" style="width: 90px;">History</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of paginatedItems; track item.materialCode) {
+              <tr>
+                <td class="text-center font-weight-medium">{{ item.materialCode }}</td>
+                <td class="text-left">{{ item.itemName }}</td>
+                <td class="text-center">{{ item.itemCategory }}</td>
+                <td class="text-center">{{ item.itemType }}</td>
+                <td class="text-center font-weight-medium">{{ item.stockAvailable || '—' }}</td>
+                <td class="text-center">{{ item.lastUpdated || '—' }}</td>
+                <td class="text-center">
+                  <a href="javascript:void(0)" class="history-number-link" (click)="openHistory(item)"
+                    matTooltip="View Material Code History">
+                    {{ item.historyCount || 3 }}
+                  </a>
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="7" class="empty-table text-center">No records found</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginator -->
+        <mat-paginator [length]="filteredItems.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+        </mat-paginator>
+
+      </div>
+    </div>
+  </div>
+</div>

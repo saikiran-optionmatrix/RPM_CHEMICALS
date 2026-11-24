@@ -1,0 +1,518 @@
+<div class="project-container">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+        <!-- Actions Header -->
+        <div class="app-page-actions">
+
+          <div class="app-filter-archived-checkbox">
+             <label>  Archived</label>
+           <mat-checkbox color="primary"></mat-checkbox>
+          </div>
+         <div class="app-filter-active-checkbox">
+
+          <label>  Active</label>
+           <mat-checkbox color="primary"></mat-checkbox>
+         </div>
+          <button class="app-btn app-btn-default" type="button" (click)="toggleView(!isKanbanView)"
+            [matTooltip]="isKanbanView ? 'Switch to Table View' : 'Switch to Kanban View'">
+            <mat-icon>{{ isKanbanView ? 'grid_view' : 'view_kanban' }}</mat-icon>
+            <span>{{ isKanbanView ? 'Table View' : 'Kanban' }}</span>
+          </button>
+
+          <button class="app-btn app-btn-primary" color="primary" (click)="openEditDialog(null)"
+            matTooltip="Add Project">
+            <mat-icon>add</mat-icon> <span>Add Project</span>
+          </button>
+
+          <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()">
+            <mat-icon>filter_list</mat-icon>
+            <span>Filter</span>
+          </button>
+        </div>
+
+        <!-- Filter Panel -->
+        @if (showFilter) {
+        <mat-card class="app-filter-panel mt-3 mb-3">
+          <mat-card-content>
+            <div class="app-filter-grid">
+              <div class="app-filter-fields">
+                <!-- 1. Keyword -->
+                <div class="app-filter-field">
+                  <label for="projectKeyword">Keyword:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="projectKeyword" [(ngModel)]="keyword" placeholder="Search Project" />
+                  </mat-form-field>
+                </div>
+
+                <!-- 2. Project Owner -->
+                <div class="app-filter-field">
+                  <label for="projectOwner">Project Owner:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="projectOwner" [(ngModel)]="filterProjectOwner" placeholder="Select Project Owner">
+                      <mat-option value="">All</mat-option>
+                      @for (owner of projectOwners; track owner) {
+                        <mat-option [value]="owner">{{ owner }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 3. Project Manager -->
+                <div class="app-filter-field">
+                  <label for="projectLead">Project Manager:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="projectLead" [(ngModel)]="filterProjectLead" placeholder="Select Project Manager">
+                      <mat-option value="">All</mat-option>
+                      @for (lead of projectLeads; track lead) {
+                        <mat-option [value]="lead">{{ lead }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 4. Molecule -->
+                <div class="app-filter-field">
+                  <label for="filterMolecule">Chemistry / Family:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterMolecule" [(ngModel)]="filterMolecule" placeholder="Select Chemistry / Family">
+                      <mat-option value="">All</mat-option>
+                      @for (mol of molecules; track mol) {
+                        <mat-option [value]="mol">{{ mol }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 5. Dosage Form -->
+                <div class="app-filter-field">
+                  <label for="filterDosageForm">Physical Form / Grade:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterDosageForm" [(ngModel)]="filterDosageForm" placeholder="Select Physical Form / Grade">
+                      <mat-option value="">All</mat-option>
+                      @for (form of dosageForms; track form) {
+                        <mat-option [value]="form">{{ form }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 6. Product Status -->
+                <div class="app-filter-field">
+                  <label for="filterProductStatus">Product Status:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterProductStatus" [(ngModel)]="filterProductStatus" placeholder="Select Product Status">
+                      <mat-option value="">All</mat-option>
+                      @for (ps of productStatusOptions; track ps) {
+                        <mat-option [value]="ps">{{ ps }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 7. Drug Authority -->
+                <div class="app-filter-field">
+                  <label for="filterDrugAuthority">Regulatory / REACH:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterDrugAuthority" [(ngModel)]="filterDrugAuthority" placeholder="Select Regulatory / REACH">
+                      <mat-option value="">All</mat-option>
+                      @for (da of drugAuthorityOptions; track da) {
+                        <mat-option [value]="da">{{ da }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 8. Target Market -->
+                <div class="app-filter-field">
+                  <label for="filterTargetMarket">Target Market:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterTargetMarket" [(ngModel)]="filterTargetMarket" placeholder="Select Target Market">
+                      <mat-option value="">All</mat-option>
+                      @for (tm of targetMarkets; track tm) {
+                        <mat-option [value]="tm">{{ tm }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 9. Level of Competition -->
+                <div class="app-filter-field">
+                  <label for="filterCompetition">Level of<br> Competition:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterCompetition" [(ngModel)]="filterLevelOfCompetition" placeholder="Select Level of Competition">
+                      <mat-option value="">All</mat-option>
+                      @for (comp of competitionLevels; track comp) {
+                        <mat-option [value]="comp">{{ comp }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 10. Commercial Attractiveness -->
+                <div class="app-filter-field">
+                  <label for="filterAttractiveness">Commercial<br> Attractiveness:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterAttractiveness" [(ngModel)]="filterCommercialAttractiveness" placeholder="Select Commercial Attractiveness">
+                      <mat-option value="">All</mat-option>
+                      @for (attr of commercialAttractivenessOptions; track attr) {
+                        <mat-option [value]="attr">{{ attr }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 11. Priority -->
+                <div class="app-filter-field">
+                  <label for="filterPriority">Priority:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterPriority" [(ngModel)]="filterPriority" placeholder="Select Priority">
+                      <mat-option value="">All</mat-option>
+                      @for (pri of priorityOptions; track pri) {
+                        <mat-option [value]="pri">{{ pri }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 12. Date Type -->
+                <div class="app-filter-field">
+                  <label for="filterDateType">Date Type:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="filterDateType" [(ngModel)]="filterDateType" placeholder="Select Date Type">
+                      <mat-option value="">All</mat-option>
+                      @for (dt of dateTypes; track dt) {
+                        <mat-option [value]="dt">{{ dt }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- 13. Start Date -->
+                <div class="app-filter-field">
+                  <label for="filterStartDate">Start Date:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="filterStartDate" type="date" [(ngModel)]="filterStartDate" />
+                  </mat-form-field>
+                </div>
+
+                <!-- 14. End Date -->
+                <div class="app-filter-field">
+                  <label for="filterEndDate">End Date:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="filterEndDate" type="date" [(ngModel)]="filterEndDate" />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="app-filter-actions">
+                <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                  <mat-icon>search</mat-icon>
+                  <span>Search</span>
+                </button>
+                <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                  <mat-icon>settings_backup_restore</mat-icon>
+                  <span>Clear</span>
+                </button>
+              </div>
+
+              <div class="app-filter-toggle">
+                <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                  <mat-icon>keyboard_double_arrow_up</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        }
+
+
+
+        <!-- Kanban View -->
+        @if (isKanbanView) {
+        <div class="kanban-board mt-3" cdkDropListGroup>
+          @for (list of lists; track list) {
+          <div class="kanban-list">
+
+            <div class="kanban-list-header">
+              <div style="display: flex; align-items: center; gap: 8px">
+                <span [style.background-color]="getColor(list)" class="status-dot"></span>
+                <h3>{{ list }}</h3>
+              </div>
+              <span class="count-badge">{{ cards[list]?.length || 0 }}</span>
+            </div>
+
+            <div cdkDropList [id]="list" [cdkDropListData]="cards[list]" (cdkDropListDropped)="drop($event, list)"
+              class="drop-container">
+              @for (card of cards[list]; track card.id) {
+              <div cdkDrag class="kanban-card" [ngClass]="getCardClass(list)">
+
+                <!-- Card Title & Expand Toggle -->
+                <div class="kanban-card-title">
+                  <a (click)="goToDashboard(card)" class="subject-link">
+                    {{ card.subject }}
+                  </a>
+                  <mat-icon class="toggle-icon" (click)="toggleCard(card)">
+                    {{ card.expanded ? "remove" : "add" }}
+                  </mat-icon>
+                </div>
+
+                <!-- Info Row 1 -->
+                <div class="card-info-row">
+                  @if (card.code) {
+                  <p class="info-item">
+                    <span class="hash-symbol">#</span>
+                    <a (click)="goToDashboard(card)" class="code-link">
+                      {{ card.code }}
+                    </a>
+                  </p>
+                  }
+                  <p class="info-item">
+                    <mat-icon>medication</mat-icon>
+                    <span class="text-truncate" [matTooltip]="card.LawFirm">{{ card.LawFirm }}</span>
+                  </p>
+                </div>
+
+                <!-- Info Row 2 -->
+                <div class="card-info-row mt-1">
+                  <p class="info-item">
+                    <mat-icon>person</mat-icon>
+                    <span class="text-truncate">{{ card.assignedTo }}</span>
+                  </p>
+                  <p class="info-item">
+                    <mat-icon>schedule</mat-icon>
+                    <span>{{ card.status }}</span>
+                  </p>
+                </div>
+
+                <hr class="card-divider" />
+
+                <!-- ETA Badge -->
+                <div class="eta-badge">
+                  <mat-icon>alarm</mat-icon>
+                  <span>ETA {{ card.dueDate | date: "dd MMM" }}</span>
+                </div>
+
+                <!-- Expanded Details -->
+                @if (card.expanded) {
+                <div class="card-expanded-details mt-2">
+                  @if (card.code) { <p><strong>Project Code:</strong> {{ card.code }}</p> }
+                  <p><strong>Project Owner:</strong> {{ card.createdBy }}</p>
+                  <p><strong>Project Manager:</strong> {{ card.assignedTo }}</p>
+                  <p><strong>Start Date:</strong> {{ card.createdDate }}</p>
+                  <p><strong>Target ETA:</strong> {{ card.dueDate }}</p>
+                  <p><strong>High Priority:</strong> {{ card.expedite ? "Yes" : "No" }}</p>
+
+                  @if (card.notes.length > 0) {
+                  <div class="mt-2">
+                    <strong>Notes:</strong>
+                    <ul class="notes-list">
+                      @for (note of card.notes; track note.date) {
+                      <li>{{ note.text }} — {{ note.author }}, {{ note.date }}</li>
+                      }
+                    </ul>
+                  </div>
+                  } @else {
+                  <p style="color: gray; font-size: 12px; margin-top: 5px;">No notes added.</p>
+                  }
+                </div>
+                }
+              </div>
+              }
+            </div>
+          </div>
+          }
+        </div>
+        }
+
+
+
+
+
+        <!-- Table View -->
+        @if (!isKanbanView) {
+        <div #scrollContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+          <table class="table app-table project-table">
+            <thead>
+              <tr>
+                <th>Actions</th>
+                <th>Product / Grade Name</th>
+                <th>Project ID / Code</th>
+                <th>Chemistry / Product Family</th>
+                <th>Division</th>
+                <th>Star Product</th>
+                <th>Regulatory Pathway</th>
+                <th>Project Owner</th>
+                <th>Project Manager</th>
+                <th>Priority</th>
+                <th>Project Start date</th>
+                <th>Project End date</th>
+                <th>Project Budget (USD mn)</th>
+                <th>Market</th>
+                <th>Market Size of last 3 years</th>
+                <th>Market size (USD mn / yr)</th>
+                <th>Projected market share</th>
+                <th>Commercial attractiveness</th>
+                <th>Projected NPV (USD mn)</th>
+                <th>Physical Form / Grade</th>
+                <th>Concentration / Specification</th>
+                <th>Pack Size</th>
+                <th>Standards & Test Methods</th>
+                <th>Packaging Details</th>
+                <th>Benchmark Company</th>
+                <th>Benchmark Brand Name</th>
+                <th>Benchmark Product Form</th>
+                <th>Benchmark Specification</th>
+                <th>Benchmark Launch Year</th>
+                <th>Benchmark Pack Presentation</th>
+                <th>Benchmark Performance Spec</th>
+                <th>Benchmark Info (TDS / SDS / CoA)</th>
+                <th>Benchmark vs Product Equivalence</th>
+                <th>IP & Patent Details</th>
+                <th>Key Intermediate / Tech Grade Mfg</th>
+                <th>Process Route / Catalyst System</th>
+                <th>REACH Dossier / Supplier File Status</th>
+                <th>REACH / SDS Received</th>
+                <th>Raw Material Vendor Qualification</th>
+                <th>Intermediate - Mfg Licence</th>
+                <th>Intermediate - ISO 9001 / Resp. Care</th>
+                <th>Finished Product - Mfg Licence</th>
+                <th>ISO 9001 Certification</th>
+                <th>Application Trial / Testing Lab Name</th>
+                <th>Testing Lab Accreditation (ISO 17025)</th>
+                <th>Trial Approval / Regulatory NOC</th>
+                <th>Study Time Period</th>
+                <th>Application Trial Report</th>
+                <th>Remarks</th>
+               
+                <th class="text-center" style="width: 70px; min-width: 70px; max-width: 80px;">Status</th>  
+                <th class="text-center" style="width: 110px; min-width: 110px;">Updated Date</th>
+                <th class="text-center" style="width: 130px; min-width: 130px;">Updated By</th>
+                <th class="text-center" style="width: 80px; min-width: 80px;">History</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (project of paginatedProjects; track project.projectCode; let i = $index) {
+              <tr>
+                <td class="text-center">
+                  <div class="table-actions">
+                    <button type="button" class="table-action-button edit" matTooltip="Edit" aria-label="Edit project"
+                      (click)="onEdit(project)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button type="button" class="table-action-button delete" matTooltip="Delete"
+                      aria-label="Delete project" (click)="onDelete(project)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button type="button" class="table-action-button archive" matTooltip="Archive Project"
+                      aria-label="Archive project" (click)="onArchive(project)" style="color: gray;">
+                      <mat-icon>archive</mat-icon>
+                    </button>
+                    <button type="button" class="table-action-button save" matTooltip="Save as template"
+                      aria-label="Save as template" (click)="saveAsTemplate(project)" style="color: #28a745;">
+                      <mat-icon>save</mat-icon>
+                    </button>
+                    <button type="button" class="table-action-button undo" matTooltip="Reset Template"
+                      aria-label="Reset template" (click)="resetTemplateConfirmation(project)">
+                      <i class="fa fa-undo" style="color: #f39c12;"></i>
+                    </button>
+                  </div>
+                </td>
+               
+                <td>
+                  <a class="project-name-link" [routerLink]="['/projects', 'dashboard']"
+                    [queryParams]="{ projectCode: project.projectCode, projectName: project.productName }">
+                    {{ project.productName }}
+                  </a>
+                </td>
+                 <td>{{ project.projectCode }}</td>
+                <td>{{ project.molecule }}</td>
+                <td>{{ project.division }}</td>
+                <td>{{ project.starProduct }}</td>
+                <td>{{ project.registrationType }}</td>
+                <td>{{ project.projectOwner }}</td>
+                <td>{{ project.projectLead }}</td>
+                <td>{{ project.priority || project.priorityOfProject }}</td>
+                <td>{{ project.projectStartDate || project.projectInitiatedOn }}</td>
+                <td>{{ project.projectEndDate || project.projectCompletedDate }}</td>
+                <td>{{ project.projectBudget || project.estimatedCostForDevelopment }}</td>
+                <td>{{ project.market || project.targetMarket }}</td>
+                <td>{{ project.marketSizeLast3Years }}</td>
+                <td>{{ project.marketSizeUsdMnYr || project.marketSizeInUsd }}</td>
+                <td>{{ project.projectedMarketShare }}</td>
+                <td>{{ project.commercialAttractiveness }}</td>
+                <td>{{ project.projectedNpv }}</td>
+                <td>{{ project.dosageForm }}</td>
+                <td>{{ project.strength }}</td>
+                <td>{{ project.fillVolume }}</td>
+                <td>{{ project.pharmacopoeia }}</td>
+                <td>{{ project.packagingDetails }}</td>
+                <td>{{ project.innovatorCompany }}</td>
+                <td>{{ project.innovatorBrandName }}</td>
+                <td>{{ project.innovatorDosageForm }}</td>
+                <td>{{ project.innovatorStrengths }}</td>
+                <td>{{ project.innovatorApprovalDate }}</td>
+                <td>{{ project.innovatorPackPresentation }}</td>
+                <td>{{ project.innovatorBioStrength }}</td>
+                <td>{{ project.rldInformation }}</td>
+                <td>{{ project.innovatorVsJodas }}</td>
+                <td>{{ project.ipDetails }}</td>
+                <td>{{ project.apiManufacturer }}</td>
+                <td>{{ project.polymorphForm }}</td>
+                <td>{{ project.cepDmfNoReceiptStatus }}</td>
+                <td>{{ project.dmfAsmfCepReceived }}</td>
+                <td>{{ project.apiVendorQualification }}</td>
+                <td>{{ project.apiMl }}</td>
+                <td>{{ project.apiGmp }}</td>
+                <td>{{ project.ml }}</td>
+                <td>{{ project.whoGmp }}</td>
+                <td>{{ project.bioStudyCroName }}</td>
+                <td>{{ project.bioStudyCroGmpStatus }}</td>
+                <td>{{ project.beNoc }}</td>
+                <td>{{ project.studyTimePeriod }}</td>
+                <td>{{ project.bioStudyReport }}</td>
+                <td [matTooltip]="project.remarks || ''">{{ project.remarks }}</td>
+                <td class="text-center" style="width: 70px; min-width: 70px; max-width: 80px;">
+                  <button type="button" class="status-button" [class.status-active]="project.status === 'Active'" [class.status-inactive]="project.status === 'Inactive'" (click)="onStatusChange(project)">
+                    {{ project.status || 'Active' }}
+                  </button>
+                </td>
+                <td class="text-center" style="width: 110px; min-width: 110px; white-space: nowrap;">
+                  {{ project.updatedDate }}
+                </td>
+                <td class="text-center" style="width: 130px; min-width: 130px; white-space: nowrap;">
+                  {{ project.updatedBy || '—' }}
+                </td>
+                <td class="text-center" style="vertical-align: middle;">
+                  <a href="javascript:void(0)" class="history-number-link" (click)="openHistory(project)" matTooltip="View Record History">
+                    {{ project.historyCount || getHistoryCount(i) }}
+                  </a>
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="52" class="empty-table text-center p-3">No records found</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <mat-paginator [length]="filteredProjects.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+        </mat-paginator>
+
+        <!-- Fixed Scroll Buttons -->
+        <button class="mine" mat-fab style="background-color: #cecdcd; position: fixed; bottom: 80px; right: 110px; z-index: 9999;"
+          (click)="scrollLeft()">
+          <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+        </button>
+        <button class="mine" mat-fab style="background-color: #cecdcd; position: fixed; bottom: 80px; right: 40px; z-index: 9999;"
+          (click)="scrollRight()">
+          <mat-icon style="color: #414141;">fast_forward</mat-icon>
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

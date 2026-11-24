@@ -1,0 +1,219 @@
+<div class="taskcontrol-container">
+
+  <!-- ======================================================== -->
+  <!-- TOP FILTERS: DIVISION, LOCATION & GO (LIKE DELAY REASONS) -->
+  <!-- ======================================================== -->
+  <div class="taskcontrol-top-bar">
+    <div class="filters-row">
+      <div class="filter-item">
+        <label class="filter-label">Division:</label>
+        <mat-select [(ngModel)]="selectedDivision" class="app-custom-select">
+          @for (div of divisionsList; track div) {
+            <mat-option [value]="div">{{ div }}</mat-option>
+          }
+        </mat-select>
+      </div>
+
+      <div class="filter-item">
+        <label class="filter-label">Location:</label>
+        <mat-select [(ngModel)]="selectedLocation" class="app-custom-select">
+          @for (loc of locationsList; track loc) {
+            <mat-option [value]="loc">{{ loc }}</mat-option>
+          }
+        </mat-select>
+      </div>
+
+      <button type="button" class="app-btn app-btn-primary go-btn" (click)="onApplyFilters()">
+        <span>Go</span>
+        <mat-icon class="go-icon">arrow_forward</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- ROW 1: 5 READONLY KPI CARDS                -->
+  <!-- Initiated, Overdue, Completed,             -->
+  <!-- Pending Approval, Approved                 -->
+  <!-- ========================================== -->
+  <div class="taskcontrol-kpi-grid">
+    @for (card of kpiCards; track card.title) {
+      <div class="kpi-card clickable-card"
+           [class.active-kpi-card]="selectedStatusFilter === card.title"
+           [ngClass]="[card.colorClass, card.borderClass]"
+           (click)="onStatusFilterClick(card.title)"
+           [attr.title]="'Click to filter by ' + card.title">
+        <div class="kpi-card-header">
+          <div class="kpi-value">{{ card.value }}</div>
+          <mat-icon class="kpi-icon">{{ card.icon }}</mat-icon>
+        </div>
+        <div class="kpi-title">{{ card.title }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- ========================================== -->
+  <!-- ROW 2: 3 CHARTS                            -->
+  <!-- 1. Tasks by Stage (Clickable Pie/Donut)   -->
+  <!-- 2. Overdue Tasks Trend (Line Chart)        -->
+  <!-- 3. Tasks by Priority (Horizontal Bar)      -->
+  <!-- ========================================== -->
+  <div class="taskcontrol-charts-grid">
+
+    <!-- Chart 1: Tasks by Status -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="d-flex align-items-center gap-2">
+          <mat-icon class="card-header-icon" style="color: #8b5cf6;">pie_chart</mat-icon>
+          <h3 class="chart-card-title">TASKS BY STATUS</h3>
+        </div>
+        @if (selectedStatusFilter) {
+          <span class="chart-hint-badge">Filtered: {{ selectedStatusFilter }}</span>
+        } @else {
+          <span class="chart-hint">Click slice to filter table</span>
+        }
+      </div>
+      <div class="chart-card-body p-0">
+        <div class="tasks-stage-chart-layout">
+          <div class="donut-chart-box">
+            <div id="tasksByStageChartContainer" style="width: 100%; height: 210px;"></div>
+          </div>
+          <div class="stage-legend-list">
+            @for (stage of stageList; track stage.name) {
+              <div class="stage-legend-item"
+                   [class.active-legend]="selectedStatusFilter === stage.name"
+                   (click)="onStatusFilterClick(stage.name)"
+                   matTooltip="Click to filter by {{ stage.name }}">
+                <span class="stage-color-dot" [style.background-color]="stage.color"></span>
+                <span class="stage-name-label">{{ stage.name }}</span>
+                <span class="stage-count-label">
+                  <strong>{{ stage.count }}</strong>
+                  <span class="stage-pct-label">({{ stage.pct }}%)</span>
+                </span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart 2: Overdue Tasks Trend -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="d-flex align-items-center gap-2">
+          <mat-icon class="card-header-icon" style="color: #3b82f6;">trending_up</mat-icon>
+          <h3 class="chart-card-title">OVERDUE TASKS TREND</h3>
+        </div>
+      </div>
+      <div class="chart-card-body p-0">
+        <div id="overdueTrendChartContainer" style="width: 100%; height: 210px;"></div>
+      </div>
+    </div>
+
+    <!-- Chart 3: Tasks by Priority -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="d-flex align-items-center gap-2">
+          <mat-icon class="card-header-icon" style="color: #f59e0b;">bar_chart</mat-icon>
+          <h3 class="chart-card-title">TASKS BY PRIORITY</h3>
+        </div>
+      </div>
+      <div class="chart-card-body p-0">
+        <div id="tasksByPriorityChartContainer" style="width: 100%; height: 210px;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- ROW 3: DETAILED TASKS DIRECTORY TABLE      -->
+  <!-- Uses Assets Table Classes & Styling        -->
+  <!-- ========================================== -->
+  <div class="task-table-wrapper">
+
+    <!-- Table Header (Clean Title and active stage filter badge, no top filter controls) -->
+    <div class="table-header-bar">
+      <div class="d-flex align-items-center gap-3">
+        <h3 class="table-title">Detailed Tasks Directory</h3>
+        <span class="count-badge">
+          Total: <strong>{{ filteredTasks.length }}</strong> Tasks
+        </span>
+      </div>
+
+      @if (selectedStatusFilter) {
+        <div class="filter-chip chip-stage">
+          <span>Status: <strong>{{ selectedStatusFilter }}</strong></span>
+          <button class="chip-remove-btn" (click)="clearStatusFilter()" matTooltip="Clear Status Filter">✕</button>
+        </div>
+      }
+      @if (selectedStageFilter) {
+        <div class="filter-chip chip-stage">
+          <span>Stage: <strong>{{ selectedStageFilter }}</strong></span>
+          <button class="chip-remove-btn" (click)="clearStageFilter()" matTooltip="Clear Stage Filter">✕</button>
+        </div>
+      }
+    </div>
+
+    <!-- Application Table System (from Assets & _tables.scss) -->
+    <div class="app-table-container taskcontrol-table-container">
+      <div class="table-responsive">
+        <table class="table app-table">
+          <thead>
+            <tr>
+              <th class="text-left" style="min-width: 260px;">Task Name</th>
+              <th class="text-center" style="width: 100px;">Task Code</th>
+              <th class="text-center" style="width: 120px;">Reference</th>
+              <!-- <th class="text-center" style="width: 110px;">Job Code</th> -->
+              <th class="text-center" style="width: 105px;">Start Date</th>
+              <th class="text-center" style="width: 105px;">Due Date</th>
+              <th class="text-center" style="width: 115px;">Completion Date</th>
+              <th class="text-left" style="min-width: 130px;">Responsibility</th>
+              <th class="text-left" style="min-width: 140px;">Department</th>
+              <th class="text-left" style="min-width: 120px;">Section</th>
+              <th class="text-center" style="width: 90px;">Priority</th>
+              <th class="text-center" style="width: 120px;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (task of paginatedTasks; track task.id) {
+              <tr>
+                <td class="text-left">{{ task.taskName }}</td>
+                <td class="text-center">{{ task.taskCode }}</td>
+                <td class="text-center">{{ task.reference }}</td>
+                <!-- <td class="text-center">{{ task.jobCode }}</td> -->
+                <td class="text-center">{{ task.startDate }}</td>
+                <td class="text-center">{{ task.dueDate }}</td>
+                <td class="text-center">{{ task.completionDate }}</td>
+                <td class="text-left">{{ task.responsibility }}</td>
+                <td class="text-left">{{ task.department }}</td>
+                <td class="text-left">{{ task.section }}</td>
+                <td class="text-center">{{ task.priority }}</td>
+                <td class="text-center">{{ task.status }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="12" class="empty-table text-center py-4" style="color: #64748b;">
+                  <mat-icon style="font-size: 36px; width: 36px; height: 36px; color: #94a3b8; display: block; margin: 0 auto 8px auto;">search_off</mat-icon>
+                  No tasks found matching the selected filter criteria.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="table-pagination-footer">
+        <mat-paginator [length]="filteredTasks.length"
+                       [pageSize]="pageSize"
+                       [pageIndex]="pageIndex"
+                       [pageSizeOptions]="[5, 10, 20, 50]"
+                       (page)="handlePage($event)"
+                       class="w-100">
+        </mat-paginator>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

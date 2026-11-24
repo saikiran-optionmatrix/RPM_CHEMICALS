@@ -1,0 +1,168 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>{{ existingImpact ? 'Edit Impact Assessment' : 'Add Impact Assessment' }}</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <p class="dialog-subnote">
+      Owned judgement of the effect on a filing or launch milestone &mdash; not calculated automatically (&sect;9).
+    </p>
+
+    @if (validationError) {
+      <div class="validation-alert" role="alert">{{ validationError }}</div>
+    }
+
+    <form [formGroup]="impactForm" (ngSubmit)="save()">
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-sm-6">
+          <!-- Product-country programme -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Programme :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="programme"
+                placeholder="Select Programme" style="height: 35px; line-height: 23px;">
+                @for (prog of programmeOptions; track prog) {
+                  <mat-option [value]="prog">{{ prog }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['programme'].touched) && f['programme'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Baseline Date -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Baseline Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="baseline" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Assessed to affect -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Affects Milestone? :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="affects"
+                style="height: 35px; line-height: 23px;">
+                @for (opt of affectsOptions; track opt) {
+                  <mat-option [value]="opt">{{ opt }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['affects'].touched) && f['affects'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Date of assessment -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Assessment Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="assessedOn" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+          <!-- Affected milestone -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Affected Milestone :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="e.g. Dossier filing (India)"
+                formControlName="affectedMilestone" style="height: 35px;">
+              @if ((isSubmitting || f['affectedMilestone'].touched) && f['affectedMilestone'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Current Forecast Date -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Current Forecast :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="forecast" style="height: 35px;">
+            </div>
+          </div>
+
+          <!-- Assessment owner -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Assessment Owner :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="owner"
+                placeholder="Select Owner" style="height: 35px; line-height: 23px;">
+                @for (person of ownerOptions; track person) {
+                  <mat-option [value]="person">{{ person }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['owner'].touched) && f['owner'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Assumptions (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Assumptions :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <textarea class="form-control back" rows="3" formControlName="assumptions"
+                placeholder="Document assumptions behind the assessed filing or launch impact"
+                style="resize: vertical; height: auto !important; padding-top: 6px; padding-bottom: 6px;"></textarea>
+              @if ((isSubmitting || f['assumptions'].touched) && f['assumptions'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Evidence (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="control-label" style="margin-top: 5px;">Evidence :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <input class="form-control name back" type="text"
+                placeholder="Review meeting note or document reference"
+                formControlName="evidence" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+          <mat-icon>cancel</mat-icon> <span>Close</span>
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> <span>Save</span>
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>
+

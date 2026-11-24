@@ -1,0 +1,89 @@
+:host {
+  display: block;
+}
+
+.left-nav-pills {
+  .nav-pills {
+    li {
+      width: 100%;
+
+      a {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.app-table-container {
+  width: 100%;
+  padding: 0 !important;
+}
+
+.form-control {
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 4px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  color: #1e293b;
+
+  &:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.form-control.white,
+.form-control-white {
+  background-color: #ffffff !important;
+}
+
+.back {
+  background-color: #fefec4 !important;
+}
+
+.table-action-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+
+  &.delete {
+    color: #dc2626;
+
+    &:hover {
+      background-color: #fef2f2;
+      border-color: #fecaca;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .mat-mdc-dialog-content {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: calc(85vh - 60px) !important;
+  padding: 16px 24px !important;
+}

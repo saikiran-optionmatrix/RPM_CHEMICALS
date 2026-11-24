@@ -1,0 +1,300 @@
+<div class="allocation-view-container" style="padding: 16px; background: #ffffff;">
+
+  <!-- Page Actions (Filter Toggle Button) -->
+  <div class="app-page-actions" style="margin-bottom: 16px;">
+    <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()">
+      <mat-icon>filter_list</mat-icon>
+      <span>Filter</span>
+    </button>
+  </div>
+
+  @if (showFilter) {
+  <!-- HTML Structure Requirement for this Global CSS Template -->
+  <mat-card class="app-filter-panel" style="margin-bottom: 20px;">
+    <mat-card-content>
+      <div class="app-filter-grid">
+
+        <!-- 1. Wrap your fields here -->
+        <div class="app-filter-fields">
+          <!-- Department -->
+          <div class="app-filter-field">
+            <label for="filterDepartment">Department:</label>
+            <mat-form-field appearance="outline" class="app-filter-control">
+              <mat-select id="filterDepartment" [(ngModel)]="filterDepartment" placeholder="Select Department">
+                <mat-option value="">All Departments</mat-option>
+                <mat-option value="R&D">R&D</mat-option>
+                <mat-option value="Chemical Engineering">Chemical Engineering</mat-option>
+                <mat-option value="Process Chemistry">Process Chemistry</mat-option>
+                <mat-option value="Quality Assurance">Quality Assurance</mat-option>
+                <mat-option value="EHS & Regulatory">EHS & Regulatory</mat-option>
+                <mat-option value="Process Technology">Process Technology</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Section -->
+          <div class="app-filter-field">
+            <label for="filterSection">Section:</label>
+            <mat-form-field appearance="outline" class="app-filter-control">
+              <mat-select id="filterSection" [(ngModel)]="filterSection" placeholder="Select Section">
+                <mat-option value="">All Sections</mat-option>
+                <mat-option value="Polymer Synthesis & Reaction Engineering">Polymer Synthesis & Reaction Engineering</mat-option>
+                <mat-option value="Process Chemistry & Analytical Lab">Process Chemistry & Analytical Lab</mat-option>
+                <mat-option value="Scale-Up & Pilot Plant">Scale-Up & Pilot Plant</mat-option>
+                <mat-option value="Quality Control & Materials Testing">Quality Control & Materials Testing</mat-option>
+                <mat-option value="EHS, Regulatory & Process Safety">EHS, Regulatory & Process Safety</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Project -->
+          <div class="app-filter-field">
+            <label for="filterProject">Project:</label>
+            <mat-form-field appearance="outline" class="app-filter-control">
+              <mat-select id="filterProject" [(ngModel)]="filterProject" placeholder="Select Project">
+                <mat-option value="">All Projects</mat-option>
+                <mat-option value="2026/CHM/006">2026/CHM/006 - Acrylic Emulsion Binder 50% Solids</mat-option>
+                <mat-option value="2026/CHM/001">2026/CHM/001 - Waterborne Polyurethane Dispersion</mat-option>
+                <mat-option value="2026/CHM/002">2026/CHM/002 - Bio-based Epoxy Crosslinker</mat-option>
+                <mat-option value="2026/CHM/003">2026/CHM/003 - High Purity Electronic Grade IPA</mat-option>
+                <mat-option value="2026/CHM/004">2026/CHM/004 - High Performance Epoxy Coating</mat-option>
+                <mat-option value="2026/CHM/005">2026/CHM/005 - Polyamide 66 High-Tenacity Resin</mat-option>
+                <mat-option value="2026/CHM/007">2026/CHM/007 - Specialty Fluoropolymer Resin</mat-option>
+                <mat-option value="2026/CHM/008">2026/CHM/008 - UV Curable Oligomer Resin</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Overload (mat-checkbox) -->
+          <div class="app-filter-field" style="display: flex; align-items: center; height: 40px;">
+            <label for="filterOverload">Overload:</label>
+            <mat-checkbox id="filterOverload" [(ngModel)]="filterOverload" color="primary"></mat-checkbox>
+          </div>
+        </div>
+
+        <!-- 2. Actions sit under the fields -->
+        <div class="app-filter-actions">
+          <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+            <mat-icon>search</mat-icon>
+            <span>Search</span>
+          </button>
+          <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+            <mat-icon>settings_backup_restore</mat-icon>
+            <span>Clear</span>
+          </button>
+        </div>
+
+        <!-- 3. Wrap your toggle button -->
+        <div class="app-filter-toggle">
+          <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+            <mat-icon>keyboard_double_arrow_up</mat-icon>
+          </button>
+        </div>
+
+      </div>
+    </mat-card-content>
+  </mat-card>
+  }
+
+  <div class="dashboard-content" style="display: flex; gap: 16px; align-items: flex-start;">
+
+    <!-- Left Calendar Sidebar -->
+    <aside class="calendar-sidebar"
+      style="width: 310px; flex-shrink: 0; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px; box-sizing: border-box;">
+      <div class="calendar-card">
+        <div class="month-selector"
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <button class="nav-arrow" (click)="prevAllocationMonth()" aria-label="Previous month"
+            style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_left</mat-icon>
+          </button>
+          <strong style="font-size: 14px; color: #0f172a;">{{ currentAllocationMonthLabel }}</strong>
+          <button class="nav-arrow" (click)="nextAllocationMonth()" aria-label="Next month"
+            style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_right</mat-icon>
+          </button>
+        </div>
+
+        <div class="calendar-grid"
+          style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; margin-bottom: 16px;">
+          @for (d of dayNames; track $index) {
+          <div class="weekday" style="font-size: 11.5px; color: #64748b; font-weight: 600; padding: 4px 0;">{{ d }}
+          </div>
+          }
+
+          @for (day of allocationCalendarDays; track $index) {
+          <div class="day-cell" [class.faded]="!day.inCurrentMonth" [class.active]="day.isSelected"
+            (click)="filterAllocationByDate(day)"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 42px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease;">
+            <span class="date-num" style="font-size: 13px; line-height: 1;">{{ day.dayNumber }}</span>
+            @if (day.claims > 0) {
+            <span class="claims-num"
+              style="display: block; font-size: 10px; font-weight: 700; color: #2563eb; line-height: 12px; margin-top: 2px;">
+              {{ day.claims }}
+            </span>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="total-claims-box"
+          style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <div class="box-text" style="display: flex; align-items: center; gap: 8px;">
+            <mat-icon style="font-size: 18px; width: 18px; height: 18px; color: #475569;">event_available</mat-icon>
+            <strong style="font-size: 12px; color: #334155;">Allocations in Month</strong>
+          </div>
+          <div class="total-number" style="font-size: 16px; font-weight: 700; color: #2563eb;">
+            {{ totalAllocationsInRange }}
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Table Container -->
+    <main class="app-table-container">
+      <div class="table-responsive">
+        <table class="table app-table">
+          <thead>
+            <tr>
+              <th class="text-left">Name</th>
+              <th class="text-center">Projects</th>
+              <th class="text-center">Tasks</th>
+              <th class="text-center">Approved</th>
+              <th class="text-center">Declined</th>
+              <th class="text-center">Pending</th>
+              <th class="text-center">Work Hours</th>
+              <th class="text-center">Total Hours</th>
+              <th class="text-center">Load (%)</th>
+              <th class="text-center">Messages</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of paginatedAllocations; track $index) {
+            <tr>
+              <!-- Name -->
+              <td class="text-left">  
+                <div class="name-wrapper">
+                 
+                  <span>{{ entry.name }}</span>
+                </div>
+              </td>
+
+              <!-- Projects -->
+              <td class="text-center">
+                <a class="tdLink" role="button" tabindex="0" (click)="openAllocationProjects(entry)" matTooltip="View Projects">
+                  {{ entry.projectsCount }}
+                </a>
+              </td>
+
+              <!-- Tasks -->
+              <td class="text-center">
+                <a class="tdLink" role="button" tabindex="0" (click)="openAllocationTasks(entry)" matTooltip="View Tasks Breakdown">
+                  {{ getTaskFraction(entry) }}
+                </a>
+              </td>
+
+              <!-- Approved -->
+              <td class="text-center col-approved">
+                {{ entry.approved }}
+              </td>
+
+              <!-- Declined -->
+              <td class="text-center col-declined">
+                {{ entry.declined }}
+              </td>
+
+              <!-- Pending -->
+              <td class="text-center col-pending">
+                {{ entry.pending }}
+              </td>
+
+              <!-- Work Hours -->
+              <td class="text-center">
+                {{ entry.workHours || 8.0 }}
+              </td>
+
+              <!-- Total Hours -->
+              <td class="text-center col-total">
+                {{ entry.totalHours }}
+              </td>
+
+              <!-- Load (percentage) -->
+              <td class="text-center"
+                  [style.color]="entry.loadPercentage > 100 ? '#dc2626' : 'inherit'"
+                  [style.font-weight]="entry.loadPercentage > 100 ? '700' : 'normal'">
+                {{ entry.loadPercentage }}%
+              </td>
+
+              <!-- Messages -->
+              <td class="text-center">
+                <a class="tdLink" role="button" tabindex="0" (click)="openMessagesDialog(entry)" matTooltip="View Messages">
+                  {{ entry.messages?.length || 0 }}
+                </a>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="10" class="empty-table">
+                No resource allocation found for the selected date.
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginator -->
+      <mat-paginator [length]="filteredAllocations.length" [pageIndex]="allocationCurrentPage - 1" [pageSize]="allocationPageSize"
+        [pageSizeOptions]="[5, 10, 15, 20, 30]" (page)="handleAllocationPageEvent($event)" [showFirstLastButtons]="true">
+      </mat-paginator>
+    </main>
+
+  </div>
+</div>
+
+<!-- ============ MESSAGES POP-UP DIALOG TEMPLATE ============ -->
+<ng-template #messageDialog let-data>
+  <div class="NewHeader" style="background-color: #3f3f3f; padding: 15px 20px; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+    <h1 mat-dialog-title style="color: white; margin: 0; font-size: 18px; text-align: center;">Messages History</h1>
+  </div>
+  <div mat-dialog-content style="padding: 20px; max-height: 400px; overflow-y: auto;">
+    @if (data.messages && data.messages.length > 0) {
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+        @for (msg of data.messages; track $index) {
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <strong style="color: #1e293b; font-size: 13px;">{{ msg.sender }}</strong>
+              <span style="color: #64748b; font-size: 11px;">{{ msg.date }}</span>
+            </div>
+            <p style="margin: 0; color: #334155; font-size: 12.5px; line-height: 1.4;">{{ msg.text }}</p>
+          </div>
+        }
+      </div>
+    } @else {
+      <div style="text-align: center; color: #94a3b8; padding: 20px 0; font-size: 13px;">
+        No messages recorded yet.
+      </div>
+    }
+
+    <!-- Add New Message -->
+    <div class="dialog-new-message-section" style="margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+      <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 8px;">Add New Message:</label>
+      <textarea
+        class="form-control white dialog-message-textarea"
+        #newMsgInput
+        placeholder="Type message..."
+        rows="3"
+        style="width: 100%; box-sizing: border-box; min-height: 72px; padding: 10px 12px; font-size: 13.5px; line-height: 1.45; color: #1e293b; background-color: #ffffff !important; border: 1px solid #cbd5e1; border-radius: 6px; resize: vertical; outline: none;"
+      ></textarea>
+      <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+        <button type="button" class="app-btn app-btn-primary" (click)="addMessage(data, newMsgInput.value); newMsgInput.value = ''">
+          <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">send</mat-icon>
+          <span>Send Message</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions align="end" style="padding: 12px 20px; border-top: 1px solid #e2e8f0;">
+    <button type="button" class="app-btn app-btn-default" mat-dialog-close>Close</button>
+  </div>
+</ng-template>

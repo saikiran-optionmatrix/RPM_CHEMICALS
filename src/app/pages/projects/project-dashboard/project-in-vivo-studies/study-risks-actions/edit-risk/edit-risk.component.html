@@ -1,0 +1,235 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ existingRisk ? 'Edit ' + existingRisk.id : 'Add Risk / Issue' }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    @if (validationError) {
+      <div class="validation-alert" role="alert">{{ validationError }}</div>
+    }
+
+    <form [formGroup]="riskForm" (ngSubmit)="save()">
+      <div class="row">
+        <!-- Description (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Description :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <textarea class="form-control back" rows="3" formControlName="description"
+                placeholder="Describe the risk or issue"
+                style="resize: vertical; height: auto !important; padding-top: 6px; padding-bottom: 6px;"></textarea>
+              @if ((isSubmitting || f['description'].touched) && f['description'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Left Column -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Category :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="category"
+                placeholder="Select Category" style="height: 35px; line-height: 23px;">
+                @for (cat of categoryOptions; track cat) {
+                  <mat-option [value]="cat">{{ cat }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['category'].touched) && f['category'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Probability :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="probability"
+                style="height: 35px; line-height: 23px;">
+                @for (lvl of levelOptions; track lvl) {
+                  <mat-option [value]="lvl">{{ lvl }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Severity / Priority :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="severity"
+                style="height: 35px; line-height: 23px;">
+                @for (sev of severityOptions; track sev) {
+                  <mat-option [value]="sev">{{ sev }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['severity'].touched) && f['severity'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Responsible Owner :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="owner"
+                placeholder="Select Owner" style="height: 35px; line-height: 23px;">
+                @for (person of ownerOptions; track person) {
+                  <mat-option [value]="person">{{ person }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['owner'].touched) && f['owner'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Status :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="status"
+                style="height: 35px; line-height: 23px;">
+                @for (st of statusOptions; track st) {
+                  <mat-option [value]="st">{{ st }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" [class.add-member-label]="isClosing" style="margin-top: 5px;">Closure Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="closedOn" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Date Identified :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="identifiedOn" style="height: 35px;">
+              @if ((isSubmitting || f['identifiedOn'].touched) && f['identifiedOn'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Impact :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="impact"
+                style="height: 35px; line-height: 23px;">
+                @for (lvl of levelOptions; track lvl) {
+                  <mat-option [value]="lvl">{{ lvl }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Effect :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="Effect on milestone, cost or programme"
+                formControlName="effect" style="height: 35px;">
+              @if ((isSubmitting || f['effect'].touched) && f['effect'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Target Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="targetDate" style="height: 35px;">
+              @if ((isSubmitting || f['targetDate'].touched) && f['targetDate'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Escalation Level :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="escalation"
+                style="height: 35px; line-height: 23px;">
+                @for (esc of escalationOptions; track esc) {
+                  <mat-option [value]="esc">{{ esc }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" [class.add-member-label]="isClosing" style="margin-top: 5px;">Closure Evidence :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="Closure reference / note"
+                formControlName="closureEvidence" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Mitigation (Full Width) -->
+        <div class="col-sm-12">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-2" style="width: 20.8%;">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Mitigation :</label>
+            </div>
+            <div class="col-sm-10" style="width: 79.2%;">
+              <textarea class="form-control back" rows="3" formControlName="mitigation"
+                placeholder="Mitigation / corrective action"
+                style="resize: vertical; height: auto !important; padding-top: 6px; padding-bottom: 6px;"></textarea>
+              @if ((isSubmitting || f['mitigation'].touched) && f['mitigation'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+          <mat-icon>cancel</mat-icon> <span>Close</span>
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> <span>Save</span>
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>
+

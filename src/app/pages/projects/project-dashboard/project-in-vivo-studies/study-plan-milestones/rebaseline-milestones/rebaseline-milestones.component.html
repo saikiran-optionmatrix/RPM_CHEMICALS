@@ -1,0 +1,66 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Formal Rebaseline</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <p class="rebaseline-sub">
+      Sets the baseline of {{ changedMilestones.length }} open milestone(s) to their current forecast.
+      Earlier baselines stay visible (§16).
+    </p>
+
+    <div class="rebaseline-preview-box">
+      @if (changedMilestones.length) {
+        @for (m of changedMilestones; track m.name) {
+        <div class="preview-line">
+          <span>{{ m.name }}:</span>
+          <span>{{ m.baseline }} &rarr; <strong>{{ m.forecast }}</strong></span>
+        </div>
+        }
+      } @else {
+        <div class="muted-empty">No open milestone differs from its baseline.</div>
+      }
+    </div>
+
+    <form [formGroup]="rebaselineForm" (ngSubmit)="save()">
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Approval Reference :</label>
+        </div>
+        <div class="col-sm-8">
+          <input class="form-control name back" type="text" formControlName="approvalRef"
+            placeholder="e.g. CCB-2026-041 / HoD approval" style="height: 35px;">
+          @if ((isSubmitting || f['approvalRef'].touched) && f['approvalRef'].errors?.['required']) {
+            <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+          }
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Reason for Rebaseline :</label>
+        </div>
+        <div class="col-sm-8">
+          <textarea class="form-control back" rows="3" formControlName="reason"
+            placeholder="Enter formal justification for rebaseline"
+            style="min-height: 76px; padding-top: 8px; padding-bottom: 8px;"></textarea>
+          @if ((isSubmitting || f['reason'].touched) && f['reason'].errors?.['required']) {
+            <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+          }
+        </div>
+      </div>
+
+      <div style="margin-top: 15px; margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> <span>Close</span>
+          </button>
+          <button type="submit" class="app-btn app-btn-primary" [disabled]="!changedMilestones.length">
+            <mat-icon>save</mat-icon> <span>Approve rebaseline</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

@@ -1,0 +1,182 @@
+import { Component } from '@angular/core';
+import { PageEvent, MatPaginator } from '@angular/material/paginator';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatSelect, MatOption } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { AddMoleculeComponent } from './add-molecule/add-molecule.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationComponent } from '../../../common/shared/delete-confirmation/delete-confirmation.component';
+import { ConfirmationDialogComponent } from '../../../common/shared/confirmation-dialog/confirmation-dialog.component';
+
+interface Asset {
+  name: string;
+  code: string;
+  status: 'Active' | 'Inactive';
+}
+@Component({
+  selector: 'app-molecules',
+  imports: [
+    MatCard,
+    MatCardContent,
+    MatIcon,
+    MatPaginator,
+    MatFormField,
+    MatSelect,
+    MatOption,
+    FormsModule,
+    MatInput,
+  ],
+  templateUrl: './molecules.component.html',
+  styleUrl: './molecules.component.scss',
+})
+export class MoleculesComponent {
+  constructor(private dialog: MatDialog) {}
+  readonly assets: Asset[] = [
+    {
+      name: 'Technical-Grade Active Ingredient Synthesis Train',
+      code: 'AST-1001',
+      status: 'Active',
+    },
+    {
+      name: 'Polymerization Reactor System',
+      code: 'AST-1002',
+      status: 'Active',
+    },
+    {
+      name: 'Raw Material & Solvent Feed System',
+      code: 'AST-1003',
+      status: 'Active',
+    },
+    {
+      name: 'Downstream Separation & Purification Train (Distillation / Crystallization)',
+      code: 'AST-1004',
+      status: 'Active',
+    },
+    {
+      name: 'Catalyst Preparation & Handling Module',
+      code: 'AST-1005',
+      status: 'Active',
+    },
+    {
+      name: 'Solvent Recovery & Fractional Distillation Unit',
+      code: 'AST-1006',
+      status: 'Active',
+    },
+    {
+      name: 'Drying, Milling & Drum / Bag Packing Line',
+      code: 'AST-1007',
+      status: 'Active',
+    },
+    {
+      name: 'Raw Material & Intermediate Tank Farm Management',
+      code: 'AST-1008',
+      status: 'Active',
+    },
+    {
+      name: 'Analytical Assay & Performance Testing Suite',
+      code: 'AST-1009',
+      status: 'Active',
+    },
+    {
+      name: 'Continuous Flow Reactor Assembly',
+      code: 'AST-1010',
+      status: 'Active',
+    },
+  ];
+
+  showFilter = false;
+
+  keyword = '';
+
+  status = '';
+
+  searchKeyword = '';
+
+  searchStatus = '';
+
+  pageIndex = 0;
+
+  pageSize = 10;
+
+  get filteredAssets(): Asset[] {
+    return this.assets.filter((asset) => {
+      const keywordMatches =
+        !this.searchKeyword ||
+        asset.name.toLowerCase().includes(this.searchKeyword.toLowerCase()) ||
+        asset.code.toLowerCase().includes(this.searchKeyword.toLowerCase());
+
+      const statusMatches = !this.searchStatus || asset.status === this.searchStatus;
+
+      return keywordMatches && statusMatches;
+    });
+  }
+
+  get paginatedAssets(): Asset[] {
+    const startIndex = this.pageIndex * this.pageSize;
+
+    return this.filteredAssets.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  toggleFilter(): void {
+    this.showFilter = !this.showFilter;
+  }
+
+  onSearch(): void {
+    this.searchKeyword = this.keyword.trim();
+
+    this.searchStatus = this.status;
+
+    this.pageIndex = 0;
+  }
+
+  onClear(): void {
+    this.keyword = '';
+
+    this.status = '';
+
+    this.searchKeyword = '';
+
+    this.searchStatus = '';
+
+    this.pageIndex = 0;
+  }
+
+  onAdd(): void {
+    this.dialog.open(AddMoleculeComponent, {
+      width: '2000px',
+      data: { mode: 'add' },
+    });
+  }
+
+  handlePage(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+
+    this.pageSize = event.pageSize;
+  }
+
+  onEdit(asset: Asset): void {
+    this.dialog.open(AddMoleculeComponent, {
+      width: '800px',
+      data: { mode: 'edit', ...asset },
+    });
+  }
+
+  onDelete(asset: Asset): void {
+    this.dialog.open(DeleteConfirmationComponent, { width: '350px', data: asset });
+  }
+
+  onStatusChange(asset: Asset): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: 'auto',
+      data: { title: 'Change Status', content: 'Are you sure you want to change the status?' },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean | undefined) => {
+      if (confirmed) {
+        asset.status = asset.status === 'Active' ? 'Inactive' : 'Active';
+      }
+    });
+  }
+}

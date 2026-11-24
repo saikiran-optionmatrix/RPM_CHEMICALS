@@ -1,0 +1,52 @@
+<div class="sourcing-checklist-page">
+  <!-- Project Name & Back Action Row (from Budgeting screen) -->
+  <div class="project-info-row">
+    <div class="project-name-group">
+      <h2 class="project-heading">{{ projectName }}</h2>
+      <span class="budget-template-pill">{{ projectCode }} · Per project master</span>
+    </div>
+
+    <div class="project-actions">
+      <button type="button" class="app-back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Proxy product switcher bar -->
+  <div class="proxy-switcher-bar">
+    <!-- <span class="switcher-label">Prototype only: switch proxy product (in PRAGATI this comes from the open project):</span> -->
+    <div class="pills-group">
+      @for (p of allProjects; track p.id) {
+      <button type="button" class="proxy-pill-btn" [class.active]="p.id === activeProject?.id"
+        (click)="onSelectProject(p.id)">
+        {{ p.short }}
+      </button>
+      }
+    </div>
+  </div>
+
+  <!-- Subtabs Navigation Bar (Checklist, Materials Plan, Pre-Qualification Checklist) -->
+  <div class="ct-tabs-wrapper">
+    <div class="ct-tabs-bar" role="tablist">
+      <button type="button" role="tab" class="ct-tab-btn" [class.active]="activeTab === 'items'"
+        [attr.aria-selected]="activeTab === 'items'" (click)="selectTab('items')">
+        <span>Checklist</span>
+      </button>
+      <button type="button" role="tab" class="ct-tab-btn" [class.active]="activeTab === 'materials-plan'"
+        [attr.aria-selected]="activeTab === 'materials-plan'" (click)="selectTab('materials-plan')">
+        <span>Materials Plan</span>
+      </button>
+      <button type="button" role="tab" class="ct-tab-btn" [class.active]="activeTab === 'pre-qualification'"
+        [attr.aria-selected]="activeTab === 'pre-qualification'" (click)="selectTab('pre-qualification')">
+        <span>Pre-Qualification Checklist</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Routed Subtab Content Outlet -->
+  <div class="routed-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

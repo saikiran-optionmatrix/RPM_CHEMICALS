@@ -1,0 +1,88 @@
+<div class="delay-reasons-tab">
+  <!-- Top Grid: Occurrences Column Chart + Donut Chart -->
+  <div class="top-charts-grid">
+    <!-- Left Card: Delay Occurrences by Stage -->
+    <div class="dash-card">
+      <div class="card-header">
+        <h3 class="card-title">DELAY OCCURRENCES BY STAGE</h3>
+        <p class="card-subtitle">Delay count across lifecycle stages S1 to S12</p>
+      </div>
+      <div class="chart-wrapper">
+        <div id="delayOccurrencesChartContainer"></div>
+      </div>
+    </div>
+
+    <!-- Right Card: Share of Delays Donut -->
+    <div class="dash-card donut-card">
+      <div class="card-header">
+        <h3 class="card-title">SHARE OF DELAYS</h3>
+        <p class="card-subtitle">Distribution of root causes</p>
+      </div>
+      <div class="donut-content-wrapper">
+        <div class="donut-chart-box">
+          <div id="delayShareChartContainer"></div>
+        </div>
+        <div class="donut-legend">
+          <div class="legend-row">
+            <span class="dot" style="background-color: #00796b;"></span>
+            <span class="legend-label">S4: Process Opt.</span>
+            <span class="legend-val">18</span>
+          </div>
+          <div class="legend-row">
+            <span class="dot" style="background-color: #e67e22;"></span>
+            <span class="legend-label">S7: Safety & Reg.</span>
+            <span class="legend-val">15</span>
+          </div>
+          <div class="legend-row">
+            <span class="dot" style="background-color: #3498db;"></span>
+            <span class="legend-label">S3: Route Scouting</span>
+            <span class="legend-val">14</span>
+          </div>
+          <div class="legend-row">
+            <span class="dot" style="background-color: #2ecc71;"></span>
+            <span class="legend-label">S6: Bench-to-Pilot</span>
+            <span class="legend-val">12</span>
+          </div>
+          <div class="legend-row">
+            <span class="dot" style="background-color: #d9534f;"></span>
+            <span class="legend-label">S10: Demo Scale</span>
+            <span class="legend-val">11</span>
+          </div>
+          <div class="legend-row">
+            <span class="dot" style="background-color: #5a6268;"></span>
+            <span class="legend-label">Others</span>
+            <span class="legend-val">49</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Table Card: Top Delay Reason for Each Stage -->
+  <div class="dash-card">
+    <div class="card-header">
+      <h3 class="card-title">TOP DELAY REASON FOR EACH STAGE</h3>
+    </div>
+
+    <div class="table-responsive">
+      <table class="delay-table">
+        <thead>
+          <tr>
+            <th>STAGE</th>
+            <th>TOP DELAY REASON</th>
+            <th>OCCURRENCES</th>
+            <th>AVG. DAYS LOST</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of stageDelayRows">
+            <td class="stage-cell">{{ row.stage }}</td>
+            <td class="reason-cell">{{ row.reason }}</td>
+            <td class="num-cell">{{ row.occurrences }}</td>
+            <td class="num-cell" [ngClass]="{'high-days': row.isHighDays}">{{ row.daysLost }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

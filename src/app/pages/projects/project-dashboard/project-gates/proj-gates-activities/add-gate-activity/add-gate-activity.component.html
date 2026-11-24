@@ -1,0 +1,215 @@
+<div class="NewHeader">
+  <h3 mat-dialog-title>
+    {{ isEditMode ? 'Edit Activity' : 'Add Activity' }}
+  </h3>
+</div>
+
+<div mat-dialog-content class="modal-dialog-content">
+  <div class="modal-body-container">
+    <!-- Sidebar Pills -->
+    <div class="sidebar-pills-col">
+      <div class="m-auto pills pt-2 pr-0">
+        <ul class="nav flex-column pr-0" style="list-style-type: none; padding: 0; margin: 0;">
+          <li class="nav-item" style="margin-top: 10px;"
+            [ngClass]="activeStep === 1 ? 'active nav-item' : 'nav-item'" (click)="activeStep = 1">
+            <a mat-raised-button class="nav-link text-left py-2 width">Overview</a>
+          </li>
+          <li class="nav-item" style="margin-top: 10px;"
+            [ngClass]="activeStep === 2 ? 'active nav-item' : 'nav-item'" (click)="activeStep = 2">
+            <a mat-raised-button class="nav-link text-left py-2 width">Timeline</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Form Fields Column -->
+    <div class="fields-col">
+      @if (activeStep === 1) {
+        <div>
+          <!-- Activity Name -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="control-label">Activity Name: </label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="text" class="form-control back" [(ngModel)]="formData.activityName"
+                placeholder="e.g. Method Validation Protocol" style="height: 35px;" />
+            </div>
+          </div>
+
+          <!-- Activity Code -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="control-label">Activity Code: </label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="text" class="form-control back" [(ngModel)]="formData.activityCode"
+                placeholder="e.g. ACT-001" style="height: 35px;" />
+            </div>
+          </div>
+
+          <!-- Responsibility -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Responsibility:<span style="color: red;">*</span></label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <mat-select [(ngModel)]="formData.responsibility" class="form-control back"
+                placeholder="Select Responsible Person" style="height: 35px; line-height: 23px;">
+                @for (r of responsibilities; track r) {
+                  <mat-option [value]="r">{{ r }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Department -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Department:<span style="color: red;">*</span></label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <mat-select [(ngModel)]="formData.department" class="form-control back"
+                placeholder="Select Department" style="height: 35px; line-height: 23px;">
+                @for (d of departments; track d) {
+                  <mat-option [value]="d">{{ d }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Slack -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Slack: </label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="text" class="form-control back" [(ngModel)]="formData.slack"
+                placeholder="e.g. 15 days" style="height: 35px;" />
+            </div>
+          </div>
+
+          <!-- Section -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Section:<span style="color: red;">*</span></label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <mat-select [(ngModel)]="formData.section" class="form-control back"
+                placeholder="Select Section" style="height: 35px; line-height: 23px;">
+                @for (s of sections; track s) {
+                  <mat-option [value]="s">{{ s }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Priority -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Priority:<span style="color: red;">*</span></label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <mat-select [(ngModel)]="formData.priority" class="form-control back"
+                placeholder="Select Priority" style="height: 35px; line-height: 23px;">
+                <mat-option value="High">High</mat-option>
+                <mat-option value="Medium">Medium</mat-option>
+                <mat-option value="Low">Low</mat-option>
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Plan Effort -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Plan Effort:<span style="color: red;">*</span></label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="text" class="form-control back" [(ngModel)]="formData.planEffort"
+                placeholder="40 hrs" style="height: 35px;" />
+            </div>
+          </div>
+
+          <!-- Plan Duration -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Plan Duration:<span style="color: red;">*</span></label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="text" class="form-control back" [(ngModel)]="formData.planDuration"
+                placeholder="10 days" style="height: 35px;" />
+            </div>
+          </div>
+
+          <!-- Remarks -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Remarks:<span style="color: red;">*</span></label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="text" class="form-control back" [(ngModel)]="formData.remarks"
+                placeholder="Notes..." style="height: 35px;" />
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (activeStep === 2) {
+        <div>
+          <!-- Plan Start Date -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Plan Start Date:</label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="date" class="form-control back" [(ngModel)]="formData.planStart"
+                style="height: 35px;" />
+            </div>
+          </div>
+
+          <!-- Plan End Date -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Plan End Date:</label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="date" class="form-control back" [(ngModel)]="formData.planEnd"
+                style="height: 35px;" />
+            </div>
+          </div>
+
+          <!-- Actual Start Date -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Actual Start Date:</label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="date" class="form-control back" [(ngModel)]="formData.actualStart"
+                style="height: 35px;" />
+            </div>
+          </div>
+
+          <!-- Actual End Date -->
+          <div class="row form-row">
+            <div class="col-sm-4 field-label-col">
+              <label class="add-member-label">Actual End Date:</label>
+            </div>
+            <div class="col-sm-8 field-input-col">
+              <input type="date" class="form-control back" [(ngModel)]="formData.actualEnd"
+                style="height: 35px;" />
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<mat-dialog-actions align="end" class="dialog-actions-container">
+  <button type="button" class="app-btn app-btn-default" (click)="close()">
+    <mat-icon>cancel</mat-icon> Close
+  </button>
+  <button type="button" class="app-btn app-btn-primary" (click)="save()">
+    <mat-icon>save</mat-icon> Save
+  </button>
+</mat-dialog-actions>

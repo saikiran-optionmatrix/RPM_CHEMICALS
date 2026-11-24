@@ -1,0 +1,117 @@
+<div class="budgeting-screen-wrapper">
+  <!-- Project Name & Back Action Row -->
+  <div class="project-info-row">
+    <div class="project-name-group">
+      <h2 class="project-heading">{{ projectName }}</h2>
+      <span class="budget-template-pill">{{ templateTag }}</span>
+    </div>
+
+    <div class="project-actions">
+      <button type="button" class="app-back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 6 Top KPI Cards -->
+  <div class="budget-kpi-grid">
+    <!-- 1. BUDGET (Blue) -->
+    <div class="kpi-card kpi-blue">
+      <span class="kpi-label">BUDGET</span>
+      <span class="kpi-value">Rs. {{ format(kpi.budget) }}</span>
+    </div>
+
+    <!-- 2. ACTUAL (Green) -->
+    <div class="kpi-card kpi-green">
+      <span class="kpi-label">ACTUAL</span>
+      <span class="kpi-value">Rs. {{ format(kpi.actual) }}</span>
+    </div>
+
+    <!-- 3. COMPLETION (SPEND) (Orange) -->
+    <div class="kpi-card kpi-orange">
+      <span class="kpi-label">COMPLETION (SPEND)</span>
+      <span class="kpi-value">{{ kpi.completionPercent }}%</span>
+    </div>
+
+    <!-- 4. MAN / MATERIAL / RESOURCE (Purple) -->
+    <div class="kpi-card kpi-purple">
+      <span class="kpi-label">MAN / MATERIAL / RESOURCE</span>
+      <span class="kpi-value">{{ format(kpi.manP) }} / {{ format(kpi.matP) }} / {{ format(kpi.resP) }}</span>
+    </div>
+
+    <!-- 5. NOT ESTIMATED (Red) -->
+    <div class="kpi-card kpi-red">
+      <span class="kpi-label">NOT ESTIMATED</span>
+      <span class="kpi-value">{{ kpi.notEstimatedCount }} activities</span>
+    </div>
+
+    <!-- 6. BASELINE (Teal) -->
+    <div class="kpi-card kpi-teal">
+      <span class="kpi-label">BASELINE</span>
+      <span class="kpi-value">{{ kpi.baseline }}</span>
+    </div>
+  </div>
+
+  <!-- 7 Navigation Sub-Tabs -->
+  <div class="budget-tabs-nav" role="tablist">
+    @for (t of tabs; track t.key) {
+      <button type="button"
+              class="budget-tab-btn"
+              [class.active]="activeTab === t.key"
+              role="tab"
+              [attr.aria-selected]="activeTab === t.key"
+              (click)="selectTab(t.key)">
+        <mat-icon class="tab-icon">{{ t.icon }}</mat-icon>
+        <span>{{ t.label }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Drill-down Banner (When activeTab != 'wbs' and filter is active) -->
+  @if (activeTab !== 'wbs' && filterState.n) {
+    <div class="drilldown-banner">
+      <mat-icon class="drill-icon">filter_alt</mat-icon>
+      <div class="drill-content">
+        <strong>{{ getFilteredNodeName() }}{{ getFilteredBucketName() }}</strong>
+        <span class="drill-sub"> — rows that roll up to it are highlighted.</span>
+        @if (getOtherSheets().length > 0) {
+          <span class="other-sheets-links">
+            Also in: 
+            @for (other of getOtherSheets(); track other.key; let last = $last) {
+              <a class="jump-link" role="button" tabindex="0" (click)="selectTab(other.key)">{{ other.label }}</a>@if (!last) { · }
+            }
+          </span>
+        }
+      </div>
+      <div class="drill-actions">
+        <button type="button" class="app-btn-light sm" (click)="backToWbsSummary()">
+          <mat-icon>arrow_back</mat-icon>
+          <span>WBS Summary</span>
+        </button>
+        <button type="button" class="icon-clear-btn" (click)="clearFilter()" aria-label="Clear filter">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Tab View Panels -->
+  <div class="budget-panel-content">
+    @if (activeTab === 'wbs') {
+      <app-wbs-summary></app-wbs-summary>
+    } @else if (activeTab === 'main') {
+      <app-main-cost-sheet></app-main-cost-sheet>
+    } @else if (activeTab === 'ml') {
+      <app-material-list></app-material-list>
+    } @else if (activeTab === 'cap') {
+      <app-capex></app-capex>
+    } @else if (activeTab === 'man') {
+      <app-man-power></app-man-power>
+    } @else if (activeTab === 'rld') {
+      <app-budget-rld></app-budget-rld>
+    } @else if (activeTab === 'ana') {
+      <app-analytical-cost></app-analytical-cost>
+    }
+  </div>
+</div>

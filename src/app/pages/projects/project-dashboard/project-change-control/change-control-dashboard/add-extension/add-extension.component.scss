@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.add-member-label,
+.control-label {
+  color: #334155;
+  font-size: 13.5px;
+  font-weight: 500;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.form-control {
+  min-height: 36px;
+  height: 36px;
+  padding: 4px 10px;
+  font-size: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+
+  &:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    outline: none;
+  }
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+.back {
+  background-color: #fefec4 !important;
+}
+
+.white {
+  background-color: #ffffff !important;
+}

@@ -1,0 +1,154 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Study Budget &middot; {{ study?.studyId }}</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <p class="dialog-subnote">Paid and invoiced are recorded separately (&sect;11).</p>
+
+    <form [formGroup]="budgetForm" (ngSubmit)="save()">
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Currency :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="currency"
+                style="height: 35px; line-height: 23px;">
+                @for (cur of currencyOptions; track cur) {
+                  <mat-option [value]="cur">{{ cur }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['currency'].touched) && f['currency'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Approval Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date"
+                formControlName="approvedOn" style="height: 35px;">
+              @if ((isSubmitting || f['approvedOn'].touched) && f['approvedOn'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Quotation Version :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="e.g. v2"
+                formControlName="quoteVersion" style="height: 35px;">
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Approved Changes :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0"
+                formControlName="changes" style="height: 35px;">
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Actual &mdash; Invoiced :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0"
+                formControlName="invoiced" style="height: 35px;">
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Finance Reference :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="PO / invoice number"
+                formControlName="financeRef" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Approved Budget :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0"
+                formControlName="approved" style="height: 35px;">
+              @if ((isSubmitting || f['approved'].touched) && f['approved'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">CRO Quotation :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0"
+                formControlName="quote" style="height: 35px;">
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Contracted Amount :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0"
+                formControlName="contracted" style="height: 35px;">
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Actual &mdash; Paid :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0"
+                formControlName="paid" style="height: 35px;">
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Forecast to Complete :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0"
+                formControlName="forecastToComplete" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+          <mat-icon>cancel</mat-icon> <span>Close</span>
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> <span>Save</span>
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>
+

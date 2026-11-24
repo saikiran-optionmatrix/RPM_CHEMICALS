@@ -1,0 +1,188 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update RLD / Reference Product' : 'Add RLD / Reference Product' }}
+  </h1>
+  <button type="button" class="close-btn" (click)="close()" aria-label="Close dialog">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content class="dialog-body">
+  <form [formGroup]="form" (ngSubmit)="save()">
+
+    <!-- Fieldset 1: Project Link -->
+    <fieldset class="form-section">
+      <legend>Project Link</legend>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Project ID</label>
+          <input class="form-control" [value]="project.code" readonly>
+        </div>
+        <div class="col-md-5 mb-3">
+          <label class="form-label">Project Name</label>
+          <input class="form-control" [value]="project.name" readonly>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">Comparator ID</label>
+          <input class="form-control" formControlName="id" readonly>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">Target Market</label>
+          <input class="form-control" formControlName="market">
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Fieldset 2: Reference Product Details -->
+    <fieldset class="form-section">
+      <legend>Reference Product</legend>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Innovator (Company)</label>
+          <input class="form-control" [value]="project.innov" readonly>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">RLD / Brand (As Purchased) *</label>
+          <input class="form-control back" formControlName="brand" placeholder="e.g. Zytiga® 500 mg">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Manufacturer *</label>
+          <input class="form-control back" formControlName="mfr" placeholder="e.g. Janssen-Cilag">
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label class="form-label">MA / NDA Holder *</label>
+          <input class="form-control back" formControlName="mah" placeholder="e.g. Janssen-Cilag International NV">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Country of Manufacture *</label>
+          <input class="form-control back" formControlName="mfgC" placeholder="e.g. Italy">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Country of Purchase *</label>
+          <input class="form-control back" formControlName="purch" placeholder="e.g. Germany">
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Dosage Form *</label>
+          <select class="form-select back" formControlName="form">
+            @for (df of dosageForms; track df) {
+            <option [value]="df">{{ df }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Strength *</label>
+          <input class="form-control back" formControlName="strength" placeholder="e.g. 500 mg">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">Fill Volume</label>
+          <input class="form-control" formControlName="fill" placeholder="e.g. NA / 5 mL">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">Units Per Pack *</label>
+          <input class="form-control back" type="number" formControlName="upp" min="1">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">Unit Type *</label>
+          <input class="form-control back" formControlName="unit" placeholder="tablets / PFS">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Pack Presentation *</label>
+          <input class="form-control back" formControlName="pack" placeholder="e.g. 60 tablets / carton">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Stock Pool Key * (Shared Stock Identifier)</label>
+          <input class="form-control back" formControlName="pool" placeholder="e.g. RP-ZYT500-DE">
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Fieldset 3: Regulatory Suitability -->
+    <fieldset class="form-section">
+      <legend>Regulatory Suitability</legend>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Identifier Type *</label>
+          <select class="form-select back" formControlName="idType">
+            @for (t of idTypes; track t) {
+            <option [value]="t">{{ t }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">NDC No. / MA No. *</label>
+          <input class="form-control back" formControlName="idNo" placeholder="e.g. EU/1/11/714/00x">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">RLD (US)</label>
+          <input class="form-control" formControlName="rld" placeholder="Yes / N/A">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">Ref Standard (US)</label>
+          <input class="form-control" formControlName="rs" placeholder="Yes / N/A">
+        </div>
+        <div class="col-md-2 mb-3">
+          <label class="form-label">RMP (EU/Other)</label>
+          <input class="form-control" formControlName="rmp" placeholder="Yes / N/A">
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Evidence Source</label>
+          <input class="form-control" formControlName="evid" placeholder="e.g. EMA EPAR">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">RIMS / Controlled Doc</label>
+          <input class="form-control" formControlName="rims" placeholder="e.g. RIMS-RLD-001-A">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Verified On</label>
+          <input class="form-control" type="date" formControlName="verOn">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Verified By</label>
+          <input class="form-control" formControlName="verBy" placeholder="RA Exec">
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Fieldset 4: RA Approval -->
+    <fieldset class="form-section">
+      <legend>RA Approval</legend>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">RA Approval Status *</label>
+          <select class="form-select back" formControlName="ra">
+            @for (st of raStatuses; track st) {
+            <option [value]="st">{{ st }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">RA Approver</label>
+          <input class="form-control" formControlName="raBy" placeholder="e.g. RA Head">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Approval Date</label>
+          <input class="form-control" type="date" formControlName="raOn">
+        </div>
+        <div class="col-md-12 mb-2">
+          <label class="form-label">Remarks</label>
+          <textarea class="form-control" rows="2" formControlName="rem" placeholder="Optional notes..."></textarea>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="dialog-actions-footer">
+      <button type="button" class="app-btn app-btn-default" (click)="close()">
+        <mat-icon>cancel</mat-icon> Close
+      </button>
+      <button type="submit" class="app-btn app-btn-primary">
+        <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Save' }}
+      </button>
+    </div>
+
+  </form>
+</div>
+

@@ -1,0 +1,172 @@
+@if (study) {
+<div class="plan-toolbar">
+  <div class="plan-actions">
+    <button type="button" class="app-btn app-btn-primary" (click)="openAddCustomMilestone()">
+      <mat-icon>add</mat-icon>
+      <span>Custom milestone</span>
+    </button>
+
+    <button type="button" class="app-btn app-btn-default" (click)="openRebaseline()">
+      <mat-icon>restart_alt</mat-icon>
+      <span>Rebaseline</span>
+    </button>
+  </div>
+</div>
+
+<!-- Scroll Buttons -->
+<div class="d-flex justify-content-end mb-2" style="gap: 10px;">
+  <button type="button" class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+    (click)="scrollLeft()" matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button type="button" class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;"
+    (click)="scrollRight()" matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>
+</div>
+
+<div class="app-table-container milestones-table-container">
+  <div #scrollContainer class="table-responsive">
+    <table class="table app-table milestones-table">
+      <thead>
+        <tr>
+          <th class="text-center col-actions">Actions</th>
+          <th class="text-left col-phase">Phase</th>
+          <th class="text-left col-milestone">Milestone</th>
+          <th class="text-left col-owner">Owner</th>
+          <th class="text-left col-date">Baseline</th>
+          <th class="text-left col-date">Forecast</th>
+          <th class="text-left col-date">Actual</th>
+          <th class="text-left col-status">Status</th>
+          <th class="text-right col-num">Fcst var</th>
+          <th class="text-right col-num">Actual var</th>
+          <th class="text-right col-num">Days to fcst</th>
+          <th class="text-left col-reason">Reason for variance</th>
+          <th class="text-left col-dep">Dependency</th>
+          <th class="text-left col-ev">Evidence</th>
+          <th class="text-left col-upd">Last update</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (m of milestones; track m.name + '-' + $index; let i = $index) {
+        <tr [class.is-na-row]="m.status === 'Not applicable'">
+          <td class="text-center">
+            <div class="table-actions">
+              <button type="button" class="table-action-button edit" [attr.aria-label]="'Edit ' + m.name"
+                matTooltip="Update milestone" (click)="openEditMilestone(m, i)">
+                <i class="fa fa-edit"></i>
+              </button>
+            </div>
+          </td>
+          <td class="cell-phase">{{ m.phase }}</td>
+          <td class="cell-milestone">
+            <span>{{ m.name }}</span>
+            @if (isEvidenceRequired(m.name)) {
+            <mat-icon class="inline-meta-icon" matTooltip="Evidence required to complete">attach_file</mat-icon>
+            }
+            @if (m.custom) {
+            <span class="custom-pill">CUSTOM</span>
+            }
+          </td>
+          <td>
+            @if (m.owner) {
+            {{ m.owner }}
+            } @else {
+            <span class="blank-pill">No owner</span>
+            }
+          </td>
+          <td class="text-nowrap">
+            <span>{{ m.baseline || '—' }}</span>
+            @if (m.earlierBaselines.length) {
+            <mat-icon class="inline-meta-icon" [matTooltip]="formatBaselineHistory(m)"
+              matTooltipClass="multiline-tooltip">history</mat-icon>
+            }
+          </td>
+          <td class="text-nowrap">
+            @if (m.forecast) {
+            {{ m.forecast }}
+            } @else if (isOpen(m)) {
+            <span class="blank-pill">No forecast</span>
+            } @else {
+            —
+            }
+          </td>
+          <td class="text-nowrap">{{ m.actual || '—' }}</td>
+          <td>
+            <span class="ms-status-pill" [ngClass]="getStatusClass(m.status)">
+              {{ m.status }}
+            </span>
+          </td>
+          <td class="text-right text-nowrap">
+            @if (getForecastVariance(m); as fcstVar) {
+            <span class="variance-val" [ngClass]="getVarianceClass(fcstVar)">{{ formatVariance(fcstVar) }}</span>
+            } @else if (getForecastVariance(m) === 0) {
+            <span class="variance-val variance-neutral">0 d</span>
+            } @else {
+            <span class="muted-dash">—</span>
+            }
+          </td>
+          <td class="text-right text-nowrap">
+            @if (getActualVariance(m); as actVar) {
+            <span class="variance-val" [ngClass]="getVarianceClass(actVar)">{{ formatVariance(actVar) }}</span>
+            } @else if (getActualVariance(m) === 0) {
+            <span class="variance-val variance-neutral">0 d</span>
+            } @else {
+            <span class="muted-dash">—</span>
+            }
+          </td>
+          <td class="text-right text-nowrap">
+            @if (getDaysToForecast(m); as dtf) {
+            <span class="days-to-fcst" [class.is-overdue]="dtf < 0">{{ dtf }} d</span>
+            } @else if (getDaysToForecast(m) === 0) {
+            <span class="days-to-fcst">0 d</span>
+            } @else {
+            <span class="muted-dash">—</span>
+            }
+          </td>
+          <td class="cell-reason">{{ m.reason || '—' }}</td>
+          <td class="cell-dep">
+            @if (m.dependencies?.length) {
+            @for (dep of m.dependencies; track dep.studyId + dep.milestoneName) {
+            <div class="dep-line">{{ formatDependency(dep) }}</div>
+            }
+            } @else {
+            —
+            }
+          </td>
+          <td class="cell-evidence">
+            @if (m.evidence) {
+            <a class="app-route-link" (click)="openEvidenceInfo(m)">{{ m.evidence }}</a>
+            } @else {
+            —
+            }
+          </td>
+          <td class="cell-update text-nowrap">
+            <div>{{ m.updatedOn }}</div>
+            <div class="upd-user">{{ m.updatedBy }}</div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #evidenceDialog let-data>
+  <div class="NewHeader">
+    <h1 mat-dialog-title>Open Controlled Document</h1>
+  </div>
+  <div mat-dialog-content style="padding-top: 14px;">
+    <p class="evidence-dialog-text">
+      In the live system this opens <strong>{{ data.ref }}</strong> (linked to
+      <em>{{ data.milestoneName }}</em>) in the controlled-document repository, subject to your
+      repository access rights. PRAGATI holds only the reference.
+    </p>
+    <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+      <button type="button" class="app-btn app-btn-default" mat-dialog-close>
+        <mat-icon>cancel</mat-icon> <span>Close</span>
+      </button>
+    </div>
+  </div>
+</ng-template>
+}

@@ -1,0 +1,63 @@
+@if (study) {
+  <section class="history-section">
+    <div class="history-toolbar">
+      <div class="history-search">
+        <i class="fa fa-search search-icon" aria-hidden="true"></i>
+        <input
+          type="text"
+          class="form-control search-input"
+          [(ngModel)]="searchQuery"
+          placeholder="Search field, user, value, reason…"
+          aria-label="Search history">
+        @if (searchQuery) {
+          <button
+            type="button"
+            class="clear-btn"
+            aria-label="Clear search"
+            (click)="searchQuery = ''">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        }
+      </div>
+
+      <span class="history-lead">
+        Who, when, field, previous and new value, reason and approval reference (&sect;16)
+      </span>
+    </div>
+
+    <div class="app-table-container history-table-container">
+      <div class="table-responsive">
+        <table class="table app-table history-table">
+          <thead>
+            <tr>
+              <th class="text-left col-ts">Date &amp; time</th>
+              <th class="text-left col-user">User</th>
+              <th class="text-left col-field">Field</th>
+              <th class="text-left">Previous value</th>
+              <th class="text-left">New value</th>
+              <th class="text-left col-reason">Reason</th>
+              <th class="text-left col-appr">Approval ref.</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of filteredEntries; track $index) {
+              <tr>
+                <td class="text-nowrap">{{ entry.ts }}</td>
+                <td class="text-nowrap">{{ entry.user }}</td>
+                <td class="field-cell">{{ entry.field }}</td>
+                <td>{{ entry.previousValue || '—' }}</td>
+                <td>{{ entry.newValue || '—' }}</td>
+                <td class="cell-small">{{ entry.reason || '—' }}</td>
+                <td class="cell-small text-nowrap">{{ entry.approvalRef || '—' }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="empty-cell">No changes match</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+}

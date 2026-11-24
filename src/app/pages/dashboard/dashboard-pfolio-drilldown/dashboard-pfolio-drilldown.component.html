@@ -1,0 +1,398 @@
+<div class="dashboard-wrapper">
+
+  <!-- TOP FILTER BAR -->
+  <div class="top-filter-bar">
+    <div class="left-filters">
+      <div class="filter-group">
+        <label>Division</label>
+        <select [(ngModel)]="selectedDivision">
+          @for (div of divisions; track div) {
+          <option [value]="div">{{ div }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Dosage form</label>
+        <select [(ngModel)]="selectedDosageForm">
+          @for (df of dosageForms; track df) {
+          <option [value]="df">{{ df }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Market</label>
+        <select [(ngModel)]="selectedMarket">
+          @for (m of markets; track m) {
+          <option [value]="m">{{ m }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Projects</label>
+        <select [(ngModel)]="selectedProject">
+          @for (p of projects; track p) {
+          <option [value]="p">{{ p }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Priority</label>
+        <select [(ngModel)]="selectedPriority">
+          @for (pr of priorities; track pr) {
+          <option [value]="pr">{{ pr }}</option>
+          }
+        </select>
+      </div>
+
+
+    </div>
+
+    <div class="right-filters">
+      <div class="filter-group">
+        <label>Execution health</label>
+        <select [(ngModel)]="selectedHealth">
+          @for (h of healthStatuses; track h) {
+          <option [value]="h">{{ h }}</option>
+          }
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Currency</label>
+        <select [(ngModel)]="selectedCurrency">
+          @for (c of currencies; track c) {
+          <option [value]="c">{{ c }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Snapshot date</label>
+        <select [(ngModel)]="selectedSnapshotDate">
+          @for (d of snapshotDates; track d) {
+          <option [value]="d">{{ d }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <hr class="header-divider">
+
+  <!-- Header / Breadcrumb -->
+  <header class="dashboard-header">
+    <div class="breadcrumb">Portfolio</div>
+  </header>
+
+  <!-- Portfolio Composition -->
+  <section class="section-card">
+    <h3 class="section-title">PORTFOLIO COMPOSITION - 5 PROJECTS IN VIEW</h3>
+    <div class="composition-grid">
+      @for (comp of compositions; track comp.title) {
+      <div class="comp-card" [style.border-top-color]="comp.color">
+        <div class="comp-header">
+          <span class="count">{{ comp.count }}</span>
+          <span class="percent">{{ comp.percent }}</span>
+        </div>
+        <div class="title">{{ comp.title }}</div>
+        <div class="subtitle">{{ comp.subtitle }}</div>
+      </div>
+      }
+    </div>
+  </section>
+
+  <!-- Financial Health -->
+  <section class="financial-health-section mt-16">
+    <div class="financial-section-header">FINANCIAL HEALTH &middot; {{ selectedCurrencyCode }} MN</div>
+    <div class="financial-grid">
+      @for (fin of financials; track fin.label) {
+      <div class="fin-card">
+        <div class="fin-value" [ngClass]="fin.highlight ? 'text-' + fin.highlight : ''">{{ fin.value }}</div>
+        <div class="fin-label">{{ fin.label }}</div>
+        <div class="fin-sub">{{ fin.sub }}</div>
+      </div>
+      }
+    </div>
+  </section>
+
+  <!-- Middle 2-Column Split -->
+  <section class="grid-2-col mt-16">
+    <!-- Scatter Plot Mock -->
+    <div class="section-card">
+      <h3 class="section-title">IS IT ATTRACTIVE? × CAN WE EXECUTE IT?</h3>
+      <p class="section-desc">Up = commercial attractiveness score (NPV, expected revenue, NPV per budget dollar). Right
+        = execution health (schedule, progress, kit readiness, cost). Dot size = budget. Click a dot to open the
+        project.</p>
+      <div class="legend-row">
+        <span><span class="dot" style="background:#8054ea"></span> Contrast Media</span>
+        <span><span class="dot" style="background:#0288d1"></span> Oncology</span>
+        <span><span class="dot" style="background:#f97316"></span> Complex Injections</span>
+        <span><span class="dot" style="background:#10b981"></span> General Injectables</span>
+      </div>
+      <div class="chart-area scatter-plot">
+        <div class="axis y-axis">Attractiveness &rarr;</div>
+        <div class="axis x-axis">Execution health 100 &larr;</div>
+        <div class="quadrant-labels">
+          <span class="tl">FIX EXECUTION</span><span class="tr">PROTECT</span>
+          <span class="bl">REVIEW PRIORITY</span><span class="br">RUN LEAN</span>
+        </div>
+        <div class="bubble bg-purple" style="bottom: 85%; left: 40%; width: 40px; height: 40px;"><span>RD/004
+            Iohexol</span></div>
+        <div class="bubble bg-blue" style="bottom: 72%; left: 75%; width: 30px; height: 30px;"><span>RD/001
+            Abiraterone</span></div>
+        <div class="bubble bg-blue" style="bottom: 56%; left: 60%; width: 25px; height: 25px;"><span>RD/003
+            Fulvestrant</span></div>
+        <div class="bubble bg-blue" style="bottom: 41%; left: 55%; width: 20px; height: 20px;"><span>RD/002
+            Azacitidine</span></div>
+        <div class="bubble bg-blue" style="bottom: 24%; left: 58%; width: 18px; height: 18px;"><span>RD/005
+            Temozolomide</span></div>
+      </div>
+    </div>
+
+    <!-- Bar Charts Mock -->
+    <div class="section-card">
+      <h3 class="section-title">WHERE THE MONEY GOES &middot; BY DIVISION</h3>
+      <p class="section-desc">Bar = final budget (dark part spent to date). Right column = projected NPV and expected
+        annual revenue (market size &times; projected share).</p>
+      <div class="money-rows mt-16">
+        <!-- Row 1: Contrast Media -->
+        <div class="money-row">
+          <div class="label"><span class="dot" style="background:#8054ea"></span> Contrast Media</div>
+          <div class="bar-area">
+            <div class="bar-bg">
+              <div class="bar-fill" style="width: 54%; background: #8054ea;"></div>
+            </div>
+            <div class="sub-text">$938k spent of $900k</div>
+          </div>
+          <div class="values"><strong>$6.80 mn NPV</strong><br><span>$8.40 mn revenue / yr</span></div>
+        </div>
+
+        <!-- Row 2: Oncology -->
+        <div class="money-row">
+          <div class="label"><span class="dot" style="background:#0288d1"></span> Oncology</div>
+          <div class="bar-area">
+            <div class="bar-bg">
+              <div class="bar-fill" style="width: 95%; background: #c5d8ea;">
+                <div class="bar-spent"
+                  style="width: 37%; height: 100%; background: #0288d1; border-radius: 3px 0 0 3px;"></div>
+              </div>
+            </div>
+            <div class="sub-text">$582k spent of $1.65 mn</div>
+          </div>
+          <div class="values"><strong>$11.1 mn NPV</strong><br><span>$14.8 mn revenue / yr</span></div>
+        </div>
+
+        <!-- Row 3: Complex Injections -->
+        <div class="money-row">
+          <div class="label"><span class="dot" style="background:#f97316"></span> Complex Injections</div>
+          <div class="bar-area">
+            <div class="bar-bg"></div>
+            <div class="sub-text">no projects</div>
+          </div>
+          <div class="values"><strong>$0k NPV</strong><br><span>$0k revenue / yr</span></div>
+        </div>
+
+        <!-- Row 4: General Injectables -->
+        <div class="money-row">
+          <div class="label"><span class="dot" style="background:#10b981"></span> General Injectables</div>
+          <div class="bar-area">
+            <div class="bar-bg"></div>
+            <div class="sub-text">no projects</div>
+          </div>
+          <div class="values"><strong>$0k NPV</strong><br><span>$0k revenue / yr</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Business Opportunity Table -->
+  <section class="section-card mt-16">
+    <h3 class="section-title">BUSINESS OPPORTUNITY - PRODUCT × MARKET</h3>
+    <p class="section-desc">From the Projects screen. Score = 40 % NPV + 30 % expected revenue + 30 % NPV per budget
+      dollar, each against the best in the portfolio. RPM's Commercial attractiveness label is kept as the manual entry;
+      a mismatch is flagged. Priority check compares the assigned priority with the score.</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>PROJECT - PRODUCT</th>
+          <th>DIVISION - FORM</th>
+          <th>MARKET</th>
+          <th>MARKET SIZE</th>
+          <th>SHARE</th>
+          <th>REVENUE / YR</th>
+          <th>NPV</th>
+          <th>NPV ÷ BUDGET</th>
+          <th style="width: 150px">ATTRACTIVENESS SCORE</th>
+          <th>LABEL</th>
+          <th>PRIORITY</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (opp of opportunities; track opp.project) {
+        <tr>
+          <td><strong>{{ opp.project }}</strong><br><span class="text-muted">{{ opp.product }}</span></td>
+          <td class="text-muted" style="white-space: pre-line;">{{ opp.division }}</td>
+          <td class="text-muted" style="white-space: pre-line;">{{ opp.market }}</td>
+          <td>{{ opp.size }}</td>
+          <td>{{ opp.share }}</td>
+          <td>{{ opp.revenue }}</td>
+          <td><strong>{{ opp.npv }}</strong></td>
+          <td>{{ opp.npvBudget }}</td>
+          <td>
+            <div class="score-bar">
+              <div class="bar" [style.width.%]="opp.score" [style.background]="getScoreColor(opp.score)"></div>
+              <span class="score-val">{{ opp.score }}</span>
+            </div>
+          </td>
+          <td><span class="badge label-badge" [ngClass]="opp.label.toLowerCase()">{{ opp.label }}</span></td>
+          <td><strong>{{ opp.priority }}</strong><br><span class="text-muted text-small">{{ opp.pHighlight }}</span>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <!-- EXECUTION HEALTH SECTION -->
+  <section class="section-card mt-16 execution-health-container">
+    <h3 class="section-title">EXECUTION HEALTH · BY PROJECT AND GATE</h3>
+
+    <p class="section-desc">
+      Health = 40 % schedule + 20 % progress + 25 % kit readiness + 15 % cost. Gate cells: ✓ passed, number = forecast
+      slip in days, <span class="blocked-icon">■</span> = an activity cannot start. Timeline: grey = baseline (WBS
+      plan), line = forecast finish.
+    </p>
+
+    <div class="legend-row-eh">
+      <div class="legend-item"><span class="box bg-passed"></span> Passed</div>
+      <div class="legend-item"><span class="box bg-on-time"></span> On time</div>
+      <div class="legend-item"><span class="box bg-late-1"></span> 1-14 d late</div>
+      <div class="legend-item"><span class="box bg-late-14"></span> &gt; 14 d late</div>
+      <div class="legend-item"><span class="box bg-blocked"></span> Blocked start</div>
+    </div>
+
+    <table class="data-table eh-table">
+      <thead>
+        <tr>
+          <th style="width: 15%">PROJECT</th>
+          <th style="width: 10%">HEALTH</th>
+          <th style="width: 18%">SCHEDULE · PROGRESS · KIT · COST</th>
+          <th style="width: 25%">GATES G1 &rarr; G7</th>
+          <th style="width: 20%">TIMELINE JUL-2024 &rarr; JAN-2029</th>
+          <th style="width: 12%">FINISH · SLIP</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (ex of executionHealthData; track ex.project) {
+        <tr>
+          <td>
+            <a href="#" class="project-link">{{ ex.project }}</a><br>
+            <span class="text-muted">{{ ex.subtitle }}</span>
+          </td>
+          <td>
+            <span class="health-badge" [ngClass]="ex.hStatus">{{ ex.health }} · {{ ex.hScore }}</span>
+          </td>
+          <td class="mini-bars-cell">
+            <div class="m-row">
+              <span class="m-label">Schedule</span>
+              <div class="m-track">
+                <div class="m-fill" [style.width.%]="ex.schedule" [style.background]="getBarColor(ex.schedule)"></div>
+              </div>
+              <span class="m-val">{{ ex.schedule }}</span>
+            </div>
+            <div class="m-row">
+              <span class="m-label">Progress</span>
+              <div class="m-track">
+                <div class="m-fill" [style.width.%]="ex.progress" [style.background]="getBarColor(ex.progress)"></div>
+              </div>
+              <span class="m-val">{{ ex.progress }}</span>
+            </div>
+            <div class="m-row">
+              <span class="m-label">Kit</span>
+              <div class="m-track">
+                <div class="m-fill" [style.width.%]="ex.kit" [style.background]="getBarColor(ex.kit)"></div>
+              </div>
+              <span class="m-val">{{ ex.kit }}</span>
+            </div>
+            <div class="m-row">
+              <span class="m-label">Cost</span>
+              <div class="m-track">
+                <div class="m-fill" [style.width.%]="ex.cost" [style.background]="getBarColor(ex.cost)"></div>
+              </div>
+              <span class="m-val">{{ ex.cost }}</span>
+            </div>
+          </td>
+          <td class="gates-cell">
+            <div class="gate-wrapper">
+              <div class="gate-boxes">
+                @for (g of ex.gates; track $index) {
+                <div class="g-box" [ngClass]="'gate-' + g.status">
+                  @if (g.status === 'blocked') { <span class="blocked-marker">■</span> }
+                  {{ g.value }}
+                </div>
+                }
+              </div>
+              <div class="current-gate-label" [style.padding-left]="(ex.currentGateIndex * 34) + 'px'">
+                current gate {{ ex.currentGate }}
+              </div>
+            </div>
+          </td>
+          <td class="timeline-cell">
+            <div class="timeline-area">
+              <div class="t-baseline" [style.width]="ex.timelineWidth"></div>
+              <div class="t-middle-mark"></div>
+              <div class="t-forecast-mark" [style.left]="ex.timelineFinishPos"
+                [style.background]="ex.timelineFinishColor"></div>
+            </div>
+          </td>
+          <td>
+            <strong>{{ ex.finish }}</strong><br>
+            <span [ngClass]="'text-' + ex.slipStatus" class="slip-text">{{ ex.slip }}</span>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Management Decisions Table -->
+  <section class="section-card mt-16">
+    <h3 class="section-title">MANAGEMENT DECISIONS - ACT THIS WEEK</h3>
+    <p class="section-desc">Each row is a blocked activity whose missing kit item can be resolved now. Decision gain =
+      days the gate or project finish comes forward if decided today; return impact = project days gained × expected
+      revenue per day (launch assumed to move with the R&D finish).</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>PROJECT - MARKET</th>
+          <th>SITUATION</th>
+          <th>REQUIRED ACTION</th>
+          <th>OWNER</th>
+          <th>NEED DATE</th>
+          <th>TIMELINE IMPACT</th>
+          <th>DECISION GAIN</th>
+          <th>RETURN IMPACT</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (dec of decisions; track dec.project) {
+        <tr>
+          <td><strong>{{ dec.project }}</strong><br><span class="text-muted" style="white-space: pre-line;">{{
+              dec.market }}</span></td>
+          <td><span class="badge danger-solid">■ Start blocked</span><br><br><strong>{{ dec.detail.split('\n')[0]
+              }}</strong><br><span class="text-muted">{{ dec.detail.split('\n')[1] }}</span></td>
+          <td>{{ dec.action }}</td>
+          <td><strong>{{ dec.owner }}</strong></td>
+          <td><strong>{{ dec.needDate }}</strong></td>
+          <td style="white-space: pre-line;">{{ dec.impact }}</td>
+          <td><strong>{{ dec.gain }}</strong></td>
+          <td><strong>{{ dec.returnImpact }}</strong></td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</div>

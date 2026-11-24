@@ -1,0 +1,64 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    Resource Availability - {{ data?.name || data?.AssetName || 'Resource' }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="padding: 16px 20px;">
+  <!-- Resource Meta / Hours Banner -->
+  <!-- <div
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; background: #f8fafc; padding: 10px 14px; border-radius: 6px; border: 1px solid #e2e8f0; flex-wrap: wrap; gap: 8px;">
+    <div>
+      <span style="font-size: 12.5px; color: #64748b; font-weight: 500;">Resource Code: </span>
+      <strong style="color: #1e293b; font-size: 13px;">{{ data?.code || data?.AssetCode }}</strong>
+    </div>
+    <div>
+      <span style="font-size: 12.5px; color: #64748b; font-weight: 500;">Hours: </span>
+      <span
+        style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 12px;">
+        {{ fromTime }} - {{ toTime }}
+      </span>
+    </div>
+    <div>
+      <span style="font-size: 12.5px; color: #64748b; font-weight: 500;">Available Days: </span>
+      <strong style="color: #2563eb; font-size: 14px;">{{ selectedCount }} / 7</strong>
+    </div>
+  </div> -->
+
+  <!-- Table using classes from AssetsComponent and global table CSS -->
+  <div class="app-table-container" style="padding: 0 !important; width: 100%;">
+    <div class="table-responsive" style="overflow-x: auto;">
+      <table class="table app-table" style="width: 100%;">
+        <thead>
+          <tr>
+            <th class="text-left">Weekday</th>
+            <th class="text-center" style="width: 120px;">Available</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of weekdays; track item.day) {
+            <tr>
+              <td class="text-left" style="vertical-align: middle;">{{ item.day }}</td>
+              <td class="text-center" style="vertical-align: middle;">
+                <mat-checkbox [(ngModel)]="item.selected" color="primary"></mat-checkbox>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="2" class="empty-table">No records found</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end" style="padding: 12px 20px; border-top: 1px solid #e2e8f0; gap: 10px;">
+  <button type="button" class="app-btn app-btn-default" (click)="close()">
+    <mat-icon>cancel</mat-icon> Close
+  </button>
+  <button type="button" class="app-btn app-btn-primary" (click)="save()">
+    <mat-icon>save</mat-icon> Save
+  </button>
+</div>

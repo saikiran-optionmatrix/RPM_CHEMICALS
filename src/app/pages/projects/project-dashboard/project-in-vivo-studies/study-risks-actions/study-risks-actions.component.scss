@@ -1,0 +1,191 @@
+:host {
+  display: block;
+}
+
+.rad-section {
+  margin-bottom: 18px;
+}
+
+.rad-section-last {
+  margin-bottom: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.section-title {
+  margin: 0;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.rad-table-container {
+  padding: 0;
+  width: 100%;
+}
+
+.rad-table {
+  width: 100%;
+
+  thead th {
+    padding: 8px 10px !important;
+    font-size: 12.5px !important;
+  }
+
+  tbody td {
+    padding: 8px 10px !important;
+    font-size: 12.5px !important;
+    vertical-align: top !important;
+    line-height: 1.4;
+  }
+
+  .col-actions {
+    width: 60px;
+  }
+
+  .col-dec-actions {
+    min-width: 112px;
+  }
+
+  .col-id {
+    min-width: 78px;
+  }
+
+  .col-date {
+    min-width: 96px;
+  }
+
+  .col-mid {
+    min-width: 155px;
+  }
+
+  .col-wide {
+    min-width: 210px;
+  }
+
+  .empty-cell {
+    color: #64748b;
+    padding: 12px 10px !important;
+  }
+}
+
+.cell-small {
+  color: #334155;
+  font-size: 12px !important;
+}
+
+.options-sub {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 11.5px;
+}
+
+.late-date {
+  color: #d64545;
+  font-weight: 500;
+}
+
+.muted-dash {
+  color: #94a3b8;
+}
+
+.missing-pill {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #c2781d;
+  background-color: #fff4e5;
+  border: 1px solid #ffe8cc;
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+.critical-badge {
+  margin-left: 4px;
+}
+
+.decision-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.decide-sm-btn {
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 10px !important;
+  font-size: 12px !important;
+  line-height: 28px !important;
+  box-shadow: none !important;
+}
+
+.withdraw-btn {
+  color: #64748b;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+
+  &:hover {
+    color: #d64545;
+  }
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+
+  &.pill-green {
+    background-color: #ebf9f1;
+    color: #2e7d32;
+    border: 1px solid #d1f0df;
+  }
+
+  &.pill-blue {
+    background-color: #ebf3ff;
+    color: #1d4ed8;
+    border: 1px solid #d6e6ff;
+  }
+
+  &.pill-red {
+    background-color: #fff0f0;
+    color: #c62828;
+    border: 1px solid #ffd6d6;
+  }
+
+  &.pill-orange {
+    background-color: #fff4e5;
+    color: #c2781d;
+    border: 1px solid #ffe8cc;
+  }
+
+  &.pill-grey {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+  }
+}
+
+.section-footnote {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.45;
+}

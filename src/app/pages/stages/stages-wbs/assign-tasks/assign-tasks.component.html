@@ -1,0 +1,408 @@
+@if (!isDialog) {
+<div class="inner-screen-page" style="padding: 10px 25px 80px 25px">
+  <!-- Top Header Area -->
+  <header class="inner-header"
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div class="header-left">
+      <div class="title-meta">
+        <h2 class="inner-title" style="margin: 0; font-size: 20px; font-weight: 600; color: #1e293b;">
+          {{ title }}
+        </h2>
+        <div class="activity-subtitle"
+          style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; margin-top: 4px;">
+          @if (activityCode) {
+          <span class="activity-badge"
+            style="background-color: #e2e8f0; color: #334155; padding: 1px 6px; border-radius: 4px; font-weight: 600; font-size: 12px;">{{
+            activityCode }}</span>
+          }
+          @if (jobCode) {
+          <span class="activity-badge"
+            style="background-color: #dbeafe; color: #1e40af; padding: 1px 6px; border-radius: 4px; font-weight: 600; font-size: 12px;">{{
+            jobCode }}</span>
+          }
+          @if (activityName) {
+          <span class="activity-text" style="font-weight: 500; color: #1e293b;">{{ activityName }}</span>
+          }
+          @if (stageName) {
+          <span class="stage-sep" style="color: #cbd5e1;">•</span>
+          <span class="stage-text">{{ stageName }} ({{ stageCode }})</span>
+          }
+          @if (gateCode && gateCode !== '-') {
+          <span class="stage-sep" style="color: #cbd5e1;">•</span>
+          <span class="stage-text">{{ gateCode }}</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="col-sm-12" style="margin-bottom: 10px; padding: 0;">
+    <!-- Top Right: Add Button -->
+    <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 14px; margin-top: 4px;">
+      <button type="button" class="app-btn app-btn-primary" (click)="addTask()">
+        <mat-icon>add</mat-icon>
+        <span>Add</span>
+      </button>
+    </div>
+
+    <!-- Table Container -->
+    <div class="app-table-container" style="padding: 0 !important; width: 100%;">
+      <div class="table-responsive" style="max-height: 520px; overflow-x: auto; overflow-y: auto;">
+        <table class="table app-table" style="width: 100%;">
+          <thead>
+            <tr>
+              <th class="text-center" style="width: 100px; min-width: 100px;">Actions</th>
+              <th class="text-left" style="min-width: 220px;">Task Name</th>
+              <th class="text-left" style="width: 160px; min-width: 140px;">Task Code</th>
+              <th class="text-left" style="width: 180px; min-width: 160px;">Job Code</th>
+              <th class="text-center" style="width: 90px; min-width: 85px;">Min</th>
+              <th class="text-center" style="width: 90px; min-width: 85px;">Max</th>
+              <th class="text-center" style="width: 90px; min-width: 85px;">Mean</th>
+              <!-- <th class="text-center" style="width: 90px; min-width: 85px;">Median</th> -->
+              <th class="text-center" style="width: 80px; min-width: 80px;">History</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of paginatedTasks; track $index) {
+            <tr [class.row-editing]="row.isEditing">
+
+              <!-- Actions -->
+              <td class="text-center" style="vertical-align: middle;">
+                <div class="table-actions" style="justify-content: center; gap: 4px;">
+                  @if (row.isEditing) {
+                  <button type="button" class="table-action-button" style="color: #1485cc;" matTooltip="Save"
+                    aria-label="Save" (click)="saveRow(row)">
+                    <mat-icon>save</mat-icon>
+                  </button>
+                  <button type="button" class="table-action-button" style="color: #dc2626;" matTooltip="Cancel"
+                    aria-label="Cancel" (click)="cancelEdit(row)">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                  } @else {
+                  <button type="button" class="table-action-button edit" matTooltip="Edit" aria-label="Edit task"
+                    (click)="startEdit(row)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button type="button" class="table-action-button delete" matTooltip="Delete" aria-label="Delete task"
+                    (click)="deleteTask(row)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  }
+                </div>
+              </td>
+
+              <!-- Task Name -->
+              <td class="text-left" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <textarea class="form-control task-name-textarea" rows="2" [(ngModel)]="row.taskName"
+                  placeholder="Enter task name"></textarea>
+                } @else {
+                <span style="font-weight: 500; color: #1e293b; display: block; line-height: 1.4;">{{ row.taskName || '—'
+                  }}</span>
+                }
+              </td>
+
+              <!-- Task Code -->
+              <td class="text-left" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <input type="text" class="form-control" [(ngModel)]="row.taskCode" placeholder="Enter task code"
+                  style="font-size: 13px; height: 36px;" />
+                } @else {
+                <span style="font-weight: 500; color: #334155;">{{ row.taskCode || '—' }}</span>
+                }
+              </td>
+
+              <!-- Job Code (dropdown) -->
+              <td class="text-left" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <select class="form-control job-code-select" [(ngModel)]="row.jobCode">
+                  <option value="" disabled selected>Select Job Code</option>
+                  @for (code of jobCodeOptions; track code) {
+                  <option [value]="code">{{ code }}</option>
+                  }
+                </select>
+                } @else {
+                <span style="font-weight: 500; color: #334155;">{{ row.jobCode || '—' }}</span>
+                }
+              </td>
+
+              <!-- Min -->
+              <td class="text-center" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <input type="number" step="0.01" class="form-control text-center" [(ngModel)]="row.min"
+                  (ngModelChange)="onEstimateChange(row)" placeholder="Min"
+                  style="font-size: 13px; height: 34px; width: 75px; margin: 0 auto;" />
+                } @else {
+                <span style="font-weight: 600; color: #0f172a;">{{ row.min != null ? (row.min | number:'1.2-2') : '—'
+                  }}</span>
+                }
+              </td>
+
+              <!-- Max -->
+              <td class="text-center" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <input type="number" step="0.01" class="form-control text-center" [(ngModel)]="row.max"
+                  (ngModelChange)="onEstimateChange(row)" placeholder="Max"
+                  style="font-size: 13px; height: 34px; width: 75px; margin: 0 auto;" />
+                } @else {
+                <span style="font-weight: 600; color: #0f172a;">{{ row.max != null ? (row.max | number:'1.2-2') : '—'
+                  }}</span>
+                }
+              </td>
+
+              <!-- Mean -->
+              <td class="text-center" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <input type="number" step="0.01" class="form-control text-center" [(ngModel)]="row.mean"
+                  placeholder="Mean" style="font-size: 13px; height: 34px; width: 75px; margin: 0 auto;" />
+                } @else {
+                <span style="font-weight: 600; color: #0f172a;">{{ row.mean != null ? (row.mean | number:'1.2-2') : '—'
+                  }}</span>
+                }
+              </td>
+
+              <!-- Median -->
+              <!-- <td class="text-center" style="vertical-align: middle;">
+                  @if (row.isEditing) {
+                    <input
+                      type="number"
+                      step="0.01"
+                      class="form-control text-center"
+                      [(ngModel)]="row.median"
+                      placeholder="Median"
+                      style="font-size: 13px; height: 34px; width: 75px; margin: 0 auto;"
+                    />
+                  } @else {
+                    <span style="font-weight: 600; color: #0f172a;">{{ row.median != null ? (row.median | number:'1.2-2') : '—' }}</span>
+                  }
+                </td> -->
+
+              <!-- History -->
+              <td class="text-center" style="vertical-align: middle;">
+                <a href="javascript:void(0)" class="history-number-link" (click)="openHistory(row, $index)"
+                  matTooltip="View Task History">
+                  {{ row.historyCount || getHistoryCount($index) }}
+                </a>
+              </td>
+
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="9" class="empty-table text-center" style="padding: 24px; color: #64748b;">No tasks found</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginator -->
+      <mat-paginator [length]="tasksList.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+      </mat-paginator>
+    </div>
+
+    <!-- Bottom Actions -->
+    <!-- <div style="margin-top: 20px; margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button type="button" class="app-btn app-btn-primary" (click)="save()">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        </div>
+      </div> -->
+
+  </div>
+</div>
+} @else {
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ title }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="padding: 16px 24px;">
+  <div class="col-sm-12" style="margin-bottom: 10px; padding: 0;">
+
+    <!-- Top Right: Add Button -->
+    <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 14px; margin-top: 4px;">
+      <button type="button" class="app-btn app-btn-primary" (click)="addTask()">
+        <mat-icon>add</mat-icon>
+        <span>Add</span>
+      </button>
+    </div>
+
+    <!-- Table with only Action and Task Name columns -->
+    <div class="app-table-container" style="padding: 0 !important; width: 100%;">
+      <div class="table-responsive" style="max-height: 520px; overflow-x: auto; overflow-y: auto;">
+        <table class="table app-table" style="width: 100%;">
+          <thead>
+            <tr>
+              <th class="text-center" style="width: 100px; min-width: 100px;">Actions</th>
+              <th class="text-left" style="min-width: 220px;">Task Name</th>
+              <th class="text-left" style="width: 160px; min-width: 140px;">Task Code</th>
+              <th class="text-left" style="width: 180px; min-width: 160px;">Job Code</th>
+              <th class="text-center" style="width: 90px; min-width: 85px;">Min</th>
+              <th class="text-center" style="width: 90px; min-width: 85px;">Max</th>
+              <th class="text-center" style="width: 90px; min-width: 85px;">Mean</th>
+              <!-- <th class="text-center" style="width: 90px; min-width: 85px;">Median</th> -->
+              <th class="text-center" style="width: 80px; min-width: 80px;">History</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of paginatedTasks; track $index) {
+            <tr [class.row-editing]="row.isEditing">
+
+              <!-- Actions -->
+              <td class="text-center" style="vertical-align: middle;">
+                <div class="table-actions" style="justify-content: center; gap: 4px;">
+                  @if (row.isEditing) {
+                  <button type="button" class="table-action-button" style="color: #1485cc;" matTooltip="Save"
+                    aria-label="Save" (click)="saveRow(row)">
+                    <mat-icon>save</mat-icon>
+                  </button>
+                  <button type="button" class="table-action-button" style="color: #dc2626;" matTooltip="Cancel"
+                    aria-label="Cancel" (click)="cancelEdit(row)">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                  } @else {
+                  <button type="button" class="table-action-button edit" matTooltip="Edit" aria-label="Edit task"
+                    (click)="startEdit(row)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button type="button" class="table-action-button delete" matTooltip="Delete" aria-label="Delete task"
+                    (click)="deleteTask(row)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  }
+                </div>
+              </td>
+
+              <!-- Task Name -->
+              <td class="text-left" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <textarea class="form-control task-name-textarea" rows="2" [(ngModel)]="row.taskName"
+                  placeholder="Enter task name"></textarea>
+                } @else {
+                <span style="font-weight: 500; color: #1e293b; display: block; line-height: 1.4;">{{ row.taskName || '—'
+                  }}</span>
+                }
+              </td>
+
+              <!-- Task Code -->
+              <td class="text-left" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <input type="text" class="form-control" [(ngModel)]="row.taskCode" placeholder="Enter task code"
+                  style="font-size: 13px; height: 36px;" />
+                } @else {
+                <span style="font-weight: 500; color: #334155;">{{ row.taskCode || '—' }}</span>
+                }
+              </td>
+
+              <!-- Job Code (dropdown) -->
+              <td class="text-left" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <select class="form-control job-code-select" [(ngModel)]="row.jobCode">
+                  <option value="" disabled selected>Select Job Code</option>
+                  @for (code of jobCodeOptions; track code) {
+                  <option [value]="code">{{ code }}</option>
+                  }
+                </select>
+                } @else {
+                <span style="font-weight: 500; color: #334155;">{{ row.jobCode || '—' }}</span>
+                }
+              </td>
+
+              <!-- Min -->
+              <td class="text-center" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <input type="number" step="0.01" class="form-control text-center" [(ngModel)]="row.min"
+                  (ngModelChange)="onEstimateChange(row)" placeholder="Min"
+                  style="font-size: 13px; height: 34px; width: 75px; margin: 0 auto;" />
+                } @else {
+                <span style="font-weight: 600; color: #0f172a;">{{ row.min != null ? (row.min | number:'1.2-2') : '—'
+                  }}</span>
+                }
+              </td>
+
+              <!-- Max -->
+              <td class="text-center" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <input type="number" step="0.01" class="form-control text-center" [(ngModel)]="row.max"
+                  (ngModelChange)="onEstimateChange(row)" placeholder="Max"
+                  style="font-size: 13px; height: 34px; width: 75px; margin: 0 auto;" />
+                } @else {
+                <span style="font-weight: 600; color: #0f172a;">{{ row.max != null ? (row.max | number:'1.2-2') : '—'
+                  }}</span>
+                }
+              </td>
+
+              <!-- Mean -->
+              <td class="text-center" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <input type="number" step="0.01" class="form-control text-center" [(ngModel)]="row.mean"
+                  placeholder="Mean" style="font-size: 13px; height: 34px; width: 75px; margin: 0 auto;" />
+                } @else {
+                <span style="font-weight: 600; color: #0f172a;">{{ row.mean != null ? (row.mean | number:'1.2-2') : '—'
+                  }}</span>
+                }
+              </td>
+
+              <!-- Median -->
+              <!-- <td class="text-center" style="vertical-align: middle;">
+                @if (row.isEditing) {
+                <input type="number" step="0.01" class="form-control text-center" [(ngModel)]="row.median"
+                  placeholder="Median" style="font-size: 13px; height: 34px; width: 75px; margin: 0 auto;" />
+                } @else {
+                <span style="font-weight: 600; color: #0f172a;">{{ row.median != null ? (row.median | number:'1.2-2') :
+                  '—' }}</span>
+                }
+              </td> -->
+
+              <!-- History -->
+              <td class="text-center" style="vertical-align: middle;">
+                <a href="javascript:void(0)" class="history-number-link" (click)="openHistory(row, $index)"
+                  matTooltip="View Task History">
+                  {{ row.historyCount || getHistoryCount($index) }}
+                </a>
+              </td>
+
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="9" class="empty-table text-center" style="padding: 24px; color: #64748b;">No tasks found</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginator matching assets.component.html -->
+      <mat-paginator [length]="tasksList.length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true" (page)="handlePage($event)">
+      </mat-paginator>
+    </div>
+
+    <!-- Bottom Actions: Close and Save matching AddAssetComponent -->
+    <div style="margin-top: 20px; margin-bottom: 10px;">
+      <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()">
+          <mat-icon>cancel</mat-icon> Close
+        </button>
+        <button type="button" class="app-btn app-btn-primary" (click)="save()">
+          <mat-icon>save</mat-icon> Save
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+}

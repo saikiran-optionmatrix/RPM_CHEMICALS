@@ -1,0 +1,91 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Add document reference</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 75vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Type :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="type"
+                placeholder="Select Type" style="height: 35px; line-height: 23px;">
+                @for (t of documentTypes; track t) {
+                  <mat-option [value]="t">{{ t }}</mat-option>
+                }
+              </mat-select>
+              @if ((isSubmitting || f['type'].touched) && f['type'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Repository Ref. :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="e.g. DMS/PROT/BE-26-001"
+                formControlName="ref" style="height: 35px;">
+              <small class="field-hint">Controlled-document ID or link</small>
+              @if ((isSubmitting || f['ref'].touched) && f['ref'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px; display: block;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Document Date :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="date" formControlName="date" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Title :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="Enter document title"
+                formControlName="title" style="height: 35px;">
+              @if ((isSubmitting || f['title'].touched) && f['title'].errors?.['required']) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="control-label" style="margin-top: 5px;">Version :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text"
+                placeholder="e.g. v1.0, Signed, Final"
+                formControlName="version" style="height: 35px;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()" style="margin-right: 10px;">
+          <mat-icon>cancel</mat-icon> <span>Close</span>
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> <span>Save</span>
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>
+

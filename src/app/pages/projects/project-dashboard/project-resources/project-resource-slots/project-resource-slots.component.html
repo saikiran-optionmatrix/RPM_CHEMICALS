@@ -1,0 +1,142 @@
+<div class="inner-screen-page">
+  <!-- Top Header Area -->
+  <header class="inner-header">
+    <div class="header-left">
+      <div class="title-meta">
+        <div class="activity-subtitle">
+          @if (projectCode) {
+            <span class="activity-badge">{{ projectCode }}</span>
+          }
+          @if (projectName) {
+            <span class="activity-text">{{ projectName }}</span>
+          }
+          @if (selectedResource) {
+            <span class="stage-sep">•</span>
+            <span class="resource-meta-tag">
+              <mat-icon>person</mat-icon>
+              <span>{{ selectedResource }}</span>
+            </span>
+          }
+          @if (selectedDate) {
+            <span class="stage-sep">•</span>
+            <span class="date-meta-tag">
+              <mat-icon>calendar_today</mat-icon>
+              <span>{{ selectedDate }}</span>
+            </span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="container-fluid" style="padding: 0;">
+    <div class="row">
+      <div class="col-12">
+        <div class="app-table-container" style="padding: 0 !important;">
+          <div class="table-responsive">
+            <table class="table app-table">
+              <thead>
+                <tr>
+                  <th class="text-center col-actions" style="width: 80px;">Actions</th>
+                  <th class="text-left col-stage" style="min-width: 150px;">Stage</th>
+                  <th class="text-left col-deliverable" style="min-width: 170px;">Deliverable</th>
+                  <th class="text-left col-activity" style="min-width: 180px;">Activity</th>
+                  <th class="text-left col-task" style="min-width: 180px;">Task</th>
+                  <th class="text-center col-time" style="width: 110px;">From time</th>
+                  <th class="text-center col-time" style="width: 110px;">To time</th>
+                  <th class="text-center col-status" style="width: 85px;">Approved</th>
+                  <th class="text-center col-status" style="width: 85px;">Declined</th>
+                  <th class="text-center col-status" style="width: 85px;">Pending</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (slot of paginatedSlots; track slot.id) {
+                  <tr>
+                    <!-- 1. Actions -->
+                    <td class="text-center col-actions">
+                      <div class="table-actions">
+                        <button type="button" class="table-action-button edit" matTooltip="Edit Slot" aria-label="Edit slot" (click)="openEditSlot(slot)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" class="table-action-button delete" matTooltip="Delete Slot" aria-label="Delete slot" (click)="deleteSlot(slot)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+
+                    <!-- 2. Stage -->
+                    <td class="text-left col-stage">
+                      {{ formatStageName(slot.stage) }}
+                    </td>
+
+                    <!-- 3. Deliverable -->
+                    <td class="text-left col-deliverable">
+                      {{ slot.deliverable }}
+                    </td>
+
+                    <!-- 4. Activity -->
+                    <td class="text-left col-activity">
+                      {{ slot.activity }}
+                    </td>
+
+                    <!-- 5. Task -->
+                    <td class="text-left col-task">
+                      {{ slot.task }}
+                    </td>
+
+                    <!-- 6. From time -->
+                    <td class="text-center col-time">
+                      <span>{{ slot.fromTime }}</span>
+                    </td>
+
+                    <!-- 7. To time -->
+                    <td class="text-center col-time">
+                      <span>{{ slot.toTime }}</span>
+                    </td>
+
+                    <!-- 8. Approved -->
+                    <td class="text-center col-status">
+                      <mat-checkbox [checked]="slot.approved" (change)="toggleStatus(slot, 'approved', $event.checked)" color="primary"></mat-checkbox>
+                    </td>
+
+                    <!-- 9. Declined -->
+                    <td class="text-center col-status">
+                      <mat-checkbox [checked]="slot.declined" (change)="toggleStatus(slot, 'declined', $event.checked)" color="warn"></mat-checkbox>
+                    </td>
+
+                    <!-- 10. Pending -->
+                    <td class="text-center col-status">
+                      <mat-checkbox [checked]="slot.pending" (change)="toggleStatus(slot, 'pending', $event.checked)"></mat-checkbox>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="10" class="empty-table">
+                      No slots found for this resource.
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <mat-paginator
+            [length]="filteredSlots.length"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="[5, 10, 20, 50]"
+            [showFirstLastButtons]="true"
+            (page)="handlePage($event)">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

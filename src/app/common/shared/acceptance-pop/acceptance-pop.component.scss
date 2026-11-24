@@ -1,0 +1,74 @@
+:host {
+  display: block;
+}
+
+.acceptance-dialog-content {
+  overflow-y: auto !important;
+  max-height: calc(85vh - 110px) !important;
+}
+
+.sticky-action-container {
+  position: sticky;
+  bottom: 0;
+  background-color: #ffffff;
+  padding-top: 10px;
+  padding-bottom: 2px;
+  z-index: 10;
+  margin-top: 10px;
+}
+
+.table.app-table {
+  tbody {
+    tr:hover {
+      background-color: #f1f5f9;
+    }
+  }
+}
+
+// --- Reject Checkbox & Dropdown (matching project-gates redirect style) ---
+.reject-cell-wrap,
+.redirect-cell-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.reject-dropdown-wrap,
+.redirect-dropdown-wrap {
+  flex: 1;
+  max-width: 320px;
+  min-width: 220px;
+}
+
+.reject-reason-select,
+.redirect-stage-select {
+  height: 30px !important;
+  font-size: 11.5px !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  border: 1px solid #cbd5e1 !important;
+  background-color: #ffffff !important;
+  line-height: 24px !important;
+  text-align: left !important;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  &.mat-select-disabled {
+    background-color: #f1f5f9 !important;
+    color: #94a3b8 !important;
+    cursor: not-allowed !important;
+    opacity: 0.65;
+  }
+
+  &:hover:not(.mat-select-disabled) {
+    border-color: #94a3b8 !important;
+  }
+
+  &:focus:not(.mat-select-disabled) {
+    border-color: #3b82f6 !important;
+    outline: none !important;
+  }
+}

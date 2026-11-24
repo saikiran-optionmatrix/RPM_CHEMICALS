@@ -1,0 +1,194 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Requisite' : 'Add Requisites' }}
+  </h1>
+</div>
+
+<div mat-dialog-content>
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <form [formGroup]="sourcingForm" (ngSubmit)="save()">
+      <div class="row">
+
+        <!-- Left Column -->
+        <div class="col-sm-6">
+
+          <!-- Material Code -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Material Code :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="e.g. CAT/RAW/01"
+                formControlName="itemCode" style="height: 35px;">
+              @if (isSubmitting && f['itemCode'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Item Category -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Item Category :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="itemCategory"
+                placeholder="Select Item Category" (selectionChange)="onCategoryChange($event.value)"
+                style="height: 35px; line-height: 23px;">
+                @for (cat of categoryOptions; track cat) {
+                  <mat-option [value]="cat">{{ cat }}</mat-option>
+                }
+              </mat-select>
+              @if (isSubmitting && f['itemCategory'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Item Name -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Item Name :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="itemName" placeholder="Select Item Name"
+                style="height: 35px; line-height: 23px;">
+                @for (name of availableItemNames; track name) {
+                  <mat-option [value]="name">{{ name }}</mat-option>
+                }
+              </mat-select>
+              @if (isSubmitting && f['itemName'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Item Type -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Item Type :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="itemType" placeholder="Select Item Type"
+                style="height: 35px; line-height: 23px;">
+                @for (type of itemTypes; track type) {
+                  <mat-option [value]="type">{{ type }}</mat-option>
+                }
+              </mat-select>
+              @if (isSubmitting && f['itemType'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Development Quantity -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Development Qty :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0" placeholder="e.g. 20"
+                formControlName="devQuantity" style="height: 35px;">
+              @if (isSubmitting && f['devQuantity'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-sm-6">
+
+          <!-- Specs -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Specs :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="text" placeholder="Enter Specs"
+                formControlName="specs" style="height: 35px;">
+              @if (isSubmitting && f['specs'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Projected EB Quantity -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Projected EB Qty :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0" placeholder="e.g. 590"
+                formControlName="projectedEbQuantity" style="height: 35px;">
+              @if (isSubmitting && f['projectedEbQuantity'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Stock Available -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Stock :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0" placeholder="e.g. 120"
+                formControlName="stockAvailable" style="height: 35px;">
+              @if (isSubmitting && f['stockAvailable'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Unit -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Unit :</label>
+            </div>
+            <div class="col-sm-7">
+              <mat-select class="form-control back" formControlName="unit" placeholder="Select Unit"
+                style="height: 35px; line-height: 23px;">
+                @for (unit of unitOptions; track unit) {
+                  <mat-option [value]="unit">{{ unit }}</mat-option>
+                }
+              </mat-select>
+              @if (isSubmitting && f['unit'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+          <!-- Unit Rate -->
+          <div class="row" style="margin-bottom: 12px;">
+            <div class="col-sm-5">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Unit Rate (Rs.) :</label>
+            </div>
+            <div class="col-sm-7">
+              <input class="form-control name back" type="number" min="0" step="0.01" placeholder="e.g. 350"
+                formControlName="unitRate" style="height: 35px;">
+              @if (isSubmitting && f['unitRate'].errors) {
+                <small class="text-danger" style="color: #ef4444; font-size: 11px;">Required</small>
+              }
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Actions (Close & Save) -->
+      <div style="margin-bottom: 10px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> Close
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

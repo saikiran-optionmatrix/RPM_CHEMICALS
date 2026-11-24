@@ -1,0 +1,119 @@
+<div class="rld-tab-screen">
+
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+
+    <!-- Top Action Bar (Matching ttd-master) -->
+    <div class="app-page-actions mb-3">
+      <button type="button" class="app-btn app-btn-default" (click)="goToBudgeting()">
+        <mat-icon>open_in_new</mat-icon>
+        <span>Open in Budgeting</span>
+      </button>
+    </div>
+
+    <div class="rld-info-banner mb-3">
+      <mat-icon>account_balance_wallet</mat-icon>
+      <div>
+        Read-only view of the <strong>Budgeting &rsaquo; RLD</strong> procurement lines linked to this project (WBS 3.1.2 development, 5.4.5 BE).
+        <strong>Latest order date</strong> = Earliest need-by date of linked activities &minus; (sourcing + transit + clearance + acceptance lead times).
+        Committed delivery and receipt dates here drive proactive delivery-delay alerts.
+      </div>
+    </div>
+
+    <!-- Procurement Table (Matching ttd-master global styles) -->
+    <div class="table-responsive">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="min-width: 80px;">Line</th>
+            <th class="text-center" style="min-width: 120px;">WBS</th>
+            <th class="text-center" style="min-width: 110px;">Comparator</th>
+            <th class="text-left" style="min-width: 180px;">Supplier</th>
+            <th class="text-left" style="min-width: 140px;">Quotation</th>
+            <th class="text-center" style="min-width: 70px;">Cur</th>
+            <th class="text-center" style="min-width: 100px;">Price / Pack</th>
+            <th class="text-center" style="min-width: 100px;">Units / Pack</th>
+            <th class="text-center" style="min-width: 80px;">Packs</th>
+            <th class="text-center" style="min-width: 80px;">Units</th>
+            <th class="text-center" style="min-width: 70px;">FX</th>
+            <th class="text-center" style="min-width: 120px;">Goods (INR)</th>
+            <th class="text-center" style="min-width: 110px;">Freight &amp; Ins.</th>
+            <th class="text-center" style="min-width: 100px;">Duty (8.25%)</th>
+            <th class="text-center" style="min-width: 80px;">Other</th>
+            <th class="text-center" style="min-width: 120px;">Landed (INR)</th>
+            <th class="text-center" style="min-width: 100px;">Per Unit</th>
+            <th class="text-center" style="min-width: 110px;">Budget</th>
+            <th class="text-center" style="min-width: 110px;">Variance</th>
+            <th class="text-center" style="min-width: 140px;">PO No.</th>
+            <th class="text-center" style="min-width: 110px;">Order Date</th>
+            <th class="text-center" style="min-width: 160px;">Lead Times S/T/C/A</th>
+            <th class="text-center" style="min-width: 110px;">Need-by</th>
+            <th class="text-center" style="min-width: 120px;">Latest Order Date</th>
+            <th class="text-center" style="min-width: 130px;">Committed Delivery</th>
+            <th class="text-center" style="min-width: 110px;">Received</th>
+            <th class="text-center" style="min-width: 120px;">Expected Ready</th>
+            <th class="text-left" style="min-width: 160px;">Owner</th>
+            <th class="text-center" style="min-width: 150px;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of projectProcurements; track p.id) {
+          <tr>
+            <td class="text-center font-weight-bold">{{ p.id }}</td>
+            <td class="text-center">{{ p.wbs }}</td>
+            <td class="text-center">{{ p.c }}</td>
+            <td class="text-left">{{ p.sup }}</td>
+            <td class="text-left">
+              <div>{{ p.q }}</div>
+              <div class="sub-text">{{ rldService.formatDate(p.qd) }}</div>
+            </td>
+            <td class="text-center">{{ p.cur }}</td>
+            <td class="text-center">{{ p.price | number:'1.2-2' }}</td>
+            <td class="text-center">{{ p.cmp?.upp || '–' }}</td>
+            <td class="text-center">{{ p.packs }}</td>
+            <td class="text-center font-weight-bold">{{ p.units }}</td>
+            <td class="text-center">{{ p.fx }}</td>
+            <td class="text-center">{{ p.goods | number:'1.0-0' }}</td>
+            <td class="text-center">{{ p.fr | number:'1.0-0' }}</td>
+            <td class="text-center">{{ p.duty | number:'1.0-0' }}</td>
+            <td class="text-center">{{ p.oth | number:'1.0-0' }}</td>
+            <td class="text-center font-weight-bold">{{ p.landed | number:'1.0-0' }}</td>
+            <td class="text-center">{{ p.lpu | number:'1.1-1' }}</td>
+            <td class="text-center">{{ p.bud | number:'1.0-0' }}</td>
+            <td class="text-center">
+              @if (p.var > 0) {
+              <span style="color: #c13a3a; font-weight: bold;">+{{ p.var | number:'1.0-0' }}</span>
+              } @else if (p.var < 0) {
+              <span style="color: #237a4b; font-weight: bold;">{{ p.var | number:'1.0-0' }}</span>
+              } @else {
+              <span>0</span>
+              }
+            </td>
+            <td class="text-center font-weight-bold">{{ p.po }}</td>
+            <td class="text-center">{{ rldService.formatDate(p.od) }}</td>
+            <td class="text-center">{{ p.lt.join(' / ') }} d</td>
+            <td class="text-center">{{ rldService.formatDate(p.needBy) }}</td>
+            <td class="text-center font-weight-bold">{{ rldService.formatDate(p.latest) }}</td>
+            <td class="text-center">{{ rldService.formatDate(p.com) }}</td>
+            <td class="text-center">{{ rldService.formatDate(p.rec) }}</td>
+            <td class="text-center">{{ rldService.formatDate(p.expReady) }}</td>
+            <td class="text-left">{{ p.owner }}</td>
+            <td class="text-center">
+              <button type="button" class="status-button"
+                [class.status-active]="p.status.includes('Received') || p.status.includes('Delivered')"
+                [class.status-inactive]="!p.status.includes('Received') && !p.status.includes('Delivered')">
+                {{ p.status }}
+              </button>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="29" class="empty-table">No procurement lines recorded for this project in Budgeting.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>

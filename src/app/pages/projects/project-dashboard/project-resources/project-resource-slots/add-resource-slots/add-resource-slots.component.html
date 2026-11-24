@@ -1,0 +1,119 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Resource Slot' : 'Add Resource Slot' }}
+  </h1>
+</div>
+
+<div mat-dialog-content>
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <form [formGroup]="myGroup" (ngSubmit)="upsertSlot()">
+
+      <!-- Stage -->
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Stage :</label>
+        </div>
+        <div class="col-sm-8">
+          <mat-select formControlName="stage" class="form-control back" placeholder="Select Stage"
+            style="height: 35px; line-height: 23px;">
+            @for (stg of stageOptions; track stg) {
+              <mat-option [value]="stg">{{ stg }}</mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+
+      <!-- Deliverable (Dropdown) -->
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Deliverable :</label>
+        </div>
+        <div class="col-sm-8">
+          <mat-select formControlName="deliverable" class="form-control back" placeholder="Select Deliverable"
+            style="height: 35px; line-height: 23px;">
+            @for (del of deliverableOptions; track del) {
+              <mat-option [value]="del">{{ del }}</mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+
+      <!-- Activity (Dropdown) -->
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Activity :</label>
+        </div>
+        <div class="col-sm-8">
+          <mat-select formControlName="activity" class="form-control back" placeholder="Select Activity"
+            style="height: 35px; line-height: 23px;">
+            @for (act of activityOptions; track act) {
+              <mat-option [value]="act">{{ act }}</mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+
+      <!-- Task (Dropdown) -->
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">Task :</label>
+        </div>
+        <div class="col-sm-8">
+          <mat-select formControlName="task" class="form-control back" placeholder="Select Task"
+            style="height: 35px; line-height: 23px;">
+            @for (tsk of taskOptions; track tsk) {
+              <mat-option [value]="tsk">{{ tsk }}</mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+
+      <!-- From Time -->
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">From Time :</label>
+        </div>
+        <div class="col-sm-8">
+          <input class="form-control name back" maxlength="50" placeholder="e.g. 09:00 AM"
+            formControlName="fromTime" type="text">
+        </div>
+      </div>
+
+      <!-- To Time -->
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="add-member-label control-label" style="margin-top: 5px;">To Time :</label>
+        </div>
+        <div class="col-sm-8">
+          <input class="form-control name back" maxlength="50" placeholder="e.g. 11:30 AM"
+            formControlName="toTime" type="text">
+        </div>
+      </div>
+
+      <!-- Status checkboxes -->
+      <div class="row" style="margin-bottom: 12px;">
+        <div class="col-sm-4">
+          <label class="control-label" style="margin-top: 5px; font-weight: 500;">Status :</label>
+        </div>
+        <div class="col-sm-8" style="display: flex; gap: 15px; align-items: center; margin-top: 6px;">
+          <mat-checkbox formControlName="approved" (change)="onStatusChange('approved')" color="primary">Approved</mat-checkbox>
+          <mat-checkbox formControlName="declined" (change)="onStatusChange('declined')" color="warn">Declined</mat-checkbox>
+          <mat-checkbox formControlName="pending" (change)="onStatusChange('pending')">Pending</mat-checkbox>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div style="margin-bottom: 10px; margin-top: 20px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> Close
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

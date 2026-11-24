@@ -1,0 +1,230 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    Edit Stage
+  </h1>
+</div>
+
+<div mat-dialog-content style="padding: 16px 20px;">
+  <form [formGroup]="stageForm" (ngSubmit)="save()">
+    <div style="display: flex; gap: 24px; align-items: stretch;">
+
+      <!-- Left Column: Navigation Tabs with Pills Styling -->
+      <div class="pills left-nav-pills"
+        style="width: 175px; flex-shrink: 0; border-right: 1px solid #e2e8f0; padding-right: 16px;">
+        <ul class="nav nav-pills"
+          style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+          @for (tab of tabs; track tab.id) {
+          <li [class.active]="activeTab === tab.id" style="width: 100%;">
+            <a mat-raised-button type="button" (click)="setActiveTab(tab.id)"
+              style="width: 100%; display: flex; align-items: center; justify-content: center; text-align: center;">
+              {{ tab.label }}
+            </a>
+          </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Right Column: Tab Scroll Container -->
+      <div class="tab-scroll-container"
+        style="flex: 1; min-width: 0; max-height: 60vh; overflow-y: auto; overflow-x: hidden; padding-right: 8px;">
+
+        <!-- ==========================================
+             TAB 1: OVERVIEW
+             ========================================== -->
+        @if (activeTab === 'overview') {
+        <div style="max-width: 600px; padding-top: 5px;">
+          <!-- Stage Name (Readonly) -->
+          <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+            <div class="col-sm-3">
+              <label class="add-member-label control-label">Stage Name :</label>
+            </div>
+            <div class="col-sm-9">
+              <input class="form-control name back" maxlength="50" placeholder="Enter Stage Name"
+                formControlName="name" type="text" readonly>
+            </div>
+          </div>
+
+          <!-- Stage Code (Readonly) -->
+          <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+            <div class="col-sm-3">
+              <label class="add-member-label control-label">Stage Code :</label>
+            </div>
+            <div class="col-sm-9">
+              <input class="form-control name back" maxlength="50" placeholder="Enter Stage Code"
+                formControlName="stageCode" type="text" readonly>
+            </div>
+          </div>
+
+          <!-- Gate Code (Readonly) -->
+          <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+            <div class="col-sm-3">
+              <label class="add-member-label control-label">Gate Code :</label>
+            </div>
+            <div class="col-sm-9">
+              <input class="form-control name back" maxlength="50" placeholder="Enter Gate Code"
+                formControlName="gateCode" type="text" readonly>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="row" style="margin-bottom: 14px; display: flex; align-items: flex-start;">
+            <div class="col-sm-3">
+              <label class="add-member-label control-label" style="margin-top: 6px;">Description :</label>
+            </div>
+            <div class="col-sm-9">
+              <textarea class="form-control name back" rows="3" formControlName="description"
+                placeholder="Enter description..." style="resize: vertical;"></textarea>
+            </div>
+          </div>
+        </div>
+        }
+
+        <!-- ==========================================
+             TAB 2: TIMELINE
+             ========================================== -->
+        @if (activeTab === 'timeline') {
+        <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+          <!-- Left Column: Dates -->
+          <div style="flex: 1; min-width: 320px;">
+            <!-- Plan Start -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">Plan Start :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" formControlName="planStart" type="date">
+              </div>
+            </div>
+
+            <!-- Actual Start -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">Actual Start :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" formControlName="actualStart" type="date">
+              </div>
+            </div>
+
+            <!-- Plan End -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">Plan End :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" formControlName="planEnd" type="date">
+              </div>
+            </div>
+
+            <!-- Actual End -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">Actual End :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" formControlName="actualEnd" type="date">
+              </div>
+            </div>
+
+            <!-- ETA -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">ETA :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" formControlName="eta" type="date">
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Buffer, Effort & Duration -->
+          <div style="flex: 1; min-width: 320px;">
+            <!-- Buffer -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">Buffer :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" maxlength="50" placeholder="e.g. 5 days"
+                  formControlName="buffer" type="text">
+              </div>
+            </div>
+
+            <!-- Plan Effort -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">Plan Effort :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" maxlength="50" placeholder="e.g. 120 hrs"
+                  formControlName="planEffort" type="text">
+              </div>
+            </div>
+
+            <!-- Actual Effort -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">Actual Effort :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" maxlength="50" placeholder="e.g. 120 hrs"
+                  formControlName="actualEffort" type="text">
+              </div>
+            </div>
+
+            <!-- Plan Duration -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">Plan Duration :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" maxlength="50" placeholder="e.g. 60 days"
+                  formControlName="planDuration" type="text">
+              </div>
+            </div>
+
+            <!-- Actual Duration -->
+            <div class="row" style="margin-bottom: 14px; display: flex; align-items: center;">
+              <div class="col-sm-4">
+                <label class="add-member-label control-label">Actual Duration :</label>
+              </div>
+              <div class="col-sm-8">
+                <input class="form-control name back" maxlength="50" placeholder="e.g. 60 days"
+                  formControlName="actualDuration" type="text">
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+
+      </div>
+    </div>
+
+    <!-- Dialog Actions Footer with Prev/Next, Close, Save -->
+    <div
+      style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="prevTab()"
+          [disabled]="activeTab === 'overview'" [style.opacity]="activeTab === 'overview' ? '0.45' : '1'"
+          [style.cursor]="activeTab === 'overview' ? 'not-allowed' : 'pointer'">
+          <mat-icon>arrow_back</mat-icon> Prev
+        </button>
+
+        <button type="button" class="app-btn app-btn-default" (click)="nextTab()"
+          [disabled]="activeTab === 'timeline'" [style.opacity]="activeTab === 'timeline' ? '0.45' : '1'"
+          [style.cursor]="activeTab === 'timeline' ? 'not-allowed' : 'pointer'">
+          Next <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="app-btn app-btn-default" (click)="close()">
+          <mat-icon>cancel</mat-icon> Close
+        </button>
+        <button type="submit" class="app-btn app-btn-primary">
+          <mat-icon>save</mat-icon> Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

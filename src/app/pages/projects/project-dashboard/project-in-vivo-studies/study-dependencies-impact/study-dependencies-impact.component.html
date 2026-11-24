@@ -1,0 +1,177 @@
+@if (study) {
+  @for (section of dependencySections; track section.title) {
+  <section class="dep-section">
+    <div class="section-header">
+      <h3 class="section-title">{{ section.title }} ({{ section.rows.length }})</h3>
+      @if (section.showAdd) {
+      <button type="button" class="app-btn app-btn-primary" (click)="openDependencyDialog()">
+        <mat-icon>add_link</mat-icon>
+        <span>Add dependency</span>
+      </button>
+      }
+    </div>
+
+    <div class="app-table-container dep-table-container">
+      <div class="table-responsive">
+        <table class="table app-table dep-table">
+          <thead>
+            <tr>
+              <th class="text-center col-actions">Actions</th>
+              <th class="text-left col-id">ID</th>
+              <th class="text-left">Predecessor</th>
+              <th class="text-left">Successor</th>
+              <th class="text-left">Type</th>
+              <th class="text-left col-date">Required by</th>
+              <th class="text-left col-date">Current forecast</th>
+              <th class="text-left">Status</th>
+              <th class="text-left">Owner</th>
+              <th class="text-left col-impact">Impact if late</th>
+              <th class="text-left">Evidence</th>
+              <th class="text-left col-date">Last updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (dep of section.rows; track dep.id) {
+            <tr>
+              <td class="text-center">
+                <div class="table-actions">
+                  <button type="button" class="table-action-button edit"
+                    [attr.aria-label]="'Edit ' + dep.id"
+                    matTooltip="Edit dependency"
+                    (click)="openDependencyDialog(dep)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </div>
+              </td>
+              <td class="text-nowrap">{{ dep.id }}</td>
+              <td>
+                @if (dep.predecessorStudyId) {
+                  <span class="dep-study-ref">{{ dep.predecessorStudyId }}</span>
+                  &middot; {{ dep.predecessorMilestone }}
+                } @else {
+                  {{ dep.externalPredecessor || '—' }}
+                }
+              </td>
+              <td>
+                <span class="dep-study-ref">{{ dep.successorStudyId }}</span>
+                &middot; {{ dep.successorMilestone }}
+              </td>
+              <td class="text-nowrap">{{ dep.type }}</td>
+              <td class="text-nowrap">{{ dep.requiredBy || '—' }}</td>
+              <td class="text-nowrap">
+                @if (getForecast(dep); as fc) {
+                  <span [class.late-date]="isLate(dep)">{{ fc }}</span>
+                } @else {
+                  —
+                }
+              </td>
+              <td>
+                @if (getStatus(dep); as st) {
+                <span class="status-pill" [ngClass]="getDepStatusClass(st)">
+                  {{ st }}
+                </span>
+                }
+              </td>
+              <td class="text-nowrap">{{ dep.owner || '—' }}</td>
+              <td class="cell-impact">{{ dep.impact || '—' }}</td>
+              <td>{{ dep.evidence || '—' }}</td>
+              <td class="cell-update text-nowrap">
+                <div>{{ dep.updatedOn }}</div>
+                <div class="upd-user">{{ dep.updatedBy }}</div>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="12" class="empty-cell">None</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  }
+
+  <div class="section-footnote">
+    A dependency appears in both linked studies. Status turns &ldquo;At risk&rdquo; automatically when the predecessor&rsquo;s forecast is later than the required-by date (&sect;9).
+  </div>
+
+  <section class="dep-section impact-section">
+    <div class="section-header">
+      <h3 class="section-title">Downstream product&ndash;country impact</h3>
+      <button type="button" class="app-btn app-btn-primary" (click)="openImpactDialog()">
+        <mat-icon>add</mat-icon>
+        <span>Add assessment</span>
+      </button>
+    </div>
+
+    <div class="app-table-container dep-table-container">
+      <div class="table-responsive">
+        <table class="table app-table dep-table">
+          <thead>
+            <tr>
+              <th class="text-center col-actions">Actions</th>
+              <th class="text-left">Product&ndash;country programme</th>
+              <th class="text-left">Affected milestone</th>
+              <th class="text-left col-date">Baseline</th>
+              <th class="text-left col-date">Current forecast</th>
+              <th class="text-right col-num">Estimated variance</th>
+              <th class="text-left">Affects milestone?</th>
+              <th class="text-left">Owner &middot; assessed on</th>
+              <th class="text-left col-impact">Assumptions</th>
+              <th class="text-left">Evidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (imp of impacts; track imp.id) {
+            <tr>
+              <td class="text-center">
+                <div class="table-actions">
+                  <button type="button" class="table-action-button edit"
+                    [attr.aria-label]="'Edit ' + imp.id"
+                    matTooltip="Edit impact assessment"
+                    (click)="openImpactDialog(imp)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </div>
+              </td>
+              <td>{{ imp.programme }}</td>
+              <td>{{ imp.affectedMilestone }}</td>
+              <td class="text-nowrap">{{ imp.baseline || '—' }}</td>
+              <td class="text-nowrap">{{ imp.forecast || '—' }}</td>
+              <td class="text-right text-nowrap">
+                @if (getImpactVariance(imp); as impVar) {
+                  <span class="variance-val" [ngClass]="getVarianceClass(impVar)">{{ formatVariance(impVar) }}</span>
+                } @else if (getImpactVariance(imp) === 0) {
+                  <span class="variance-val variance-neutral">0 d</span>
+                } @else {
+                  <span class="muted-dash">—</span>
+                }
+              </td>
+              <td>
+                <span class="status-pill" [ngClass]="getAffectsClass(imp.affects)">
+                  {{ imp.affects }}
+                </span>
+              </td>
+              <td class="cell-update text-nowrap">
+                <div>{{ imp.owner || '—' }}</div>
+                <div class="upd-user">{{ imp.assessedOn || '—' }}</div>
+              </td>
+              <td class="cell-impact">{{ imp.assumptions || '—' }}</td>
+              <td>{{ imp.evidence || '—' }}</td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="10" class="empty-cell">No impact assessed</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-footnote">
+      Impact is entered and owned by a person. PRAGATI never assumes a study delay equals the same filing or launch delay (&sect;9).
+    </div>
+  </section>
+}

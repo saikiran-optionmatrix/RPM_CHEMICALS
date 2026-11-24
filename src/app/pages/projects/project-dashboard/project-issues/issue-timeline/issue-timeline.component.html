@@ -1,0 +1,62 @@
+<div class="timeline-popup-card">
+  <!-- Header Row -->
+  <div class="timeline-popup-header">
+    <div class="timeline-popup-title-wrap">
+      <div class="timeline-icon-box">
+        <mat-icon style="color: #2563eb; font-size: 22px; width: 22px; height: 22px;">calendar_today</mat-icon>
+      </div>
+      <h3 class="timeline-popup-title">
+        Timeline &mdash; {{ data?.subject }}
+      </h3>
+    </div>
+    <button class="timeline-close-btn" (click)="close()" type="button" aria-label="Close">
+      <mat-icon style="font-size: 18px; width: 18px; height: 18px; line-height: 18px; display: flex; align-items: center; justify-content: center; color: #475569;">close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Dates Grid -->
+  <div class="timeline-dates-container">
+    <div class="timeline-accent-bar"></div>
+
+    <div class="timeline-grid-content">
+      <!-- Row 1: Responsibility, Due Date, Status -->
+      <div class="timeline-grid-row">
+        <div class="timeline-date-col">
+          <div class="timeline-date-label">Responsibility</div>
+          <div class="timeline-date-value">
+            {{ data?.responsibility || data?.assignedTo || '—' }}
+          </div>
+        </div>
+        <div class="timeline-date-col">
+          <div class="timeline-date-label">Due Date</div>
+          <div class="timeline-date-value">
+            {{ (data?.targetDate || data?.dueDate) ? ((data.targetDate || data.dueDate) | date:'dd-MMM-yyyy') : '—' }}
+          </div>
+        </div>
+        <div class="timeline-date-col timeline-date-col--last">
+          <div class="timeline-date-label">Status</div>
+          <div class="timeline-date-value">
+            <span [style.background-color]="getColor(data?.status)"
+              style="color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; display: inline-block;">
+              {{ data?.status || 'Pending' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Issue Details Box -->
+  <div class="timeline-desc-box">
+    <div class="timeline-desc-header">
+      <mat-icon style="font-size: 18px; width: 18px; height: 18px; color: #3b82f6;">description</mat-icon>
+      <span>Issue Details</span>
+    </div>
+    <p class="timeline-desc-text" style="margin-bottom: 6px;">
+      <strong style="color: #1e293b;">Description:</strong> {{ data?.issueDescription || data?.description || '—' }}
+    </p>
+    <p class="timeline-desc-text">
+      <strong style="color: #1e293b;">Remarks:</strong> {{ data?.remarks || '—' }}
+    </p>
+  </div>
+</div>

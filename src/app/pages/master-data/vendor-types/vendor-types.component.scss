@@ -1,0 +1,35 @@
+:host {
+  display: block;
+}
+
+.app-table-container {
+  width: 75%;
+}
+
+@media (max-width: 992px) {
+  .app-table-container {
+    width: 100%;
+  }
+}
+
+.checklist-number-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 24px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #1d4ed8;
+    background-color: #eff6ff;
+    text-decoration: underline;
+  }
+}

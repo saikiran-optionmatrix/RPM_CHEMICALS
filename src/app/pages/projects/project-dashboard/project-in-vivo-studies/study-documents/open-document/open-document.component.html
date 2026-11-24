@@ -1,0 +1,26 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>Open controlled document</h1>
+</div>
+
+<div mat-dialog-content style="max-height: 70vh; overflow-y: auto;">
+  <div class="col-sm-12" style="margin-bottom: 10px;">
+    <div class="open-doc-info">
+      In the live system this opens <strong>{{ data.document.ref }}</strong> in the controlled-document
+      repository, subject to your repository access rights. PRAGATI holds only the reference.
+    </div>
+
+    <div class="doc-meta-summary">
+      <div><strong>Type:</strong> {{ data.document.type }}</div>
+      <div><strong>Title:</strong> {{ data.document.title }}</div>
+      <div><strong>Version:</strong> {{ data.document.version || '—' }}</div>
+      <div><strong>Document date:</strong> {{ data.document.date || '—' }}</div>
+    </div>
+
+    <mat-dialog-actions align="end" style="padding: 12px 0 0; margin: 0;">
+      <button type="button" class="app-btn app-btn-default" (click)="close()">
+        <mat-icon>cancel</mat-icon> <span>Close</span>
+      </button>
+    </mat-dialog-actions>
+  </div>
+</div>
+

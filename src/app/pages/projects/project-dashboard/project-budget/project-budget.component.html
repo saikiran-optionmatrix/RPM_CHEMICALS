@@ -1,0 +1,101 @@
+<div class="analytics-page">
+  <header class="analytics-header">
+    <h1>{{ projectName }}</h1>
+    <button type="button" class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      <span>Back</span>
+    </button>
+  </header>
+
+  <div class="budget-page-container">
+    <!-- Stats Summary Grid -->
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <span class="label">BUDGET</span>
+        <span class="value">Rs. {{ fmt(totalBudget) }}</span>
+      </div>
+      <div class="stat-card green">
+        <span class="label">ACTUAL</span>
+        <span class="value">Rs. {{ fmt(totalActual) }}</span>
+      </div>
+      <div class="stat-card orange">
+        <span class="label">COMPLETION</span>
+        <span class="value">{{ overallCompletion }}%</span>
+      </div>
+      <div class="stat-card purple">
+        <span class="label">PROJECTED BUDGET</span>
+        <span class="value">Rs. {{ fmt(projectedBudget) }}</span>
+      </div>
+      <div class="stat-card red">
+        <span class="label">DUE DATE</span>
+        <span class="value">30 Nov 2026</span>
+      </div>
+      <div class="stat-card cyan">
+        <span class="label">ETA</span>
+        <span class="value">15 Nov 2026</span>
+      </div>
+    </div>
+
+    <!-- Floating Horizontal Scroll Buttons -->
+    <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+      (click)="scrollLeft()" matTooltip="Scroll Left">
+      <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+    </button>
+    <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+      matTooltip="Scroll Right">
+      <mat-icon style="color: #414141;">fast_forward</mat-icon>
+    </button>
+
+    <!-- Budget Table Container -->
+    <div class="app-table-container" style="padding: 0; width: 100%;">
+      <div #scrollContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+        <table class="table app-table">
+          <thead>
+            <tr>
+              <th class="text-left" style="min-width: 170px;">Stage</th>
+              <th class="text-left" style="min-width: 220px;">Deliverable</th>
+              <th class="text-left" style="min-width: 280px;">Activity</th>
+              <th class="text-center" style="min-width: 100px;">Allocation</th>
+              <th class="text-center" style="min-width: 130px;">Standard Hours</th>
+              <th class="text-center" style="min-width: 120px;">Actual Hours</th>
+              <th class="text-center" style="min-width: 120px;">Staff Cost</th>
+              <th class="text-center" style="min-width: 120px;">Material Budget</th>
+              <th class="text-center" style="min-width: 120px;">Material Cost</th>
+              <th class="text-center" style="min-width: 130px;">Resource Cost</th>
+              <th class="text-center" style="min-width: 120px;">Total Cost</th>
+              <th class="text-center" style="min-width: 110px;">Usage</th>
+              <th class="text-center" style="min-width: 110px;">Completion</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of displayedRows; track row.activity) {
+            <tr>
+              <td class="text-left font-medium">{{ row.stage }}</td>
+              <td class="text-left">{{ row.deliverable }}</td>
+              <td class="text-left">{{ row.activity }}</td>
+              <td class="text-center">{{ row.allocation }}</td>
+              <td class="text-center">{{ row.standardHours }}</td>
+              <td class="text-center">{{ row.actualHours }}</td>
+              <td class="text-center">{{ fmt(row.staffCost) }}</td>
+              <td class="text-center">{{ fmt(row.budget) }}</td>
+              <td class="text-center">{{ fmt(row.materialCost) }}</td>
+              <td class="text-center">{{ fmt(row.resourceCost) }}</td>
+              <td class="text-center">{{ fmt(row.totalCost) }}</td>
+              <td class="text-center" [class.usage-warning]="row.usage < row.materialCost">
+                {{ fmt(row.usage) }}
+              </td>
+              <td class="text-center font-bold" [style.color]="getCompColor(row.completion)">
+                {{ row.completion }}%
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="13" class="empty-table">No records found</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

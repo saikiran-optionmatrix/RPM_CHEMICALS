@@ -1,0 +1,516 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="app-table-container">
+
+        <!-- ==========================================
+             PAGE ACTIONS & TOGGLES
+             ========================================== -->
+        <div class="app-page-actions" style="justify-content: flex-end; flex-wrap: wrap; gap: 12px; align-items: center;">
+
+          <!-- Mask Closed Checkbox -->
+          <mat-checkbox [(ngModel)]="maskClosed" (change)="applyFilters()" color="primary"
+            style="margin-right: 8px;">
+            Mask Closed
+          </mat-checkbox>
+
+          <!-- Overdue Checkbox -->
+          <mat-checkbox [(ngModel)]="isOverdueOnly" (change)="onOverdueChange()" color="primary"
+            style="margin-right: 8px;">
+            Overdue
+          </mat-checkbox>
+          <!-- 1. View Toggles -->
+          <div class="view-toggle" style="background: #f1f5f9; border-radius: 6px; padding: 4px; display: inline-flex; gap: 4px;">
+            <button type="button" class="app-btn" [class.app-btn-filter]="activeView === 'calendar'"
+              [class.app-btn-default]="activeView !== 'calendar'" (click)="setActiveView('calendar')">
+              <mat-icon>calendar_month</mat-icon>
+              <span>Calendar View</span>
+            </button>
+            <button type="button" class="app-btn" [class.app-btn-filter]="activeView === 'table'"
+              [class.app-btn-default]="activeView !== 'table'" (click)="setActiveView('table')">
+              <mat-icon>view_column</mat-icon>
+              <span>Table View</span>
+            </button>
+          </div>
+
+          <!-- 2. Grid Columns -->
+          <button type="button" class="app-btn app-btn-default">
+            <mat-icon>grid_on</mat-icon>
+            <span>Grid Columns</span>
+          </button>
+
+          <!-- 3. Filter -->
+          <button type="button" class="app-btn app-btn-filter" (click)="toggleFilter()" [class.active]="showFilter">
+            <mat-icon>filter_list</mat-icon>
+            <span>Filter</span>
+          </button>
+
+          <!-- 4. Add Issue -->
+          <!-- <button type="button" class="app-btn app-btn-primary" style="margin-left: 8px;">
+            <mat-icon>add</mat-icon>
+            <span>Add Issue</span>
+          </button> -->
+        </div>
+
+        <!-- ==========================================
+             FILTER PANEL
+             ========================================== -->
+        @if (showFilter) {
+        <mat-card class="app-filter-panel" style="margin-bottom: 20px;">
+          <mat-card-content>
+            <form [formGroup]="filterForm" class="app-filter-grid">
+
+              <div class="app-filter-fields">
+                <!-- Keyword Field using MatInput -->
+                <div class="app-filter-field">
+                  <label for="issueKeyword">Keyword:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <input matInput id="issueKeyword" formControlName="Keyword" placeholder="Search by keyword">
+                  </mat-form-field>
+                </div>
+
+                <!-- Status Field using MatSelect -->
+                <div class="app-filter-field">
+                  <label for="issueStatus">Status:</label>
+                  <mat-form-field appearance="outline" class="app-filter-control">
+                    <mat-select id="issueStatus" formControlName="Status" placeholder="Select Status">
+                      <mat-option value="Pending">Pending</mat-option>
+                      <mat-option value="Allocated">Allocated</mat-option>
+                      <mat-option value="Process">Process</mat-option>
+                      <mat-option value="Hold">Hold</mat-option>
+                      <mat-option value="Cancelled">Cancelled</mat-option>
+                      <mat-option value="Closed">Closed</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="app-filter-actions">
+                <button type="button" class="app-btn app-btn-primary" (click)="onSearch()">
+                  <mat-icon>search</mat-icon>
+                  <span>Search</span>
+                </button>
+                <button type="button" class="app-btn app-btn-default" (click)="onClear()">
+                  <mat-icon>settings_backup_restore</mat-icon>
+                  <span>Clear</span>
+                </button>
+              </div>
+
+              <div class="app-filter-toggle">
+                <button type="button" class="app-icon-btn" aria-label="Collapse filter" (click)="toggleFilter()">
+                  <mat-icon>keyboard_double_arrow_up</mat-icon>
+                </button>
+              </div>
+
+            </form>
+          </mat-card-content>
+        </mat-card>
+        }
+
+        <!-- Scroll Buttons -->
+        <div class="d-flex justify-content-end mb-2" style="gap: 10px;">
+          <div class="d-flex justify-content-end mb-2">
+            <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;"
+              (click)="activeView === 'calendar' ? scrollCalendarLeft() : scrollLeft()">
+              <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+            </button>
+            <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;"
+              (click)="activeView === 'calendar' ? scrollCalendarRight() : scrollRight()">
+              <mat-icon style="color: #414141;">fast_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             CALENDAR VIEW (Split: Calendar Sidebar + Issues Table)
+             ========================================== -->
+        @if (activeView === 'calendar') {
+        <div class="dashboard-content" style="display: flex; gap: 16px; align-items: flex-start; margin-top: 10px;">
+
+          <!-- Left Calendar Sidebar -->
+          <aside class="calendar-sidebar"
+            style="width: 310px; flex-shrink: 0; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px; box-sizing: border-box;">
+            <div class="calendar-card">
+              <!-- Month Navigation -->
+              <div class="month-selector"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <button class="nav-arrow" (click)="prevCalendarMonth()" aria-label="Previous month"
+                  style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_left</mat-icon>
+                </button>
+                <strong style="font-size: 14px; color: #0f172a;">{{ currentCalendarMonthLabel }}</strong>
+                <button class="nav-arrow" (click)="nextCalendarMonth()" aria-label="Next month"
+                  style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">chevron_right</mat-icon>
+                </button>
+              </div>
+
+              <!-- 7-Column Calendar Grid (Sun - Sat) -->
+              <div class="calendar-grid"
+                style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; margin-bottom: 16px;">
+                @for (d of dayNames; track $index) {
+                <div class="weekday" style="font-size: 11.5px; color: #64748b; font-weight: 600; padding: 4px 0;">{{ d }}</div>
+                }
+
+                @for (day of calendarDays; track $index) {
+                <div class="day-cell" [class.faded]="!day.inCurrentMonth" [class.active]="day.isSelected"
+                  [class.today-cell]="day.isToday && !day.isSelected"
+                  (click)="selectCalendarDate(day)"
+                  style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 44px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease;">
+                  <span class="date-num" style="font-size: 13px; line-height: 1;">{{ day.dayNumber }}</span>
+                  @if (day.count > 0) {
+                  <span class="activity-count-num"
+                    [style.color]="day.isSelected ? '#ffffff' : (day.isBacklog ? '#dc2626' : '#2563eb')"
+                    style="display: block; font-size: 10.5px; font-weight: 700; line-height: 12px; margin-top: 2px;">
+                    {{ day.count }}
+                  </span>
+                  }
+                </div>
+                }
+              </div>
+
+            </div>
+          </aside>
+
+          <!-- Right Activity Table beside Calendar -->
+          <div class="app-table-container"
+            style="flex: 1; min-width: 0; overflow: hidden; background: white; border-radius: 6px; border: 1px solid #cbd5e1; padding: 16px;">
+
+            <!-- Table Container -->
+            <div #calendarTableContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+              <table class="table app-table" style="min-width: 1750px; white-space: nowrap;">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 80px; min-width: 80px;">Actions</th>
+                    <th class="text-center" style="width: 70px; min-width: 70px;">Timeline</th>
+                    <th class="text-center" style="width: 60px; min-width: 60px;">Done</th>
+                    <th class="text-center" style="width: 75px; min-width: 75px;">Approved</th>
+                    <th class="text-left" style="min-width: 160px;">Stage</th>
+                    <th class="text-left" style="min-width: 180px;">Deliverable</th>
+                    <th class="text-left" style="min-width: 180px;">Activity</th>
+                    <th class="text-left" style="min-width: 180px;">Task</th>
+                    <th class="text-left" style="min-width: 180px;">Subject</th>
+                    <th class="text-left" style="width: 260px; min-width: 260px; max-width: 260px;">Description</th>
+                    <th class="text-center" style="min-width: 110px;">Date Created</th>
+                    <th class="text-center" style="min-width: 110px;">Due Date</th>
+                    <th class="text-center" style="min-width: 110px;">Date Resolved</th>
+                    <th class="text-left" style="min-width: 140px;">Assigned To</th>
+                    <th class="text-center" style="width: 80px; min-width: 80px;">Document</th>
+                    <th class="text-center" style="width: 100px; min-width: 100px;">Updated</th>
+                    <th class="text-center" style="width: 120px; min-width: 120px;">Update By</th>
+                    <th class="text-center" style="width: 70px; min-width: 70px;">History</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @for (applicant of calendarPaginatedIssues; track applicant.id; let idx = $index) {
+                  <tr>
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="table-actions">
+                        <button type="button" class="table-action-button edit" matTooltip="Edit Issue" aria-label="Edit issue"
+                          (click)="onEditIssue(applicant)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" class="table-action-button delete" matTooltip="Delete Issue"
+                          aria-label="Delete issue" (click)="onDeleteIssue(applicant)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+
+                    <!-- Timeline -->
+                    <td class="text-center">
+                      <button type="button" class="timeline-trigger-btn" (click)="openTimelineModal(applicant)"
+                        matTooltip="View Timeline" aria-label="View Timeline">
+                        <mat-icon>calendar_today</mat-icon>
+                      </button>
+                    </td>
+
+                    <!-- Done Checkbox -->
+                    <td class="text-center">
+                      <mat-checkbox [(ngModel)]="applicant.done" (change)="toggleDone(applicant)"
+                        color="primary"></mat-checkbox>
+                    </td>
+
+                    <!-- Approved Checkbox -->
+                    <td class="text-center">
+                      <mat-checkbox [(ngModel)]="applicant.approved" (change)="toggleApproved(applicant)"
+                        color="primary"></mat-checkbox>
+                    </td>
+
+                    <!-- Stage -->
+                    <td class="text-left">
+                      {{ applicant.stage || '—' }}
+                    </td>
+
+                    <!-- Deliverable -->
+                    <td class="text-left">
+                      {{ applicant.deliverable || '—' }}
+                    </td>
+
+                    <!-- Activity (Red when Backlog/Overdue) -->
+                    <td class="text-left" [style.color]="(isBacklogIssue(applicant) || isDateExceeded(applicant)) ? '#dc2626' : null">
+                      {{ applicant.activity || '—' }}
+                    </td>
+
+                    <!-- Task (Red when Backlog/Overdue) -->
+                    <td class="text-left" [style.color]="(isBacklogIssue(applicant) || isDateExceeded(applicant)) ? '#dc2626' : null">
+                      {{ applicant.task || applicant.taskName || '—' }}
+                    </td>
+
+                    <!-- Subject (Red when Backlog/Overdue) -->
+                    <td class="text-left font-weight-500" [style.color]="(isBacklogIssue(applicant) || isDateExceeded(applicant)) ? '#dc2626' : null">
+                      {{ applicant.subject }}
+                    </td>
+
+                    <!-- Description -->
+                    <td class="text-left" style="width: 260px; min-width: 260px; max-width: 260px;">
+                      <span [matTooltip]="applicant.issueDescription"
+                        matTooltipPosition="above"
+                        style="display: block; width: 100%; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer;">
+                        {{ applicant.issueDescription }}
+                      </span>
+                    </td>
+
+                    <!-- Date Created -->
+                    <td class="text-center">
+                      {{ applicant.createdDate ? (applicant.createdDate | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- Due Date -->
+                    <td class="text-center">
+                      {{ (applicant.dueDate || applicant.targetDate) ? ((applicant.dueDate || applicant.targetDate) |
+                      date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- Date Resolved -->
+                    <td class="text-center">
+                      {{ applicant.resolvedDate ? (applicant.resolvedDate | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- Assigned To -->
+                    <td class="text-left">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">person</mat-icon>
+                        <span>{{ applicant.assignedTo || applicant.responsibility || '—' }}</span>
+                      </div>
+                    </td>
+
+                    <!-- Document -->
+                    <td class="text-center">
+                      <a href="javascript:void(0)" class="history-number-link" (click)="openDocuments()" matTooltip="View Documents">
+                        {{ applicant.documentsCount || getDocumentsCount(idx) }}
+                      </a>
+                    </td>
+
+                    <!-- Updated -->
+                    <td class="text-center">
+                      {{ (applicant.updatedDate || applicant.createdDate) ? ((applicant.updatedDate || applicant.createdDate) | date:'dd-MMM-yyyy') : '—' }}
+                    </td>
+
+                    <!-- Update By -->
+                    <td class="text-center">
+                      {{ applicant.updatedBy || applicant.assignedTo || '—' }}
+                    </td>
+
+                    <!-- History -->
+                    <td class="text-center">
+                      <a href="javascript:void(0)" class="history-number-link" matTooltip="View Record History">
+                        {{ applicant.historyCount || ((idx % 10) + 1) }}
+                      </a>
+                    </td>
+                  </tr>
+                  } @empty {
+                  <tr>
+                    <td colspan="18" class="empty-table text-center">
+                      No issues found match the selected filters.
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Calendar Paginator -->
+            <mat-paginator [length]="calendarFilteredIssues.length" [pageSize]="calendarPageSize"
+              [pageIndex]="calendarPageIndex" [pageSizeOptions]="[5, 10, 25, 50]"
+              (page)="handleCalendarPage($event)" showFirstLastButtons>
+            </mat-paginator>
+
+          </div>
+
+        </div>
+        }
+
+        <!-- ==========================================
+             TABLE VIEW
+             ========================================== -->
+        @if (activeView === 'table') {
+        <div #tableContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+          <table class="table app-table" style="min-width: 2200px; white-space: nowrap;">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 80px;">Actions</th>
+                <th class="text-center" style="width: 70px;">Timeline</th>
+                <th class="text-center" style="width: 70px;">Done</th>
+                <th class="text-center" style="width: 80px;">Approved</th>
+                <th class="text-left" style="min-width: 160px;">Stage</th>
+                <th class="text-left" style="min-width: 190px;">Deliverable</th>
+                <th class="text-left" style="min-width: 190px;">Activity</th>
+                <th class="text-left" style="min-width: 180px;">Task</th>
+                <th class="text-left" style="min-width: 170px;">Subject</th>
+                <th class="text-left" style="width: 260px; min-width: 260px; max-width: 260px;">Description</th>
+                <th class="text-center" style="min-width: 110px;">Date Created</th>
+                <th class="text-center" style="min-width: 110px;">Due Date</th>
+                <th class="text-center" style="min-width: 110px;">Date Resolved</th>
+                <th class="text-left" style="min-width: 140px;">Assigned To</th>
+                <!-- <th class="text-center" style="width: 80px;">Image</th> -->
+                <th class="text-center" style="width: 90px;">Document</th>
+                <th class="text-center" style="width: 110px; min-width: 110px;">Updated</th>
+                <th class="text-center" style="width: 130px; min-width: 130px;">Update By</th>
+                <th class="text-center" style="width: 90px;">History</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (applicant of tableList; track applicant.id; let idx = $index) {
+              <tr>
+                <!-- Actions -->
+                <td class="text-center">
+                  <div class="table-actions">
+                    <button type="button" class="table-action-button edit" matTooltip="Edit Issue" aria-label="Edit issue"
+                      (click)="onEditIssue(applicant)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button type="button" class="table-action-button delete" matTooltip="Delete Issue"
+                      aria-label="Delete issue" (click)="onDeleteIssue(applicant)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
+
+                <!-- Timeline -->
+                <td class="text-center">
+                  <button type="button" class="timeline-trigger-btn" (click)="openTimelineModal(applicant)"
+                    matTooltip="View Timeline" aria-label="View Timeline">
+                    <mat-icon>calendar_today</mat-icon>
+                  </button>
+                </td>
+
+                <!-- Done Checkbox -->
+                <td class="text-center">
+                  <mat-checkbox [(ngModel)]="applicant.done" (change)="toggleDone(applicant)"
+                    color="primary"></mat-checkbox>
+                </td>
+
+                <!-- Approved Checkbox -->
+                <td class="text-center">
+                  <mat-checkbox [(ngModel)]="applicant.approved" (change)="toggleApproved(applicant)"
+                    color="primary"></mat-checkbox>
+                </td>
+
+                <!-- Stage -->
+                <td class="text-left">
+                  {{ applicant.stage || '—' }}
+                </td>
+
+                <!-- Deliverable -->
+                <td class="text-left">
+                  {{ applicant.deliverable || '—' }}
+                </td>
+
+                <!-- Activity (Red when Overdue) -->
+                <td class="text-left" [style.color]="isDateExceeded(applicant) ? '#dc2626' : null">
+                  {{ applicant.activity || '—' }}
+                </td>
+
+                <!-- Task (Red when Overdue) -->
+                <td class="text-left" [style.color]="isDateExceeded(applicant) ? '#dc2626' : null">
+                  {{ applicant.task || applicant.taskName || '—' }}
+                </td>
+
+                <!-- Subject -->
+                <td class="text-left">
+                  {{ applicant.subject }}
+                </td>
+
+                <!-- Description -->
+                <td class="text-left" style="width: 260px; min-width: 260px; max-width: 260px;">
+                  <span [matTooltip]="applicant.issueDescription"
+                    matTooltipPosition="above"
+                    style="display: block; width: 100%; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer;">
+                    {{ applicant.issueDescription }}
+                  </span>
+                </td>
+
+                <!-- Date Created -->
+                <td class="text-center">
+                  {{ applicant.createdDate ? (applicant.createdDate | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- Due Date -->
+                <td class="text-center">
+                  {{ (applicant.dueDate || applicant.targetDate) ? ((applicant.dueDate || applicant.targetDate) |
+                  date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- Date Resolved -->
+                <td class="text-center">
+                  {{ applicant.resolvedDate ? (applicant.resolvedDate | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- Assigned To -->
+                <td class="text-left">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <mat-icon style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;">person</mat-icon>
+                    <span>{{ applicant.assignedTo || applicant.responsibility || '—' }}</span>
+                  </div>
+                </td>
+
+                <!-- Document -->
+                <td class="text-center">
+                  <a href="javascript:void(0)" class="history-number-link" (click)="openDocuments()" matTooltip="View Documents">
+                    {{ applicant.documentsCount || getDocumentsCount(idx) }}
+                  </a>
+                </td>
+
+                <!-- Updated -->
+                <td class="text-center">
+                  {{ (applicant.updatedDate || applicant.createdDate) ? ((applicant.updatedDate || applicant.createdDate) | date:'dd-MMM-yyyy') : '—' }}
+                </td>
+
+                <!-- Update By -->
+                <td class="text-center">
+                  {{ applicant.updatedBy || applicant.assignedTo || '—' }}
+                </td>
+
+                <!-- History -->
+                <td class="text-center">
+                  <a href="javascript:void(0)" class="history-number-link" matTooltip="View Record History">
+                    {{ applicant.historyCount || ((idx % 10) + 1) }}
+                  </a>
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="18" class="empty-table text-center">
+                  No issues found match the selected filters.
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+
+
+        <mat-paginator [length]="totalSize" [pageSize]="pageSize" [pageIndex]="currentPage"
+          [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="handlePage($event)" showFirstLastButtons>
+        </mat-paginator>
+        }
+
+        </div>
+    </div>
+  </div>
+</div>undefined

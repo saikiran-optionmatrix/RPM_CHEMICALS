@@ -1,0 +1,109 @@
+<div class="portfolio-tab">
+  <!-- Top 6 KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card" *ngFor="let kpi of kpis">
+      <div class="kpi-label">{{ kpi.label }}</div>
+      <div class="kpi-value" [ngClass]="kpi.colorClass">{{ kpi.value }}</div>
+      <div class="kpi-subtext">{{ kpi.subtext }}</div>
+    </div>
+  </div>
+
+  <!-- Middle Section: Breakdown + Attractiveness Chart -->
+  <div class="middle-grid">
+    <!-- Left Card: Where the money goes -->
+    <div class="dash-card">
+      <div class="card-header">
+        <h3 class="card-title">WHERE THE MONEY GOES · BY DIVISION</h3>
+        <p class="card-subtitle">Budget vs spent; NPV on the right</p>
+      </div>
+
+      <div class="division-list">
+        <div class="division-item" *ngFor="let item of divisionBreakdown">
+          <div class="div-top-row">
+            <div class="div-name">
+              <span class="bullet" [style.background-color]="item.bulletColor"></span>
+              <span>{{ item.name }}</span>
+            </div>
+            <div class="div-npv">{{ item.npv }}</div>
+          </div>
+          <div class="div-progress-track">
+            <div class="div-progress-fill" [style.width.%]="item.percent" [style.background-color]="item.barColor"></div>
+          </div>
+          <div class="div-subtext">{{ item.subtext }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Card: Attractiveness x Execution -->
+    <div class="dash-card">
+      <div class="card-header">
+        <h3 class="card-title">ATTRACTIVENESS x EXECUTION</h3>
+        <p class="card-subtitle">Bubble size = budget</p>
+      </div>
+      <div class="chart-wrapper">
+        <div id="bubbleChartContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Section: Project Register -->
+  <div class="dash-card table-card">
+    <div class="card-header">
+      <h3 class="card-title">PROJECT REGISTER · PRODUCT / GRADE</h3>
+    </div>
+
+    <div class="table-responsive">
+      <table class="project-table">
+        <thead>
+          <tr>
+            <th>PROJECT · PRODUCT / GRADE</th>
+            <th>DIVISION</th>
+            <th>SITE</th>
+            <th>STAGE</th>
+            <th>PROGRESS</th>
+            <th>BUDGET</th>
+            <th>NPV</th>
+            <th>HEALTH</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of projects" (click)="navigateToProject(p)" class="clickable-row">
+            <td>
+              <div class="proj-code">{{ p.code }}</div>
+              <div class="proj-name">{{ p.name }}</div>
+            </td>
+            <td>
+              <span class="div-tag">
+                <span class="bullet-sm" [style.background-color]="p.divisionColor"></span>
+                {{ p.division }}
+              </span>
+            </td>
+            <td class="text-secondary">{{ p.site }}</td>
+            <td>
+              <span class="stage-badge">{{ p.stage }}</span>
+            </td>
+            <td>
+              <div class="progress-cell">
+                <span class="progress-text">{{ p.progress }}%</span>
+                <div class="bar-track">
+                  <div class="bar-fill" [style.width.%]="p.progress"></div>
+                </div>
+              </div>
+            </td>
+            <td class="text-num">{{ p.budget }}</td>
+            <td class="text-num">{{ p.npv }}</td>
+            <td>
+              <span class="health-badge" [ngClass]="{
+                'badge-green': p.healthStatus === 'On track',
+                'badge-amber': p.healthStatus === 'Watch',
+                'badge-red': p.healthStatus === 'At risk'
+              }">
+                {{ p.healthStatus }} · {{ p.health }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

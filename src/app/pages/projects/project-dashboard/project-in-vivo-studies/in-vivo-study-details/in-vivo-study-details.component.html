@@ -1,0 +1,128 @@
+<div class="analytics-page" style="padding: 10px 25px 80px 25px">
+    <header class="analytics-header">
+        <div class="project-master-line">
+            <h1 class="project-master-name">{{ projectName }}</h1>
+            <span class="project-master-meta">{{ projectCode }} · Per project master</span>
+        </div>
+
+        <button type="button" class="back-btn" (click)="goBackToList()">
+            <mat-icon>arrow_back</mat-icon><span>Back</span>
+        </button>
+    </header>
+
+    @if (study) {
+    <div class="study-summary-card">
+        <div class="summary-top-row">
+            <div class="summary-badges">
+                <span class="study-id-badge">{{ study.studyId }}</span>
+                <span class="lifecycle-pill" [ngClass]="getLifecycleClass(study.lifecycle)">
+                    {{ study.lifecycle }}
+                </span>
+                <span class="rag-pill" [ngClass]="getRagClass(study.ragStatus)">
+                    <span class="rag-dot"></span>
+                    <span>{{ study.ragStatus }}</span>
+                </span>
+                @if (study.studyPriority) {
+                <span class="priority-pill" [ngClass]="getPriorityClass(study.studyPriority)">
+                    {{ study.studyPriority }}
+                </span>
+                }
+            </div>
+
+            <div class="summary-top-right">
+                <span class="last-updated-meta">
+                    Last updated {{ study.lastUpdated || '11-Nov-2026' }} by {{ study.studyOwner }}
+                </span>
+                @if (activeTab !== 'identification') {
+                <button type="button" class="app-btn app-btn-primary" (click)="editStudy()">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit study</span>
+                </button>
+                }
+            </div>
+        </div>
+
+        <h2 class="study-title">{{ study.study }}</h2>
+
+        <div class="study-meta-line">
+            {{ study.category }}
+            @if (study.subtype) { · {{ study.subtype }} }
+            @if (study.studyCode) { · {{ study.studyCode }} }
+            · {{ study.targetMarkets }}
+            · Owner: {{ study.studyOwner }}
+        </div>
+
+        @if (study.ragReason) {
+        <div class="study-reason-line">RAG reason: {{ study.ragReason }}</div>
+        }
+    </div>
+
+    <div class="study-tabs-wrapper">
+        <div class="study-tabs-bar" role="tablist">
+            @for (tab of tabs; track tab.id) {
+            <button type="button" role="tab" class="study-tab-btn"
+                [class.active]="activeTab === tab.id"
+                [attr.aria-selected]="activeTab === tab.id"
+                (click)="selectTab(tab.id)">
+                <span>{{ tab.label }}</span>
+                @if (getTabCount(tab.id); as count) {
+                <span class="study-tab-cnt">{{ count }}</span>
+                }
+            </button>
+            }
+        </div>
+    </div>
+
+    <div class="study-tab-content">
+        @switch (activeTab) {
+            @case ('identification') {
+                <app-study-identification
+                    [study]="study"
+                    [projectMaster]="projectMaster"
+                    (editRequested)="editStudy()"
+                    (ragUpdated)="onRagUpdated($event)" />
+            }
+            @case ('plan-milestones') {
+                <app-study-plan-milestones
+                    [study]="study"
+                    (milestonesUpdated)="onMilestonesUpdated($event)" />
+            }
+            @case ('readiness') {
+                <app-study-readiness
+                    [study]="study"
+                    [projectMaster]="projectMaster"
+                    (readinessUpdated)="onReadinessUpdated($event)" />
+            }
+            @case ('dependencies-impact') {
+                <app-study-dependencies-impact
+                    [study]="study"
+                    (dependenciesUpdated)="onDependenciesUpdated()" />
+            }
+            @case ('risks-actions') {
+                <app-study-risks-actions [study]="study" (radUpdated)="onRadUpdated()" />
+            }
+            @case ('budget') {
+                <app-study-budget [study]="study" (budgetUpdated)="onBudgetUpdated($event)" />
+            }
+            @case ('results-closure') {
+                <app-study-results-closure
+                    [study]="study"
+                    (resultsClosureUpdated)="onResultsClosureUpdated($event)" />
+            }
+            @case ('documents') {
+                <app-study-documents
+                    [study]="study"
+                    (documentsUpdated)="onDocumentsUpdated($event)" />
+            }
+            @case ('history') {
+                <app-study-history [study]="study" />
+            }
+        }
+    </div>
+    } @else {
+    <div class="study-summary-card">
+        <p style="margin: 0; color: #64748b;">No matching in-vivo study found.</p>
+    </div>
+    }
+</div>
+

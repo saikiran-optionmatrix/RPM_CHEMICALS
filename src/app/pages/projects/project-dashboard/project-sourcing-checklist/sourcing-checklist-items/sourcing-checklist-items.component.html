@@ -1,0 +1,88 @@
+<div class="sheet1-container">
+  <!-- Top Toolbar with info and Add Material button using global app-btn-primary -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div class="sheet-title-info">
+      <span>Technical sourcing requirements · {{ items.length }} materials · Material code and name come from Budget ›
+        Material List (pick from the list; not typed)</span>
+    </div>
+
+    <button type="button" class="app-btn app-btn-primary" (click)="openAddMaterialDialog()">
+      <mat-icon>add</mat-icon>
+      <span>Add Material</span>
+    </button>
+  </div>
+
+  <!-- Global App Table System from _tables.scss (All custom color codes removed) -->
+  <div class="app-table-container" style="padding: 0; width: 100%;">
+    <div #tableContainer class="table-responsive" style="overflow-x: auto; scroll-behavior: smooth;">
+      <table class="table app-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 80px;">Actions</th>
+            <th class="text-center" style="width: 60px;">S.No.</th>
+            <th class="text-left" style="min-width: 120px;">Mtl code (Budget)</th>
+            <th class="text-left" style="min-width: 180px;">Material name (Budget)</th>
+            <th class="text-left" style="min-width: 180px;">Grade</th>
+            <th class="text-center" style="min-width: 110px;">Dosage form</th>
+            <th class="text-left" style="min-width: 150px;">Targeted markets</th>
+            <th class="text-left" style="min-width: 190px;">Polymorphic form / physical attributes</th>
+            <th class="text-center" style="width: 70px;">UOM</th>
+            <th class="text-end" style="min-width: 130px;">Development qty (indicative)</th>
+            <th class="text-end" style="min-width: 110px;">EB/PV qty</th>
+            <th class="text-center" style="min-width: 120px;">NPD/AVD/Regularisation</th>
+            <th class="text-left" style="min-width: 160px;">PSD</th>
+            <th class="text-center" style="min-width: 140px;">Material category</th>
+            <th class="text-left" style="min-width: 250px;">Technical sourcing notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of items; track r.code) {
+          <tr>
+            <td class="text-center">
+              <div class="table-actions">
+                <button type="button" class="table-action-button edit" matTooltip="Edit" aria-label="Edit material"
+                  (click)="onEdit(r)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="table-action-button delete" matTooltip="Delete"
+                  aria-label="Delete material" (click)="onDelete(r)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+            <td class="text-center">{{ r.sno }}</td>
+            <td class="text-left font-weight-bold">{{ r.code }}</td>
+            <td class="text-left font-weight-bold">{{ r.name }}</td>
+            <td class="text-left">{{ r.grade }}</td>
+            <td class="text-center">{{ r.form }}</td>
+            <td class="text-left">{{ r.markets }}</td>
+            <td class="text-left">{{ r.poly }}</td>
+            <td class="text-center">{{ r.uom }}</td>
+            <td class="text-end font-monospace">{{ r.dev }}</td>
+            <td class="text-end font-monospace">{{ r.ebpv }}</td>
+            <td class="text-center">{{ r.type }}</td>
+            <td class="text-left">{{ r.psd }}</td>
+            <td class="text-center">{{ r.cat }}</td>
+            <td class="text-left notes-cell">{{ r.notes }}</td>
+          </tr>
+          }
+          @if (items.length === 0) {
+          <tr>
+            <td colspan="15" class="empty-table">No technical sourcing requirements recorded for this project.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Floating Scroll Buttons -->
+  <button class="mine" mat-fab style="background-color: #cecdcd; right: 110px; z-index: 9999;" (click)="scrollLeft()"
+    matTooltip="Scroll Left">
+    <mat-icon style="color: #414141;">fast_rewind</mat-icon>
+  </button>
+  <button class="mine" mat-fab style="background-color: #cecdcd; z-index: 9999;" (click)="scrollRight()"
+    matTooltip="Scroll Right">
+    <mat-icon style="color: #414141;">fast_forward</mat-icon>
+  </button>
+</div>

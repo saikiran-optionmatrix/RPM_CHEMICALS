@@ -1,0 +1,193 @@
+<div class="NewHeader">
+  <h1 mat-dialog-title>
+    {{ isEditMode ? 'Update Todo' : 'Add Todo' }}
+  </h1>
+</div>
+
+<div mat-dialog-content style="padding: 16px 24px; width: 100%; box-sizing: border-box; overflow-x: hidden;">
+  <div style="margin-bottom: 10px; width: 100%;">
+    <form (ngSubmit)="save()">
+      <div class="row" style="margin: 0 -12px;">
+        <!-- Left Column: Hierarchy & Subject/Description -->
+        <div class="col-sm-6" style="padding: 0 12px;">
+
+          <!-- Stage (Dropdown) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Stage :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" placeholder="Select Stage" [(ngModel)]="todoData.stage" name="stage"
+                style="height: 35px; line-height: 23px;" (selectionChange)="onStageChange()">
+                @for (stage of stageOptions; track stage) {
+                <mat-option [value]="stage">{{ stage }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Deliverable (Dropdown) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Deliverable :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" placeholder="Select Deliverable" [(ngModel)]="todoData.deliverable"
+                name="deliverable" style="height: 35px; line-height: 23px;" (selectionChange)="onDeliverableChange()">
+                @for (del of filteredDeliverables; track del) {
+                <mat-option [value]="del">{{ del }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Activity (Dropdown) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Activity :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" placeholder="Select Activity" [(ngModel)]="todoData.activity"
+                name="activity" style="height: 35px; line-height: 23px;" (selectionChange)="onActivityChange()">
+                @for (act of filteredActivities; track act) {
+                <mat-option [value]="act">{{ act }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Task (Dropdown) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Task :</label>
+            </div>
+            <div class="col-sm-8">
+              <mat-select class="form-control back" placeholder="Select Task" [(ngModel)]="todoData.task" name="task"
+                style="height: 35px; line-height: 23px;">
+                @for (task of filteredTasks; track task) {
+                <mat-option [value]="task">{{ task }}</mat-option>
+                }
+              </mat-select>
+            </div>
+          </div>
+
+          <!-- Subject (Input) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Subject :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control name back" maxlength="200" placeholder="Enter Subject"
+                [(ngModel)]="todoData.subject" name="subject" type="text">
+            </div>
+          </div>
+
+          <!-- Description (Textarea) -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: flex-start;">
+            <div class="col-sm-4">
+              <label class="control-label" style="margin-top: 5px;">Description :</label>
+            </div>
+            <div class="col-sm-8">
+              <textarea class="form-control white" rows="3" placeholder="Enter Description"
+                [(ngModel)]="todoData.description" name="description" style="resize: vertical;"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Assignee, Dates & Department/Site -->
+        <div class="col-sm-6" style="padding: 0 12px;">
+
+          <!-- Assigned To -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Assigned To :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control name back" placeholder="Enter Assignee Name" [(ngModel)]="todoData.assignedTo"
+                name="assignedTo" type="text">
+            </div>
+          </div>
+
+          <!-- Role -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Role :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control name back" placeholder="Enter Role" [(ngModel)]="todoData.role" name="role"
+                type="text">
+            </div>
+          </div>
+
+          <!-- Date Created -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Date Created :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control back" [(ngModel)]="todoData.dateCreated" name="dateCreated" type="date">
+            </div>
+          </div>
+
+          <!-- Due Date -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Due Date :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control back" [(ngModel)]="todoData.dueDate" name="dueDate" type="date">
+            </div>
+          </div>
+
+          <!-- Group -->
+          <!-- <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="control-label" style="margin-top: 5px;">Group :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control name back" placeholder="Enter Group"
+                [(ngModel)]="todoData.group" name="group" type="text">
+            </div>
+          </div> -->
+
+          <!-- Site -->
+          <!-- <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="control-label" style="margin-top: 5px;">Site :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control name back" placeholder="Enter Site"
+                [(ngModel)]="todoData.site" name="site" type="text">
+            </div>
+          </div> -->
+
+          <!-- Department -->
+          <div class="row" style="margin-bottom: 12px; display: flex; align-items: center;">
+            <div class="col-sm-4">
+              <label class="add-member-label control-label" style="margin-top: 5px;">Department :</label>
+            </div>
+            <div class="col-sm-8">
+              <input class="form-control name back" placeholder="Enter Department" [(ngModel)]="todoData.department"
+                name="department" type="text">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="margin-bottom: 10px; margin-top: 15px;">
+        <div class="pull-right" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="app-btn app-btn-default" (click)="close()">
+            <mat-icon>cancel</mat-icon> Close
+          </button>
+          <button type="submit" class="app-btn app-btn-primary">
+            <mat-icon>save</mat-icon> {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
